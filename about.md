@@ -31,4 +31,7 @@ We live in Charlotte NC with our two dogs, Banana and Salchicha:
 ### Contact us
 
 [sergio.mora@lindadata.com](mailto:sergio.mora@lindadata.com)
+
+<br>
+
 [maria.gomez@lindadata.com](mailto:maria.gomez@lindadata.com)
