@@ -1,0 +1,13 @@
+track,project,primary_models,teaching_data,deliverable
+Foundation,Regression Bootcamp,"OLS; diagnostics; transformations","mtcars; cars; airquality","Quarto notebook and model card"
+Classification,Outcome Probability Lab,"logistic; multinomial; ordinal; calibration","iris; infert; Titanic","classification report and calibration plot"
+Counts,Events and Rates,"Poisson; quasi-Poisson; negative binomial; hurdle","warpbreaks; API event counts","count model comparison"
+Time,Forecasting and Lags,"ARIMA errors; distributed lag; VAR","AirPassengers; BLS; Open-Meteo","forecasting lesson"
+Groups,Repeated Measures,"mixed effects; GLMM; GEE","ChickWeight; CO2; Orange","hierarchical model walkthrough"
+Causal,Policy Evaluation,"fixed effects; DiD; event study; IV; RD","World Bank; Census","causal design memo"
+Survival,Time-to-Event Analytics,"Kaplan-Meier; Cox; AFT; competing risks","survival package datasets","survival analysis report"
+Spatial,Place-Based Modeling,"spatial lag; spatial error; GWR","Census; World Bank geography","spatial diagnostics report"
+Bayesian,Uncertainty Lab,"Bayesian GLM; hierarchical regression","mtcars; grouped examples","posterior predictive model card"
+ML,Prediction Benchmark,"trees; random forests; gradient boosting; neural networks","R built-ins; API joins","baseline versus ML comparison"
+Dimension,PCA and Latent Structure,"PCA; PCR; PLS; factor analysis; SEM","USArrests; survey indicators","latent structure report"
+Reporting,Executive Model Cards,"model evaluation; sensitivity analysis","any project output","standard report template"

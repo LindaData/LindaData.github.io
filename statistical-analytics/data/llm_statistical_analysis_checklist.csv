@@ -1,0 +1,13 @@
+stage,statistical_question,recommended_method,data_needed,common_failure_mode
+Experiment design,Which prompt or model performs better,Randomized A/B test or paired comparison,"prompt_id, model_id, item_id, output_id, metric","Comparing prompts on different item mixes"
+Scoring,How should quality be measured,Rubric score with ordinal or numeric scale,"rubric item, score, rater_id, output_id","Unclear rubric creates noisy labels"
+Agreement,Do raters agree,Cohen kappa ICC or Krippendorff alpha,"item_id, rater_id, rating","Using one evaluator as ground truth"
+Factuality,How often are answers wrong or unsupported,Binomial rate logistic regression or mixed model,"claim_id, answer_id, factuality_label, source_status","No audit trail for source verification"
+Calibration,Does confidence match correctness,Calibration curve Brier score logistic calibration,"confidence, correctness, task_type","Treating confidence as accuracy"
+Bias and fairness,Do errors differ by group,Group comparison logistic regression or hierarchical model,"group label, correctness, prompt, model","Small cells and unbalanced groups"
+Robustness,Do outputs change under paraphrases,Paired test mixed model or variance components,"base_item_id, variant_id, output_metric","One prompt variant treated as representative"
+Cost and latency,What quality is bought per dollar or second,Cost-effectiveness frontier,"tokens, latency_ms, cost, metric","Ignoring cost when quality differences are small"
+Token behavior,How do length and structure affect quality,Regression or GAM,"input_tokens, output_tokens, structure_features, score","Confounding prompt length with task difficulty"
+Embedding analysis,What themes or errors cluster together,PCA UMAP clustering topic review,"embedding vector, label, error type","Clusters interpreted without human review"
+Drift,Are outputs changing over time,Control chart time-series regression,"date, model_version, prompt_version, metric","Model or prompt version not stored"
+Human review,Which examples need escalation,Uncertainty sampling and stratified audit,"score, confidence, disagreement, severity","Reviewing only easy or famous failures"

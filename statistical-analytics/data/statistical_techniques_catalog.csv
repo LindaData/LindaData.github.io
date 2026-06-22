@@ -1,0 +1,101 @@
+category,technique,question_it_answers,data_structure,r_entry_point,python_entry_point,sql_role
+Data audit,Data profiling,What is in this dataset and what is missing,One table with any columns,profile_data,profile_data,profile tables
+Data audit,Missingness analysis,Which variables and groups have missing values,One table with nullable fields,profile_data,missingness_profile,null counts by column
+Data audit,Outlier screening,Which rows are extreme or influential,Numeric variables by row,influence_summary,outlier_profile,quantiles and z scores
+Data audit,Data dictionary,What does each field mean and how should it be typed,Metadata table plus source data,data_dictionary,data_dictionary,catalog tables
+Descriptive statistics,Summary statistics,What are the center spread and shape of numeric variables,Numeric columns,numeric_profile,describe_numeric,aggregate summaries
+Descriptive statistics,Frequency tables,How often do categories occur,Categorical columns,table,frequency_table,group by counts
+Descriptive statistics,Cross-tabulation,How do two categorical variables overlap,Two categorical variables,xtabs,crosstab,group by pivot source
+Descriptive statistics,Standardization,How do values compare on a common scale,Numeric columns,scale,standardize,computed z scores
+Association,Pearson correlation,How strongly are numeric variables linearly related,Two or more numeric variables,cor,pearson_corr,corr aggregate
+Association,Spearman correlation,How strongly are numeric ranks related,Two or more numeric variables,cor method spearman,spearman_corr,rank then corr
+Association,Covariance matrix,How do numeric variables vary together,Numeric matrix,cov,covariance_matrix,covar aggregate where available
+Association,Partial correlation,How are two variables related after controls,Numeric variables with controls,ppcor or residual method,partial_corr,residualize in CTEs
+Statistical inference,One-sample t-test,Is a sample mean different from a reference value,Numeric outcome,t.test,ttest_1samp,summary inputs for test
+Statistical inference,Two-sample t-test,Do two groups differ in mean outcome,Numeric outcome plus two groups,t.test,ttest_ind,group means and variances
+Statistical inference,Paired t-test,Do paired measurements differ,Two numeric measures per unit,t.test paired,ttest_rel,difference summary
+Statistical inference,Wilcoxon signed-rank test,Do paired nonnormal measurements differ,Two paired numeric measures,wilcox.test paired,wilcoxon,difference ranks
+Statistical inference,Mann-Whitney U test,Do two independent groups differ without normality,Numeric outcome plus two groups,wilcox.test,ranksums,rank table
+Statistical inference,Chi-square test of independence,Are two categorical variables independent,Contingency table,chisq.test,chi2_contingency,contingency counts
+Statistical inference,Fisher exact test,Are two binary categorical variables associated with small counts,2 by 2 table,fisher.test,fisher_exact,contingency counts
+Statistical inference,Kolmogorov-Smirnov test,Do samples follow or differ from a distribution,Numeric sample or two samples,ks.test,ks_2samp,distribution export
+Experimentation,A/B test for proportions,Did a treatment change a conversion rate,Binary outcome plus treatment group,prop.test,proportions_ztest,conversion aggregates
+Experimentation,A/B test for means,Did a treatment change a numeric outcome,Numeric outcome plus treatment group,t.test,ttest_ind,group summaries
+Experimentation,Power analysis,How much sample is needed for a detectable effect,Design parameters,pwr or power.t.test,statsmodels power,design table
+Experimentation,Multiple testing correction,Which results survive many comparisons,Table of p-values,p.adjust,multipletests,p-value table
+Experimentation,Sequential monitoring,Are interim looks inflating false positives,Time-indexed experiment results,gsDesign or simulation,custom simulation,interim aggregates
+Resampling,Bootstrap confidence intervals,How stable is an estimate under resampling,Rows sampled with replacement,boot or replicate,bootstrap_ci,bootstrap sample table
+Resampling,Permutation test,Is an observed difference unusual under label shuffling,Outcome plus labels,replicate sample,permutation_test,randomized labels
+Resampling,Cross-validation,How well will a model generalize,Features outcome and folds,rsample or caret,cross_val_score,fold assignment table
+Resampling,Monte Carlo simulation,What outcomes occur under repeated random scenarios,Parameter assumptions,replicate or simulation,simulate,scenario table
+ANOVA and design,One-way ANOVA,Do three or more groups differ in mean outcome,Numeric outcome plus one factor,aov,anova_lm,group summaries
+ANOVA and design,Two-way ANOVA,Do two factors and their interaction affect a mean,Numeric outcome plus two factors,aov,ols formula,cell means
+ANOVA and design,ANCOVA,Do groups differ after controlling for covariates,Numeric outcome factor covariates,lm,ols formula,model table
+ANOVA and design,Repeated-measures ANOVA,Do repeated conditions differ within subjects,Subject condition outcome,aov or ezANOVA,AnovaRM,long repeated table
+ANOVA and design,MANOVA,Do groups differ across multiple outcomes,Multiple numeric outcomes plus groups,manova,MANOVA,multivariate extract
+Nonparametric,Kruskal-Wallis test,Do three or more groups differ without normality,Numeric outcome plus factor,kruskal.test,kruskal,rank table
+Nonparametric,Friedman test,Do repeated nonparametric conditions differ,Subject condition outcome,friedman.test,friedmanchisquare,ranked repeated table
+Regression,Simple linear regression,How does Y change with one X,Numeric Y and numeric X,lm,ols,regr_slope
+Regression,Multiple linear regression,How does Y change with multiple X variables,Numeric Y plus predictors,lm,ols,feature table plus regr functions
+Regression,Interaction model,Does one effect depend on another variable,Outcome predictors and interaction,lm formula,ols formula,interaction columns
+Regression,Polynomial regression,Does a curved relationship improve fit,Numeric Y and numeric X powers,lm poly,PolynomialFeatures,power columns
+Regression,Spline regression,Does a smooth nonlinear effect improve fit,Numeric or GLM target plus smooth X,splines or mgcv,patsy bs,spline basis table
+Regression,Robust regression,Do coefficients hold under outlier-resistant fitting,Numeric Y predictors,MASS rlm,RLM,diagnostic export
+Regression,Quantile regression,How do predictors affect the median or tails,Numeric Y predictors,quantreg rq,QuantReg,quantile summaries
+Regression,Ridge regression,Can shrinkage stabilize correlated predictors,Numeric or GLM target plus many X,glmnet Ridge,Ridge,standardized feature table
+Regression,Lasso regression,Which predictors survive penalized selection,Target plus many standardized X,glmnet Lasso,Lasso,standardized feature table
+Regression,Elastic net,Can grouped correlated predictors be regularized,Target plus many standardized X,glmnet alpha,ElasticNet,standardized feature table
+Generalized linear models,Binary logistic regression,What predicts a yes or no outcome,Binary Y plus predictors,glm binomial,Logit,feature table
+Generalized linear models,Probit regression,What predicts a latent-threshold binary outcome,Binary Y plus predictors,glm probit,Probit,feature table
+Generalized linear models,Multinomial logistic regression,What predicts unordered categories,Nominal Y with 3 or more classes,nnet multinom,MNLogit,feature table
+Generalized linear models,Ordinal logistic regression,What predicts ordered categories,Ordered Y plus predictors,MASS polr,OrderedModel,feature table
+Generalized linear models,Poisson regression,What predicts event counts,Count Y plus exposure offset,glm poisson,Poisson,count feature table
+Generalized linear models,Negative binomial regression,What predicts overdispersed counts,Count Y with overdispersion,MASS glm.nb,NegativeBinomial,count feature table
+Generalized linear models,Zero-inflated regression,Do structural zeros and counts need separate processes,Count Y with many zeros,pscl zeroinfl,ZeroInflatedPoisson,zero and count tables
+Generalized linear models,Gamma regression,What predicts positive skewed continuous values,Positive numeric Y,glm Gamma,GLM Gamma,positive feature table
+Generalized linear models,Beta regression,What predicts proportions between 0 and 1,Proportion Y strictly between 0 and 1,betareg,BetaModel,proportion feature table
+Generalized linear models,Fractional logit,What predicts proportions including 0 and 1,Proportion Y in 0 to 1,glm quasibinomial,GLM Binomial,proportion feature table
+Grouped and panel,Mixed-effects linear model,How do fixed effects behave with grouped rows,Continuous Y clustered by group,lme4 or nlme,MixedLM,long grouped table
+Grouped and panel,Generalized mixed-effects model,How do binary or count outcomes behave with grouped rows,GLM target clustered by group,lme4 glmer,BinomialBayesMixedGLM,long grouped table
+Grouped and panel,GEE,What is the population-average effect with correlated rows,Repeated or clustered outcomes,geepack, GEE,long grouped table
+Grouped and panel,Panel fixed effects,What is the within-entity effect over time,Entity-time panel,fixest or plm,linearmodels,entity-time table
+Grouped and panel,Panel random effects,What is the between and within effect under random entities,Entity-time panel,plm,linearmodels,entity-time table
+Causal inference,Difference-in-differences,Did treated units change differently after treatment,Group-time panel with treatment,fixest,lm with interactions,panel aggregates
+Causal inference,Event study,How effects evolve before and after an event,Entity-time panel with relative time,fixest,linearmodels,event-time table
+Causal inference,Instrumental variables,What is the causal effect with an instrument,Outcome endogenous X instrument,ivreg or fixest,IV2SLS,first-stage table
+Causal inference,Regression discontinuity,What is the local effect at a cutoff,Running variable cutoff outcome,rdrobust,local regression,windowed cutoff table
+Causal inference,Propensity score matching,How do matched treated and control units compare,Treatment covariates outcome,MatchIt,sklearn NearestNeighbors,matching candidate table
+Survival,Kaplan-Meier curve,What is survival over time,Duration and event indicator,survfit,KaplanMeierFitter,duration table
+Survival,Cox proportional hazards,What predicts hazard of event,Duration event predictors,coxph,CoxPHFitter,duration feature table
+Survival,Accelerated failure time model,What predicts event time directly,Duration event predictors,survreg,WeibullAFTFitter,duration feature table
+Time series,Time-series decomposition,What are trend seasonality and remainder,Regular time-indexed series,decompose,seasonal_decompose,time table
+Time series,ARIMA or SARIMA,How can a series be forecast from its own history,Regular time series,arima or forecast,SARIMAX,time table
+Time series,Exponential smoothing,How can level trend and seasonality forecast a series,Regular time series,HoltWinters,ExponentialSmoothing,time table
+Time series,Distributed lag model,How delayed predictors affect an outcome,Time series with lagged X,dynlm,distributed lag regression,lagged feature table
+Time series,VAR,How multiple series predict each other,Multiple aligned time series,vars VAR,VAR,wide time table
+Time series,Forecast accuracy,Which forecast method performs best,Actuals predictions and dates,accuracy,forecast metrics,error table
+Multivariate,PCA,What lower-dimensional structure explains numeric variables,Numeric matrix,prcomp,PCA,standardized matrix
+Multivariate,Factor analysis,What latent factors explain observed indicators,Numeric indicator matrix,factanal,FactorAnalysis,indicator matrix
+Multivariate,Correspondence analysis,What structure exists in contingency tables,Contingency table,ca or FactoMineR,prince CA,contingency table
+Multivariate,Canonical correlation,How two sets of variables relate,Two numeric variable sets,cancor,CCA,wide numeric table
+Multivariate,Discriminant analysis,What linear combinations separate known groups,Features and known class,MASS lda,LinearDiscriminantAnalysis,feature table
+Clustering,K-means clustering,What groups exist in numeric feature space,Numeric feature matrix,kmeans,KMeans,standardized feature table
+Clustering,Hierarchical clustering,What nested groups exist in feature space,Numeric feature matrix,hclust,AgglomerativeClustering,distance input table
+Clustering,Gaussian mixture model,What probabilistic clusters fit the data,Numeric feature matrix,mclust,GaussianMixture,feature table
+Reliability and measurement,Cronbach alpha,Do survey items measure one construct,Respondent by item matrix,psych alpha,cronbach_alpha,item table
+Reliability and measurement,Cohen kappa,How much do two raters agree beyond chance,Two categorical ratings,irr kappa2,cohen_kappa_score,rating pairs
+Reliability and measurement,Intraclass correlation,How reliable are repeated measurements or raters,Subjects raters scores,irr icc,intraclass_corr,long rating table
+Bayesian,Bayesian estimation,What is the posterior distribution of a parameter,Data likelihood and priors,brms or rstanarm,PyMC,prior and data table
+Bayesian,Bayesian regression,How do coefficients behave under priors,Outcome predictors priors,brms,PyMC,feature table
+Bayesian,Posterior predictive checks,Does the model generate data like the observed data,Fitted Bayesian model and observed data,pp_check,az.plot_ppc,posterior draws table
+Meta-analysis,Fixed-effect meta-analysis,What is the pooled effect assuming one true effect,Study effects and standard errors,metafor,combine_effects,study effect table
+Meta-analysis,Random-effects meta-analysis,What is the pooled effect with between-study variation,Study effects and standard errors,metafor,combine_effects,study effect table
+Survey,Weighted estimates,What is the population estimate under survey weights,Rows with survey weights,survey package,weighted stats,weighted aggregates
+Survey,Weighted regression,What relationships hold under survey design,Outcome predictors weights,survey svyglm,weighted GLM,weighted feature table
+LLM analysis,Prompt A/B test,Which prompt produces better measured outcomes,Prompt assignment output score,prop.test or lm,proportion or t-test,experiment aggregates
+LLM analysis,Rubric score analysis,How do quality scores vary by prompt model or reviewer,Output-level ordinal or numeric scores,ordinal or mixed model,ordinal/logit/mixed model,score table
+LLM analysis,Evaluator agreement,Do human and LLM judges agree,Rater by item labels,kappa and ICC,kappa and ICC,rating pairs
+LLM analysis,Hallucination rate estimation,What share of answers fail factual checks,Binary factuality labels,prop.test or logistic,proportion/logit,label aggregates
+LLM analysis,Calibration and confidence,Are stated confidences aligned with correctness,Predicted confidence and observed correctness,calibration table,brier score and calibration,calibration bins
+LLM analysis,Embedding clustering,What themes or failure modes cluster together,Text embeddings by item,kmeans or hclust,KMeans or HDBSCAN,embedding table
+LLM analysis,Drift monitoring,Are model outputs changing over time,Time-indexed metrics and outputs,control charts,drift metrics,time aggregates

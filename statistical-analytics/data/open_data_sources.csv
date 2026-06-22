@@ -1,0 +1,8 @@
+source,access,key_status,use_cases,starter_url,notes
+R built-in datasets,local,no key,"teaching regression foundations; reproducible examples","https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html","Use first for team training."
+World Bank Indicators API,public API,no key for public indicator calls,"country-year panels; macroeconomics; development indicators","https://api.worldbank.org/v2/country/USA/indicator/NY.GDP.PCAP.CD?format=json&per_page=100","Excellent for panel regression and policy lessons."
+Open-Meteo Forecast API,public API,no key for public forecast endpoints,"weather features; time series; demand and operations examples","https://api.open-meteo.com/v1/forecast?latitude=35.2271&longitude=-80.8431&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=America%2FNew_York","Good no-key weather data for Charlotte examples."
+BLS Public Data API,public API,no key for smaller public requests; registration key raises limits,"labor market; CPI; wages; unemployment","https://api.bls.gov/publicAPI/v2/timeseries/data/LNS14000000?startyear=2020&endyear=2026","Use key for larger automated workflows."
+U.S. Census API,public API,key required,"ACS; demographics; geography; business; housing","https://www.census.gov/data/developers/data-sets.html","Worth getting because many public analytics projects need Census data."
+FRED API,public API,key required,"macro and financial time series","https://fred.stlouisfed.org/docs/api/api_key.html","Worth getting for forecasting and economics examples."
+NOAA Climate Data Online,public API,token required,"historical weather and climate","https://www.ncdc.noaa.gov/cdo-web/webservices/v2","Worth getting when historical weather matters."

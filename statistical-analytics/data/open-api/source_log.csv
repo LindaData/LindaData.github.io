@@ -1,0 +1,4 @@
+"source_url","file"
+"https://api.worldbank.org/v2/country/USA/indicator/NY.GDP.PCAP.CD?format=json&per_page=100","statistical-analytics/data/open-api/world_bank_usa_gdp_per_capita.json"
+"https://api.open-meteo.com/v1/forecast?latitude=35.2271&longitude=-80.8431&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=America%2FNew_York","statistical-analytics/data/open-api/open_meteo_charlotte_daily.json"
+"https://api.bls.gov/publicAPI/v2/timeseries/data/LNS14000000?startyear=2020&endyear=2026","statistical-analytics/data/open-api/bls_unemployment_rate.json"
