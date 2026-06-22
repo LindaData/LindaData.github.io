@@ -15,4 +15,4 @@ The new hub is designed as a one-stop educational reference. It includes:
 
 <br>
 
-[Open the Statistical Analytics Hub](https://lindadata.github.io/statistical-analytics/)
+[Open the Statistical Analytics Hub](https://lindadata.github.io/statistical-analytics/index.html)
