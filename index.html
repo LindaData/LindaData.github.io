@@ -12,6 +12,10 @@ layout: default
         {{ post.excerpt }}
       </div>
 
+      {% if post.project_url %}
+        <a href="{{ post.project_url }}" class="read-more">{{ post.project_cta | default: "Open Project" }}</a>
+      {% endif %}
+
       <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">Read More</a>
     </article>
   {% endfor %}
