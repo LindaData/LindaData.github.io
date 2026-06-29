@@ -3,516 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Statistical Analytics Hub | Linda Data</title>
-  <meta name="description" content="A one-stop educational hub for statistical analytics, regression modeling, model tuning, LLM evaluation, diagnostics, datasets, and reusable R, Python, and SQL project starters.">
-  <style>
-    :root {
-      --ink: #17212b;
-      --muted: #5b6673;
-      --line: #d9e0e8;
-      --paper: #ffffff;
-      --wash: #f5f7fa;
-      --blue: #1769aa;
-      --green: #16815d;
-      --amber: #a76500;
-      --red: #b33a3a;
-      --navy: #20304a;
-      --shadow: 0 12px 32px rgba(23, 33, 43, 0.09);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      color: var(--ink);
-      background: var(--paper);
-      font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    }
-
-    a {
-      color: var(--blue);
-      text-decoration: none;
-    }
-
-    a:hover,
-    a:focus {
-      text-decoration: underline;
-    }
-
-    a:focus-visible,
-    button:focus-visible,
-    input:focus-visible {
-      outline: 3px solid #79b7e5;
-      outline-offset: 3px;
-    }
-
-    .skip-link {
-      background: var(--ink);
-      color: #fff;
-      left: 16px;
-      padding: 8px 12px;
-      position: absolute;
-      top: -48px;
-      z-index: 50;
-    }
-
-    .skip-link:focus {
-      top: 12px;
-      text-decoration: none;
-    }
-
-    img {
-      display: block;
-      max-width: 100%;
-    }
-
-    .topbar {
-      border-bottom: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.96);
-      position: sticky;
-      top: 0;
-      z-index: 20;
-    }
-
-    .topbar-inner {
-      align-items: center;
-      display: flex;
-      gap: 24px;
-      justify-content: space-between;
-      margin: 0 auto;
-      max-width: 1180px;
-      padding: 14px 20px;
-    }
-
-    .brand {
-      color: var(--ink);
-      font-weight: 700;
-      letter-spacing: 0;
-      white-space: nowrap;
-    }
-
-    .nav-links {
-      align-items: center;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      justify-content: flex-end;
-      font-size: 14px;
-    }
-
-    .nav-links a {
-      color: var(--muted);
-    }
-
-    .nav-links a[aria-current="page"] {
-      color: var(--ink);
-      font-weight: 700;
-    }
-
-    main {
-      margin: 0 auto;
-      max-width: 1180px;
-      padding: 28px 20px 64px;
-    }
-
-    .intro {
-      align-items: stretch;
-      display: grid;
-      gap: 24px;
-      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
-      margin-bottom: 28px;
-    }
-
-    .intro-copy {
-      padding: 18px 0;
-    }
-
-    .eyebrow {
-      color: var(--green);
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      margin: 0 0 8px;
-      text-transform: uppercase;
-    }
-
-    h1,
-    h2,
-    h3 {
-      color: var(--ink);
-      letter-spacing: 0;
-      line-height: 1.18;
-      margin: 0;
-    }
-
-    h1 {
-      font-size: clamp(34px, 6vw, 58px);
-      max-width: 820px;
-    }
-
-    h2 {
-      font-size: clamp(26px, 4vw, 36px);
-      margin-top: 52px;
-    }
-
-    h3 {
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-
-    .lede {
-      color: var(--muted);
-      font-size: 19px;
-      max-width: 840px;
-    }
-
-    .hero-visual {
-      align-self: center;
-      background: var(--wash);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      min-height: 260px;
-      padding: 16px;
-    }
-
-    .hero-visual img {
-      border-radius: 6px;
-      height: auto;
-      width: 100%;
-    }
-
-    .action-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 22px;
-    }
-
-    .button {
-      align-items: center;
-      background: var(--ink);
-      border: 1px solid var(--ink);
-      border-radius: 6px;
-      color: #fff;
-      display: inline-flex;
-      font-weight: 700;
-      min-height: 42px;
-      padding: 9px 14px;
-    }
-
-    .button.secondary {
-      background: #fff;
-      color: var(--ink);
-    }
-
-    .button:hover,
-    .button:focus {
-      text-decoration: none;
-    }
-
-    .metric-grid,
-    .card-grid,
-    .project-grid {
-      display: grid;
-      gap: 14px;
-    }
-
-    .metric-grid {
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-      margin: 20px 0 36px;
-    }
-
-    .metric,
-    .card,
-    .project-card,
-    .callout {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: var(--paper);
-    }
-
-    .metric {
-      padding: 16px;
-    }
-
-    .metric strong {
-      color: var(--muted);
-      display: block;
-      font-size: 12px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    .metric span {
-      color: var(--ink);
-      display: block;
-      font-size: 26px;
-      font-weight: 800;
-      line-height: 1.2;
-      margin-top: 4px;
-    }
-
-    .card-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .card,
-    .project-card {
-      padding: 18px;
-    }
-
-    .card p,
-    .project-card p {
-      color: var(--muted);
-      margin: 0;
-    }
-
-    .section-note {
-      color: var(--muted);
-      max-width: 860px;
-    }
-
-    .toc-grid {
-      display: grid;
-      gap: 10px;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      margin: 24px 0 34px;
-    }
-
-    .toc-grid a {
-      background: var(--wash);
-      border: 1px solid var(--line);
-      border-radius: 6px;
-      color: var(--ink);
-      font-weight: 700;
-      min-height: 48px;
-      padding: 12px;
-      text-align: center;
-    }
-
-    .search-box {
-      align-items: center;
-      display: flex;
-      gap: 10px;
-      margin: 18px 0;
-    }
-
-    .search-box label {
-      color: var(--muted);
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .search-box input {
-      border: 1px solid var(--line);
-      border-radius: 6px;
-      color: var(--ink);
-      font: inherit;
-      min-height: 42px;
-      padding: 8px 10px;
-      width: min(100%, 520px);
-    }
-
-    .table-wrap {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      margin-top: 14px;
-      overflow-x: auto;
-      box-shadow: var(--shadow);
-    }
-
-    table {
-      border-collapse: collapse;
-      min-width: 980px;
-      width: 100%;
-    }
-
-    th,
-    td {
-      border-bottom: 1px solid var(--line);
-      padding: 11px 12px;
-      text-align: left;
-      vertical-align: top;
-    }
-
-    th {
-      background: var(--navy);
-      color: #fff;
-      font-size: 13px;
-      position: sticky;
-      top: 54px;
-      z-index: 10;
-    }
-
-    td {
-      color: #2f3a46;
-      font-size: 14px;
-    }
-
-    tr:last-child td {
-      border-bottom: 0;
-    }
-
-    .tag {
-      border-radius: 999px;
-      display: inline-block;
-      font-size: 12px;
-      font-weight: 700;
-      margin: 0 4px 6px 0;
-      padding: 3px 8px;
-      white-space: nowrap;
-    }
-
-    .tag.blue {
-      background: #e8f1fa;
-      color: #124f80;
-    }
-
-    .tag.green {
-      background: #e4f4ee;
-      color: #0f6749;
-    }
-
-    .tag.amber {
-      background: #fff1d9;
-      color: #765000;
-    }
-
-    .tag.red {
-      background: #fde9e9;
-      color: #8f2626;
-    }
-
-    .callout {
-      background: #f9fbfd;
-      border-left: 5px solid var(--green);
-      padding: 18px;
-    }
-
-    .callout strong {
-      display: block;
-      margin-bottom: 6px;
-    }
-
-    .project-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      margin-top: 16px;
-    }
-
-    .project-card {
-      min-height: 190px;
-    }
-
-    .project-card small {
-      color: var(--green);
-      display: block;
-      font-weight: 800;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-    }
-
-    .two-col {
-      display: grid;
-      gap: 18px;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      margin-top: 16px;
-    }
-
-    pre {
-      background: #111820;
-      border-radius: 8px;
-      color: #eef4f8;
-      overflow-x: auto;
-      padding: 14px;
-    }
-
-    .code-shell {
-      position: relative;
-    }
-
-    .code-shell pre {
-      padding-top: 44px;
-    }
-
-    .copy-button {
-      background: #eef4f8;
-      border: 1px solid #c8d4df;
-      border-radius: 6px;
-      color: #17212b;
-      cursor: pointer;
-      font: 700 12px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-      min-height: 30px;
-      padding: 7px 10px;
-      position: absolute;
-      right: 10px;
-      top: 10px;
-      z-index: 2;
-    }
-
-    code {
-      font-family: Consolas, "Liberation Mono", monospace;
-      font-size: 0.94em;
-    }
-
-    footer {
-      border-top: 1px solid var(--line);
-      color: var(--muted);
-      margin-top: 56px;
-      padding-top: 20px;
-    }
-
-    @media (max-width: 980px) {
-      .intro,
-      .two-col {
-        grid-template-columns: 1fr;
-      }
-
-      .metric-grid,
-      .card-grid,
-      .project-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .toc-grid {
-        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      }
-    }
-
-    @media (max-width: 640px) {
-      main {
-        padding: 22px 14px 48px;
-      }
-
-      .topbar-inner {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 10px;
-        padding: 12px 14px;
-      }
-
-      .nav-links {
-        justify-content: flex-start;
-      }
-
-      .metric-grid,
-      .card-grid,
-      .project-grid,
-      .toc-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .search-box {
-        align-items: stretch;
-        flex-direction: column;
-      }
-
-      th {
-        top: 114px;
-      }
-    }
-  </style>
+  <title>Statistical Workbench | Linda Data</title>
+  <meta name="description" content="A guided statistical analytics workbench for choosing methods, copying R, Python, and SQL starters, running diagnostics, tuning models, and reviewing analysis quality.">
+  <link rel="stylesheet" href="assets/workbench.css">
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -531,451 +24,202 @@
   </header>
 
   <main id="main-content">
-    <section class="intro" aria-labelledby="page-title">
-      <div class="intro-copy">
-        <p class="eyebrow">Linda Data team resource</p>
-        <h1 id="page-title">Statistical Analytics Hub</h1>
-        <p class="lede">A one-stop shop for statistical analysis, regression modeling, model tuning, LLM evaluation, diagnostics, datasets, project templates, and teaching examples in R, RStudio, Python, SQL, and adjacent tools.</p>
+    <section class="workspace-hero" aria-labelledby="page-title">
+      <div class="hero-panel">
+        <p class="eyebrow">Statistical analytics workbench</p>
+        <h1 id="page-title">Choose the right analysis. Copy the starter. Ship a defensible result.</h1>
+        <p class="lede">This is the front door for team analytics work: pick the question, confirm the data structure, grab the R/Python/SQL starter, run quality gates, and move the exhaustive catalog only when you need depth.</p>
         <div class="action-row">
-          <a class="button" href="#technique-library">Technique Library</a>
-          <a class="button secondary" href="samples.html">Copy-Paste Samples</a>
-          <a class="button secondary" href="model-tuning.html">Model Tuning</a>
-          <a class="button secondary" href="#regression-catalog">Choose a Model</a>
-          <a class="button secondary" href="#llm-analysis">LLM Analysis</a>
-          <a class="button secondary" href="#diagnostics">Run Diagnostics</a>
-          <a class="button secondary" href="#data-pantry">Find Data</a>
-          <a class="button secondary" href="#starter-files">Starter Files</a>
-          <a class="button secondary" href="https://github.com/lindadata/lindadata.github.io/tree/master/statistical-analytics">GitHub Source</a>
+          <a class="button" href="#method-finder">Start with a question</a>
+          <a class="button secondary" href="samples.html">Open sample library</a>
+          <a class="button secondary" href="model-tuning.html">Tune a model</a>
+          <a class="button secondary" href="https://github.com/LindaData/LindaData.github.io/tree/master/statistical-analytics">View source</a>
         </div>
       </div>
-      <aside class="hero-visual" aria-label="Model family visual summary">
-        <img src="assets/model-family-map.png" alt="Chart showing model family counts and example statistical targets used in this analytics hub.">
+
+      <aside class="control-panel" aria-label="Fast path">
+        <p class="eyebrow">Fast path</p>
+        <div class="quality-card">
+          <h3>1. Name the row</h3>
+          <p>Customer, store-day, patient visit, model output, county-year, event interval.</p>
+        </div>
+        <div class="quality-card">
+          <h3>2. Name the target</h3>
+          <p>Continuous, yes/no, count, time-to-event, ordered class, text score, or forecast horizon.</p>
+        </div>
+        <div class="quality-card">
+          <h3>3. Pick validation</h3>
+          <p>Random split only when rows are independent. Use time or group splits when the data demands it.</p>
+        </div>
       </aside>
     </section>
 
-    <section class="metric-grid" aria-label="Hub summary">
-      <div class="metric"><strong>Technique Catalog</strong><span>100</span>Statistical techniques mapped to data structures, assumptions, and code entry points.</div>
-      <div class="metric"><strong>Sample Recipes</strong><span>11</span>Copy-paste paths for profiling, modeling, tuning, time series, clustering, and LLM evaluation.</div>
-      <div class="metric"><strong>Tuning Catalog</strong><span>60+</span>Validation, stepwise, trees, boosting, regularization, calibration, ensembles, monitoring, and model cards.</div>
-      <div class="metric"><strong>Default Language</strong><span>R</span>Base R and RStudio first, with Python and SQL equivalents where useful.</div>
-      <div class="metric"><strong>Data Strategy</strong><span>Open</span>R built-ins, public APIs, and key-based sources separated clearly.</div>
+    <section class="stat-grid" aria-label="Resource summary">
+      <div class="stat"><strong>Guided starters</strong><span>11</span>Common analysis paths with copy-ready code.</div>
+      <div class="stat"><strong>Technique catalog</strong><span>100</span>Methods kept in CSV for filtering and reuse.</div>
+      <div class="stat"><strong>Tuning catalog</strong><span>60</span>Validation, search, tree, boosting, and calibration paths.</div>
+      <div class="stat"><strong>Default path</strong><span>R</span>R/RStudio first, Python and SQL beside it.</div>
     </section>
 
-    <nav class="toc-grid" aria-label="Page sections">
-      <a href="#workflow">Workflow</a>
-      <a href="samples.html">Samples</a>
-      <a href="model-tuning.html">Tuning</a>
-      <a href="#technique-library">Techniques</a>
-      <a href="#regression-catalog">Regression</a>
-      <a href="#llm-analysis">LLM</a>
-      <a href="#diagnostics">Diagnostics</a>
-      <a href="#data-pantry">Data</a>
-      <a href="#project-roadmap">Projects</a>
-      <a href="#starter-files">Files</a>
-    </nav>
-
-    <section id="start-here">
-      <h2>Start Here</h2>
-      <p class="section-note">For day-to-day use, start with the copy-paste samples. When the question becomes model selection or fine tuning, move to the model tuning guide for validation design, stepwise functions, decision trees, XGBoost, regularization, calibration, and model cards.</p>
-      <div class="card-grid">
-        <article class="card">
-          <h3>1. Pick the Question</h3>
-          <p>Continuous outcome, yes/no outcome, count, group comparison, repeated rows, time series, clustering, or LLM evaluation.</p>
-        </article>
-        <article class="card">
-          <h3>2. Swap the Names</h3>
-          <p>Replace <code>DATA</code>, <code>TARGET</code>, <code>PREDICTORS</code>, <code>GROUP</code>, <code>ID</code>, <code>TIME</code>, and <code>EVENT</code>.</p>
-        </article>
-        <article class="card">
-          <h3>3. Run Diagnostics</h3>
-          <p>Check missingness, leakage, collinearity, heteroskedasticity, grouped dependence, and validation design before presenting results.</p>
-        </article>
-      </div>
-      <div class="action-row">
-        <a class="button" href="samples.html">Open Copy-Paste Samples</a>
-        <a class="button secondary" href="model-tuning.html">Open Model Tuning Guide</a>
-        <a class="button secondary" href="scripts/copy_paste_r_samples.R">R samples</a>
-        <a class="button secondary" href="scripts/copy_paste_python_samples.py">Python samples</a>
-        <a class="button secondary" href="sql/copy_paste_sql_samples.sql">SQL samples</a>
-        <a class="button secondary" href="https://github.com/lindadata/lindadata.github.io/tree/master/statistical-analytics">View on GitHub</a>
-      </div>
-    </section>
-
-    <section id="workflow">
-      <h2>Modeling Workflow</h2>
-      <p class="section-note">The fastest way to teach statistical modeling is to force every project through the same sequence: define the question, identify the outcome structure, inspect the design matrix, diagnose assumptions, fit a baseline, validate it, and explain the result in plain language.</p>
-      <div class="card-grid">
-        <article class="card">
-          <h3>1. Question and Target</h3>
-          <p>Name the decision, the unit of analysis, the outcome, and whether the target is continuous, binary, ordered, categorical, count, rate, duration, spatial, or time-indexed.</p>
-        </article>
-        <article class="card">
-          <h3>2. Data Grain</h3>
-          <p>Make one row mean one thing: person, customer, store-day, patient-visit, county-year, game-team, transaction, or event interval.</p>
-        </article>
-        <article class="card">
-          <h3>3. Diagnostics Before Fit</h3>
-          <p>Profile missingness, outliers, class balance, rare categories, collinearity, leakage, autocorrelation, clustering, and heteroskedasticity risk.</p>
-        </article>
-        <article class="card">
-          <h3>4. Baseline First</h3>
-          <p>Fit a transparent model before a complex one. OLS, logistic regression, Poisson regression, and Kaplan-Meier curves are teaching anchors.</p>
-        </article>
-        <article class="card">
-          <h3>5. Validation</h3>
-          <p>Use train/test splits, time splits, group splits, cross-validation, bootstrap intervals, calibration plots, and sensitivity checks.</p>
-        </article>
-        <article class="card">
-          <h3>6. Communication</h3>
-          <p>Translate coefficients, uncertainty, effect sizes, assumptions, and practical impact. Never stop at p-values or leaderboard metrics.</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="technique-library">
-      <h2>Statistical Technique Library</h2>
-      <p class="section-note">The full catalog contains 100 statistical techniques. It is intentionally broader than regression: data audit, descriptive statistics, inference, experimentation, resampling, ANOVA, nonparametric tests, GLMs, panel models, causal inference, survival, time series, multivariate methods, clustering, reliability, Bayesian analysis, survey methods, meta-analysis, and LLM evaluation.</p>
-      <div class="two-col">
-        <div class="callout">
-          <strong>Complete catalog</strong>
-          <p>The machine-readable list is available at <a href="data/statistical_techniques_catalog.csv"><code>data/statistical_techniques_catalog.csv</code></a>. Each row names the technique, question, data structure, R entry point, Python entry point, and SQL role.</p>
+    <section id="method-finder">
+      <h2>Method Finder</h2>
+      <p class="section-note">Start here instead of scanning a giant table. Choose the closest question and the workbench returns the modeling path, checks, and starter code.</p>
+      <div class="workbench">
+        <div class="selector-stack" aria-label="Analysis questions">
+          <button class="selector-button" type="button" data-recipe="profile">Profile my data <span>Before any model or statistical test.</span></button>
+          <button class="selector-button" type="button" data-recipe="continuous">Explain a number <span>Revenue, MPG, score, cost, temperature.</span></button>
+          <button class="selector-button" type="button" data-recipe="probability">Predict yes/no <span>Conversion, churn, pass/fail, factuality.</span></button>
+          <button class="selector-button" type="button" data-recipe="count">Model counts <span>Events, claims, defects, calls, visits.</span></button>
+          <button class="selector-button" type="button" data-recipe="time">Forecast over time <span>Demand, unemployment, usage, weather.</span></button>
+          <button class="selector-button" type="button" data-recipe="llm">Evaluate LLM output <span>Prompts, factuality, rubrics, drift.</span></button>
         </div>
-        <div class="callout">
-          <strong>Codebooks</strong>
-          <p>Use <a href="scripts/statistical_methods_cookbook.R"><code>R</code></a>, <a href="scripts/statistical_methods_cookbook.py"><code>Python</code></a>, and <a href="sql/statistical_methods_cookbook.sql"><code>SQL</code></a> starter files to turn the catalog into working project code.</p>
-        </div>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Area</th>
-              <th>Representative Techniques</th>
-              <th>Primary Data Structure</th>
-              <th>Teaching Path</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>Data audit</td><td>Profiling, missingness, outliers, data dictionary</td><td>Any source table</td><td>Start every project here before modeling.</td></tr>
-            <tr><td>Descriptive and association</td><td>Summary statistics, frequency tables, crosstabs, correlations, covariance</td><td>Numeric and categorical columns</td><td>Teach what the data says before inference.</td></tr>
-            <tr><td>Statistical inference</td><td>t-tests, Wilcoxon, Mann-Whitney, chi-square, Fisher exact, KS test</td><td>Outcomes plus groups or distributions</td><td>Use when the question is a focused comparison.</td></tr>
-            <tr><td>Experimentation</td><td>A/B tests, power, multiple testing, sequential monitoring</td><td>Treatment assignment plus outcome</td><td>Use randomized assignment whenever possible.</td></tr>
-            <tr><td>Resampling</td><td>Bootstrap, permutation tests, cross-validation, simulation</td><td>Rows that can be resampled or folded</td><td>Use when uncertainty or generalization matters.</td></tr>
-            <tr><td>ANOVA and nonparametric design</td><td>ANOVA, ANCOVA, MANOVA, Kruskal-Wallis, Friedman</td><td>Outcome plus experimental factors</td><td>Use for designed comparisons and group effects.</td></tr>
-            <tr><td>Regression and GLMs</td><td>OLS, interactions, splines, robust, quantile, logistic, Poisson, negative binomial</td><td>Target plus predictors</td><td>Move from interpretable baselines to specialized likelihoods.</td></tr>
-            <tr><td>Grouped, panel, and causal</td><td>Mixed effects, GEE, fixed effects, DiD, event study, IV, RD, propensity scores</td><td>Clustered, repeated, or policy/treatment data</td><td>Use design assumptions as the center of the lesson.</td></tr>
-            <tr><td>Survival and time series</td><td>Kaplan-Meier, Cox, AFT, decomposition, ARIMA, ETS, distributed lags, VAR</td><td>Duration/event or time-indexed rows</td><td>Use when time changes the estimand.</td></tr>
-            <tr><td>Multivariate and clustering</td><td>PCA, factor analysis, correspondence analysis, CCA, LDA, k-means, hierarchical, mixture models</td><td>Feature matrices and indicator batteries</td><td>Use to uncover structure before prediction.</td></tr>
-            <tr><td>Reliability, Bayesian, survey, meta-analysis</td><td>Cronbach alpha, kappa, ICC, Bayesian regression, posterior checks, survey weights, pooled effects</td><td>Ratings, priors, survey weights, study effects</td><td>Use when measurement and uncertainty are first-class concerns.</td></tr>
-            <tr><td>LLM evaluation</td><td>Prompt A/B tests, rubric scoring, factuality, calibration, evaluator agreement, embeddings, drift</td><td>One row per LLM output, claim, rater, or evaluation event</td><td>Treat model outputs as experimental data, not anecdotes.</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section id="regression-catalog">
-      <h2>Regression Catalog</h2>
-      <p class="section-note">This is a working catalog of the major regression families a team is likely to need. Use the search box to filter by target type, method, diagnostic, or example dataset.</p>
-      <div class="search-box">
-        <label for="model-search">Filter catalog</label>
-        <input id="model-search" type="search" placeholder="Try count, survival, collinearity, mtcars, panel, causal">
-      </div>
-      <div class="table-wrap">
-        <table id="model-table">
-          <thead>
-            <tr>
-              <th>Technique</th>
-              <th>Use When</th>
-              <th>Target and Data Structure</th>
-              <th>Good Teaching Data</th>
-              <th>Pre-model Checks</th>
-              <th>Starter Tools</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>Simple linear regression</td><td>One numeric predictor explains one numeric outcome.</td><td>Continuous target; independent rows; one numeric X.</td><td><code>cars</code>, <code>mtcars</code></td><td>Linearity, influential points, residual spread.</td><td><span class="tag blue">R lm</span><span class="tag green">Python statsmodels</span><span class="tag amber">SQL regr_slope</span></td></tr>
-            <tr><td>Multiple linear regression</td><td>Several predictors explain a numeric outcome.</td><td>Continuous target; numeric and encoded categorical predictors.</td><td><code>mtcars</code>, <code>airquality</code>, <code>LifeCycleSavings</code></td><td>VIF, condition number, missingness, heteroskedasticity, leverage.</td><td><span class="tag blue">R lm</span><span class="tag green">Python sklearn/statsmodels</span></td></tr>
-            <tr><td>Polynomial regression</td><td>The relationship is curved but still explainable with powers of X.</td><td>Continuous target; numeric predictors transformed with powers.</td><td><code>cars</code>, <code>pressure</code></td><td>Overfit risk, extrapolation, residual curvature.</td><td><span class="tag blue">R poly</span><span class="tag green">Python PolynomialFeatures</span></td></tr>
-            <tr><td>Spline regression and GAM</td><td>Nonlinear effects should be flexible and interpretable.</td><td>Continuous, binary, count, or rate targets with smooth predictors.</td><td><code>airquality</code>, <code>CO2</code>, Open-Meteo weather</td><td>Basis dimension, concurvity, residual pattern, extrapolation.</td><td><span class="tag blue">R splines/mgcv</span><span class="tag green">Python pygam</span></td></tr>
-            <tr><td>Interaction model</td><td>The effect of one predictor changes across another predictor.</td><td>Any GLM target; design matrix includes interaction terms.</td><td><code>ToothGrowth</code>, <code>CO2</code>, <code>ChickWeight</code></td><td>Cell counts, centering, VIF, simple slopes.</td><td><span class="tag blue">R y ~ x*z</span><span class="tag green">Python patsy</span></td></tr>
-            <tr><td>Weighted least squares</td><td>Some rows are more precise or representative than others.</td><td>Continuous target; row weights from variance or survey design.</td><td><code>mtcars</code>, survey extracts, state-year data</td><td>Weight construction, heteroskedasticity pattern, sensitivity.</td><td><span class="tag blue">R lm weights</span><span class="tag green">Python WLS</span></td></tr>
-            <tr><td>Robust regression</td><td>Outliers have undue influence on OLS.</td><td>Continuous target; heavy-tailed errors or influential cases.</td><td><code>stackloss</code>, <code>mtcars</code></td><td>Cook's distance, leverage, residual distribution.</td><td><span class="tag blue">R MASS rlm</span><span class="tag green">Python RLM</span></td></tr>
-            <tr><td>Quantile regression</td><td>Effects differ at the median, tails, or other quantiles.</td><td>Continuous target; conditional quantile is the estimand.</td><td><code>airquality</code>, housing prices, wage data</td><td>Outliers, heteroskedasticity, quantile crossing.</td><td><span class="tag blue">R quantreg</span><span class="tag green">Python QuantReg</span></td></tr>
-            <tr><td>Ridge regression</td><td>Many correlated predictors should be shrunk, not selected away.</td><td>Continuous or GLM target; standardized predictors.</td><td><code>mtcars</code>, World Bank indicators</td><td>Collinearity, scaling, train/test leakage.</td><td><span class="tag blue">R glmnet</span><span class="tag green">Python Ridge</span></td></tr>
-            <tr><td>Lasso regression</td><td>Feature selection is useful and predictors can be shrunk to zero.</td><td>Continuous or GLM target; standardized predictors.</td><td>World Bank indicators, BLS time series features</td><td>Correlated features, scaling, cross-validation, stability.</td><td><span class="tag blue">R glmnet</span><span class="tag green">Python Lasso</span></td></tr>
-            <tr><td>Elastic net</td><td>Predictors are numerous and grouped or correlated.</td><td>Continuous or GLM target; alpha blends ridge and lasso.</td><td>High-dimensional survey or API joins</td><td>Scaling, penalty tuning, holdout validation.</td><td><span class="tag blue">R glmnet</span><span class="tag green">Python ElasticNet</span></td></tr>
-            <tr><td>Principal components regression</td><td>Many correlated numeric predictors can be reduced before regression.</td><td>Continuous target; numeric feature matrix.</td><td><code>USArrests</code>, state indicators</td><td>Scaling, variance explained, component interpretability.</td><td><span class="tag blue">R prcomp + lm</span><span class="tag green">Python PCA</span></td></tr>
-            <tr><td>Partial least squares</td><td>Dimension reduction should consider the target, not only X variance.</td><td>Continuous target; many correlated predictors.</td><td>Chemometrics, survey batteries, indicators</td><td>Scaling, component count, cross-validation.</td><td><span class="tag blue">R pls</span><span class="tag green">Python PLSRegression</span></td></tr>
-            <tr><td>Binary logistic regression</td><td>The outcome has two classes.</td><td>Binary target; one row per case; log-odds output.</td><td><code>mtcars</code> transmission, <code>infert</code></td><td>Separation, class balance, calibration, VIF.</td><td><span class="tag blue">R glm binomial</span><span class="tag green">Python LogisticRegression</span></td></tr>
-            <tr><td>Probit regression</td><td>A latent normal threshold model is preferred for binary outcomes.</td><td>Binary target; coefficients on probit scale.</td><td><code>infert</code>, public health examples</td><td>Separation, calibration, marginal effects.</td><td><span class="tag blue">R glm probit</span><span class="tag green">Python Probit</span></td></tr>
-            <tr><td>Multinomial logistic regression</td><td>The target has three or more unordered classes.</td><td>Nominal categorical target; one reference class.</td><td><code>iris</code> species, customer segment choice</td><td>Class balance, rare categories, IIA assumption, calibration.</td><td><span class="tag blue">R nnet multinom</span><span class="tag green">Python MNLogit</span></td></tr>
-            <tr><td>Ordinal logistic or probit</td><td>The target has ordered classes.</td><td>Ordered categorical target; thresholds plus predictors.</td><td><code>ordered</code> survey scales, satisfaction ratings</td><td>Proportional odds, sparse levels, calibration.</td><td><span class="tag blue">R MASS polr</span><span class="tag green">Python OrderedModel</span></td></tr>
-            <tr><td>Poisson regression</td><td>The outcome is a count and variance is close to the mean.</td><td>Nonnegative integer target; exposure offset if rates differ.</td><td><code>warpbreaks</code>, event counts, API counts</td><td>Overdispersion, zero inflation, exposure, influential counts.</td><td><span class="tag blue">R glm poisson</span><span class="tag green">Python Poisson</span></td></tr>
-            <tr><td>Quasi-Poisson regression</td><td>Count variance exceeds the mean but coefficients are still Poisson-like.</td><td>Count target; robust variance adjustment.</td><td><code>warpbreaks</code>, clinic visits, claims</td><td>Dispersion ratio, residual deviance, exposure.</td><td><span class="tag blue">R quasipoisson</span><span class="tag green">Python robust SE</span></td></tr>
-            <tr><td>Negative binomial regression</td><td>Counts are overdispersed beyond Poisson.</td><td>Count target; extra dispersion parameter.</td><td>Accident counts, disease counts, web traffic</td><td>Overdispersion, zero inflation, exposure, fit comparison.</td><td><span class="tag blue">R MASS glm.nb</span><span class="tag green">Python NegativeBinomial</span></td></tr>
-            <tr><td>Zero-inflated or hurdle regression</td><td>Zeros come from a separate process from positive counts.</td><td>Count target with many zeros; two-part structure.</td><td>Insurance claims, doctor visits, defects</td><td>Zero rate, two-process logic, overdispersion.</td><td><span class="tag blue">R pscl</span><span class="tag green">Python count models</span></td></tr>
-            <tr><td>Beta regression</td><td>The outcome is a proportion strictly between 0 and 1.</td><td>Continuous proportion target; no exact 0 or 1 without adjustment.</td><td>Rates, shares, percentage utilization</td><td>Boundary values, precision, link function.</td><td><span class="tag blue">R betareg</span><span class="tag green">Python BetaModel</span></td></tr>
-            <tr><td>Fractional logit</td><td>The outcome is a fraction that can include 0 or 1.</td><td>Proportion target in [0, 1]; quasi-binomial mean model.</td><td>Market share, completion rates, pass rates</td><td>Boundary values, heteroskedasticity, clustering.</td><td><span class="tag blue">R quasibinomial</span><span class="tag green">Python GLM Binomial</span></td></tr>
-            <tr><td>Tobit and censored regression</td><td>The target is censored at a known limit.</td><td>Continuous latent target; observed values pile up at censoring point.</td><td>Detection limits, expenditure floors, capped scores</td><td>Censoring mechanism, normality, boundary mass.</td><td><span class="tag blue">R censReg</span><span class="tag green">Python custom MLE</span></td></tr>
-            <tr><td>Truncated regression</td><td>Rows outside a range are not observed at all.</td><td>Continuous target from a truncated sample.</td><td>Eligibility samples, restricted surveys</td><td>Sampling rule, missing population, distribution fit.</td><td><span class="tag blue">R truncreg</span><span class="tag green">Python custom MLE</span></td></tr>
-            <tr><td>Nonlinear least squares</td><td>The model is nonlinear in parameters for a known scientific curve.</td><td>Continuous target; specified nonlinear function.</td><td><code>Puromycin</code>, growth curves</td><td>Starting values, identifiability, residual pattern.</td><td><span class="tag blue">R nls</span><span class="tag green">Python curve_fit</span></td></tr>
-            <tr><td>Mixed-effects linear regression</td><td>Rows are clustered or repeated within groups.</td><td>Continuous target; random intercepts or slopes.</td><td><code>ChickWeight</code>, <code>CO2</code>, students within schools</td><td>Group sizes, intraclass correlation, random-effect structure.</td><td><span class="tag blue">R lme4/nlme</span><span class="tag green">Python MixedLM</span></td></tr>
-            <tr><td>Generalized mixed-effects model</td><td>Binary, count, or ordered outcomes are clustered.</td><td>GLM target with random effects.</td><td>Patient visits, store-days, game-team rows</td><td>Cluster size, separation, overdispersion, convergence.</td><td><span class="tag blue">R glmer</span><span class="tag green">Python BinomialBayesMixedGLM</span></td></tr>
-            <tr><td>GEE</td><td>Population-average effects are needed with correlated rows.</td><td>Repeated or clustered outcomes; working correlation structure.</td><td>Longitudinal health, repeated customer contacts</td><td>Cluster count, correlation structure, robust standard errors.</td><td><span class="tag blue">R geepack</span><span class="tag green">Python GEE</span></td></tr>
-            <tr><td>Panel fixed effects</td><td>Each entity has unobserved stable differences.</td><td>Entity-time rows; within-entity identification.</td><td>State-year World Bank or BLS panels</td><td>Within variation, time effects, serial correlation, clustered SE.</td><td><span class="tag blue">R fixest/plm</span><span class="tag green">Python linearmodels</span></td></tr>
-            <tr><td>Panel random effects</td><td>Entity effects are modeled as random and uncorrelated with predictors.</td><td>Entity-time rows; random entity component.</td><td>Balanced or unbalanced panels</td><td>Hausman logic, group variance, serial correlation.</td><td><span class="tag blue">R plm</span><span class="tag green">Python linearmodels</span></td></tr>
-            <tr><td>Difference-in-differences</td><td>A treated group changes after an intervention relative to controls.</td><td>Group-time panel; treatment timing and outcome.</td><td>Policy, pricing, education, labor panels</td><td>Parallel trends, anticipation, composition, clustering.</td><td><span class="tag blue">R fixest</span><span class="tag green">Python statsmodels</span></td></tr>
-            <tr><td>Event study regression</td><td>Treatment effects vary before and after an event.</td><td>Entity-time rows; relative-time indicators.</td><td>Policy rollout, product launches, campaigns</td><td>Pre-trends, binning, multiple timing, cluster SE.</td><td><span class="tag blue">R fixest</span><span class="tag green">Python linearmodels</span></td></tr>
-            <tr><td>Instrumental variables and 2SLS</td><td>A predictor is endogenous and a valid instrument exists.</td><td>Continuous or GLM target; instrument affects X but not Y directly.</td><td>Economics examples, demand and supply</td><td>Relevance, exclusion, weak instruments, overidentification.</td><td><span class="tag blue">R AER/fixest</span><span class="tag green">Python IV2SLS</span></td></tr>
-            <tr><td>Regression discontinuity</td><td>Treatment changes at a cutoff.</td><td>Running variable, cutoff, local window around threshold.</td><td>Eligibility rules, score thresholds, policy cutoffs</td><td>Manipulation near cutoff, bandwidth, continuity, local balance.</td><td><span class="tag blue">R rdrobust</span><span class="tag green">Python local regression</span></td></tr>
-            <tr><td>Time-series regression with ARIMA errors</td><td>A series depends on predictors and autocorrelated errors.</td><td>Time-indexed target; exogenous regressors.</td><td><code>AirPassengers</code>, BLS unemployment, weather demand</td><td>Stationarity, autocorrelation, seasonality, time split.</td><td><span class="tag blue">R forecast/fable</span><span class="tag green">Python SARIMAX</span></td></tr>
-            <tr><td>Distributed lag and ARDL</td><td>Predictor effects arrive over several future periods.</td><td>Time series with lags of target and predictors.</td><td>Weather and demand, ad spend and sales</td><td>Lag choice, stationarity, autocorrelation, multicollinearity among lags.</td><td><span class="tag blue">R dynlm</span><span class="tag green">Python statsmodels</span></td></tr>
-            <tr><td>VAR and VECM</td><td>Multiple time series influence each other.</td><td>Several time-indexed targets; system of equations.</td><td>Macro indicators, prices, interest rates</td><td>Stationarity, cointegration, lag order, impulse response.</td><td><span class="tag blue">R vars</span><span class="tag green">Python VAR</span></td></tr>
-            <tr><td>Survival Cox model</td><td>The outcome is time until an event with censoring.</td><td>Duration rows; event indicator; right censoring common.</td><td><code>survival</code> package data, retention, churn</td><td>Proportional hazards, censoring mechanism, influential subjects.</td><td><span class="tag blue">R survival coxph</span><span class="tag green">Python lifelines</span></td></tr>
-            <tr><td>Parametric survival and AFT</td><td>Time-to-event data follows a specified survival distribution.</td><td>Duration target; event/censor indicator.</td><td>Reliability, churn, time-to-resolution</td><td>Distribution fit, censoring, residual diagnostics.</td><td><span class="tag blue">R survreg</span><span class="tag green">Python lifelines</span></td></tr>
-            <tr><td>Competing risks regression</td><td>Different event types prevent each other.</td><td>Time-to-event target with event type labels.</td><td>Medical endpoints, customer churn reasons</td><td>Cause coding, censoring, cumulative incidence.</td><td><span class="tag blue">R cmprsk</span><span class="tag green">Python survival libs</span></td></tr>
-            <tr><td>Spatial lag and spatial error regression</td><td>Nearby places influence each other or share spatially correlated errors.</td><td>Geographic units with neighbor matrix.</td><td>County outcomes, city demand, public health maps</td><td>Spatial autocorrelation, weights matrix, residual maps.</td><td><span class="tag blue">R spdep</span><span class="tag green">Python PySAL</span></td></tr>
-            <tr><td>Geographically weighted regression</td><td>Relationships vary over space.</td><td>Geocoded rows; local coefficients by location.</td><td>Housing, crime, environmental exposure</td><td>Bandwidth, local collinearity, multiple testing, edge effects.</td><td><span class="tag blue">R GWmodel</span><span class="tag green">Python mgwr</span></td></tr>
-            <tr><td>Bayesian regression</td><td>Prior information, full uncertainty, or small samples matter.</td><td>Any regression target with priors and posterior inference.</td><td><code>mtcars</code>, A/B tests, hierarchical projects</td><td>Prior predictive checks, convergence, posterior predictive checks.</td><td><span class="tag blue">R brms/rstanarm</span><span class="tag green">Python PyMC</span></td></tr>
-            <tr><td>Bayesian hierarchical regression</td><td>Groups share information but keep group-level estimates.</td><td>Clustered data; partial pooling across groups.</td><td>Schools, hospitals, stores, teams, states</td><td>Priors, group sizes, convergence, posterior predictive fit.</td><td><span class="tag blue">R brms</span><span class="tag green">Python PyMC</span></td></tr>
-            <tr><td>Multivariate multiple regression</td><td>Several numeric outcomes are modeled together.</td><td>Multiple continuous targets per row.</td><td><code>iris</code> measurements, financial ratios</td><td>Outcome correlation, multivariate normality, MANOVA assumptions.</td><td><span class="tag blue">R lm cbind</span><span class="tag green">Python MANOVA</span></td></tr>
-            <tr><td>Seemingly unrelated regression</td><td>Several equations have correlated errors.</td><td>Multiple related continuous equations.</td><td>Demand systems, business KPIs</td><td>Error correlation, equation specification, identification.</td><td><span class="tag blue">R systemfit</span><span class="tag green">Python statsmodels sandbox</span></td></tr>
-            <tr><td>Structural equation modeling</td><td>Latent variables and path relationships are the focus.</td><td>Observed indicators, latent constructs, path diagram.</td><td>Surveys, psychology, customer experience</td><td>Measurement reliability, identification, fit indices.</td><td><span class="tag blue">R lavaan</span><span class="tag green">Python semopy</span></td></tr>
-            <tr><td>Tree-based regression</td><td>Prediction accuracy and nonlinear interactions matter more than coefficients.</td><td>Continuous, binary, categorical, or count targets; tabular features.</td><td>R built-ins plus API joins</td><td>Leakage, train/test split, variable importance bias, calibration.</td><td><span class="tag blue">R ranger/xgboost</span><span class="tag green">Python sklearn/xgboost</span></td></tr>
-            <tr><td>Neural network regression or classification</td><td>Complex nonlinear predictive patterns justify less interpretability.</td><td>Large feature sets; numeric arrays, text embeddings, images, or tabular data.</td><td>Large API datasets, image/text features</td><td>Scaling, leakage, validation, calibration, explainability.</td><td><span class="tag blue">R keras/torch</span><span class="tag green">Python torch/keras</span></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section id="llm-analysis">
-      <h2>LLM Analysis from a Statistical Perspective</h2>
-      <p class="section-note">LLM analysis belongs in this hub because prompt and model behavior can be measured with the same statistical discipline as any other experiment. The unit of analysis should be explicit: output, claim, task, prompt-item pair, evaluator rating, or model-version day.</p>
-      <div class="card-grid">
-        <article class="card">
-          <h3>Prompt Experiments</h3>
-          <p>Randomize items across prompts or use paired item designs. Compare rubric scores, factuality rates, latency, token use, and cost with uncertainty intervals.</p>
-        </article>
-        <article class="card">
-          <h3>Rubric and Agreement</h3>
-          <p>Use structured rubrics, multiple raters, Cohen kappa, ICC, and disagreement review. Never treat a single evaluator as perfect ground truth.</p>
-        </article>
-        <article class="card">
-          <h3>Factuality and Calibration</h3>
-          <p>Estimate hallucination or unsupported-claim rates, model factuality with logistic regression, and compare confidence to observed correctness with Brier scores.</p>
-        </article>
-        <article class="card">
-          <h3>Embeddings and Themes</h3>
-          <p>Use PCA, clustering, and human review to identify recurring failure modes, topic groups, and semantic drift in model outputs.</p>
-        </article>
-        <article class="card">
-          <h3>Production Monitoring</h3>
-          <p>Store prompt version, model version, task mix, tokens, latency, cost, score, factuality, and evaluation timestamp. Drift cannot be diagnosed without versioned data.</p>
-        </article>
-        <article class="card">
-          <h3>Reusable Assets</h3>
-          <p>Use <a href="data/llm_statistical_analysis_checklist.csv">the checklist</a>, <a href="scripts/llm_statistical_analysis.R">R templates</a>, <a href="scripts/llm_statistical_analysis.py">Python templates</a>, and <a href="sql/llm_statistical_analysis.sql">SQL schema</a>.</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="diagnostics">
-      <h2>Diagnostics Before Modeling</h2>
-      <p class="section-note">Run these checks before trusting a regression. The scripts in this hub include base R helpers for VIF, condition number, Breusch-Pagan style heteroskedasticity screening, Cook's distance, leverage, missingness, and residual summaries.</p>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Risk</th>
-              <th>What to Check</th>
-              <th>Why It Matters</th>
-              <th>Common Response</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>Collinearity</td><td>VIF, condition number, pairwise correlation, aliased coefficients.</td><td>Coefficients become unstable and standard errors inflate.</td><td>Remove or combine variables, center interactions, use ridge/PCR, keep theory-driven terms.</td></tr>
-            <tr><td>Heteroskedasticity</td><td>Residuals versus fitted values, scale-location plot, Breusch-Pagan or White test.</td><td>OLS coefficients can stay unbiased, but inference can be wrong.</td><td>Use robust standard errors, transform target, weighted least squares, or a GLM family.</td></tr>
-            <tr><td>Nonlinearity</td><td>Residual curves, partial residuals, binned residual plots.</td><td>A linear term can hide a curved relationship.</td><td>Add splines, polynomial terms, interactions, or GAMs.</td></tr>
-            <tr><td>Outliers and influence</td><td>Cook's distance, leverage, DFBETAs, data entry review.</td><td>A few rows can dominate coefficients or apparent significance.</td><td>Validate rows, winsorize only with reason, report sensitivity with and without high-influence points.</td></tr>
-            <tr><td>Missingness</td><td>Missingness rates by variable and segment; missingness indicators.</td><td>Complete-case analysis can change the population being modeled.</td><td>Impute carefully, model missingness, add indicators where meaningful, document exclusions.</td></tr>
-            <tr><td>Leakage</td><td>Feature timestamp, post-outcome fields, IDs that encode the answer.</td><td>Validation looks good but production fails.</td><td>Split by time or group, freeze features at prediction time, remove answer-proxy variables.</td></tr>
-            <tr><td>Class imbalance</td><td>Outcome frequency, confusion matrix, precision-recall, calibration.</td><td>Accuracy can be misleading when one class dominates.</td><td>Use class-weighting, threshold analysis, PR AUC, calibration, and cost-based metrics.</td></tr>
-            <tr><td>Overdispersion</td><td>Residual deviance divided by degrees of freedom for count GLMs.</td><td>Poisson underestimates uncertainty when variance exceeds the mean.</td><td>Use quasi-Poisson, negative binomial, robust SE, or a two-part count model.</td></tr>
-            <tr><td>Zero inflation</td><td>Observed zero rate versus model-implied zero rate.</td><td>A single count process may not fit structural zeros.</td><td>Use hurdle, zero-inflated, or two-stage models.</td></tr>
-            <tr><td>Autocorrelation</td><td>ACF, PACF, Durbin-Watson, Ljung-Box, residual runs by time.</td><td>Time-dependent errors break independent-error assumptions.</td><td>Add lags, seasonality, ARIMA errors, or cluster by time/entity.</td></tr>
-            <tr><td>Grouped dependence</td><td>Repeated rows by person, store, school, county, team, or cluster.</td><td>Rows are not independent when groups recur.</td><td>Use clustered SE, mixed effects, GEE, panel methods, or group-aware validation.</td></tr>
-            <tr><td>Assumption-specific checks</td><td>Proportional odds, proportional hazards, IIA, stationarity, parallel trends.</td><td>Each specialized model has a failure mode that changes interpretation.</td><td>Test the assumption, use a more flexible model, or report sensitivity.</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section id="data-pantry">
-      <h2>Data Pantry</h2>
-      <p class="section-note">Start with R built-in datasets because they are stable, small, well documented, and excellent for teaching. Add no-key APIs when the team needs current public data. Use key-based APIs when the value justifies credential management.</p>
-      <div class="two-col">
-        <div class="callout">
-          <strong>Best R built-ins for teaching</strong>
-          <p><code>mtcars</code>, <code>iris</code>, <code>airquality</code>, <code>ChickWeight</code>, <code>ToothGrowth</code>, <code>PlantGrowth</code>, <code>CO2</code>, <code>Orange</code>, <code>warpbreaks</code>, <code>infert</code>, <code>Titanic</code>, <code>USArrests</code>, <code>state.x77</code>, <code>longley</code>, <code>LifeCycleSavings</code>, <code>Seatbelts</code>, <code>sleep</code>, <code>esoph</code>, <code>VADeaths</code>, <code>Puromycin</code>, and <code>AirPassengers</code>.</p>
-        </div>
-        <div class="callout">
-          <strong>Free no-key public APIs to use first</strong>
-          <p><a href="https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api-documentation">World Bank Indicators API</a>, <a href="https://open-meteo.com/en/docs">Open-Meteo Forecast API</a>, and the <a href="https://www.bls.gov/developers/">BLS Public Data API</a> are good starting points. The <a href="https://www.census.gov/data/developers/data-sets.html">U.S. Census API</a> is worth using, but its developer page states that API keys are required as of February 2025.</p>
-        </div>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Source</th>
-              <th>Access</th>
-              <th>Good For</th>
-              <th>Regression Targets</th>
-              <th>Notes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>R built-in datasets</td><td>No download, ships with R packages.</td><td>Teaching foundations and reproducible examples.</td><td>Continuous, binary, multiclass, count, ordered, time series, grouped.</td><td>Use first in RStudio lessons.</td></tr>
-            <tr><td>World Bank Indicators API</td><td>No key for public indicator calls.</td><td>Country-year panels, macroeconomics, development indicators.</td><td>Panel regression, time-series regression, causal policy examples.</td><td>Join country, year, indicator, and value into long panels.</td></tr>
-            <tr><td>Open-Meteo Forecast API</td><td>No key required for public forecast endpoints.</td><td>Weather, demand modeling, lagged features, seasonality.</td><td>Time-series regression, distributed lag, count/rate models.</td><td>Great for current, no-key data pulls.</td></tr>
-            <tr><td>BLS Public Data API</td><td>No registration key required for smaller public requests; keys increase limits.</td><td>Labor market, price index, wages, unemployment.</td><td>Time-series regression, panel examples, forecasting.</td><td>Use a key when requests become broad or automated.</td></tr>
-            <tr><td>U.S. Census API</td><td>Key required.</td><td>Demographics, geography, ACS, business, housing.</td><td>Spatial regression, panel, GLM, causal and policy examples.</td><td>Worth getting because Census data is central to public analytics.</td></tr>
-            <tr><td>FRED API</td><td>Key required for API use.</td><td>Macroeconomic and financial time series.</td><td>Time-series regression, VAR, forecasting, causal examples.</td><td>Worth getting for economics and finance projects.</td></tr>
-            <tr><td>NOAA Climate Data Online</td><td>Token required.</td><td>Historical weather and climate data.</td><td>Weather impact, panel, spatial, and time-series projects.</td><td>Worth getting when historical weather is needed.</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section id="project-roadmap">
-      <h2>Project Roadmap</h2>
-      <p class="section-note">These are team-ready project tracks. Each can become a post, Quarto site, RStudio lesson, SQL notebook, or client-facing training module.</p>
-      <div class="project-grid">
-        <article class="project-card"><small>Foundation</small><h3>Regression Bootcamp</h3><p>Use <code>mtcars</code>, <code>cars</code>, and <code>airquality</code> for OLS, diagnostics, transformations, and interpretation.</p></article>
-        <article class="project-card"><small>Classification</small><h3>Outcome Probability Lab</h3><p>Use <code>iris</code>, <code>infert</code>, and <code>Titanic</code> for logistic, multinomial, ordinal, and calibration work.</p></article>
-        <article class="project-card"><small>Counts</small><h3>Events and Rates</h3><p>Use <code>warpbreaks</code> and public API event counts for Poisson, negative binomial, offsets, and zero inflation.</p></article>
-        <article class="project-card"><small>Time</small><h3>Forecasting and Lags</h3><p>Use <code>AirPassengers</code>, BLS series, and Open-Meteo pulls for ARIMA errors, lags, seasonality, and validation by time.</p></article>
-        <article class="project-card"><small>Groups</small><h3>Repeated Measures</h3><p>Use <code>ChickWeight</code>, <code>CO2</code>, and <code>Orange</code> for mixed effects, GEE, and cluster-aware validation.</p></article>
-        <article class="project-card"><small>Causal</small><h3>Policy Evaluation</h3><p>Use World Bank or Census panels for fixed effects, difference-in-differences, event studies, and sensitivity analysis.</p></article>
-        <article class="project-card"><small>Survival</small><h3>Time-to-Event Analytics</h3><p>Use survival package datasets for churn, reliability, retention, hazard ratios, and censoring explanations.</p></article>
-        <article class="project-card"><small>Spatial</small><h3>Place-Based Modeling</h3><p>Use Census or World Bank geography joins for spatial autocorrelation, spatial lag, and local-effect diagnostics.</p></article>
-        <article class="project-card"><small>Bayesian</small><h3>Uncertainty Lab</h3><p>Rebuild simple regressions with priors, posterior predictive checks, and partial pooling.</p></article>
-        <article class="project-card"><small>ML</small><h3>Prediction Benchmark</h3><p>Compare OLS/logistic baselines to trees, random forests, gradient boosting, and neural networks.</p></article>
-        <article class="project-card"><small>Dimension</small><h3>PCA and Latent Structure</h3><p>Use <code>USArrests</code>, survey batteries, and indicators for PCA, PCR, PLS, factor analysis, and SEM.</p></article>
-        <article class="project-card"><small>Reporting</small><h3>Executive Model Cards</h3><p>Standardize model cards with target, grain, assumptions, diagnostics, metrics, limitations, and next actions.</p></article>
-      </div>
-    </section>
-
-    <section id="starter-files">
-      <h2>Starter Files</h2>
-      <p class="section-note">These files are meant to be copied into future project folders. The R files are the primary teaching path; Python and SQL are included for teams that need automation, ETL, DuckDB, LLM evaluation workflows, or non-R workflows.</p>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>File</th>
-              <th>Purpose</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td><a href="scripts/export_r_builtin_datasets.R"><code>scripts/export_r_builtin_datasets.R</code></a></td><td>Exports selected R built-in datasets, a manifest, a VIF example, and the model-family image used above.</td></tr>
-            <tr><td><a href="scripts/diagnostics_helpers.R"><code>scripts/diagnostics_helpers.R</code></a></td><td>Reusable base R functions for profiling, VIF, heteroskedasticity checks, leverage, Cook's distance, and model summaries.</td></tr>
-            <tr><td><a href="scripts/download_open_data.R"><code>scripts/download_open_data.R</code></a></td><td>R template for no-key public API pulls plus optional key-based Census, FRED, and NOAA placeholders.</td></tr>
-            <tr><td><a href="scripts/download_open_data.py"><code>scripts/download_open_data.py</code></a></td><td>Python standard-library downloader for World Bank, Open-Meteo, and BLS starter datasets.</td></tr>
-            <tr><td><a href="scripts/copy_paste_r_samples.R"><code>scripts/copy_paste_r_samples.R</code></a></td><td>R samples that can be copied directly into RStudio and adjusted by swapping data and column names.</td></tr>
-            <tr><td><a href="scripts/copy_paste_python_samples.py"><code>scripts/copy_paste_python_samples.py</code></a></td><td>Python samples for pandas, statsmodels, scikit-learn, time series, and LLM evaluation workflows.</td></tr>
-            <tr><td><a href="scripts/model_tuning_r_templates.R"><code>scripts/model_tuning_r_templates.R</code></a></td><td>R/RStudio templates for validation, stepwise AIC/BIC, decision trees, regularization, random forests, XGBoost, threshold tuning, and model cards.</td></tr>
-            <tr><td><a href="scripts/model_tuning_python_templates.py"><code>scripts/model_tuning_python_templates.py</code></a></td><td>Python templates for scikit-learn, statsmodels, XGBoost, grid search, random search, stacking, time/group validation, and calibration.</td></tr>
-            <tr><td><a href="scripts/statistical_methods_cookbook.R"><code>scripts/statistical_methods_cookbook.R</code></a></td><td>R/RStudio cookbook covering the statistical technique catalog, from profiling through LLM evaluation.</td></tr>
-            <tr><td><a href="scripts/statistical_methods_cookbook.py"><code>scripts/statistical_methods_cookbook.py</code></a></td><td>Python cookbook with function templates for profiling, inference, modeling, clustering, reliability, and LLM evaluation.</td></tr>
-            <tr><td><a href="scripts/llm_statistical_analysis.R"><code>scripts/llm_statistical_analysis.R</code></a></td><td>R templates for prompt experiments, factuality models, calibration, agreement, cost, and drift.</td></tr>
-            <tr><td><a href="scripts/llm_statistical_analysis.py"><code>scripts/llm_statistical_analysis.py</code></a></td><td>Python templates for statistically evaluating LLM outputs after generation.</td></tr>
-            <tr><td><a href="scripts/local_static_server.R"><code>scripts/local_static_server.R</code></a></td><td>R helper for previewing this static hub locally without installing Ruby or Jekyll.</td></tr>
-            <tr><td><a href="sql/analytics_examples.sql"><code>sql/analytics_examples.sql</code></a></td><td>DuckDB-style SQL examples for profiling, correlations, train/test splits, and regression-ready feature tables.</td></tr>
-            <tr><td><a href="sql/copy_paste_sql_samples.sql"><code>sql/copy_paste_sql_samples.sql</code></a></td><td>SQL samples for profiling, feature tables, A/B summaries, time features, and LLM evaluation summaries.</td></tr>
-            <tr><td><a href="sql/model_tuning_sql_templates.sql"><code>sql/model_tuning_sql_templates.sql</code></a></td><td>SQL templates for model-ready feature tables, folds, tuning grids, result tracking, thresholds, class weights, and model-card metadata.</td></tr>
-            <tr><td><a href="sql/statistical_methods_cookbook.sql"><code>sql/statistical_methods_cookbook.sql</code></a></td><td>SQL cookbook for profiling, aggregate statistics, feature tables, A/B summaries, and LLM evaluation summaries.</td></tr>
-            <tr><td><a href="sql/llm_statistical_analysis.sql"><code>sql/llm_statistical_analysis.sql</code></a></td><td>SQL schema and summary queries for prompt testing, calibration, agreement inputs, and drift monitoring.</td></tr>
-            <tr><td><a href="data/statistical_techniques_catalog.csv"><code>data/statistical_techniques_catalog.csv</code></a></td><td>Complete 100-row catalog of statistical techniques and their R, Python, and SQL entry points.</td></tr>
-            <tr><td><a href="data/sample_recipe_index.csv"><code>data/sample_recipe_index.csv</code></a></td><td>Quick map from common questions to copy-paste R, Python, and SQL recipes.</td></tr>
-            <tr><td><a href="data/model_tuning_catalog.csv"><code>data/model_tuning_catalog.csv</code></a></td><td>Machine-readable catalog of validation designs, tuning families, search strategies, diagnostics, and language entry points.</td></tr>
-            <tr><td><a href="data/llm_statistical_analysis_checklist.csv"><code>data/llm_statistical_analysis_checklist.csv</code></a></td><td>Checklist for designing and reviewing statistical analyses of LLM outputs.</td></tr>
-            <tr><td><a href="data/regression_catalog.csv"><code>data/regression_catalog.csv</code></a></td><td>Machine-readable catalog of model families, targets, structures, and diagnostics.</td></tr>
-            <tr><td><a href="data/diagnostics_checklist.csv"><code>data/diagnostics_checklist.csv</code></a></td><td>Reusable checklist for pre-model review and peer review.</td></tr>
-            <tr><td><a href="data/open_data_sources.csv"><code>data/open_data_sources.csv</code></a></td><td>Public data source inventory separated by no-key and key-required access.</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="two-col">
-        <div>
-          <h3>RStudio Pattern</h3>
-          <pre><code>source("statistical-analytics/scripts/diagnostics_helpers.R")
-data(mtcars)
-fit <- lm(mpg ~ wt + hp + disp, data = mtcars)
-run_lm_diagnostics(fit, mtcars)</code></pre>
-        </div>
-        <div>
-          <h3>Python Pattern</h3>
-          <pre><code>python statistical-analytics/scripts/download_open_data.py
-# then load the CSV output into pandas, DuckDB, R, or a notebook</code></pre>
-        </div>
+        <div class="result-panel" data-recipe-panel></div>
       </div>
     </section>
 
     <section>
-      <h2>Operating Standards</h2>
+      <h2>What The User Gets</h2>
+      <p class="section-note">The site should make work easier, not prove that every statistical term can fit on one page.</p>
       <div class="card-grid">
-        <article class="card"><h3>One Model Card Per Analysis</h3><p>State the target, unit of analysis, predictors, exclusions, assumptions, diagnostics, metrics, and limitations.</p></article>
-        <article class="card"><h3>No Credentials in Public Sites</h3><p>Keep keys in <code>.Renviron</code>, environment variables, or a secret manager. Publish metadata and code, not secrets.</p></article>
-        <article class="card"><h3>Always Keep a Baseline</h3><p>Every complex model should be compared to a simple baseline and a decision-relevant benchmark.</p></article>
-        <article class="card"><h3>GitHub Review Loop</h3><p>Review changes in the source folder, run the R and link checks, then push to <code>master</code> for GitHub Pages publication.</p></article>
-        <article class="card"><h3>Copy-First UX</h3><p>Every teaching page should make the next action obvious: choose the question, copy the code, swap the data, and run diagnostics.</p></article>
+        <article class="method-card">
+          <small>Choose</small>
+          <h3>Question-first navigation</h3>
+          <p>Users start with their business or research question, then move into the right statistical family.</p>
+          <a href="#method-finder">Use the finder</a>
+        </article>
+        <article class="method-card">
+          <small>Copy</small>
+          <h3>Swap-data templates</h3>
+          <p>The sample library gives small working blocks for R, Python, and SQL with obvious placeholders.</p>
+          <a href="samples.html">Open samples</a>
+        </article>
+        <article class="method-card">
+          <small>Improve</small>
+          <h3>Tuning without guesswork</h3>
+          <p>The tuning guide explains validation, stepwise selection, trees, XGBoost, calibration, and model cards.</p>
+          <a href="model-tuning.html">Open tuning guide</a>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Quality Gates</h2>
+      <p class="section-note">These are the review gates that make the page useful for real team work. If one gate fails, the analysis is not ready to present.</p>
+      <div class="quality-grid">
+        <article class="quality-card"><h3>Grain</h3><p>One row means one clearly defined unit.</p></article>
+        <article class="quality-card"><h3>Leakage</h3><p>Predictors are known before the outcome.</p></article>
+        <article class="quality-card"><h3>Split</h3><p>Validation matches the way the model will be used.</p></article>
+        <article class="quality-card"><h3>Baseline</h3><p>A simple benchmark is saved and compared.</p></article>
+        <article class="quality-card"><h3>Diagnostics</h3><p>Collinearity, residuals, imbalance, and dependence are checked.</p></article>
+        <article class="quality-card"><h3>Model card</h3><p>Assumptions, limits, owner, and version are documented.</p></article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Core Workflows</h2>
+      <div class="sample-grid">
+        <article class="sample-card">
+          <small>Regression</small>
+          <h3>Start with OLS or GLM</h3>
+          <p>Use transparent baselines for continuous, binary, count, and grouped outcomes before reaching for machine learning.</p>
+          <pre><code>fit <- lm(TARGET ~ x1 + x2 + x3, data = DATA)
+summary(fit)
+run_lm_diagnostics(fit, DATA)</code></pre>
+        </article>
+        <article class="sample-card">
+          <small>Model selection</small>
+          <h3>Tune only after validation is designed</h3>
+          <p>Decision trees, random forests, XGBoost, and regularized models need a clean split before a parameter grid matters.</p>
+          <pre><code>DATA$split <- make_split(DATA)
+train <- DATA[DATA$split == "train", ]
+test <- DATA[DATA$split == "test", ]</code></pre>
+        </article>
+        <article class="sample-card">
+          <small>LLM evaluation</small>
+          <h3>Analyze prompts like experiments</h3>
+          <p>One row per output, claim, rater, or prompt-item pair. Compare score, factuality, confidence, cost, and latency.</p>
+          <pre><code>summary(lm(score ~ prompt_id, data = LLM_DATA))
+mean((LLM_DATA$factual - LLM_DATA$confidence)^2)</code></pre>
+        </article>
+        <article class="sample-card">
+          <small>SQL</small>
+          <h3>Make model-ready tables</h3>
+          <p>SQL should clarify the grain, feature availability, split assignment, and audit trail before R or Python fits a model.</p>
+          <pre><code>CREATE OR REPLACE VIEW model_features AS
+SELECT target, x1, x2, row_id % 5 AS fold_id
+FROM data_table
+WHERE target IS NOT NULL;</code></pre>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Resource Library</h2>
+      <p class="section-note">The exhaustive material is still here, but it is treated as a library. The user-facing workflow stays guided.</p>
+      <div class="asset-grid">
+        <article class="asset-card">
+          <small>Catalog</small>
+          <h3>Statistical techniques</h3>
+          <p>100 methods with data structure, use case, and language entry points.</p>
+          <a href="data/statistical_techniques_catalog.csv">Download CSV</a>
+        </article>
+        <article class="asset-card">
+          <small>Catalog</small>
+          <h3>Regression families</h3>
+          <p>Model families, targets, assumptions, diagnostics, and starter tools.</p>
+          <a href="data/regression_catalog.csv">Download CSV</a>
+        </article>
+        <article class="asset-card">
+          <small>Catalog</small>
+          <h3>Model tuning</h3>
+          <p>Validation, search, regularization, boosting, calibration, monitoring, and model cards.</p>
+          <a href="data/model_tuning_catalog.csv">Download CSV</a>
+        </article>
+        <article class="asset-card">
+          <small>Checklist</small>
+          <h3>Diagnostics</h3>
+          <p>Pre-model review for leakage, collinearity, heteroskedasticity, dependence, and assumption checks.</p>
+          <a href="data/diagnostics_checklist.csv">Download CSV</a>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Starter Files</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Need</th><th>Use</th><th>File</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Copy a practical analysis</td><td>R, Python, and SQL starter blocks</td><td><a href="samples.html">Sample library</a></td></tr>
+            <tr><td>Run R diagnostics</td><td>VIF, condition number, heteroskedasticity screen, leverage, Cook's distance</td><td><a href="scripts/diagnostics_helpers.R"><code>scripts/diagnostics_helpers.R</code></a></td></tr>
+            <tr><td>Tune models</td><td>Stepwise AIC/BIC, trees, random forests, XGBoost, regularization, thresholds</td><td><a href="scripts/model_tuning_r_templates.R"><code>scripts/model_tuning_r_templates.R</code></a></td></tr>
+            <tr><td>Prepare data in SQL</td><td>Feature views, folds, tuning grids, result tables, model cards</td><td><a href="sql/model_tuning_sql_templates.sql"><code>sql/model_tuning_sql_templates.sql</code></a></td></tr>
+            <tr><td>Evaluate LLMs statistically</td><td>Prompt tests, calibration, factuality, rater agreement, drift</td><td><a href="scripts/llm_statistical_analysis.R"><code>scripts/llm_statistical_analysis.R</code></a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="split">
+      <div class="callout">
+        <h2>GitHub Review Loop</h2>
+        <p>Source lives in the public repository. Update the page, run checks, commit, push to <code>master</code>, and verify GitHub Pages.</p>
+        <a class="button secondary" href="https://github.com/LindaData/LindaData.github.io/tree/master/statistical-analytics">Open source folder</a>
+      </div>
+      <div class="callout warning">
+        <h2>Do Not Skip</h2>
+        <p>No page design fixes a weak analysis. The model is not ready until the grain, target, validation design, diagnostics, and limitations are explicit.</p>
+        <a class="button secondary" href="data/diagnostics_checklist.csv">Open diagnostics checklist</a>
       </div>
     </section>
 
     <footer>
-      <p>Last updated June 29, 2026. Built for Linda Data as an educational analytics resource using R, RStudio, Python, SQL, public datasets, model tuning workflows, LLM evaluation workflows, GitHub source control, and GitHub Pages.</p>
+      <p>Last updated June 29, 2026. Built as a guided statistical workbench for R, RStudio, Python, SQL, model tuning, LLM evaluation, GitHub review, and GitHub Pages.</p>
     </footer>
   </main>
 
-  <script>
-    const searchInput = document.getElementById("model-search");
-    const rows = Array.from(document.querySelectorAll("#model-table tbody tr"));
-
-    searchInput.addEventListener("input", function () {
-      const query = this.value.trim().toLowerCase();
-      rows.forEach(function (row) {
-        const text = row.textContent.toLowerCase();
-        row.style.display = text.includes(query) ? "" : "none";
-      });
-    });
-
-    document.querySelectorAll("pre").forEach(function (pre, index) {
-      const wrapper = document.createElement("div");
-      wrapper.className = "code-shell";
-      pre.parentNode.insertBefore(wrapper, pre);
-      wrapper.appendChild(pre);
-
-      const button = document.createElement("button");
-      button.className = "copy-button";
-      button.type = "button";
-      button.textContent = "Copy";
-      button.setAttribute("aria-label", "Copy code block " + (index + 1));
-      wrapper.insertBefore(button, pre);
-
-      button.addEventListener("click", async function () {
-        const text = pre.textContent;
-        try {
-          await navigator.clipboard.writeText(text);
-          button.textContent = "Copied";
-          window.setTimeout(function () { button.textContent = "Copy"; }, 1600);
-        } catch (error) {
-          button.textContent = "Select";
-          window.setTimeout(function () { button.textContent = "Copy"; }, 1600);
-        }
-      });
-    });
-  </script>
+  <script src="assets/workbench.js"></script>
 </body>
 </html>

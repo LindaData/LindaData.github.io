@@ -1,15 +1,15 @@
 # Statistical Analytics Hub
 
-This folder powers the Linda Data Statistical Analytics Hub at `/statistical-analytics/`.
+This folder powers the Linda Data Statistical Workbench at `/statistical-analytics/`.
 
-The hub is designed as an educational one-stop shop for statistical techniques, regression modeling, model tuning, diagnostics, LLM evaluation, and starter project assets. It uses R built-in datasets as the default teaching source and separates no-key public APIs from key-required sources.
+The workbench is designed as a guided, copy-first analytics product: users start with a question, choose the right statistical path, copy a starter, run diagnostics, and use the exhaustive catalogs only when they need deeper reference material. It uses R built-in datasets as the default teaching source and separates no-key public APIs from key-required sources.
 
 ## Folder Map
 
 - `index.html`: static GitHub Pages hub page.
 - `samples.html`: copy-paste sample page for R, Python, and SQL.
 - `model-tuning.html`: copy-paste model tuning and selection guide.
-- `assets/`: generated visuals used by the hub.
+- `assets/`: shared workbench CSS/JS and generated visuals.
 - `data/`: catalogs, checklists, exported R built-in datasets, and generated examples.
 - `scripts/`: reusable R and Python starter scripts.
 - `sql/`: DuckDB-style SQL examples for profiling and feature preparation.
