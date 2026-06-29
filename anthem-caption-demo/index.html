@@ -23,6 +23,11 @@
     .cue { border-left: 4px solid #a7b5ad; background: #ffffff; padding: 8px 10px; font-size: 14px; }
     .cue.active { border-color: #0f766e; background: #e6f4ef; }
     .cue time { color: #5c6d66; display: block; font-size: 12px; margin-bottom: 2px; }
+    .lookup { margin-top: 22px; background: #ffffff; border: 1px solid #d8e2dc; border-radius: 8px; padding: 14px; }
+    .lookup-grid { display: grid; gap: 8px; }
+    .lookup-row { display: grid; grid-template-columns: 120px 1fr; gap: 10px; border-top: 1px solid #edf2ef; padding-top: 8px; font-size: 14px; }
+    .lookup-row:first-child { border-top: 0; padding-top: 0; }
+    .lookup-row code { color: #235347; white-space: nowrap; }
     @media (max-width: 760px) { .status, .comparison { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -45,17 +50,23 @@
         <div class="cue-list" id="repairedList"></div>
       </section>
     </div>
+    <section class="lookup">
+      <h2>Background Dataset Lookup</h2>
+      <div class="lookup-grid" id="lookupList"></div>
+    </section>
   </main>
   <script>
     const autoCues = [{"start":0,"end":3,"text":"Welcome to this International Soccer match."},{"start":3,"end":6,"text":"The players are lining up before kickoff."},{"start":6,"end":17.48,"text":"The match is underway."},{"start":17.48,"end":22.48,"text":"The first pass moves across midfield, and the crowd is already loud."}];
     const repairedCues = [{"start":0,"end":3,"text":"Welcome to this International Soccer match."},{"start":3,"end":6,"text":"The players are lining up before kickoff."},{"start":6.3158,"end":8.8158,"text":"[verified source-language anthem line 1]\n[approved English rendering line 1]"},{"start":8.8158,"end":11.3158,"text":"[verified source-language anthem line 2]\n[approved English rendering line 2]"},{"start":11.3158,"end":14.3158,"text":"[verified source-language anthem line 3]\n[approved English rendering line 3]"},{"start":17.48,"end":22.48,"text":"The first pass moves across midfield, and the crowd is already loud."}];
     const eventInfo = {"event_id":1,"detected_at_s":6.3158,"detected_end_s":15.4558,"anthem_id":"demo_synthetic_anthem","recording_id":"synthetic_anthem_reference","detection_method":"constellation_hash_audio_fingerprint","aligned_hashes":83,"match_fraction":0.0064,"confidence":0.99,"decision_status":"accepted_demo_match"};
     const matches = [{"anthem_id":"demo_synthetic_anthem","recording_id":"synthetic_anthem_reference","offset_frames":-272,"aligned_hashes":83,"match_fraction":0.0064,"rank":1,"offset_seconds":-6.3158,"detection_method":"constellation_hash_audio_fingerprint"}];
+    const lookupRows = [{"anthem_id":"demo_synthetic_anthem","country":"Demo Nation","anthem_title":"Synthetic Match Anthem","source_language":"synthetic","target_language":"en","line_order":1,"start_s":0,"end_s":2.5,"original_text":"[verified source-language anthem line 1]","translated_text":"[approved English rendering line 1]","rights_note":"placeholder - rights-clean synthetic demo","absolute_start_s":6.3158,"absolute_end_s":8.8158,"caption_text":"[verified source-language anthem line 1]\n[approved English rendering line 1]"},{"anthem_id":"demo_synthetic_anthem","country":"Demo Nation","anthem_title":"Synthetic Match Anthem","source_language":"synthetic","target_language":"en","line_order":2,"start_s":2.5,"end_s":5,"original_text":"[verified source-language anthem line 2]","translated_text":"[approved English rendering line 2]","rights_note":"placeholder - rights-clean synthetic demo","absolute_start_s":8.8158,"absolute_end_s":11.3158,"caption_text":"[verified source-language anthem line 2]\n[approved English rendering line 2]"},{"anthem_id":"demo_synthetic_anthem","country":"Demo Nation","anthem_title":"Synthetic Match Anthem","source_language":"synthetic","target_language":"en","line_order":3,"start_s":5,"end_s":8,"original_text":"[verified source-language anthem line 3]","translated_text":"[approved English rendering line 3]","rights_note":"placeholder - rights-clean synthetic demo","absolute_start_s":11.3158,"absolute_end_s":14.3158,"caption_text":"[verified source-language anthem line 3]\n[approved English rendering line 3]"}];
     const player = document.getElementById('player');
     const autoNow = document.getElementById('autoNow');
     const repairedNow = document.getElementById('repairedNow');
     const autoList = document.getElementById('autoList');
     const repairedList = document.getElementById('repairedList');
+    const lookupList = document.getElementById('lookupList');
     const status = document.getElementById('status');
     const fmt = (n) => Number(n).toFixed(2) + 's';
     function metric(label, value) {
@@ -89,8 +100,22 @@
       now.textContent = active >= 0 ? cues[active].text : '';
       [...list.children].forEach((node, index) => node.classList.toggle('active', index === active));
     }
+    function renderLookup(rows, target) {
+      rows.forEach((row) => {
+        const item = document.createElement('div');
+        item.className = 'lookup-row';
+        const time = document.createElement('code');
+        time.textContent = `${fmt(row.absolute_start_s)} - ${fmt(row.absolute_end_s)}`;
+        const text = document.createElement('div');
+        text.textContent = row.caption_text;
+        text.innerHTML = text.innerHTML.replace(/\n/g, '<br>');
+        item.append(time, text);
+        target.append(item);
+      });
+    }
     renderList(autoCues, autoList);
     renderList(repairedCues, repairedList);
+    renderLookup(lookupRows, lookupList);
     player.addEventListener('timeupdate', () => {
       updatePanel(autoCues, autoList, autoNow, player.currentTime);
       updatePanel(repairedCues, repairedList, repairedNow, player.currentTime);

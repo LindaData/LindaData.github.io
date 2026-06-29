@@ -1,0 +1,7 @@
+"anthem_id","country","anthem_title","source_language","target_language","line_order","start_s","end_s","original_text","translated_text","rights_note","absolute_start_s","absolute_end_s","caption_text"
+"demo_synthetic_anthem","Demo Nation","Synthetic Match Anthem","synthetic","en",1,0,2.5,"[verified source-language anthem line 1]","[approved English rendering line 1]","placeholder - rights-clean synthetic demo",6.31582766439909,8.81582766439909,"[verified source-language anthem line 1]
+[approved English rendering line 1]"
+"demo_synthetic_anthem","Demo Nation","Synthetic Match Anthem","synthetic","en",2,2.5,5,"[verified source-language anthem line 2]","[approved English rendering line 2]","placeholder - rights-clean synthetic demo",8.81582766439909,11.3158276643991,"[verified source-language anthem line 2]
+[approved English rendering line 2]"
+"demo_synthetic_anthem","Demo Nation","Synthetic Match Anthem","synthetic","en",3,5,8,"[verified source-language anthem line 3]","[approved English rendering line 3]","placeholder - rights-clean synthetic demo",11.3158276643991,14.3158276643991,"[verified source-language anthem line 3]
+[approved English rendering line 3]"
