@@ -1,0 +1,12 @@
+sample,question,data_to_swap,r_file,python_file,sql_file
+Data profile,What columns are missing or suspicious,"DATA/table name","scripts/copy_paste_r_samples.R","scripts/copy_paste_python_samples.py","sql/copy_paste_sql_samples.sql"
+OLS regression,What predicts a continuous target,"DATA, TARGET, PREDICTORS","scripts/copy_paste_r_samples.R","scripts/copy_paste_python_samples.py","sql/copy_paste_sql_samples.sql"
+Logistic regression,What predicts a yes/no target,"DATA, binary target, predictors","scripts/copy_paste_r_samples.R","scripts/copy_paste_python_samples.py","sql/copy_paste_sql_samples.sql"
+Poisson regression,What predicts a count target,"DATA, count target, predictors","scripts/copy_paste_r_samples.R","scripts/copy_paste_python_samples.py","sql/copy_paste_sql_samples.sql"
+Group comparison,Do groups differ,"DATA, outcome, group","scripts/copy_paste_r_samples.R","scripts/copy_paste_python_samples.py","sql/copy_paste_sql_samples.sql"
+Mixed model,What changes when rows are grouped,"DATA, target, predictors, group ID","scripts/copy_paste_r_samples.R","",""
+Survival model,What predicts time until event,"DATA, time, event, predictors","scripts/copy_paste_r_samples.R","",""
+Time series,What predicts or forecasts values over time,"SERIES or time table","scripts/copy_paste_r_samples.R","scripts/copy_paste_python_samples.py","sql/copy_paste_sql_samples.sql"
+PCA and clustering,What structure exists in numeric features,"FEATURE_DATA","scripts/copy_paste_r_samples.R","scripts/copy_paste_python_samples.py",""
+LLM evaluation,Which prompt or model performs better,"LLM_DATA, prompt, score, factuality, confidence","scripts/copy_paste_r_samples.R","scripts/copy_paste_python_samples.py","sql/copy_paste_sql_samples.sql"
+Model tuning,Which model and parameters should we use,"DATA, TARGET, PREDICTORS, METRIC, split/fold design","scripts/model_tuning_r_templates.R","scripts/model_tuning_python_templates.py","sql/model_tuning_sql_templates.sql"

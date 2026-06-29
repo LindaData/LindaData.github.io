@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Model Tuning Guide | Linda Data Statistical Analytics Hub</title>
+  <meta name="description" content="Copy-paste model tuning guide for stepwise selection, decision trees, XGBoost, random forests, regularization, validation, calibration, and model cards in R, Python, and SQL.">
+  <style>
+    :root {
+      --ink: #17212b;
+      --muted: #5b6673;
+      --line: #d9e0e8;
+      --paper: #ffffff;
+      --wash: #f5f7fa;
+      --blue: #1769aa;
+      --green: #16815d;
+      --amber: #a76500;
+      --navy: #20304a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+
+    a { color: var(--blue); text-decoration: none; }
+    a:hover, a:focus { text-decoration: underline; }
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid #79b7e5;
+      outline-offset: 3px;
+    }
+
+    .skip-link {
+      background: var(--ink);
+      color: #fff;
+      left: 16px;
+      padding: 8px 12px;
+      position: absolute;
+      top: -48px;
+      z-index: 50;
+    }
+
+    .skip-link:focus {
+      top: 12px;
+      text-decoration: none;
+    }
+
+    .topbar {
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.96);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .topbar-inner {
+      align-items: center;
+      display: flex;
+      gap: 24px;
+      justify-content: space-between;
+      margin: 0 auto;
+      max-width: 1180px;
+      padding: 14px 20px;
+    }
+
+    .brand { color: var(--ink); font-weight: 700; white-space: nowrap; }
+
+    .nav-links {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: flex-end;
+      font-size: 14px;
+    }
+
+    .nav-links a { color: var(--muted); }
+    .nav-links a[aria-current="page"] { color: var(--ink); font-weight: 700; }
+
+    main {
+      margin: 0 auto;
+      max-width: 1180px;
+      padding: 32px 20px 64px;
+    }
+
+    h1, h2, h3 {
+      color: var(--ink);
+      letter-spacing: 0;
+      line-height: 1.18;
+      margin: 0;
+    }
+
+    h1 { font-size: clamp(34px, 6vw, 58px); max-width: 920px; }
+    h2 { font-size: clamp(24px, 4vw, 34px); margin-top: 50px; }
+    h3 { font-size: 18px; margin-bottom: 8px; }
+
+    .lede {
+      color: var(--muted);
+      font-size: 19px;
+      max-width: 940px;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 22px 0 30px;
+    }
+
+    .button {
+      align-items: center;
+      background: var(--ink);
+      border: 1px solid var(--ink);
+      border-radius: 6px;
+      color: #fff;
+      display: inline-flex;
+      font-weight: 700;
+      min-height: 42px;
+      padding: 9px 14px;
+    }
+
+    .button.secondary {
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .button:hover, .button:focus { text-decoration: none; }
+
+    .grid, .steps, .code-grid, .toc-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .code-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .toc-grid {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      margin: 24px 0 34px;
+    }
+
+    .toc-grid a {
+      background: var(--wash);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--ink);
+      font-weight: 700;
+      min-height: 48px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .card, .step, .note {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+    }
+
+    .card p, .step p {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .step strong {
+      color: var(--green);
+      display: block;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .table-wrap {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      margin-top: 14px;
+      overflow-x: auto;
+    }
+
+    table {
+      border-collapse: collapse;
+      min-width: 920px;
+      width: 100%;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 11px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--navy);
+      color: #fff;
+      font-size: 13px;
+    }
+
+    td { color: #2f3a46; font-size: 14px; }
+
+    pre {
+      background: #111820;
+      border-radius: 8px;
+      color: #eef4f8;
+      overflow-x: auto;
+      padding: 14px;
+      white-space: pre;
+    }
+
+    .code-shell {
+      position: relative;
+    }
+
+    .code-shell pre {
+      padding-top: 44px;
+    }
+
+    .copy-button {
+      background: #eef4f8;
+      border: 1px solid #c8d4df;
+      border-radius: 6px;
+      color: #17212b;
+      cursor: pointer;
+      font: 700 12px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      min-height: 30px;
+      padding: 7px 10px;
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      z-index: 2;
+    }
+
+    code {
+      font-family: Consolas, "Liberation Mono", monospace;
+      font-size: 0.94em;
+    }
+
+    .note {
+      background: var(--wash);
+      border-left: 5px solid var(--green);
+      color: var(--muted);
+      margin-top: 18px;
+    }
+
+    .warning {
+      border-left-color: var(--amber);
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      margin-top: 56px;
+      padding-top: 20px;
+    }
+
+    @media (max-width: 960px) {
+      .grid, .steps, .code-grid, .toc-grid { grid-template-columns: 1fr; }
+      .topbar-inner { align-items: flex-start; flex-direction: column; gap: 10px; }
+      .nav-links { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/">Linda Data</a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="/">Blog</a>
+        <a href="/world-cup-2026-betting-model/">World Cup Model</a>
+        <a href="/statistical-analytics/index.html">Analytics Hub</a>
+        <a href="/statistical-analytics/samples.html">Samples</a>
+        <a href="/statistical-analytics/model-tuning.html" aria-current="page">Model Tuning</a>
+        <a href="/about/">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <h1>Model Tuning and Selection Guide</h1>
+    <p class="lede">A practical, copy-paste playbook for fine tuning models without losing the statistical discipline: start with a baseline, choose the right validation design, tune only the parameters that matter, check assumptions, and publish a model card with every result.</p>
+
+    <div class="button-row">
+      <a class="button" href="scripts/model_tuning_r_templates.R">Download R Tuning Templates</a>
+      <a class="button secondary" href="scripts/model_tuning_python_templates.py">Download Python Tuning Templates</a>
+      <a class="button secondary" href="sql/model_tuning_sql_templates.sql">Download SQL Tuning Templates</a>
+      <a class="button secondary" href="data/model_tuning_catalog.csv">Tuning Catalog CSV</a>
+      <a class="button secondary" href="https://github.com/lindadata/lindadata.github.io/tree/master/statistical-analytics">GitHub Source</a>
+    </div>
+
+    <nav class="toc-grid" aria-label="Model tuning sections">
+      <a href="#swap-list">Swap Names</a>
+      <a href="#workflow">Workflow</a>
+      <a href="#tuning-path">Choose Path</a>
+      <a href="#tuning-map">Tuning Map</a>
+      <a href="#copy-paste-starters">Code Starters</a>
+      <a href="#family-writeup">Write-Up</a>
+      <a href="#model-card">Model Card</a>
+    </nav>
+
+    <section aria-labelledby="swap-list">
+      <h2 id="swap-list">Swap These Names</h2>
+      <div class="grid">
+        <article class="card"><h3><code>DATA</code></h3><p>Your data frame, CSV, database table, or SQL view.</p></article>
+        <article class="card"><h3><code>TARGET</code></h3><p>The outcome to explain or predict.</p></article>
+        <article class="card"><h3><code>PREDICTORS</code></h3><p>The input columns available at prediction time.</p></article>
+        <article class="card"><h3><code>METRIC</code></h3><p>RMSE, MAE, R-squared, ROC AUC, PR AUC, log loss, Brier score, or a business cost.</p></article>
+        <article class="card"><h3><code>ID</code></h3><p>The person, store, school, customer, account, geography, or other repeated unit.</p></article>
+        <article class="card"><h3><code>TIME</code></h3><p>The date, period, event time, or prediction timestamp.</p></article>
+        <article class="card"><h3><code>GROUP</code></h3><p>The treatment, class, segment, fold group, or experimental arm.</p></article>
+        <article class="card"><h3><code>PARAM_GRID</code></h3><p>The set of model parameters you want to compare.</p></article>
+      </div>
+    </section>
+
+    <section id="workflow">
+      <h2>Use This Order</h2>
+      <div class="steps">
+        <article class="step"><strong>1. Define target</strong><p>Name the target, row grain, prediction moment, and whether the goal is explanation, prediction, ranking, or decision support.</p></article>
+        <article class="step"><strong>2. Profile data</strong><p>Check missingness, outliers, class balance, leakage, rare categories, target skew, and whether rows repeat inside groups.</p></article>
+        <article class="step"><strong>3. Pick validation</strong><p>Use random CV only when rows are independent. Use time splits for future prediction and group splits for repeated entities.</p></article>
+        <article class="step"><strong>4. Fit baselines</strong><p>Keep a mean or majority baseline and a transparent model such as OLS, logistic regression, or Poisson regression.</p></article>
+        <article class="step"><strong>5. Tune candidates</strong><p>Search a small defensible grid first. Add random or Bayesian search only after the baseline path is working.</p></article>
+        <article class="step"><strong>6. Diagnose winner</strong><p>Check residuals, calibration, overfit gap, variable stability, sensitivity to folds, and whether the selected model is interpretable enough.</p></article>
+        <article class="step"><strong>7. Refit and document</strong><p>Refit the selected model on the approved training data, score the holdout once, then write a model card.</p></article>
+        <article class="step"><strong>8. Monitor</strong><p>Track feature drift, target drift, calibration drift, cost, latency, and data quality after the model is used.</p></article>
+        <article class="step"><strong>9. Retune only with reason</strong><p>Retune when data, target, business cost, model family, or deployment population changes.</p></article>
+      </div>
+    </section>
+
+    <section id="tuning-path">
+      <h2>Choose a Tuning Path</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>If You Need...</th>
+              <th>Start With</th>
+              <th>Tune</th>
+              <th>Watch For</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Interpretability with a continuous target</td><td>OLS, ridge, lasso, elastic net, stepwise AIC/BIC</td><td>Feature set, regularization strength, spline terms</td><td>Collinearity, heteroskedasticity, omitted variables, unstable selection.</td></tr>
+            <tr><td>Interpretability with yes/no target</td><td>Logistic regression, regularized logistic regression</td><td>Penalty, class weights, threshold, calibration</td><td>Class imbalance, separation, calibration, threshold cost.</td></tr>
+            <tr><td>Simple nonlinear rules</td><td>Decision tree</td><td>Depth, minimum leaf size, split rule, pruning</td><td>Overfitting, tiny leaves, unstable splits.</td></tr>
+            <tr><td>Strong tabular prediction</td><td>Random forest, gradient boosting, XGBoost</td><td>Learning rate, depth, trees, subsampling, regularization, early stopping</td><td>Leakage, validation overfit, calibration, explainability.</td></tr>
+            <tr><td>Ordered future prediction</td><td>Time split, rolling-origin validation</td><td>Window length, horizon, lags, seasonality</td><td>Temporal leakage, trend breaks, autocorrelated errors.</td></tr>
+            <tr><td>Rows repeat inside entities</td><td>Group CV, mixed model, cluster-aware validation</td><td>Group split, random effects, clustered standard errors</td><td>Group leakage, cluster-size imbalance.</td></tr>
+            <tr><td>Operational decisions from probabilities</td><td>Calibrated classifier plus threshold table</td><td>Calibration method, threshold, cost ratio</td><td>Uncalibrated scores, misleading accuracy, shifting base rates.</td></tr>
+            <tr><td>Prompt or model evaluation for LLMs</td><td>Randomized prompt test, paired item design, rubric scores</td><td>Prompt version, model id, temperature, evaluator rubric</td><td>Rater agreement, item difficulty, factuality, calibration, cost.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tuning-map">
+      <h2>Exhaustive Tuning Map</h2>
+      <p class="lede">The downloadable catalog contains the full row-by-row version. This compact map is the scan-friendly list to keep nearby while planning a project.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Area</th>
+              <th>Techniques</th>
+              <th>Primary Statistical Check</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Validation design</td><td>Train/validation/test split, k-fold CV, repeated CV, nested CV, time-series CV, grouped CV, bootstrap validation.</td><td>Leakage, independence, time order, group recurrence.</td></tr>
+            <tr><td>Baselines</td><td>Mean baseline, majority baseline, transparent GLM baseline.</td><td>Every tuned model should beat a simple benchmark.</td></tr>
+            <tr><td>Feature selection</td><td>Forward stepwise, backward stepwise, both-direction stepwise, best subsets, filter selection, recursive feature elimination.</td><td>Selection stability, multiple testing, hierarchy, validation gap.</td></tr>
+            <tr><td>Regularization</td><td>Ridge, lasso, elastic net, regularized logistic regression.</td><td>Scaling, collinearity, selected-feature stability.</td></tr>
+            <tr><td>Tree models</td><td>Decision tree regression, decision tree classification, cost-complexity pruning.</td><td>Leaf size, depth, overfit gap, rule stability.</td></tr>
+            <tr><td>Ensembles</td><td>Bagging, random forest, extra trees, stacking, blending.</td><td>Out-of-fold predictions, OOB error, correlated model errors.</td></tr>
+            <tr><td>Boosting</td><td>Gradient boosting, histogram gradient boosting, XGBoost, LightGBM, CatBoost, AdaBoost.</td><td>Early stopping, learning curves, validation overfit, calibration.</td></tr>
+            <tr><td>Nonlinear models</td><td>GAMs, splines, MARS, k-nearest neighbors, SVM, naive Bayes, neural networks.</td><td>Scaling, smoothness, dimensionality, class priors, overfit gap.</td></tr>
+            <tr><td>Dimension reduction</td><td>Principal component regression, partial least squares.</td><td>Component count, explained variance, interpretability loss.</td></tr>
+            <tr><td>Feature engineering</td><td>Categorical encoding, missing-value strategy, target transformation, interaction search.</td><td>Encoding leakage, imputation leakage, residual shape, hierarchy.</td></tr>
+            <tr><td>Imbalance and decisions</td><td>Class weights, resampling, SMOTE, threshold tuning, probability calibration.</td><td>Precision-recall, Brier score, calibration curve, cost matrix.</td></tr>
+            <tr><td>Search strategy</td><td>Manual grid search, random search, Bayesian optimization, early stopping.</td><td>Search budget, reproducibility, noisy validation metrics.</td></tr>
+            <tr><td>Uncertainty and explanation</td><td>Conformal prediction, permutation importance, partial dependence, ICE, SHAP.</td><td>Coverage, correlated predictors, extrapolation, causal overclaiming.</td></tr>
+            <tr><td>Monitoring</td><td>Model drift, champion/challenger comparison, model cards.</td><td>Feature drift, target drift, paired loss, reproducibility.</td></tr>
+            <tr><td>LLM evaluation</td><td>Prompt tuning, model comparison, temperature/top-p tests, rubric tuning, evaluator agreement.</td><td>Randomized item assignment, rater reliability, factuality, calibration, cost.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="copy-paste-starters">
+      <h2>Copy-Paste Starters</h2>
+      <div class="code-grid">
+        <article>
+          <h3>RStudio: Baseline, Stepwise, Tree, XGBoost</h3>
+          <pre><code>source("statistical-analytics/scripts/model_tuning_r_templates.R")
+
+DATA <- your_data
+TARGET <- "your_target"
+PREDICTORS <- c("x1", "x2", "x3")
+
+baseline_fit <- lm(as.formula(paste(TARGET, "~", paste(PREDICTORS, collapse = " + "))), data = DATA)
+step_fit <- step(baseline_fit, direction = "both", trace = 0)
+
+if (requireNamespace("xgboost", quietly = TRUE)) {
+  xgb_scores <- tune_xgboost_regression(DATA, TARGET, PREDICTORS)
+  head(xgb_scores)
+}</code></pre>
+        </article>
+        <article>
+          <h3>Python: Grid Search</h3>
+          <pre><code>import pandas as pd
+from sklearn.model_selection import GridSearchCV, train_test_split
+from sklearn.tree import DecisionTreeRegressor
+
+DATA = pd.read_csv("your_data.csv")
+TARGET = "your_target"
+PREDICTORS = ["x1", "x2", "x3"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    DATA[PREDICTORS], DATA[TARGET], random_state=123
+)
+
+grid = {"max_depth": [2, 3, 5, None], "min_samples_leaf": [1, 3, 5]}
+search = GridSearchCV(DecisionTreeRegressor(random_state=123), grid, cv=5,
+                      scoring="neg_root_mean_squared_error")
+search.fit(X_train, y_train)
+print(search.best_params_)</code></pre>
+        </article>
+        <article>
+          <h3>SQL: Feature Table and Folds</h3>
+          <pre><code>CREATE OR REPLACE VIEW model_features AS
+SELECT
+  id_col,
+  target,
+  x1,
+  x2,
+  x1 * x2 AS x1_x2_interaction,
+  CASE WHEN row_number() OVER (ORDER BY id_col) % 5 = 0
+       THEN 'test' ELSE 'train' END AS split,
+  1 + (row_number() OVER (ORDER BY id_col) % 5) AS fold_id
+FROM data_table
+WHERE target IS NOT NULL;</code></pre>
+        </article>
+        <article>
+          <h3>SQL: Store Tuning Results</h3>
+          <pre><code>CREATE TABLE model_tuning_results (
+  run_id VARCHAR,
+  model_family VARCHAR,
+  model_id VARCHAR,
+  parameter_json VARCHAR,
+  split VARCHAR,
+  metric_name VARCHAR,
+  metric_value DOUBLE,
+  trained_at TIMESTAMP
+);</code></pre>
+        </article>
+      </div>
+    </section>
+
+    <section id="family-writeup">
+      <h2>Write-Up: What Each Tuning Family Is Doing</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Family</th>
+              <th>Plain-English Role</th>
+              <th>Parameters That Matter Most</th>
+              <th>Statistical Caution</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Stepwise functions</td><td>Search formulas by adding or removing terms using AIC, BIC, or another criterion.</td><td>Candidate scope, direction, criterion, hierarchy rules.</td><td>Stepwise selection can be unstable. Validate the selected formula and avoid treating it as causal proof.</td></tr>
+            <tr><td>Decision trees</td><td>Split the data into readable rules that handle nonlinear effects and interactions.</td><td>Maximum depth, minimum leaf size, minimum split size, pruning penalty.</td><td>Unpruned trees overfit quickly. Tiny leaves create fragile stories.</td></tr>
+            <tr><td>Random forests</td><td>Average many trees to reduce variance and improve tabular prediction.</td><td>Number of trees, variables tried at each split, minimum node size, sampling strategy.</td><td>Feature importance can be biased. Use group or time validation when rows are not independent.</td></tr>
+            <tr><td>XGBoost and gradient boosting</td><td>Build trees sequentially so each new tree improves on prior errors.</td><td>Learning rate, tree depth, minimum child weight, subsampling, column sampling, L1/L2 regularization, number of rounds, early stopping.</td><td>Boosting is powerful enough to exploit leakage. Use a clean validation design and calibration checks.</td></tr>
+            <tr><td>Regularized GLMs</td><td>Shrink coefficients to handle collinearity, many predictors, and noisy features.</td><td>Lambda, alpha or l1_ratio, standardization, family/link.</td><td>Coefficients are biased by design. Interpret shrinkage models as predictive unless the study design supports stronger claims.</td></tr>
+            <tr><td>SVM and kNN</td><td>Use margins or local similarity instead of explicit regression coefficients.</td><td>C, gamma, kernel, k, distance metric, weights.</td><td>Scaling matters. Performance can collapse with irrelevant features or high dimensionality.</td></tr>
+            <tr><td>Neural networks</td><td>Approximate flexible nonlinear patterns when the dataset is large enough.</td><td>Hidden units, layers, activation, learning rate, regularization, early stopping.</td><td>They need strong validation and monitoring. They are rarely the first model for small tabular teaching data.</td></tr>
+            <tr><td>Thresholds and calibration</td><td>Turn predicted probabilities into decisions and make probability statements honest.</td><td>Threshold, cost ratio, calibration method, calibration bins.</td><td>A high ROC AUC can still have poor calibration or a bad business threshold.</td></tr>
+            <tr><td>LLM tuning</td><td>Compare prompts, model IDs, temperature, top-p, rubrics, and evaluators as experimental factors.</td><td>Prompt version, model version, temperature, top-p, rubric, item assignment.</td><td>Use paired or randomized designs, measure rater agreement, and compare factuality, cost, latency, and calibration.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="note warning">
+      Do not tune your way out of a design problem. If the wrong rows are joined, the target leaks into the predictors, the validation split is unrealistic, or the target is not aligned to the decision, a stronger model only makes the wrong answer look more convincing.
+    </div>
+
+    <section id="model-card">
+      <h2>Model Card Minimum</h2>
+      <div class="grid">
+        <article class="card"><h3>Target and Grain</h3><p>What is predicted, when it is predicted, and what one row represents.</p></article>
+        <article class="card"><h3>Data and Exclusions</h3><p>Source tables, date range, filters, missingness handling, and excluded rows.</p></article>
+        <article class="card"><h3>Validation Design</h3><p>Random, time, group, nested, or bootstrap validation, with a reason for the choice.</p></article>
+        <article class="card"><h3>Candidate Results</h3><p>Baseline and tuned models compared on the same split and metric.</p></article>
+        <article class="card"><h3>Diagnostics</h3><p>Collinearity, heteroskedasticity risk, leakage, residuals, calibration, overfit gap, and drift plan.</p></article>
+        <article class="card"><h3>Decision Rule</h3><p>How predictions become action: threshold, ranking cutoff, interval, or human review process.</p></article>
+        <article class="card"><h3>Limits</h3><p>Known failure modes, weak assumptions, fairness concerns, and where not to use the model.</p></article>
+        <article class="card"><h3>Owner and Version</h3><p>Model id, training date, code version, data version, owner, and review date.</p></article>
+      </div>
+    </section>
+
+    <footer>
+      <p>Last updated June 29, 2026. Built for copy-paste model tuning work in R, RStudio, Python, SQL, and GitHub-backed project sharing.</p>
+    </footer>
+  </main>
+  <script>
+    document.querySelectorAll("pre").forEach(function (pre, index) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "code-shell";
+      pre.parentNode.insertBefore(wrapper, pre);
+      wrapper.appendChild(pre);
+
+      const button = document.createElement("button");
+      button.className = "copy-button";
+      button.type = "button";
+      button.textContent = "Copy";
+      button.setAttribute("aria-label", "Copy code block " + (index + 1));
+      wrapper.insertBefore(button, pre);
+
+      button.addEventListener("click", async function () {
+        const text = pre.textContent;
+        try {
+          await navigator.clipboard.writeText(text);
+          button.textContent = "Copied";
+          window.setTimeout(function () { button.textContent = "Copy"; }, 1600);
+        } catch (error) {
+          button.textContent = "Select";
+          window.setTimeout(function () { button.textContent = "Copy"; }, 1600);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

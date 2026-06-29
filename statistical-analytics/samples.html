@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Copy-Paste Samples | Linda Data Statistical Analytics Hub</title>
+  <meta name="description" content="Copy-paste R, Python, and SQL samples for statistical analytics projects. Swap the data, target, predictors, group, time, and event columns.">
+  <style>
+    :root {
+      --ink: #17212b;
+      --muted: #5b6673;
+      --line: #d9e0e8;
+      --paper: #ffffff;
+      --wash: #f5f7fa;
+      --blue: #1769aa;
+      --green: #16815d;
+      --navy: #20304a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+
+    a { color: var(--blue); text-decoration: none; }
+    a:hover, a:focus { text-decoration: underline; }
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid #79b7e5;
+      outline-offset: 3px;
+    }
+
+    .skip-link {
+      background: var(--ink);
+      color: #fff;
+      left: 16px;
+      padding: 8px 12px;
+      position: absolute;
+      top: -48px;
+      z-index: 50;
+    }
+
+    .skip-link:focus {
+      top: 12px;
+      text-decoration: none;
+    }
+
+    .topbar {
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.96);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .topbar-inner {
+      align-items: center;
+      display: flex;
+      gap: 24px;
+      justify-content: space-between;
+      margin: 0 auto;
+      max-width: 1180px;
+      padding: 14px 20px;
+    }
+
+    .brand { color: var(--ink); font-weight: 700; white-space: nowrap; }
+
+    .nav-links {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: flex-end;
+      font-size: 14px;
+    }
+
+    .nav-links a { color: var(--muted); }
+    .nav-links a[aria-current="page"] { color: var(--ink); font-weight: 700; }
+
+    main {
+      margin: 0 auto;
+      max-width: 1180px;
+      padding: 32px 20px 64px;
+    }
+
+    h1, h2, h3 {
+      color: var(--ink);
+      letter-spacing: 0;
+      line-height: 1.18;
+      margin: 0;
+    }
+
+    h1 { font-size: clamp(34px, 6vw, 58px); max-width: 860px; }
+    h2 { font-size: clamp(24px, 4vw, 34px); margin-top: 50px; }
+    h3 { font-size: 18px; margin-bottom: 8px; }
+
+    .lede {
+      color: var(--muted);
+      font-size: 19px;
+      max-width: 920px;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 22px 0 30px;
+    }
+
+    .button {
+      align-items: center;
+      background: var(--ink);
+      border: 1px solid var(--ink);
+      border-radius: 6px;
+      color: #fff;
+      display: inline-flex;
+      font-weight: 700;
+      min-height: 42px;
+      padding: 9px 14px;
+    }
+
+    .button.secondary {
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .button:hover, .button:focus { text-decoration: none; }
+
+    .grid, .sample-grid, .toc-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .sample-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .toc-grid {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      margin: 24px 0 34px;
+    }
+
+    .toc-grid a {
+      background: var(--wash);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--ink);
+      font-weight: 700;
+      min-height: 48px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .card, .sample {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+    }
+
+    .card p, .sample p {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .sample strong {
+      color: var(--green);
+      display: block;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .table-wrap {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      margin-top: 14px;
+      overflow-x: auto;
+    }
+
+    table {
+      border-collapse: collapse;
+      min-width: 840px;
+      width: 100%;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 11px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--navy);
+      color: #fff;
+      font-size: 13px;
+    }
+
+    td { color: #2f3a46; font-size: 14px; }
+
+    pre {
+      background: #111820;
+      border-radius: 8px;
+      color: #eef4f8;
+      overflow-x: auto;
+      padding: 14px;
+      white-space: pre;
+    }
+
+    .code-shell {
+      position: relative;
+    }
+
+    .code-shell pre {
+      padding-top: 44px;
+    }
+
+    .copy-button {
+      background: #eef4f8;
+      border: 1px solid #c8d4df;
+      border-radius: 6px;
+      color: #17212b;
+      cursor: pointer;
+      font: 700 12px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      min-height: 30px;
+      padding: 7px 10px;
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      z-index: 2;
+    }
+
+    code {
+      font-family: Consolas, "Liberation Mono", monospace;
+      font-size: 0.94em;
+    }
+
+    .note {
+      background: var(--wash);
+      border-left: 5px solid var(--green);
+      border-radius: 8px;
+      color: var(--muted);
+      margin-top: 18px;
+      padding: 16px;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      margin-top: 56px;
+      padding-top: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .grid, .sample-grid, .toc-grid { grid-template-columns: 1fr; }
+      .topbar-inner { align-items: flex-start; flex-direction: column; gap: 10px; }
+      .nav-links { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/">Linda Data</a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="/">Blog</a>
+        <a href="/world-cup-2026-betting-model/">World Cup Model</a>
+        <a href="/statistical-analytics/index.html">Analytics Hub</a>
+        <a href="/statistical-analytics/samples.html" aria-current="page">Samples</a>
+        <a href="/statistical-analytics/model-tuning.html">Model Tuning</a>
+        <a href="/about/">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <h1>Copy-Paste Statistical Samples</h1>
+    <p class="lede">These are working patterns for R, Python, and SQL. Copy a block, replace the uppercase placeholders with your data and column names, then run diagnostics before trusting the result.</p>
+
+    <div class="button-row">
+      <a class="button" href="scripts/copy_paste_r_samples.R">Download R Samples</a>
+      <a class="button secondary" href="scripts/copy_paste_python_samples.py">Download Python Samples</a>
+      <a class="button secondary" href="sql/copy_paste_sql_samples.sql">Download SQL Samples</a>
+      <a class="button secondary" href="model-tuning.html">Model Tuning Guide</a>
+      <a class="button secondary" href="data/sample_recipe_index.csv">Recipe Index</a>
+      <a class="button secondary" href="https://github.com/lindadata/lindadata.github.io/tree/master/statistical-analytics">GitHub Source</a>
+    </div>
+
+    <nav class="toc-grid" aria-label="Sample sections">
+      <a href="#swap-list">Swap Names</a>
+      <a href="#choose-sample">Choose Sample</a>
+      <a href="#r-samples">R Samples</a>
+      <a href="#python-samples">Python Samples</a>
+      <a href="#sql-samples">SQL Samples</a>
+    </nav>
+
+    <section aria-labelledby="swap-list">
+      <h2 id="swap-list">Swap These Names</h2>
+      <div class="grid">
+        <article class="card"><h3><code>DATA</code></h3><p>Your data frame, CSV, database table, or SQL view.</p></article>
+        <article class="card"><h3><code>TARGET</code></h3><p>The outcome you want to explain or predict.</p></article>
+        <article class="card"><h3><code>PREDICTORS</code></h3><p>The columns used as model inputs.</p></article>
+        <article class="card"><h3><code>GROUP</code></h3><p>The treatment, segment, cluster, class, or comparison group.</p></article>
+        <article class="card"><h3><code>ID</code></h3><p>The person, store, school, county, customer, team, or other repeated unit.</p></article>
+        <article class="card"><h3><code>TIME</code></h3><p>The date, period, duration, or time index.</p></article>
+        <article class="card"><h3><code>EVENT</code></h3><p>A 0/1 indicator that a survival or conversion event occurred.</p></article>
+        <article class="card"><h3><code>SCORE</code></h3><p>A rubric, quality, satisfaction, or LLM evaluation score.</p></article>
+      </div>
+    </section>
+
+    <section id="choose-sample">
+      <h2>Choose a Sample</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>If Your Question Is...</th>
+              <th>Use This</th>
+              <th>Swap</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>What is in this dataset?</td><td>Data profile</td><td><code>DATA</code></td></tr>
+            <tr><td>What predicts a continuous number?</td><td>OLS regression</td><td><code>DATA</code>, <code>TARGET</code>, <code>PREDICTORS</code></td></tr>
+            <tr><td>What predicts yes/no?</td><td>Logistic regression</td><td><code>DATA</code>, binary <code>TARGET</code>, <code>PREDICTORS</code></td></tr>
+            <tr><td>What predicts counts?</td><td>Poisson or negative binomial</td><td><code>DATA</code>, count <code>TARGET</code>, <code>PREDICTORS</code></td></tr>
+            <tr><td>Do groups differ?</td><td>t-test, ANOVA, chi-square, A/B test</td><td><code>DATA</code>, <code>TARGET</code>, <code>GROUP</code></td></tr>
+            <tr><td>Rows repeat inside people, stores, schools, or teams?</td><td>Mixed model or GEE</td><td><code>DATA</code>, <code>TARGET</code>, <code>PREDICTORS</code>, <code>ID</code></td></tr>
+            <tr><td>How long until an event happens?</td><td>Survival model</td><td><code>TIME</code>, <code>EVENT</code>, <code>PREDICTORS</code></td></tr>
+            <tr><td>How should an LLM prompt or model be evaluated?</td><td>Prompt A/B test, factuality model, calibration table</td><td><code>prompt_id</code>, <code>SCORE</code>, <code>factual</code>, <code>confidence</code></td></tr>
+            <tr><td>Which model and parameters should we use?</td><td><a href="model-tuning.html">Model tuning guide</a></td><td><code>DATA</code>, <code>TARGET</code>, <code>PREDICTORS</code>, <code>METRIC</code>, split/fold design</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="r-samples">
+      <h2>R Samples</h2>
+      <div class="sample-grid">
+        <article class="sample">
+          <strong>Data profile</strong>
+          <pre><code>DATA <- read.csv("your_data.csv")
+summary(DATA)
+colMeans(is.na(DATA))
+str(DATA)</code></pre>
+        </article>
+        <article class="sample">
+          <strong>OLS with diagnostics</strong>
+          <pre><code>DATA <- mtcars
+fit <- lm(mpg ~ wt + hp + disp, data = DATA)
+summary(fit)
+plot(fit)
+
+source("statistical-analytics/scripts/diagnostics_helpers.R")
+run_lm_diagnostics(fit, DATA)</code></pre>
+        </article>
+        <article class="sample">
+          <strong>Logistic regression</strong>
+          <pre><code>DATA <- mtcars
+fit <- glm(am ~ mpg + wt + hp, data = DATA, family = binomial())
+summary(fit)
+DATA$predicted_probability <- predict(fit, type = "response")</code></pre>
+        </article>
+        <article class="sample">
+          <strong>Count model</strong>
+          <pre><code>DATA <- warpbreaks
+fit <- glm(breaks ~ wool + tension, data = DATA, family = poisson())
+summary(fit)
+dispersion <- sum(residuals(fit, type = "pearson")^2) / fit$df.residual
+dispersion</code></pre>
+        </article>
+        <article class="sample">
+          <strong>Group comparison</strong>
+          <pre><code>t.test(mpg ~ am, data = mtcars)
+summary(aov(len ~ supp * factor(dose), data = ToothGrowth))
+chisq.test(table(mtcars$cyl, mtcars$am), simulate.p.value = TRUE)</code></pre>
+        </article>
+        <article class="sample">
+          <strong>LLM evaluation</strong>
+          <pre><code>LLM_DATA <- read.csv("llm_evaluations.csv")
+summary(lm(score ~ prompt_id, data = LLM_DATA))
+summary(glm(factual ~ prompt_id + confidence,
+            data = LLM_DATA,
+            family = binomial()))
+mean((LLM_DATA$factual - LLM_DATA$confidence)^2)</code></pre>
+        </article>
+      </div>
+    </section>
+
+    <section id="python-samples">
+      <h2>Python Samples</h2>
+      <div class="sample-grid">
+        <article class="sample">
+          <strong>Data profile</strong>
+          <pre><code>import pandas as pd
+
+DATA = pd.read_csv("your_data.csv")
+print(DATA.info())
+print(DATA.describe(include="all"))
+print(DATA.isna().mean())</code></pre>
+        </article>
+        <article class="sample">
+          <strong>OLS</strong>
+          <pre><code>import statsmodels.formula.api as smf
+
+fit = smf.ols("TARGET ~ x1 + x2 + x3", data=DATA).fit()
+print(fit.summary())</code></pre>
+        </article>
+        <article class="sample">
+          <strong>Logistic regression</strong>
+          <pre><code>fit = smf.logit("target_binary ~ x1 + x2 + x3", data=DATA).fit()
+print(fit.summary())
+DATA["predicted_probability"] = fit.predict(DATA)</code></pre>
+        </article>
+        <article class="sample">
+          <strong>Train/test validation</strong>
+          <pre><code>from sklearn.model_selection import train_test_split
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+
+X = DATA[["x1", "x2", "x3"]]
+y = DATA["TARGET"]
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=123)
+model = make_pipeline(StandardScaler(), LinearRegression()).fit(X_train, y_train)
+print(model.score(X_test, y_test))</code></pre>
+        </article>
+        <article class="sample">
+          <strong>PCA and clustering</strong>
+          <pre><code>from sklearn.decomposition import PCA
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+
+X = StandardScaler().fit_transform(DATA[["x1", "x2", "x3"]])
+components = PCA(n_components=2).fit_transform(X)
+clusters = KMeans(n_clusters=3, n_init="auto", random_state=123).fit_predict(X)</code></pre>
+        </article>
+        <article class="sample">
+          <strong>LLM calibration</strong>
+          <pre><code>LLM_DATA["confidence_bin"] = pd.qcut(LLM_DATA["confidence"], q=5)
+calibration = LLM_DATA.groupby("confidence_bin", observed=True).agg(
+    mean_confidence=("confidence", "mean"),
+    observed_accuracy=("factual", "mean"),
+    n=("factual", "size"),
+)
+brier = ((LLM_DATA["factual"] - LLM_DATA["confidence"]) ** 2).mean()</code></pre>
+        </article>
+      </div>
+    </section>
+
+    <section id="sql-samples">
+      <h2>SQL Samples</h2>
+      <div class="sample-grid">
+        <article class="sample">
+          <strong>Profile table</strong>
+          <pre><code>SELECT
+  COUNT(*) AS rows,
+  COUNT(*) - COUNT(target) AS missing_target,
+  AVG(target) AS mean_target,
+  STDDEV_SAMP(target) AS sd_target
+FROM data_table;</code></pre>
+        </article>
+        <article class="sample">
+          <strong>Regression-ready features</strong>
+          <pre><code>CREATE OR REPLACE VIEW model_features AS
+SELECT
+  target,
+  x1,
+  x2,
+  x1 * x2 AS x1_x2_interaction,
+  CASE WHEN row_number() OVER (ORDER BY id_col) % 5 = 0
+       THEN 'test' ELSE 'train' END AS split
+FROM data_table
+WHERE target IS NOT NULL;</code></pre>
+        </article>
+        <article class="sample">
+          <strong>A/B summary</strong>
+          <pre><code>SELECT
+  variant,
+  COUNT(*) AS n,
+  SUM(converted) AS conversions,
+  AVG(converted) AS conversion_rate
+FROM experiment_table
+GROUP BY variant;</code></pre>
+        </article>
+        <article class="sample">
+          <strong>LLM prompt summary</strong>
+          <pre><code>SELECT
+  prompt_id,
+  model_id,
+  COUNT(*) AS outputs_evaluated,
+  AVG(score) AS mean_score,
+  AVG(factual) AS factuality_rate,
+  AVG(confidence) AS mean_confidence,
+  AVG(cost_usd) AS mean_cost_usd
+FROM llm_evaluations
+GROUP BY prompt_id, model_id;</code></pre>
+        </article>
+      </div>
+    </section>
+
+    <div class="note">
+      These samples are templates, not guarantees. Swap the data first, then verify missingness, leakage, collinearity, heteroskedasticity, dependence, and validation design before presenting conclusions.
+    </div>
+
+    <footer>
+      <p>Last updated June 29, 2026. Built for practical copy-paste analytics work in R, Python, SQL, and GitHub-backed project sharing.</p>
+    </footer>
+  </main>
+  <script>
+    document.querySelectorAll("pre").forEach(function (pre, index) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "code-shell";
+      pre.parentNode.insertBefore(wrapper, pre);
+      wrapper.appendChild(pre);
+
+      const button = document.createElement("button");
+      button.className = "copy-button";
+      button.type = "button";
+      button.textContent = "Copy";
+      button.setAttribute("aria-label", "Copy code block " + (index + 1));
+      wrapper.insertBefore(button, pre);
+
+      button.addEventListener("click", async function () {
+        const text = pre.textContent;
+        try {
+          await navigator.clipboard.writeText(text);
+          button.textContent = "Copied";
+          window.setTimeout(function () { button.textContent = "Copy"; }, 1600);
+        } catch (error) {
+          button.textContent = "Select";
+          window.setTimeout(function () { button.textContent = "Copy"; }, 1600);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

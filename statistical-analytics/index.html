@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Statistical Analytics Hub | Linda Data</title>
-  <meta name="description" content="A one-stop educational hub for statistical analytics, regression modeling, LLM evaluation, diagnostics, datasets, and reusable R, Python, and SQL project starters.">
+  <meta name="description" content="A one-stop educational hub for statistical analytics, regression modeling, model tuning, LLM evaluation, diagnostics, datasets, and reusable R, Python, and SQL project starters.">
   <style>
     :root {
       --ink: #17212b;
@@ -39,6 +39,28 @@
     a:hover,
     a:focus {
       text-decoration: underline;
+    }
+
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid #79b7e5;
+      outline-offset: 3px;
+    }
+
+    .skip-link {
+      background: var(--ink);
+      color: #fff;
+      left: 16px;
+      padding: 8px 12px;
+      position: absolute;
+      top: -48px;
+      z-index: 50;
+    }
+
+    .skip-link:focus {
+      top: 12px;
+      text-decoration: none;
     }
 
     img {
@@ -198,7 +220,7 @@
     }
 
     .metric-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
       margin: 20px 0 36px;
     }
 
@@ -406,6 +428,29 @@
       padding: 14px;
     }
 
+    .code-shell {
+      position: relative;
+    }
+
+    .code-shell pre {
+      padding-top: 44px;
+    }
+
+    .copy-button {
+      background: #eef4f8;
+      border: 1px solid #c8d4df;
+      border-radius: 6px;
+      color: #17212b;
+      cursor: pointer;
+      font: 700 12px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      min-height: 30px;
+      padding: 7px 10px;
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      z-index: 2;
+    }
+
     code {
       font-family: Consolas, "Liberation Mono", monospace;
       font-size: 0.94em;
@@ -470,6 +515,7 @@
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="topbar">
     <div class="topbar-inner">
       <a class="brand" href="/">Linda Data</a>
@@ -477,24 +523,29 @@
         <a href="/">Blog</a>
         <a href="/world-cup-2026-betting-model/">World Cup Model</a>
         <a href="/statistical-analytics/index.html" aria-current="page">Analytics Hub</a>
+        <a href="/statistical-analytics/samples.html">Samples</a>
+        <a href="/statistical-analytics/model-tuning.html">Model Tuning</a>
         <a href="/about/">About</a>
       </nav>
     </div>
   </header>
 
-  <main>
+  <main id="main-content">
     <section class="intro" aria-labelledby="page-title">
       <div class="intro-copy">
         <p class="eyebrow">Linda Data team resource</p>
         <h1 id="page-title">Statistical Analytics Hub</h1>
-        <p class="lede">A one-stop shop for statistical analysis, regression modeling, LLM evaluation, diagnostics, datasets, project templates, and teaching examples in R, RStudio, Python, SQL, and adjacent tools.</p>
+        <p class="lede">A one-stop shop for statistical analysis, regression modeling, model tuning, LLM evaluation, diagnostics, datasets, project templates, and teaching examples in R, RStudio, Python, SQL, and adjacent tools.</p>
         <div class="action-row">
           <a class="button" href="#technique-library">Technique Library</a>
+          <a class="button secondary" href="samples.html">Copy-Paste Samples</a>
+          <a class="button secondary" href="model-tuning.html">Model Tuning</a>
           <a class="button secondary" href="#regression-catalog">Choose a Model</a>
           <a class="button secondary" href="#llm-analysis">LLM Analysis</a>
           <a class="button secondary" href="#diagnostics">Run Diagnostics</a>
           <a class="button secondary" href="#data-pantry">Find Data</a>
           <a class="button secondary" href="#starter-files">Starter Files</a>
+          <a class="button secondary" href="https://github.com/lindadata/lindadata.github.io/tree/master/statistical-analytics">GitHub Source</a>
         </div>
       </div>
       <aside class="hero-visual" aria-label="Model family visual summary">
@@ -504,13 +555,16 @@
 
     <section class="metric-grid" aria-label="Hub summary">
       <div class="metric"><strong>Technique Catalog</strong><span>100</span>Statistical techniques mapped to data structures, assumptions, and code entry points.</div>
+      <div class="metric"><strong>Sample Recipes</strong><span>11</span>Copy-paste paths for profiling, modeling, tuning, time series, clustering, and LLM evaluation.</div>
+      <div class="metric"><strong>Tuning Catalog</strong><span>60+</span>Validation, stepwise, trees, boosting, regularization, calibration, ensembles, monitoring, and model cards.</div>
       <div class="metric"><strong>Default Language</strong><span>R</span>Base R and RStudio first, with Python and SQL equivalents where useful.</div>
       <div class="metric"><strong>Data Strategy</strong><span>Open</span>R built-ins, public APIs, and key-based sources separated clearly.</div>
-      <div class="metric"><strong>LLM Evaluation</strong><span>Included</span>Prompt tests, rubric scores, factuality, calibration, evaluator agreement, and drift.</div>
     </section>
 
     <nav class="toc-grid" aria-label="Page sections">
       <a href="#workflow">Workflow</a>
+      <a href="samples.html">Samples</a>
+      <a href="model-tuning.html">Tuning</a>
       <a href="#technique-library">Techniques</a>
       <a href="#regression-catalog">Regression</a>
       <a href="#llm-analysis">LLM</a>
@@ -519,6 +573,33 @@
       <a href="#project-roadmap">Projects</a>
       <a href="#starter-files">Files</a>
     </nav>
+
+    <section id="start-here">
+      <h2>Start Here</h2>
+      <p class="section-note">For day-to-day use, start with the copy-paste samples. When the question becomes model selection or fine tuning, move to the model tuning guide for validation design, stepwise functions, decision trees, XGBoost, regularization, calibration, and model cards.</p>
+      <div class="card-grid">
+        <article class="card">
+          <h3>1. Pick the Question</h3>
+          <p>Continuous outcome, yes/no outcome, count, group comparison, repeated rows, time series, clustering, or LLM evaluation.</p>
+        </article>
+        <article class="card">
+          <h3>2. Swap the Names</h3>
+          <p>Replace <code>DATA</code>, <code>TARGET</code>, <code>PREDICTORS</code>, <code>GROUP</code>, <code>ID</code>, <code>TIME</code>, and <code>EVENT</code>.</p>
+        </article>
+        <article class="card">
+          <h3>3. Run Diagnostics</h3>
+          <p>Check missingness, leakage, collinearity, heteroskedasticity, grouped dependence, and validation design before presenting results.</p>
+        </article>
+      </div>
+      <div class="action-row">
+        <a class="button" href="samples.html">Open Copy-Paste Samples</a>
+        <a class="button secondary" href="model-tuning.html">Open Model Tuning Guide</a>
+        <a class="button secondary" href="scripts/copy_paste_r_samples.R">R samples</a>
+        <a class="button secondary" href="scripts/copy_paste_python_samples.py">Python samples</a>
+        <a class="button secondary" href="sql/copy_paste_sql_samples.sql">SQL samples</a>
+        <a class="button secondary" href="https://github.com/lindadata/lindadata.github.io/tree/master/statistical-analytics">View on GitHub</a>
+      </div>
+    </section>
 
     <section id="workflow">
       <h2>Modeling Workflow</h2>
@@ -801,15 +882,23 @@
             <tr><td><a href="scripts/diagnostics_helpers.R"><code>scripts/diagnostics_helpers.R</code></a></td><td>Reusable base R functions for profiling, VIF, heteroskedasticity checks, leverage, Cook's distance, and model summaries.</td></tr>
             <tr><td><a href="scripts/download_open_data.R"><code>scripts/download_open_data.R</code></a></td><td>R template for no-key public API pulls plus optional key-based Census, FRED, and NOAA placeholders.</td></tr>
             <tr><td><a href="scripts/download_open_data.py"><code>scripts/download_open_data.py</code></a></td><td>Python standard-library downloader for World Bank, Open-Meteo, and BLS starter datasets.</td></tr>
+            <tr><td><a href="scripts/copy_paste_r_samples.R"><code>scripts/copy_paste_r_samples.R</code></a></td><td>R samples that can be copied directly into RStudio and adjusted by swapping data and column names.</td></tr>
+            <tr><td><a href="scripts/copy_paste_python_samples.py"><code>scripts/copy_paste_python_samples.py</code></a></td><td>Python samples for pandas, statsmodels, scikit-learn, time series, and LLM evaluation workflows.</td></tr>
+            <tr><td><a href="scripts/model_tuning_r_templates.R"><code>scripts/model_tuning_r_templates.R</code></a></td><td>R/RStudio templates for validation, stepwise AIC/BIC, decision trees, regularization, random forests, XGBoost, threshold tuning, and model cards.</td></tr>
+            <tr><td><a href="scripts/model_tuning_python_templates.py"><code>scripts/model_tuning_python_templates.py</code></a></td><td>Python templates for scikit-learn, statsmodels, XGBoost, grid search, random search, stacking, time/group validation, and calibration.</td></tr>
             <tr><td><a href="scripts/statistical_methods_cookbook.R"><code>scripts/statistical_methods_cookbook.R</code></a></td><td>R/RStudio cookbook covering the statistical technique catalog, from profiling through LLM evaluation.</td></tr>
             <tr><td><a href="scripts/statistical_methods_cookbook.py"><code>scripts/statistical_methods_cookbook.py</code></a></td><td>Python cookbook with function templates for profiling, inference, modeling, clustering, reliability, and LLM evaluation.</td></tr>
             <tr><td><a href="scripts/llm_statistical_analysis.R"><code>scripts/llm_statistical_analysis.R</code></a></td><td>R templates for prompt experiments, factuality models, calibration, agreement, cost, and drift.</td></tr>
             <tr><td><a href="scripts/llm_statistical_analysis.py"><code>scripts/llm_statistical_analysis.py</code></a></td><td>Python templates for statistically evaluating LLM outputs after generation.</td></tr>
             <tr><td><a href="scripts/local_static_server.R"><code>scripts/local_static_server.R</code></a></td><td>R helper for previewing this static hub locally without installing Ruby or Jekyll.</td></tr>
             <tr><td><a href="sql/analytics_examples.sql"><code>sql/analytics_examples.sql</code></a></td><td>DuckDB-style SQL examples for profiling, correlations, train/test splits, and regression-ready feature tables.</td></tr>
+            <tr><td><a href="sql/copy_paste_sql_samples.sql"><code>sql/copy_paste_sql_samples.sql</code></a></td><td>SQL samples for profiling, feature tables, A/B summaries, time features, and LLM evaluation summaries.</td></tr>
+            <tr><td><a href="sql/model_tuning_sql_templates.sql"><code>sql/model_tuning_sql_templates.sql</code></a></td><td>SQL templates for model-ready feature tables, folds, tuning grids, result tracking, thresholds, class weights, and model-card metadata.</td></tr>
             <tr><td><a href="sql/statistical_methods_cookbook.sql"><code>sql/statistical_methods_cookbook.sql</code></a></td><td>SQL cookbook for profiling, aggregate statistics, feature tables, A/B summaries, and LLM evaluation summaries.</td></tr>
             <tr><td><a href="sql/llm_statistical_analysis.sql"><code>sql/llm_statistical_analysis.sql</code></a></td><td>SQL schema and summary queries for prompt testing, calibration, agreement inputs, and drift monitoring.</td></tr>
             <tr><td><a href="data/statistical_techniques_catalog.csv"><code>data/statistical_techniques_catalog.csv</code></a></td><td>Complete 100-row catalog of statistical techniques and their R, Python, and SQL entry points.</td></tr>
+            <tr><td><a href="data/sample_recipe_index.csv"><code>data/sample_recipe_index.csv</code></a></td><td>Quick map from common questions to copy-paste R, Python, and SQL recipes.</td></tr>
+            <tr><td><a href="data/model_tuning_catalog.csv"><code>data/model_tuning_catalog.csv</code></a></td><td>Machine-readable catalog of validation designs, tuning families, search strategies, diagnostics, and language entry points.</td></tr>
             <tr><td><a href="data/llm_statistical_analysis_checklist.csv"><code>data/llm_statistical_analysis_checklist.csv</code></a></td><td>Checklist for designing and reviewing statistical analyses of LLM outputs.</td></tr>
             <tr><td><a href="data/regression_catalog.csv"><code>data/regression_catalog.csv</code></a></td><td>Machine-readable catalog of model families, targets, structures, and diagnostics.</td></tr>
             <tr><td><a href="data/diagnostics_checklist.csv"><code>data/diagnostics_checklist.csv</code></a></td><td>Reusable checklist for pre-model review and peer review.</td></tr>
@@ -840,11 +929,13 @@ run_lm_diagnostics(fit, mtcars)</code></pre>
         <article class="card"><h3>One Model Card Per Analysis</h3><p>State the target, unit of analysis, predictors, exclusions, assumptions, diagnostics, metrics, and limitations.</p></article>
         <article class="card"><h3>No Credentials in Public Sites</h3><p>Keep keys in <code>.Renviron</code>, environment variables, or a secret manager. Publish metadata and code, not secrets.</p></article>
         <article class="card"><h3>Always Keep a Baseline</h3><p>Every complex model should be compared to a simple baseline and a decision-relevant benchmark.</p></article>
+        <article class="card"><h3>GitHub Review Loop</h3><p>Review changes in the source folder, run the R and link checks, then push to <code>master</code> for GitHub Pages publication.</p></article>
+        <article class="card"><h3>Copy-First UX</h3><p>Every teaching page should make the next action obvious: choose the question, copy the code, swap the data, and run diagnostics.</p></article>
       </div>
     </section>
 
     <footer>
-      <p>Last updated June 22, 2026. Built for Linda Data as an educational analytics resource using R, RStudio, Python, SQL, public datasets, LLM evaluation workflows, and GitHub Pages.</p>
+      <p>Last updated June 29, 2026. Built for Linda Data as an educational analytics resource using R, RStudio, Python, SQL, public datasets, model tuning workflows, LLM evaluation workflows, GitHub source control, and GitHub Pages.</p>
     </footer>
   </main>
 
@@ -857,6 +948,32 @@ run_lm_diagnostics(fit, mtcars)</code></pre>
       rows.forEach(function (row) {
         const text = row.textContent.toLowerCase();
         row.style.display = text.includes(query) ? "" : "none";
+      });
+    });
+
+    document.querySelectorAll("pre").forEach(function (pre, index) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "code-shell";
+      pre.parentNode.insertBefore(wrapper, pre);
+      wrapper.appendChild(pre);
+
+      const button = document.createElement("button");
+      button.className = "copy-button";
+      button.type = "button";
+      button.textContent = "Copy";
+      button.setAttribute("aria-label", "Copy code block " + (index + 1));
+      wrapper.insertBefore(button, pre);
+
+      button.addEventListener("click", async function () {
+        const text = pre.textContent;
+        try {
+          await navigator.clipboard.writeText(text);
+          button.textContent = "Copied";
+          window.setTimeout(function () { button.textContent = "Copy"; }, 1600);
+        } catch (error) {
+          button.textContent = "Select";
+          window.setTimeout(function () { button.textContent = "Copy"; }, 1600);
+        }
       });
     });
   </script>
