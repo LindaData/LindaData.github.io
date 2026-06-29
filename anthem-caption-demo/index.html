@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Public Domain Soccer Visual Anthem Caption Demo</title>
+  <style>
+    :root { color-scheme: light; font-family: Segoe UI, Arial, sans-serif; }
+    body { margin: 0; background: #f4f7f5; color: #16211d; }
+    header { padding: 24px clamp(18px, 4vw, 48px) 12px; }
+    main { padding: 0 clamp(18px, 4vw, 48px) 36px; }
+    h1 { margin: 0; font-size: clamp(26px, 4vw, 44px); line-height: 1.05; letter-spacing: 0; }
+    h2 { margin: 0 0 10px; font-size: 18px; letter-spacing: 0; }
+    audio, video { width: 100%; margin: 18px 0; background: #080c0a; max-height: 62vh; }
+    .status { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 0 0 18px; }
+    .metric { background: #ffffff; border: 1px solid #d8e2dc; border-radius: 8px; padding: 12px; min-height: 62px; }
+    .metric span { display: block; color: #5c6d66; font-size: 12px; text-transform: uppercase; }
+    .metric strong { display: block; margin-top: 4px; font-size: 17px; word-break: break-word; }
+    .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+    section { min-width: 0; }
+    .caption-now { background: #ffffff; border: 1px solid #d8e2dc; border-radius: 8px; min-height: 110px; padding: 16px; font-size: 22px; line-height: 1.35; white-space: pre-wrap; }
+    .cue-list { margin-top: 12px; display: grid; gap: 8px; }
+    .cue { border-left: 4px solid #a7b5ad; background: #ffffff; padding: 8px 10px; font-size: 14px; }
+    .cue.active { border-color: #0f766e; background: #e6f4ef; }
+    .cue time { color: #5c6d66; display: block; font-size: 12px; margin-bottom: 2px; }
+    @media (max-width: 760px) { .status, .comparison { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Public Domain Soccer Visual Anthem Caption Demo</h1>
+  </header>
+  <main>
+    <video id="player" controls playsinline src="program_media.mp4"></video>
+    <div class="status" id="status"></div>
+    <div class="comparison">
+      <section>
+        <h2>ASR Draft</h2>
+        <div class="caption-now" id="autoNow"></div>
+        <div class="cue-list" id="autoList"></div>
+      </section>
+      <section>
+        <h2>Anthem Corrected</h2>
+        <div class="caption-now" id="repairedNow"></div>
+        <div class="cue-list" id="repairedList"></div>
+      </section>
+    </div>
+  </main>
+  <script>
+    const autoCues = [{"start":0,"end":3,"text":"Welcome to this International Soccer match."},{"start":3,"end":6,"text":"The players are lining up before kickoff."},{"start":6,"end":17.48,"text":"The match is underway."},{"start":17.48,"end":22.48,"text":"The first pass moves across midfield, and the crowd is already loud."}];
+    const repairedCues = [{"start":0,"end":3,"text":"Welcome to this International Soccer match."},{"start":3,"end":6,"text":"The players are lining up before kickoff."},{"start":6.3158,"end":8.8158,"text":"[verified source-language anthem line 1]\n[approved English rendering line 1]"},{"start":8.8158,"end":11.3158,"text":"[verified source-language anthem line 2]\n[approved English rendering line 2]"},{"start":11.3158,"end":14.3158,"text":"[verified source-language anthem line 3]\n[approved English rendering line 3]"},{"start":17.48,"end":22.48,"text":"The first pass moves across midfield, and the crowd is already loud."}];
+    const eventInfo = {"event_id":1,"detected_at_s":6.3158,"detected_end_s":15.4558,"anthem_id":"demo_synthetic_anthem","recording_id":"synthetic_anthem_reference","detection_method":"constellation_hash_audio_fingerprint","aligned_hashes":83,"match_fraction":0.0064,"confidence":0.99,"decision_status":"accepted_demo_match"};
+    const matches = [{"anthem_id":"demo_synthetic_anthem","recording_id":"synthetic_anthem_reference","offset_frames":-272,"aligned_hashes":83,"match_fraction":0.0064,"rank":1,"offset_seconds":-6.3158,"detection_method":"constellation_hash_audio_fingerprint"}];
+    const player = document.getElementById('player');
+    const autoNow = document.getElementById('autoNow');
+    const repairedNow = document.getElementById('repairedNow');
+    const autoList = document.getElementById('autoList');
+    const repairedList = document.getElementById('repairedList');
+    const status = document.getElementById('status');
+    const fmt = (n) => Number(n).toFixed(2) + 's';
+    function metric(label, value) {
+      const node = document.createElement('div');
+      node.className = 'metric';
+      node.innerHTML = `<span>${label}</span><strong>${value}</strong>`;
+      return node;
+    }
+    status.append(
+      metric('Anthem', eventInfo.anthem_id),
+      metric('Detected Window', `${fmt(eventInfo.detected_at_s)} - ${fmt(eventInfo.detected_end_s)}`),
+      metric('Confidence', Number(eventInfo.confidence).toFixed(2)),
+      metric('Aligned Hashes', eventInfo.aligned_hashes)
+    );
+    function renderList(cues, target) {
+      cues.forEach((cue, index) => {
+        const row = document.createElement('div');
+        row.className = 'cue';
+        row.dataset.index = index;
+        const text = document.createElement('div');
+        text.textContent = cue.text;
+        text.innerHTML = text.innerHTML.replace(/\n/g, '<br>');
+        row.innerHTML = `<time>${fmt(cue.start)} - ${fmt(cue.end)}</time>`;
+        row.append(text);
+        target.append(row);
+      });
+    }
+    function activeCue(cues, t) { return cues.findIndex(cue => t >= cue.start && t < cue.end); }
+    function updatePanel(cues, list, now, t) {
+      const active = activeCue(cues, t);
+      now.textContent = active >= 0 ? cues[active].text : '';
+      [...list.children].forEach((node, index) => node.classList.toggle('active', index === active));
+    }
+    renderList(autoCues, autoList);
+    renderList(repairedCues, repairedList);
+    player.addEventListener('timeupdate', () => {
+      updatePanel(autoCues, autoList, autoNow, player.currentTime);
+      updatePanel(repairedCues, repairedList, repairedNow, player.currentTime);
+    });
+  </script>
+</body>
+</html>

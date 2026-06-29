@@ -1,0 +1,2 @@
+"event_id","detected_at_s","detected_end_s","anthem_id","recording_id","detection_method","aligned_hashes","match_fraction","confidence","decision_status"
+1,6.31582766439909,15.4558276643991,"demo_synthetic_anthem","synthetic_anthem_reference","constellation_hash_audio_fingerprint",83,0.00644209872710338,0.99,"accepted_demo_match"
