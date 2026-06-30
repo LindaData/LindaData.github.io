@@ -1281,6 +1281,78 @@ textarea {
   gap: 12px;
 }
 
+.sort-board-panel {
+  background:
+    linear-gradient(135deg, rgba(255, 248, 238, 0.88), rgba(255, 255, 255, 0.9)),
+    var(--card);
+}
+
+.sort-board-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.sort-board-lane {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.sort-board-lane-recycle {
+  background:
+    linear-gradient(135deg, rgba(223, 247, 239, 0.92), rgba(255, 255, 255, 0.94));
+}
+
+.sort-board-lane-dropoff {
+  background:
+    linear-gradient(135deg, rgba(255, 247, 237, 0.94), rgba(255, 255, 255, 0.94));
+}
+
+.sort-board-lane-check {
+  background:
+    linear-gradient(135deg, rgba(239, 246, 255, 0.94), rgba(255, 255, 255, 0.94));
+}
+
+.sort-board-lane-trash {
+  background:
+    linear-gradient(135deg, rgba(255, 241, 242, 0.94), rgba(255, 255, 255, 0.94));
+}
+
+.sort-board-list {
+  display: grid;
+  gap: 10px;
+}
+
+.sort-board-item {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(16, 42, 67, 0.08);
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 12px 24px rgba(10, 42, 63, 0.05);
+}
+
+.sort-board-item-head {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.sort-board-item-copy {
+  min-width: 0;
+}
+
+.sort-board-item-copy strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.98rem;
+}
+
 .center-card strong,
 .history-card strong {
   display: block;
@@ -2017,6 +2089,14 @@ textarea {
   .lower-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .sort-board-panel {
+    grid-column: 1 / -1;
+  }
+
+  .sort-board-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (min-width: 1024px) {
@@ -2056,6 +2136,10 @@ textarea {
   }
 
   .basis-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .sort-board-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
@@ -2280,7 +2364,7 @@ textarea {
         </section>
 
         <section class="routine-grid">
-          <article class="glass-panel">
+          <article class="glass-panel sort-board-panel">
             <div class="panel-heading">
               <div>
                 <p class="eyebrow" data-i18n="routineEyebrow">Neighborhood rhythm</p>
@@ -2312,6 +2396,19 @@ textarea {
         </section>
 
         <section class="lower-grid">
+          <article class="glass-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow" data-i18n="sortBoardEyebrow">Home sorting board</p>
+                <h3 data-i18n="sortBoardTitle">Keep the right items in the right holding zone</h3>
+              </div>
+            </div>
+            <p class="browse-copy" data-i18n="sortBoardCopy">
+              Save items after lookup so the house keeps a simple curbside, drop-off, and doubt-zone system.
+            </p>
+            <div id="sort-board" class="sort-board-grid"></div>
+          </article>
+
           <article class="glass-panel">
             <div class="panel-heading">
               <div>
@@ -2734,6 +2831,21 @@ const translations = {
     playbookSubtitle: "Sort where the item first becomes waste so the right choice feels automatic.",
     historyEyebrow: "Recent activity",
     historyTitle: "What you checked recently",
+    sortBoardEyebrow: "Home sorting board",
+    sortBoardTitle: "Keep the right items in the right holding zone",
+    sortBoardCopy: "Save items after lookup so the house keeps a simple curbside, drop-off, and doubt-zone system.",
+    sortBoardRecycleLane: "Home recycling area",
+    sortBoardDropoffLane: "Next drop-off trip",
+    sortBoardCheckLane: "Doubt zone",
+    sortBoardTrashLane: "Trash soon",
+    sortBoardLaneEmpty: "No items saved in this lane yet.",
+    sortBoardSave: "Save to home sorting board",
+    sortBoardSaved: "Saved to the home sorting board.",
+    sortBoardAlreadySaved: "This item is already saved in that lane.",
+    sortBoardOpenItem: "Open answer",
+    sortBoardRemove: "Remove",
+    sortBoardClearLane: "Clear lane",
+    sortBoardCount: "items",
     publicFeedbackEyebrow: "Verification requests",
     publicFeedbackTitle: "Need us to review an item or local rule?",
     publicFeedbackCopy: "Send a quick request when an item is missing, the municipality guidance feels wrong, or a business wants a product reviewed.",
@@ -3050,6 +3162,21 @@ const translations = {
     playbookSubtitle: "Separa donde el articulo se convierte en residuo para que la decision correcta sea automatica.",
     historyEyebrow: "Actividad reciente",
     historyTitle: "Lo que revisaste recientemente",
+    sortBoardEyebrow: "Panel de separacion en casa",
+    sortBoardTitle: "Mantén los articulos correctos en la zona correcta",
+    sortBoardCopy: "Guarda articulos despues de consultarlos para que la casa mantenga un sistema simple de reciclaje, centro y zona de duda.",
+    sortBoardRecycleLane: "Area de reciclaje en casa",
+    sortBoardDropoffLane: "Proximo viaje al centro",
+    sortBoardCheckLane: "Zona de duda",
+    sortBoardTrashLane: "Basura pronta",
+    sortBoardLaneEmpty: "Todavia no hay articulos guardados en esta zona.",
+    sortBoardSave: "Guardar en el panel de separacion",
+    sortBoardSaved: "Guardado en el panel de separacion.",
+    sortBoardAlreadySaved: "Este articulo ya esta guardado en esa zona.",
+    sortBoardOpenItem: "Abrir respuesta",
+    sortBoardRemove: "Quitar",
+    sortBoardClearLane: "Limpiar zona",
+    sortBoardCount: "articulos",
     publicFeedbackEyebrow: "Solicitudes de verificacion",
     publicFeedbackTitle: "Necesitas que revisemos un articulo o una regla local?",
     publicFeedbackCopy: "Envia una solicitud rapida cuando falte un articulo, la guia municipal se sienta incorrecta o un negocio quiera que revisemos un producto.",
@@ -5315,6 +5442,12 @@ const state = {
   history: readStoredJson("recycling-history-v2", []),
   feedback: readStoredJson("recycling-feedback-v1", []),
   publicFeedback: readStoredJson("recycling-public-feedback-v1", []),
+  sortBoard: readStoredJson("recycling-sort-board-v1", {
+    recycle: [],
+    drop_off: [],
+    check_locally: [],
+    trash: []
+  }),
   sessionCoverage: readStoredJson("recycling-session-coverage-v1", {
     barcodes: [],
     municipalities: [],
@@ -5370,6 +5503,7 @@ const elements = {
   playbookCard: document.getElementById("playbook-card"),
   markGuide: document.getElementById("mark-guide"),
   centerList: document.getElementById("center-list"),
+  sortBoard: document.getElementById("sort-board"),
   historyList: document.getElementById("history-list"),
   publicFeedbackContext: document.getElementById("public-feedback-context"),
   publicFeedbackItem: document.getElementById("public-feedback-item"),
@@ -5406,7 +5540,7 @@ const elements = {
   reviewActions: [...document.querySelectorAll("[data-review-action]")]
 };
 
-const buildId = "2026-06-30-ui26";
+const buildId = "2026-06-30-ui27";
 const bootState = readUrlState();
 const geolocationOptions = {
   enableHighAccuracy: true,
@@ -5810,6 +5944,35 @@ function productVisualMarkup(product, barcode, options = {}) {
       <span class="product-visual-mark">${product.mark}</span>
     </div>
   `;
+}
+
+function sortBoardLaneMeta(outcome) {
+  const ui = copy();
+  if (outcome === "recycle") {
+    return {
+      title: ui.sortBoardRecycleLane,
+      className: "sort-board-lane sort-board-lane-recycle"
+    };
+  }
+
+  if (outcome === "drop_off") {
+    return {
+      title: ui.sortBoardDropoffLane,
+      className: "sort-board-lane sort-board-lane-dropoff"
+    };
+  }
+
+  if (outcome === "trash") {
+    return {
+      title: ui.sortBoardTrashLane,
+      className: "sort-board-lane sort-board-lane-trash"
+    };
+  }
+
+  return {
+    title: ui.sortBoardCheckLane,
+    className: "sort-board-lane sort-board-lane-check"
+  };
 }
 
 function setReviewMode(isReviewMode, options = {}) {
@@ -6382,6 +6545,9 @@ function homeCueMarkup(entry, guidance) {
       <div class="home-cue-pills">
         <span class="${outcomeClass(guidance.outcome)}">${outcomeLabel(guidance.outcome)}</span>
         <span class="mini-pill">${guidance.steps[state.language][0]}</span>
+      </div>
+      <div class="center-actions">
+        <button class="button button-secondary" type="button" data-result-action="stash">${ui.sortBoardSave}</button>
       </div>
     </div>
   `;
@@ -7425,6 +7591,96 @@ function renderCenters(entry) {
   });
 }
 
+function saveSortBoard() {
+  localStorage.setItem("recycling-sort-board-v1", JSON.stringify(state.sortBoard));
+}
+
+function addSortBoardEntry(entry, municipalityKey, guidance) {
+  const ui = copy();
+  const lane = guidance.outcome;
+  const currentLane = state.sortBoard[lane] || [];
+  const existing = currentLane.find((item) => item.barcode === entry.barcode && item.municipality === municipalityKey);
+
+  if (existing) {
+    showToast(ui.sortBoardAlreadySaved);
+    return;
+  }
+
+  state.sortBoard[lane] = [
+    {
+      barcode: entry.barcode,
+      municipality: municipalityKey,
+      outcome: guidance.outcome,
+      timestamp: Date.now()
+    },
+    ...currentLane
+  ].slice(0, 12);
+  saveSortBoard();
+  renderSortBoard();
+  showToast(ui.sortBoardSaved);
+}
+
+function removeSortBoardEntry(lane, barcode, municipalityKey) {
+  state.sortBoard[lane] = (state.sortBoard[lane] || []).filter((item) => !(item.barcode === barcode && item.municipality === municipalityKey));
+  saveSortBoard();
+  renderSortBoard();
+}
+
+function clearSortBoardLane(lane) {
+  state.sortBoard[lane] = [];
+  saveSortBoard();
+  renderSortBoard();
+}
+
+function renderSortBoard() {
+  const ui = copy();
+  const laneOrder = ["drop_off", "check_locally", "recycle", "trash"];
+
+  elements.sortBoard.innerHTML = laneOrder.map((lane) => {
+    const items = state.sortBoard[lane] || [];
+    const meta = sortBoardLaneMeta(lane);
+    const countLabel = `${items.length} ${ui.sortBoardCount}`;
+
+    return `
+      <article class="${meta.className}">
+        <div class="comparison-head">
+          <strong>${meta.title}</strong>
+          <span class="mini-pill">${countLabel}</span>
+        </div>
+        ${items.length ? `
+          <div class="sort-board-list">
+            ${items.map((item) => {
+              const product = products[item.barcode];
+              const municipality = municipalities[item.municipality];
+              if (!product || !municipality) {
+                return "";
+              }
+              return `
+                <div class="sort-board-item">
+                  <div class="sort-board-item-head">
+                    <div class="sort-board-item-copy">
+                      <strong>${product.name[state.language]}</strong>
+                      <p class="history-meta">${municipality.name[state.language]} &middot; ${formatHistoryTime(item.timestamp)}</p>
+                    </div>
+                    <span class="mini-pill">${product.mark}</span>
+                  </div>
+                  <div class="center-actions">
+                    <button class="ghost-button" type="button" data-sort-action="open" data-sort-lane="${lane}" data-sort-barcode="${item.barcode}" data-sort-municipality="${item.municipality}">${ui.sortBoardOpenItem}</button>
+                    <button class="ghost-button" type="button" data-sort-action="remove" data-sort-lane="${lane}" data-sort-barcode="${item.barcode}" data-sort-municipality="${item.municipality}">${ui.sortBoardRemove}</button>
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+          <div class="center-actions">
+            <button class="ghost-button" type="button" data-sort-action="clear-lane" data-sort-lane="${lane}">${ui.sortBoardClearLane}</button>
+          </div>
+        ` : `<p class="history-meta">${ui.sortBoardLaneEmpty}</p>`}
+      </article>
+    `;
+  }).join("");
+}
+
 function formatHistoryTime(timestamp) {
   const date = new Date(timestamp);
   if (Number.isNaN(date.getTime())) {
@@ -7910,6 +8166,12 @@ function resetReviewSession() {
 
   state.history = [];
   state.feedback = [];
+  state.sortBoard = {
+    recycle: [],
+    drop_off: [],
+    check_locally: [],
+    trash: []
+  };
   state.sessionCoverage = {
     barcodes: [],
     municipalities: [],
@@ -7923,6 +8185,7 @@ function resetReviewSession() {
 
   localStorage.removeItem("recycling-history-v2");
   localStorage.removeItem("recycling-feedback-v1");
+  localStorage.removeItem("recycling-sort-board-v1");
   localStorage.removeItem("recycling-session-coverage-v1");
 
   elements.searchInput.value = "";
@@ -7937,6 +8200,7 @@ function resetReviewSession() {
   renderFeedbackTags();
   refreshLocationStatus();
   renderEmptyResult();
+  renderSortBoard();
   renderHistory();
   renderFeedbackLog();
   refreshMunicipalityViews();
@@ -8276,6 +8540,7 @@ elements.languageToggle.addEventListener("click", () => {
   renderFeedbackTags();
   renderScenarios();
   refreshMunicipalityViews();
+  renderSortBoard();
   renderHistory();
   renderFeedbackLog();
   renderPublicFeedbackList();
@@ -8412,6 +8677,51 @@ elements.resultContent.addEventListener("click", (event) => {
 
   if (target.getAttribute("data-result-action") === "request") {
     openPublicFeedback({ focusNotes: true });
+    return;
+  }
+
+  if (target.getAttribute("data-result-action") === "stash") {
+    const currentEntry = activeProductEntry();
+    if (!currentEntry) {
+      return;
+    }
+    const municipalityKey = elements.municipalitySelect.value;
+    const guidance = currentEntry.product.outcomes[municipalityKey];
+    addSortBoardEntry(currentEntry, municipalityKey, guidance);
+  }
+});
+
+elements.sortBoard.addEventListener("click", (event) => {
+  const target = event.target.closest("[data-sort-action]");
+  if (!target) {
+    return;
+  }
+
+  const action = target.getAttribute("data-sort-action");
+  const lane = target.getAttribute("data-sort-lane");
+  const barcode = target.getAttribute("data-sort-barcode");
+  const municipality = target.getAttribute("data-sort-municipality");
+
+  if (action === "clear-lane" && lane) {
+    clearSortBoardLane(lane);
+    return;
+  }
+
+  if (!lane || !barcode || !municipality || !products[barcode] || !municipalities[municipality]) {
+    return;
+  }
+
+  if (action === "remove") {
+    removeSortBoardEntry(lane, barcode, municipality);
+    return;
+  }
+
+  if (action === "open") {
+    elements.municipalitySelect.value = municipality;
+    elements.searchInput.value = products[barcode].name[state.language];
+    refreshMunicipalityViews();
+    handleSearch(barcode, { trackHistory: false });
+    scrollToSection(".result-stage");
   }
 });
 
@@ -8524,6 +8834,7 @@ renderFeedbackPresets();
 renderFeedbackTags();
 renderScenarios();
 refreshMunicipalityViews();
+renderSortBoard();
 renderHistory();
 renderFeedbackLog();
 renderPublicFeedbackList();
