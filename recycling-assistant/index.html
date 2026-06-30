@@ -1,0 +1,1997 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0f3b36">
+    <title>LindaData Recycling Assistant</title>
+    <style>
+:root {
+  --ink-strong: #102a43;
+  --ink-soft: #486581;
+  --mist: #edf4f7;
+  --mist-deep: #d9e9eb;
+  --leaf: #0f766e;
+  --leaf-deep: #0b4f4a;
+  --sand: #fff6e9;
+  --sun: #f59e0b;
+  --coral: #ef6c57;
+  --mint: #dff7ef;
+  --card: rgba(255, 255, 255, 0.78);
+  --card-strong: rgba(255, 255, 255, 0.92);
+  --border: rgba(16, 42, 67, 0.08);
+  --shadow: 0 22px 60px rgba(10, 42, 63, 0.12);
+  --radius-xl: 30px;
+  --radius-lg: 22px;
+  --radius-md: 16px;
+  --font-body: "Aptos", "Trebuchet MS", "Segoe UI", sans-serif;
+  --font-display: "Georgia", "Iowan Old Style", "Palatino Linotype", serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink-strong);
+  font-family: var(--font-body);
+  background:
+    radial-gradient(circle at 20% 0%, rgba(245, 158, 11, 0.18), transparent 24%),
+    radial-gradient(circle at 100% 10%, rgba(15, 118, 110, 0.2), transparent 28%),
+    linear-gradient(180deg, #fefbf5 0%, #eef5f4 42%, #eaf1f5 100%);
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  cursor: pointer;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--sun);
+  outline-offset: 3px;
+}
+
+.ambient {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(14px);
+  opacity: 0.68;
+}
+
+.ambient-orb-left {
+  top: 48px;
+  left: -72px;
+  width: 220px;
+  height: 220px;
+  background: rgba(245, 158, 11, 0.18);
+}
+
+.ambient-orb-right {
+  top: 220px;
+  right: -48px;
+  width: 240px;
+  height: 240px;
+  background: rgba(15, 118, 110, 0.16);
+}
+
+.ambient-grid {
+  position: absolute;
+  inset: auto 0 0;
+  height: 280px;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.7));
+  opacity: 0.18;
+}
+
+.page-shell {
+  position: relative;
+  width: min(1180px, calc(100% - 24px));
+  margin: 0 auto;
+  padding: 18px 0 44px;
+}
+
+.app-topbar,
+.brand-lockup,
+.topbar-actions,
+.panel-heading,
+.hero-ribbon,
+.hero-sidebar,
+.action-row,
+.chips {
+  display: flex;
+}
+
+.app-topbar,
+.panel-heading,
+.action-row {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-lockup,
+.topbar-actions,
+.hero-sidebar,
+.hero-ribbon,
+.chips {
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.app-topbar {
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.brand-lockup {
+  align-items: center;
+}
+
+.brand-mark {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  border-radius: 18px;
+  background:
+    linear-gradient(145deg, rgba(15, 118, 110, 1), rgba(9, 78, 73, 1));
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.brand-mark span {
+  position: absolute;
+  border-radius: 999px;
+}
+
+.brand-mark span:nth-child(1) {
+  width: 28px;
+  height: 28px;
+  border: 3px solid rgba(255, 255, 255, 0.95);
+}
+
+.brand-mark span:nth-child(2) {
+  width: 34px;
+  height: 12px;
+  border-radius: 10px;
+  background: rgba(245, 158, 11, 0.9);
+  transform: rotate(-34deg) translate(14px, -8px);
+}
+
+.brand-mark span:nth-child(3) {
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  bottom: 12px;
+  right: 12px;
+}
+
+.eyebrow,
+.kicker,
+.metric-label,
+.quick-label {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--ink-soft);
+}
+
+h1,
+h2,
+h3,
+.empty-title {
+  margin: 0;
+  font-family: var(--font-display);
+  line-height: 1.04;
+}
+
+h1 {
+  font-size: clamp(1.7rem, 3.8vw, 2.5rem);
+}
+
+h2 {
+  font-size: clamp(2.25rem, 7vw, 4.3rem);
+  max-width: 11ch;
+}
+
+h3 {
+  font-size: 1.3rem;
+}
+
+.topbar-actions {
+  align-items: center;
+}
+
+.language-toggle,
+.button,
+.ghost-button {
+  border-radius: 999px;
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.language-toggle,
+.button {
+  padding: 0.85rem 1.12rem;
+  box-shadow: var(--shadow);
+}
+
+.language-toggle {
+  background: var(--ink-strong);
+  color: white;
+  min-width: 64px;
+  font-weight: 800;
+}
+
+.ghost-button {
+  background: rgba(255, 255, 255, 0.66);
+  color: var(--ink-strong);
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(16, 42, 67, 0.08);
+}
+
+.compact-button {
+  display: none;
+}
+
+.button {
+  background: linear-gradient(135deg, var(--leaf) 0%, var(--leaf-deep) 100%);
+  color: white;
+  font-weight: 800;
+}
+
+.button-secondary {
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--ink-strong);
+}
+
+.language-toggle:hover,
+.button:hover,
+.ghost-button:hover,
+.chip:hover {
+  transform: translateY(-1px);
+}
+
+.app-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.glass-panel {
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+}
+
+.hero-panel,
+.search-panel,
+.result-shell,
+.info-card,
+.lower-grid > article {
+  padding: 22px;
+}
+
+.hero-panel {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  gap: 20px;
+  background:
+    linear-gradient(135deg, rgba(15, 118, 110, 0.12), rgba(255, 255, 255, 0.6)),
+    var(--card);
+}
+
+.hero-panel::after {
+  content: "";
+  position: absolute;
+  inset: auto -24px -40px auto;
+  width: 180px;
+  height: 180px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.24), transparent 70%);
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-text {
+  margin: 16px 0 0;
+  max-width: 60ch;
+  line-height: 1.62;
+  color: var(--ink-soft);
+  font-size: 1rem;
+}
+
+.hero-ribbon {
+  margin-top: 22px;
+  flex-wrap: wrap;
+}
+
+.ribbon-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.7rem 0.95rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.74);
+  border: 1px solid rgba(16, 42, 67, 0.06);
+  font-weight: 700;
+  color: var(--ink-strong);
+}
+
+.hero-sidebar {
+  gap: 14px;
+  flex-direction: column;
+}
+
+.metric-card {
+  padding: 18px;
+  border-radius: var(--radius-lg);
+  background: var(--card-strong);
+  border: 1px solid var(--border);
+}
+
+.metric-card strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 2rem;
+  font-family: var(--font-display);
+}
+
+.metric-card p {
+  margin: 10px 0 0;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.panel-heading {
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.7rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(16, 42, 67, 0.06);
+  font-size: 0.92rem;
+  color: var(--ink-strong);
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--leaf);
+  box-shadow: 0 0 0 6px rgba(15, 118, 110, 0.12);
+}
+
+.field-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field span {
+  font-weight: 800;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 1rem 1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(16, 42, 67, 0.1);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink-strong);
+}
+
+.field-search input {
+  font-size: 1rem;
+}
+
+.action-row {
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.quick-row {
+  margin-top: 18px;
+}
+
+.chips {
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.chip {
+  padding: 0.85rem 1rem;
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(233, 242, 244, 0.88));
+  border: 1px solid rgba(16, 42, 67, 0.08);
+  color: var(--ink-strong);
+  text-align: left;
+  min-height: 56px;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(10, 42, 63, 0.07);
+}
+
+.result-stage,
+.lower-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.result-empty {
+  min-height: 280px;
+  display: grid;
+  place-items: center;
+}
+
+.empty-state {
+  display: grid;
+  gap: 16px;
+  align-items: center;
+  text-align: center;
+  max-width: 420px;
+}
+
+.empty-art {
+  width: 92px;
+  height: 92px;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 28px;
+  background:
+    linear-gradient(145deg, rgba(15, 118, 110, 0.16), rgba(245, 158, 11, 0.18));
+}
+
+.empty-art span {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  border: 3px solid rgba(16, 42, 67, 0.78);
+  transform: rotate(12deg);
+}
+
+.empty-title {
+  font-size: 1.55rem;
+}
+
+.empty-copy {
+  margin: 10px 0 0;
+  line-height: 1.58;
+  color: var(--ink-soft);
+}
+
+.result-card {
+  display: grid;
+  gap: 16px;
+}
+
+.result-top {
+  display: grid;
+  gap: 16px;
+}
+
+.product-plate {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.product-mark {
+  width: 74px;
+  height: 74px;
+  flex: 0 0 auto;
+  border-radius: 24px;
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(135deg, rgba(16, 42, 67, 0.94), rgba(15, 118, 110, 0.9));
+  color: white;
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: 0.08em;
+  box-shadow: 0 20px 28px rgba(10, 42, 63, 0.18);
+}
+
+.product-copy {
+  min-width: 0;
+}
+
+.product-copy h4 {
+  margin: 8px 0 4px;
+  font-size: 1.6rem;
+  font-family: var(--font-display);
+}
+
+.product-subline,
+.support-copy,
+.support-list,
+.center-meta,
+.history-meta,
+.rule-note {
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.outcome-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.48rem 0.76rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.outcome-recycle {
+  background: rgba(15, 118, 110, 0.14);
+  color: var(--leaf-deep);
+}
+
+.outcome-trash {
+  background: rgba(239, 108, 87, 0.16);
+  color: #9a3223;
+}
+
+.outcome-dropoff {
+  background: rgba(245, 158, 11, 0.22);
+  color: #8a4b06;
+}
+
+.outcome-check {
+  background: rgba(72, 101, 129, 0.16);
+  color: #2d4a68;
+}
+
+.confidence-card,
+.support-card,
+.center-card,
+.history-card,
+.municipality-pulse,
+.impact-card {
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.confidence-card strong,
+.impact-card strong,
+.municipality-pulse strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 4px;
+}
+
+.meter-track {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(16, 42, 67, 0.09);
+  overflow: hidden;
+  margin: 10px 0 0;
+}
+
+.meter-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--leaf), var(--sun));
+}
+
+.result-detail-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.detail-title {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 900;
+  color: var(--ink-strong);
+}
+
+.support-list {
+  margin: 12px 0 0;
+  padding-left: 18px;
+}
+
+.support-list li + li {
+  margin-top: 8px;
+}
+
+.impact-card {
+  background:
+    linear-gradient(135deg, rgba(223, 247, 239, 0.9), rgba(255, 255, 255, 0.9));
+}
+
+.stack-list {
+  display: grid;
+  gap: 12px;
+}
+
+.center-card strong,
+.history-card strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 1rem;
+}
+
+.center-tags,
+.municipality-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.mini-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.48rem 0.72rem;
+  border-radius: 999px;
+  background: rgba(16, 42, 67, 0.07);
+  font-size: 0.84rem;
+  color: var(--ink-strong);
+}
+
+.trust-list {
+  display: grid;
+  gap: 14px;
+}
+
+.trust-item {
+  padding: 16px 0 0;
+  border-top: 1px solid rgba(16, 42, 67, 0.08);
+}
+
+.trust-item:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.trust-item p {
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+  line-height: 1.56;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%) translateY(18px);
+  background: rgba(16, 42, 67, 0.96);
+  color: white;
+  padding: 0.9rem 1.15rem;
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (min-width: 760px) {
+  .compact-button {
+    display: inline-flex;
+  }
+
+  .hero-panel {
+    grid-template-columns: 1.12fr 0.88fr;
+    align-items: stretch;
+  }
+
+  .hero-sidebar {
+    justify-content: space-between;
+  }
+
+  .field-grid {
+    grid-template-columns: 0.85fr 1.15fr;
+  }
+
+  .result-top {
+    grid-template-columns: 1.2fr 0.8fr;
+  }
+
+  .result-detail-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lower-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .result-stage {
+    grid-template-columns: 1.25fr 0.75fr;
+    align-items: start;
+  }
+
+  .side-stack {
+    display: grid;
+    gap: 18px;
+  }
+}
+
+
+</style>
+  </head>
+  <body>
+    <div class="ambient" aria-hidden="true">
+      <div class="ambient-orb ambient-orb-left"></div>
+      <div class="ambient-orb ambient-orb-right"></div>
+      <div class="ambient-grid"></div>
+    </div>
+
+    <div class="page-shell">
+      <header class="app-topbar">
+        <div class="brand-lockup">
+          <div class="brand-mark" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div>
+            <p class="eyebrow">LindaData</p>
+            <h1 data-i18n="brandTitle">Recycling Assistant</h1>
+          </div>
+        </div>
+
+        <div class="topbar-actions">
+          <button class="ghost-button compact-button" id="copy-link" type="button" data-i18n="copyLink">
+            Copy link
+          </button>
+          <button class="language-toggle" id="language-toggle" type="button" aria-label="Switch language">
+            ES
+          </button>
+        </div>
+      </header>
+
+      <main class="app-grid">
+        <section class="hero-panel glass-panel">
+          <div class="hero-copy">
+            <p class="kicker" data-i18n="heroKicker">Pilot-ready family review build</p>
+            <h2 data-i18n="heroTitle">Get the right recycling answer for the place you are standing in.</h2>
+            <p class="hero-text" data-i18n="heroCopy">
+              Scan a package or search by name, confirm the municipality, and get a clear answer with local reasoning, next steps, and nearby drop-off options.
+            </p>
+
+            <div class="hero-ribbon">
+              <span class="ribbon-pill" data-i18n="ribbonLocal">Local rules first</span>
+              <span class="ribbon-pill" data-i18n="ribbonBilingual">English + Spanish</span>
+              <span class="ribbon-pill" data-i18n="ribbonCenters">Drop-off guidance</span>
+            </div>
+          </div>
+
+          <div class="hero-sidebar">
+            <div class="metric-card">
+              <span class="metric-label" data-i18n="metricOneLabel">Decision speed</span>
+              <strong>30s</strong>
+              <p data-i18n="metricOneCopy">The answer card is designed to land in one glance.</p>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label" data-i18n="metricTwoLabel">What changes by city</span>
+              <strong data-i18n="metricTwoValue">Rules</strong>
+              <p data-i18n="metricTwoCopy">The same package can be recycled, trashed, or dropped off depending on the municipality.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="search-panel glass-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow" data-i18n="searchEyebrow">Start a lookup</p>
+              <h3 data-i18n="searchTitle">Search, scan, and trust the answer</h3>
+            </div>
+            <div class="status-chip">
+              <span class="status-dot"></span>
+              <span id="municipality-status"></span>
+            </div>
+          </div>
+
+          <div class="field-grid">
+            <label class="field">
+              <span data-i18n="municipalityLabel">Municipality</span>
+              <select id="municipality-select" aria-label="Municipality">
+                <option value="riverton">Riverton</option>
+                <option value="lakewood">Lakewood</option>
+                <option value="sunset-hills">Sunset Hills</option>
+              </select>
+            </label>
+
+            <label class="field field-search">
+              <span data-i18n="searchLabel">Barcode or product name</span>
+              <input id="search-input" type="text" autocomplete="off" placeholder="Try aluminum can or 012345678905">
+            </label>
+          </div>
+
+          <div class="action-row">
+            <button id="scan-demo" class="button button-secondary" type="button" data-i18n="scanDemo">Scan demo</button>
+            <button id="search-button" class="button" type="button" data-i18n="searchButton">Get guidance</button>
+          </div>
+
+          <div class="quick-row">
+            <span class="quick-label" data-i18n="quickLabel">Popular lookups</span>
+            <div class="chips">
+              <button class="chip" data-barcode="012345678905" type="button"></button>
+              <button class="chip" data-barcode="049000042511" type="button"></button>
+              <button class="chip" data-barcode="041333216317" type="button"></button>
+              <button class="chip" data-barcode="036000291452" type="button"></button>
+            </div>
+          </div>
+        </section>
+
+        <section class="result-stage">
+          <article class="result-shell glass-panel" aria-live="polite">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow" data-i18n="resultEyebrow">Answer card</p>
+                <h3 data-i18n="resultTitle">Your local recycling guidance</h3>
+              </div>
+              <button id="copy-summary" class="ghost-button" type="button" data-i18n="copySummary">
+                Copy summary
+              </button>
+            </div>
+            <div id="result-content" class="result-empty">
+              <div class="empty-state">
+                <div class="empty-art" aria-hidden="true">
+                  <span></span>
+                </div>
+                <div>
+                  <p class="empty-title" data-i18n="resultEmptyTitle">Search an item to reveal the answer card.</p>
+                  <p class="empty-copy" data-i18n="resultEmptyCopy">
+                    The layout will highlight the disposal outcome, what changed because of your municipality, and the safest next step.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <aside class="side-stack">
+            <article class="info-card glass-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow" data-i18n="municipalityEyebrow">Current area</p>
+                  <h3 data-i18n="municipalityTitle">Municipality pulse</h3>
+                </div>
+              </div>
+              <div id="municipality-card"></div>
+            </article>
+
+            <article class="info-card glass-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow" data-i18n="centersEyebrow">Nearby help</p>
+                  <h3 data-i18n="centersTitle">Recycling centers</h3>
+                </div>
+              </div>
+              <div id="center-list" class="stack-list"></div>
+            </article>
+          </aside>
+        </section>
+
+        <section class="lower-grid">
+          <article class="glass-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow" data-i18n="historyEyebrow">Recent activity</p>
+                <h3 data-i18n="historyTitle">What you checked recently</h3>
+              </div>
+            </div>
+            <div id="history-list" class="stack-list"></div>
+          </article>
+
+          <article class="glass-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow" data-i18n="trustEyebrow">Why it feels reliable</p>
+                <h3 data-i18n="trustTitle">Designed for trust</h3>
+              </div>
+            </div>
+            <div class="trust-list">
+              <div class="trust-item">
+                <strong data-i18n="trustOneTitle">Municipality context stays visible</strong>
+                <p data-i18n="trustOneCopy">The answer always keeps the selected area in view so users do not mistake local rules for national rules.</p>
+              </div>
+              <div class="trust-item">
+                <strong data-i18n="trustTwoTitle">Outcome first, explanation second</strong>
+                <p data-i18n="trustTwoCopy">The most important action is shown immediately, with rationale and contamination warnings underneath.</p>
+              </div>
+              <div class="trust-item">
+                <strong data-i18n="trustThreeTitle">Built for household testing</strong>
+                <p data-i18n="trustThreeCopy">The interface is optimized for phone review so family feedback surfaces clarity issues early.</p>
+              </div>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+const translations = {
+  en: {
+    brandTitle: "Recycling Assistant",
+    copyLink: "Copy link",
+    heroKicker: "Pilot-ready family review build",
+    heroTitle: "Get the right recycling answer for the place you are standing in.",
+    heroCopy:
+      "Scan a package or search by name, confirm the municipality, and get a clear answer with local reasoning, next steps, and nearby drop-off options.",
+    ribbonLocal: "Local rules first",
+    ribbonBilingual: "English + Spanish",
+    ribbonCenters: "Drop-off guidance",
+    metricOneLabel: "Decision speed",
+    metricOneCopy: "The answer card is designed to land in one glance.",
+    metricTwoLabel: "What changes by city",
+    metricTwoValue: "Rules",
+    metricTwoCopy: "The same package can be recycled, trashed, or dropped off depending on the municipality.",
+    searchEyebrow: "Start a lookup",
+    searchTitle: "Search, scan, and trust the answer",
+    municipalityLabel: "Municipality",
+    searchLabel: "Barcode or product name",
+    searchPlaceholder: "Try aluminum can or 012345678905",
+    scanDemo: "Scan demo",
+    searchButton: "Get guidance",
+    quickLabel: "Popular lookups",
+    resultEyebrow: "Answer card",
+    resultTitle: "Your local recycling guidance",
+    copySummary: "Copy summary",
+    resultEmptyTitle: "Search an item to reveal the answer card.",
+    resultEmptyCopy:
+      "The layout will highlight the disposal outcome, what changed because of your municipality, and the safest next step.",
+    municipalityEyebrow: "Current area",
+    municipalityTitle: "Municipality pulse",
+    centersEyebrow: "Nearby help",
+    centersTitle: "Recycling centers",
+    historyEyebrow: "Recent activity",
+    historyTitle: "What you checked recently",
+    trustEyebrow: "Why it feels reliable",
+    trustTitle: "Designed for trust",
+    trustOneTitle: "Municipality context stays visible",
+    trustOneCopy:
+      "The answer always keeps the selected area in view so users do not mistake local rules for national rules.",
+    trustTwoTitle: "Outcome first, explanation second",
+    trustTwoCopy:
+      "The most important action is shown immediately, with rationale and contamination warnings underneath.",
+    trustThreeTitle: "Built for household testing",
+    trustThreeCopy:
+      "The interface is optimized for phone review so family feedback surfaces clarity issues early.",
+    municipalityStatusPrefix: "Using",
+    noCenters: "Search an item to reveal nearby drop-off and recycling options.",
+    noHistory: "Your last few lookups will appear here once you start checking items.",
+    noResultCopyLink: "Check a product first, then copy the answer.",
+    toastLink: "Preview link copied.",
+    toastSummary: "Answer summary copied.",
+    toastFallback: "Copying is not available in this browser.",
+    unknownTitle: "We could not confidently identify that item.",
+    unknownCopy: "Try another search, use one of the popular examples, or review the packaging label.",
+    unknownReasonLabel: "What to do next",
+    unknownReason: "Use the material type, resin code, or local packaging label before disposing of the item.",
+    unknownImpactTitle: "Why the app stops here",
+    unknownImpactCopy: "A wrong local answer is worse than no answer, so uncertain matches stay cautious.",
+    municipalityCardTitle: "Current rule window",
+    municipalityUpdatedLabel: "Last local review",
+    municipalityProgramLabel: "Program setup",
+    municipalityCoverageLabel: "Coverage note",
+    centerAccepts: "Accepts",
+    centerHours: "Hours",
+    centerDistance: "Distance",
+    historyChecked: "Checked",
+    resultMunicipality: "Municipality",
+    resultTrack: "Collection stream",
+    resultWhy: "Why this answer",
+    resultSteps: "Next steps",
+    resultWatchout: "Watch out for",
+    resultConfidence: "Rule confidence",
+    resultConfidenceCopy: "This item matched a known product record and a reviewed local disposal rule.",
+    resultImpact: "Why this matters",
+    resultUpdated: "Local rule review",
+    tryAnother: "Try another item",
+    outcomeRecycle: "Recycle",
+    outcomeTrash: "Trash",
+    outcomeDropOff: "Drop-off",
+    outcomeCheckLocally: "Check locally"
+  },
+  es: {
+    brandTitle: "Asistente de Reciclaje",
+    copyLink: "Copiar enlace",
+    heroKicker: "Version lista para revision familiar",
+    heroTitle: "Recibe la respuesta correcta de reciclaje para el lugar donde estas.",
+    heroCopy:
+      "Escanea un empaque o busca por nombre, confirma el municipio y recibe una respuesta clara con razon local, pasos y centros cercanos.",
+    ribbonLocal: "Primero reglas locales",
+    ribbonBilingual: "Ingles + espanol",
+    ribbonCenters: "Guia de centros",
+    metricOneLabel: "Velocidad de decision",
+    metricOneCopy: "La tarjeta de respuesta esta hecha para entenderse de un vistazo.",
+    metricTwoLabel: "Que cambia por ciudad",
+    metricTwoValue: "Reglas",
+    metricTwoCopy: "El mismo empaque puede reciclarse, tirarse o llevarse a un centro segun el municipio.",
+    searchEyebrow: "Inicia una consulta",
+    searchTitle: "Busca, escanea y confia en la respuesta",
+    municipalityLabel: "Municipio",
+    searchLabel: "Codigo de barras o nombre del producto",
+    searchPlaceholder: "Prueba aluminum can o 012345678905",
+    scanDemo: "Escanear demo",
+    searchButton: "Ver guia",
+    quickLabel: "Consultas populares",
+    resultEyebrow: "Tarjeta de respuesta",
+    resultTitle: "Tu guia local de reciclaje",
+    copySummary: "Copiar resumen",
+    resultEmptyTitle: "Busca un articulo para revelar la tarjeta de respuesta.",
+    resultEmptyCopy:
+      "El diseno destacara el resultado, lo que cambia por municipio y el paso mas seguro para el usuario.",
+    municipalityEyebrow: "Area actual",
+    municipalityTitle: "Pulso del municipio",
+    centersEyebrow: "Ayuda cercana",
+    centersTitle: "Centros de reciclaje",
+    historyEyebrow: "Actividad reciente",
+    historyTitle: "Lo que revisaste recientemente",
+    trustEyebrow: "Por que inspira confianza",
+    trustTitle: "Disenado para confianza",
+    trustOneTitle: "El contexto del municipio siempre se ve",
+    trustOneCopy:
+      "La respuesta mantiene visible el area seleccionada para que nadie confunda reglas locales con reglas nacionales.",
+    trustTwoTitle: "Primero el resultado, despues la explicacion",
+    trustTwoCopy:
+      "La accion mas importante se muestra de inmediato, seguida por razon y advertencias de contaminacion.",
+    trustThreeTitle: "Hecho para probarse en casa",
+    trustThreeCopy:
+      "La interfaz esta optimizada para telefono y facilita detectar problemas de claridad con retroalimentacion familiar.",
+    municipalityStatusPrefix: "Usando",
+    noCenters: "Busca un articulo para revelar opciones cercanas de reciclaje y entrega especial.",
+    noHistory: "Tus ultimas consultas apareceran aqui cuando empieces a revisar articulos.",
+    noResultCopyLink: "Primero revisa un producto y luego copia la respuesta.",
+    toastLink: "Enlace de vista previa copiado.",
+    toastSummary: "Resumen de la respuesta copiado.",
+    toastFallback: "No se puede copiar desde este navegador.",
+    unknownTitle: "No pudimos identificar ese articulo con confianza.",
+    unknownCopy: "Intenta otra busqueda, usa uno de los ejemplos populares o revisa la etiqueta del empaque.",
+    unknownReasonLabel: "Que hacer ahora",
+    unknownReason: "Usa el tipo de material, el codigo de resina o la etiqueta local antes de desechar el articulo.",
+    unknownImpactTitle: "Por que la app se detiene aqui",
+    unknownImpactCopy: "Una respuesta local incorrecta es peor que no responder, por eso los casos inciertos se tratan con cautela.",
+    municipalityCardTitle: "Ventana actual de reglas",
+    municipalityUpdatedLabel: "Ultima revision local",
+    municipalityProgramLabel: "Programa",
+    municipalityCoverageLabel: "Cobertura",
+    centerAccepts: "Acepta",
+    centerHours: "Horario",
+    centerDistance: "Distancia",
+    historyChecked: "Consultado",
+    resultMunicipality: "Municipio",
+    resultTrack: "Flujo de recoleccion",
+    resultWhy: "Por que esta respuesta",
+    resultSteps: "Siguientes pasos",
+    resultWatchout: "Ten cuidado con",
+    resultConfidence: "Confianza de la regla",
+    resultConfidenceCopy: "Este articulo coincide con un producto conocido y una regla local revisada.",
+    resultImpact: "Por que importa",
+    resultUpdated: "Revision local",
+    tryAnother: "Probar otro articulo",
+    outcomeRecycle: "Reciclar",
+    outcomeTrash: "Basura",
+    outcomeDropOff: "Centro especial",
+    outcomeCheckLocally: "Revisar localmente"
+  }
+};
+
+const municipalities = {
+  riverton: {
+    name: { en: "Riverton", es: "Riverton" },
+    status: {
+      en: "Riverton selected",
+      es: "Riverton seleccionado"
+    },
+    updated: {
+      en: "Reviewed June 2026",
+      es: "Revisado en junio de 2026"
+    },
+    program: {
+      en: "Blue bin curbside + staffed special drop-off",
+      es: "Contenedor azul residencial + centro especial con personal"
+    },
+    coverage: {
+      en: "Pilot coverage includes core household packaging and hazardous drop-off items.",
+      es: "La cobertura piloto incluye empaques domesticos comunes y articulos de entrega especial."
+    },
+    tags: {
+      en: ["Curbside metals", "Cardboard sorting", "Battery drop-off"],
+      es: ["Metales residenciales", "Separacion de carton", "Entrega de baterias"]
+    },
+    centers: [
+      {
+        name: { en: "Riverton Transfer Station", es: "Estacion de Transferencia Riverton" },
+        accepts: { en: "batteries, electronics, cardboard", es: "baterias, electronicos, carton" },
+        hours: { en: "Mon-Sat, 8 AM-6 PM", es: "Lun-Sab, 8 AM-6 PM" },
+        distance: { en: "1.4 miles", es: "1.4 millas" },
+        note: {
+          en: "Best option for batteries and mixed special handling items.",
+          es: "La mejor opcion para baterias y articulos de manejo especial."
+        }
+      },
+      {
+        name: { en: "North River Reuse Depot", es: "Deposito Reutilizable North River" },
+        accepts: { en: "metal cans, paper, rigid plastics", es: "latas metalicas, papel, plasticos rigidos" },
+        hours: { en: "Daily, 9 AM-5 PM", es: "Diario, 9 AM-5 PM" },
+        distance: { en: "2.2 miles", es: "2.2 millas" },
+        note: {
+          en: "Fastest stop for sorted packaging items.",
+          es: "La parada mas rapida para empaques ya separados."
+        }
+      }
+    ]
+  },
+  lakewood: {
+    name: { en: "Lakewood", es: "Lakewood" },
+    status: {
+      en: "Lakewood selected",
+      es: "Lakewood seleccionado"
+    },
+    updated: {
+      en: "Reviewed June 2026",
+      es: "Revisado en junio de 2026"
+    },
+    program: {
+      en: "Mixed cart recycling + battery collection boxes",
+      es: "Reciclaje mixto en carrito + cajas de recoleccion de baterias"
+    },
+    coverage: {
+      en: "Lakewood favors broad curbside acceptance but keeps tighter contamination rules for paper food waste.",
+      es: "Lakewood acepta mas materiales en la acera pero tiene reglas mas estrictas sobre contaminacion en papel."
+    },
+    tags: {
+      en: ["Mixed cart", "Rigid plastics", "No batteries curbside"],
+      es: ["Carrito mixto", "Plasticos rigidos", "Sin baterias en la acera"]
+    },
+    centers: [
+      {
+        name: { en: "Lakewood Eco Center", es: "Centro Eco Lakewood" },
+        accepts: { en: "batteries, glass, rigid plastics", es: "baterias, vidrio, plasticos rigidos" },
+        hours: { en: "Tue-Sun, 10 AM-6 PM", es: "Mar-Dom, 10 AM-6 PM" },
+        distance: { en: "0.9 miles", es: "0.9 millas" },
+        note: {
+          en: "Recommended for battery and plastic clamshell questions.",
+          es: "Recomendado para dudas sobre baterias y envases plasticos."
+        }
+      },
+      {
+        name: { en: "Harbor Material Recovery Site", es: "Sitio de Recuperacion Harbor" },
+        accepts: { en: "paper, cardboard, aluminum", es: "papel, carton, aluminio" },
+        hours: { en: "Mon-Fri, 7 AM-4 PM", es: "Lun-Vie, 7 AM-4 PM" },
+        distance: { en: "3.1 miles", es: "3.1 millas" },
+        note: {
+          en: "Useful when curbside guidance is unclear for paper packaging.",
+          es: "Util cuando la guia residencial para empaques de papel no es clara."
+        }
+      }
+    ]
+  },
+  "sunset-hills": {
+    name: { en: "Sunset Hills", es: "Sunset Hills" },
+    status: {
+      en: "Sunset Hills selected",
+      es: "Sunset Hills seleccionado"
+    },
+    updated: {
+      en: "Reviewed June 2026",
+      es: "Revisado en junio de 2026"
+    },
+    program: {
+      en: "Route-based sorting with staffed specialty drop-off",
+      es: "Separacion por ruta con entrega especial supervisada"
+    },
+    coverage: {
+      en: "Rules vary more by collection route here, so the app emphasizes caution and route-specific notes.",
+      es: "Aqui las reglas varian mas por ruta de recoleccion, por eso la app enfatiza la cautela."
+    },
+    tags: {
+      en: ["Route variability", "Yellow sorting bin", "Special handling"],
+      es: ["Variacion por ruta", "Contenedor amarillo", "Manejo especial"]
+    },
+    centers: [
+      {
+        name: { en: "Sunset Hills Recycling Yard", es: "Patio de Reciclaje Sunset Hills" },
+        accepts: { en: "yard waste, cardboard, batteries", es: "residuos de jardin, carton, baterias" },
+        hours: { en: "Wed-Sun, 8 AM-4 PM", es: "Mie-Dom, 8 AM-4 PM" },
+        distance: { en: "1.8 miles", es: "1.8 millas" },
+        note: {
+          en: "Best starting point for route-specific recycling questions.",
+          es: "Mejor punto de partida para preguntas segun la ruta."
+        }
+      },
+      {
+        name: { en: "West Canyon Drop-Off", es: "Centro West Canyon" },
+        accepts: { en: "electronics, scrap metal, glass", es: "electronicos, metal, vidrio" },
+        hours: { en: "Daily, 9 AM-6 PM", es: "Diario, 9 AM-6 PM" },
+        distance: { en: "2.7 miles", es: "2.7 millas" },
+        note: {
+          en: "Good backup option when route collection rules are uncertain.",
+          es: "Buena opcion de respaldo cuando las reglas por ruta no son claras."
+        }
+      }
+    ]
+  }
+};
+
+const products = {
+  "012345678905": {
+    mark: "AL",
+    family: { en: "Beverage container", es: "Envase de bebida" },
+    aliases: ["aluminum can", "soda can", "can", "aluminum"],
+    confidence: 96,
+    impact: {
+      en: "Loose, clean aluminum is one of the simplest high-value materials to keep in the recycling stream.",
+      es: "El aluminio limpio y suelto es uno de los materiales mas valiosos y sencillos de mantener en el reciclaje."
+    },
+    name: { en: "Aluminum can", es: "Lata de aluminio" },
+    outcomes: {
+      riverton: {
+        outcome: "recycle",
+        lane: { en: "Curbside metals", es: "Metales residenciales" },
+        instructions: {
+          en: "Empty the can, give it a quick rinse, and place it loose in the blue curbside bin.",
+          es: "Vacia la lata, enjuagala ligeramente y colocala suelta en el contenedor azul."
+        },
+        rationale: {
+          en: "Riverton accepts clean aluminum containers in curbside recycling.",
+          es: "Riverton acepta envases de aluminio limpios en el reciclaje residencial."
+        },
+        caution: {
+          en: "Do not bag cans together; loose items sort better at the facility.",
+          es: "No embolses las latas juntas; los articulos sueltos se clasifican mejor."
+        },
+        steps: {
+          en: ["Empty contents", "Quick rinse", "Place loose in curbside bin"],
+          es: ["Vaciar contenido", "Enjuagar rapido", "Colocar suelta en el contenedor"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      lakewood: {
+        outcome: "recycle",
+        lane: { en: "Mixed recycling cart", es: "Carrito de reciclaje mixto" },
+        instructions: {
+          en: "Place the can loose in the mixed recycling cart after a quick rinse.",
+          es: "Coloca la lata suelta en el carrito de reciclaje mixto despues de un enjuague rapido."
+        },
+        rationale: {
+          en: "Lakewood accepts aluminum beverage containers in mixed recycling.",
+          es: "Lakewood acepta envases de bebidas de aluminio en el reciclaje mixto."
+        },
+        caution: {
+          en: "Avoid flattening multiple cans together if local sorting staff asks for them loose.",
+          es: "Evita aplastar varias latas juntas si el personal local pide dejarlas sueltas."
+        },
+        steps: {
+          en: ["Empty contents", "Rinse", "Put in mixed recycling cart"],
+          es: ["Vaciar contenido", "Enjuagar", "Poner en el carrito de reciclaje"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      "sunset-hills": {
+        outcome: "recycle",
+        lane: { en: "Yellow sorting bin", es: "Contenedor amarillo" },
+        instructions: {
+          en: "Rinse lightly and place the can in the yellow sorting bin.",
+          es: "Enjuaga ligeramente y coloca la lata en el contenedor amarillo."
+        },
+        rationale: {
+          en: "Sunset Hills sorts aluminum separately to reduce contamination.",
+          es: "Sunset Hills separa el aluminio para reducir la contaminacion."
+        },
+        caution: {
+          en: "Check that the can is empty; liquids create sorting problems fast.",
+          es: "Verifica que la lata este vacia; los liquidos generan problemas de clasificacion."
+        },
+        steps: {
+          en: ["Empty contents", "Rinse", "Use yellow sorting bin"],
+          es: ["Vaciar contenido", "Enjuagar", "Usar contenedor amarillo"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      }
+    }
+  },
+  "049000042511": {
+    mark: "PZ",
+    family: { en: "Food-soiled cardboard", es: "Carton con residuos de comida" },
+    aliases: ["pizza box", "cardboard pizza box", "pizza"],
+    confidence: 89,
+    impact: {
+      en: "Cardboard is recyclable only until food grease pushes it into contamination territory.",
+      es: "El carton es reciclable solo hasta que la grasa lo convierte en contaminacion."
+    },
+    name: { en: "Pizza box", es: "Caja de pizza" },
+    outcomes: {
+      riverton: {
+        outcome: "check_locally",
+        lane: { en: "Split clean and greasy sections", es: "Separar partes limpias y grasosas" },
+        instructions: {
+          en: "Recycle only the clean lid. Greasy lower sections should go in the trash.",
+          es: "Recicla solo la tapa limpia. Las partes grasosas deben ir a la basura."
+        },
+        rationale: {
+          en: "Food-soiled cardboard is handled differently depending on contamination.",
+          es: "El carton con grasa se maneja de forma distinta segun la contaminacion."
+        },
+        caution: {
+          en: "Do not assume the entire box belongs in recycling just because it is cardboard.",
+          es: "No asumas que toda la caja va al reciclaje solo porque es carton."
+        },
+        steps: {
+          en: ["Tear off clean sections", "Recycle clean cardboard", "Trash greasy portions"],
+          es: ["Separar secciones limpias", "Reciclar carton limpio", "Tirar partes grasosas"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      lakewood: {
+        outcome: "trash",
+        lane: { en: "Trash unless fully clean", es: "Basura salvo que este completamente limpia" },
+        instructions: {
+          en: "Place the box in the trash unless it is fully clean and dry.",
+          es: "Coloca la caja en la basura salvo que este completamente limpia y seca."
+        },
+        rationale: {
+          en: "Lakewood rejects pizza boxes with visible food residue.",
+          es: "Lakewood rechaza cajas de pizza con residuos visibles de comida."
+        },
+        caution: {
+          en: "Even a mostly clean box can be rejected if grease has soaked through the bottom.",
+          es: "Incluso una caja casi limpia puede rechazarse si la grasa traspaso la base."
+        },
+        steps: {
+          en: ["Check for grease", "Trash if stained", "Recycle only fully clean dry sections"],
+          es: ["Revisar grasa", "Tirar si esta manchada", "Reciclar solo partes limpias y secas"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      "sunset-hills": {
+        outcome: "recycle",
+        lane: { en: "Flatten clean cardboard", es: "Aplanar carton limpio" },
+        instructions: {
+          en: "Flatten the clean box and compost or trash food-soiled liners.",
+          es: "Aplana la caja limpia y composta o tira los forros con restos de comida."
+        },
+        rationale: {
+          en: "Sunset Hills accepts mostly clean corrugated cardboard.",
+          es: "Sunset Hills acepta carton corrugado mayormente limpio."
+        },
+        caution: {
+          en: "Remove waxy inserts and any food-soaked paper before recycling.",
+          es: "Quita insertos encerados y cualquier papel empapado en comida antes de reciclar."
+        },
+        steps: {
+          en: ["Remove liners", "Flatten box", "Place in cardboard slot"],
+          es: ["Quitar forros", "Aplanar caja", "Colocar en espacio de carton"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      }
+    }
+  },
+  "041333216317": {
+    mark: "BT",
+    family: { en: "Household hazardous item", es: "Articulo domestico de manejo especial" },
+    aliases: ["battery", "batteries", "aa battery", "household batteries"],
+    confidence: 98,
+    impact: {
+      en: "Keeping batteries out of curbside bins reduces fire risk and contamination in the waste stream.",
+      es: "Mantener las baterias fuera del reciclaje residencial reduce el riesgo de incendio y la contaminacion."
+    },
+    name: { en: "Household batteries", es: "Baterias domesticas" },
+    outcomes: {
+      riverton: {
+        outcome: "drop_off",
+        lane: { en: "Staffed drop-off only", es: "Solo centro supervisado" },
+        instructions: {
+          en: "Do not place batteries in curbside bins. Tape the terminals and bring them to a drop-off site.",
+          es: "No coloques baterias en contenedores residenciales. Cubre los terminales y llevalas a un centro."
+        },
+        rationale: {
+          en: "Batteries require special handling because of fire and contamination risk.",
+          es: "Las baterias requieren manejo especial por riesgo de incendio y contaminacion."
+        },
+        caution: {
+          en: "Loose lithium batteries are especially risky in collection trucks and sorting lines.",
+          es: "Las baterias de litio sueltas son especialmente riesgosas en camiones y lineas de clasificacion."
+        },
+        steps: {
+          en: ["Tape terminals", "Store in a dry bag", "Take to a listed center"],
+          es: ["Cubrir terminales", "Guardar en una bolsa seca", "Llevar a un centro listado"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      lakewood: {
+        outcome: "drop_off",
+        lane: { en: "Collection box or center", es: "Caja de recoleccion o centro" },
+        instructions: {
+          en: "Use the city battery collection box or a listed recycling center.",
+          es: "Usa la caja municipal de recoleccion o un centro de reciclaje listado."
+        },
+        rationale: {
+          en: "Lakewood does not allow batteries in curbside recycling or trash.",
+          es: "Lakewood no permite baterias en el reciclaje residencial ni en la basura."
+        },
+        caution: {
+          en: "If types are mixed, keep them separated inside a small bag before drop-off.",
+          es: "Si mezclas tipos de baterias, mantenlas separadas dentro de una bolsa pequena."
+        },
+        steps: {
+          en: ["Separate by type if possible", "Tape terminals", "Use approved drop-off"],
+          es: ["Separar por tipo si es posible", "Cubrir terminales", "Usar centro aprobado"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      "sunset-hills": {
+        outcome: "drop_off",
+        lane: { en: "Supervised specialty handling", es: "Manejo especial supervisado" },
+        instructions: {
+          en: "Bring batteries to a supervised drop-off point during posted hours.",
+          es: "Lleva las baterias a un punto supervisado durante el horario publicado."
+        },
+        rationale: {
+          en: "Sunset Hills treats batteries as special handling material.",
+          es: "Sunset Hills trata las baterias como material de manejo especial."
+        },
+        caution: {
+          en: "Do not store batteries in a hot car before drop-off if you can avoid it.",
+          es: "No guardes baterias en un auto caliente antes de la entrega si puedes evitarlo."
+        },
+        steps: {
+          en: ["Tape terminals", "Keep away from heat", "Deliver to drop-off"],
+          es: ["Cubrir terminales", "Mantener lejos del calor", "Entregar en el centro"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      }
+    }
+  },
+  "036000291452": {
+    mark: "PC",
+    family: { en: "Plastic produce packaging", es: "Empaque plastico para alimentos" },
+    aliases: ["plastic clamshell", "berry container", "plastic container", "clamshell"],
+    confidence: 84,
+    impact: {
+      en: "Rigid plastics create confusion because local sorting capability matters more than the package alone.",
+      es: "Los plasticos rigidos generan confusion porque la capacidad local de clasificacion importa mas que el empaque."
+    },
+    name: { en: "Plastic clamshell", es: "Envase plastico tipo clamshell" },
+    outcomes: {
+      riverton: {
+        outcome: "trash",
+        lane: { en: "Trash unless policy changes", es: "Basura salvo cambio de politica" },
+        instructions: {
+          en: "Place the clamshell in the trash unless your municipality publishes a rigid plastics exception.",
+          es: "Coloca el envase en la basura salvo que tu municipio publique una excepcion para plasticos rigidos."
+        },
+        rationale: {
+          en: "Riverton does not accept this packaging type in curbside recycling.",
+          es: "Riverton no acepta este tipo de empaque en el reciclaje residencial."
+        },
+        caution: {
+          en: "The recycling symbol alone does not guarantee local acceptance.",
+          es: "El simbolo de reciclaje por si solo no garantiza aceptacion local."
+        },
+        steps: {
+          en: ["Empty contents", "Reuse if useful", "Trash if disposing"],
+          es: ["Vaciar contenido", "Reutilizar si sirve", "Tirar si se desecha"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      lakewood: {
+        outcome: "recycle",
+        lane: { en: "Rigid plastics stream", es: "Flujo de plasticos rigidos" },
+        instructions: {
+          en: "Rinse and place the clamshell in the rigid plastics stream.",
+          es: "Enjuaga y coloca el envase en la corriente de plasticos rigidos."
+        },
+        rationale: {
+          en: "Lakewood accepts clean rigid PET clamshell containers.",
+          es: "Lakewood acepta envases PET rigidos limpios."
+        },
+        caution: {
+          en: "Food residue changes the answer quickly, so rinse more thoroughly than you think.",
+          es: "Los restos de comida cambian la respuesta rapidamente, asi que enjuaga mejor de lo que crees."
+        },
+        steps: {
+          en: ["Rinse thoroughly", "Remove easy labels", "Place in rigid plastics"],
+          es: ["Enjuagar bien", "Quitar etiquetas faciles", "Colocar en plasticos rigidos"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      "sunset-hills": {
+        outcome: "check_locally",
+        lane: { en: "Route-specific rigid plastics", es: "Plasticos rigidos segun la ruta" },
+        instructions: {
+          en: "Check the resin code and local signage before recycling this container.",
+          es: "Revisa el codigo de resina y la senalizacion local antes de reciclar este envase."
+        },
+        rationale: {
+          en: "Accepted rigid plastics vary by collection route in Sunset Hills.",
+          es: "Los plasticos rigidos aceptados varian segun la ruta de recoleccion en Sunset Hills."
+        },
+        caution: {
+          en: "If the route signage is missing or confusing, treat the item as trash or use a staffed center.",
+          es: "Si falta la senalizacion o es confusa, trata el articulo como basura o usa un centro con personal."
+        },
+        steps: {
+          en: ["Find resin code", "Review route signage", "Use trash if uncertain"],
+          es: ["Buscar codigo de resina", "Revisar senalizacion", "Usar basura si hay duda"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      }
+    }
+  }
+};
+
+const state = {
+  language: localStorage.getItem("recycling-language") || "en",
+  history: JSON.parse(localStorage.getItem("recycling-history-v2") || "[]"),
+  currentBarcode: null,
+  lastQuery: "",
+  demoIndex: 0
+};
+
+const elements = {
+  languageToggle: document.getElementById("language-toggle"),
+  municipalitySelect: document.getElementById("municipality-select"),
+  municipalityStatus: document.getElementById("municipality-status"),
+  municipalityCard: document.getElementById("municipality-card"),
+  searchInput: document.getElementById("search-input"),
+  searchButton: document.getElementById("search-button"),
+  scanDemo: document.getElementById("scan-demo"),
+  resultContent: document.getElementById("result-content"),
+  centerList: document.getElementById("center-list"),
+  historyList: document.getElementById("history-list"),
+  copyLink: document.getElementById("copy-link"),
+  copySummary: document.getElementById("copy-summary"),
+  toast: document.getElementById("toast"),
+  chips: [...document.querySelectorAll(".chip")]
+};
+
+const demoBarcodes = Object.keys(products);
+
+function copy() {
+  return translations[state.language];
+}
+
+function activeMunicipality() {
+  return municipalities[elements.municipalitySelect.value];
+}
+
+function activeProductEntry() {
+  if (!state.currentBarcode) {
+    return null;
+  }
+
+  return { barcode: state.currentBarcode, product: products[state.currentBarcode] };
+}
+
+function outcomeLabel(outcome) {
+  const ui = copy();
+  if (outcome === "recycle") return ui.outcomeRecycle;
+  if (outcome === "trash") return ui.outcomeTrash;
+  if (outcome === "drop_off") return ui.outcomeDropOff;
+  return ui.outcomeCheckLocally;
+}
+
+function outcomeClass(outcome) {
+  if (outcome === "recycle") return "outcome-pill outcome-recycle";
+  if (outcome === "trash") return "outcome-pill outcome-trash";
+  if (outcome === "drop_off") return "outcome-pill outcome-dropoff";
+  return "outcome-pill outcome-check";
+}
+
+function translatePage() {
+  const ui = copy();
+
+  document.documentElement.lang = state.language;
+  elements.languageToggle.textContent = state.language === "en" ? "ES" : "EN";
+  elements.searchInput.placeholder = ui.searchPlaceholder;
+
+  document.querySelectorAll("[data-i18n]").forEach((node) => {
+    const key = node.getAttribute("data-i18n");
+    if (ui[key]) {
+      node.textContent = ui[key];
+    }
+  });
+}
+
+function renderQuickChips() {
+  elements.chips.forEach((chip) => {
+    const barcode = chip.getAttribute("data-barcode");
+    chip.textContent = products[barcode].name[state.language];
+  });
+}
+
+function renderMunicipalityPulse() {
+  const ui = copy();
+  const municipality = activeMunicipality();
+
+  elements.municipalityStatus.textContent = `${ui.municipalityStatusPrefix} ${municipality.name[state.language]}`;
+  elements.municipalityCard.innerHTML = `
+    <div class="municipality-pulse">
+      <strong>${ui.municipalityCardTitle}</strong>
+      <p class="rule-note"><strong>${ui.municipalityUpdatedLabel}:</strong> ${municipality.updated[state.language]}</p>
+      <p class="rule-note"><strong>${ui.municipalityProgramLabel}:</strong> ${municipality.program[state.language]}</p>
+      <p class="rule-note"><strong>${ui.municipalityCoverageLabel}:</strong> ${municipality.coverage[state.language]}</p>
+      <div class="municipality-tags">
+        ${municipality.tags[state.language].map((tag) => `<span class="mini-pill">${tag}</span>`).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderCenters(entry) {
+  const ui = copy();
+  const municipality = activeMunicipality();
+  elements.centerList.innerHTML = "";
+
+  if (!entry) {
+    elements.centerList.innerHTML = `<div class="center-card"><p class="center-meta">${ui.noCenters}</p></div>`;
+    return;
+  }
+
+  municipality.centers.forEach((center) => {
+    const card = document.createElement("div");
+    card.className = "center-card";
+    card.innerHTML = `
+      <strong>${center.name[state.language]}</strong>
+      <p class="center-meta">${center.note[state.language]}</p>
+      <div class="center-tags">
+        <span class="mini-pill">${ui.centerDistance}: ${center.distance[state.language]}</span>
+        <span class="mini-pill">${ui.centerHours}: ${center.hours[state.language]}</span>
+      </div>
+      <p class="center-meta"><strong>${ui.centerAccepts}:</strong> ${center.accepts[state.language]}</p>
+    `;
+    elements.centerList.appendChild(card);
+  });
+}
+
+function formatHistoryTime(timestamp) {
+  const date = new Date(timestamp);
+  if (Number.isNaN(date.getTime())) {
+    return "";
+  }
+
+  return date.toLocaleDateString(state.language === "en" ? "en-US" : "es-ES", {
+    month: "short",
+    day: "numeric"
+  });
+}
+
+function renderHistory() {
+  const ui = copy();
+  elements.historyList.innerHTML = "";
+
+  if (!state.history.length) {
+    elements.historyList.innerHTML = `<div class="history-card"><p class="history-meta">${ui.noHistory}</p></div>`;
+    return;
+  }
+
+  state.history.slice(0, 5).forEach((entry) => {
+    const product = products[entry.barcode];
+    const municipality = municipalities[entry.municipality];
+    if (!product || !municipality) {
+      return;
+    }
+
+    const item = document.createElement("div");
+    item.className = "history-card";
+    item.innerHTML = `
+      <strong>${product.name[state.language]}</strong>
+      <p class="history-meta">${outcomeLabel(entry.outcome)} &middot; ${municipality.name[state.language]}</p>
+      <p class="history-meta">${ui.historyChecked} ${formatHistoryTime(entry.timestamp)}</p>
+    `;
+    elements.historyList.appendChild(item);
+  });
+}
+
+function addHistory(barcode, outcome, municipality) {
+  state.history.unshift({
+    barcode,
+    outcome,
+    municipality,
+    timestamp: Date.now()
+  });
+  state.history = state.history.slice(0, 8);
+  localStorage.setItem("recycling-history-v2", JSON.stringify(state.history));
+  renderHistory();
+}
+
+function showToast(message) {
+  elements.toast.textContent = message;
+  elements.toast.classList.add("is-visible");
+  window.clearTimeout(showToast.timeoutId);
+  showToast.timeoutId = window.setTimeout(() => {
+    elements.toast.classList.remove("is-visible");
+  }, 1800);
+}
+
+async function copyText(value, successMessage) {
+  const ui = copy();
+
+  try {
+    if (!navigator.clipboard || !navigator.clipboard.writeText) {
+      throw new Error("clipboard unavailable");
+    }
+    await navigator.clipboard.writeText(value);
+    showToast(successMessage);
+  } catch (error) {
+    showToast(ui.toastFallback);
+  }
+}
+
+function findProductEntry(query) {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) {
+    return null;
+  }
+
+  for (const [barcode, product] of Object.entries(products)) {
+    const aliases = [product.name.en, product.name.es, ...product.aliases].map((item) => item.toLowerCase());
+    if (barcode === normalized || aliases.includes(normalized)) {
+      return { barcode, product };
+    }
+  }
+
+  for (const [barcode, product] of Object.entries(products)) {
+    const aliases = [product.name.en, product.name.es, ...product.aliases].map((item) => item.toLowerCase());
+    if (aliases.some((item) => item.includes(normalized))) {
+      return { barcode, product };
+    }
+  }
+
+  return null;
+}
+
+function renderUnknown() {
+  const ui = copy();
+  state.currentBarcode = null;
+
+  elements.resultContent.innerHTML = `
+    <div class="result-card">
+      <div class="result-top">
+        <div class="product-plate">
+          <div class="product-mark">??</div>
+          <div class="product-copy">
+            <span class="${outcomeClass("check_locally")}">${ui.outcomeCheckLocally}</span>
+            <h4>${ui.unknownTitle}</h4>
+            <p class="product-subline">${ui.unknownCopy}</p>
+          </div>
+        </div>
+        <div class="confidence-card">
+          <strong>${ui.unknownReasonLabel}</strong>
+          <p class="support-copy">${ui.unknownReason}</p>
+        </div>
+      </div>
+      <div class="impact-card">
+        <strong>${ui.unknownImpactTitle}</strong>
+        <p class="support-copy">${ui.unknownImpactCopy}</p>
+      </div>
+    </div>
+  `;
+
+  renderCenters(null);
+}
+
+function summaryText(entry) {
+  const ui = copy();
+  const municipalityKey = elements.municipalitySelect.value;
+  const municipality = municipalities[municipalityKey];
+  const guidance = entry.product.outcomes[municipalityKey];
+
+  return [
+    `${entry.product.name[state.language]} - ${outcomeLabel(guidance.outcome)}`,
+    `${ui.resultMunicipality}: ${municipality.name[state.language]}`,
+    `${ui.resultTrack}: ${guidance.lane[state.language]}`,
+    guidance.instructions[state.language],
+    `${ui.resultWhy}: ${guidance.rationale[state.language]}`
+  ].join("\n");
+}
+
+function renderResult(entry, trackHistory) {
+  const ui = copy();
+  const municipalityKey = elements.municipalitySelect.value;
+  const municipality = municipalities[municipalityKey];
+  const guidance = entry.product.outcomes[municipalityKey];
+
+  elements.resultContent.innerHTML = `
+    <div class="result-card">
+      <div class="result-top">
+        <div class="product-plate">
+          <div class="product-mark">${entry.product.mark}</div>
+          <div class="product-copy">
+            <span class="${outcomeClass(guidance.outcome)}">${outcomeLabel(guidance.outcome)}</span>
+            <h4>${entry.product.name[state.language]}</h4>
+            <p class="product-subline">${municipality.name[state.language]} &middot; ${entry.product.family[state.language]}</p>
+          </div>
+        </div>
+        <div class="confidence-card">
+          <strong>${ui.resultConfidence}</strong>
+          <p class="support-copy">${ui.resultConfidenceCopy}</p>
+          <div class="meter-track" aria-hidden="true">
+            <div class="meter-fill" style="width:${entry.product.confidence}%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="support-card">
+        <strong class="detail-title">${ui.resultTrack}</strong>
+        <p class="support-copy">${guidance.lane[state.language]}</p>
+        <p class="support-copy"><strong>${ui.resultMunicipality}:</strong> ${municipality.name[state.language]}</p>
+        <p class="support-copy"><strong>${ui.resultUpdated}:</strong> ${guidance.updated[state.language]}</p>
+      </div>
+
+      <div class="result-detail-grid">
+        <div class="support-card">
+          <strong class="detail-title">${ui.resultWhy}</strong>
+          <p class="support-copy">${guidance.instructions[state.language]}</p>
+          <p class="support-copy">${guidance.rationale[state.language]}</p>
+        </div>
+        <div class="support-card">
+          <strong class="detail-title">${ui.resultWatchout}</strong>
+          <p class="support-copy">${guidance.caution[state.language]}</p>
+        </div>
+      </div>
+
+      <div class="support-card">
+        <strong class="detail-title">${ui.resultSteps}</strong>
+        <ol class="support-list">
+          ${guidance.steps[state.language].map((step) => `<li>${step}</li>`).join("")}
+        </ol>
+      </div>
+
+      <div class="impact-card">
+        <strong>${ui.resultImpact}</strong>
+        <p class="support-copy">${entry.product.impact[state.language]}</p>
+      </div>
+    </div>
+  `;
+
+  if (trackHistory) {
+    addHistory(entry.barcode, guidance.outcome, municipalityKey);
+  }
+
+  renderCenters(entry);
+}
+
+function handleSearch(value) {
+  state.lastQuery = value.trim();
+  const entry = findProductEntry(value);
+  if (!entry) {
+    renderUnknown();
+    return;
+  }
+
+  state.currentBarcode = entry.barcode;
+  renderResult(entry, true);
+}
+
+elements.languageToggle.addEventListener("click", () => {
+  state.language = state.language === "en" ? "es" : "en";
+  localStorage.setItem("recycling-language", state.language);
+  translatePage();
+  renderQuickChips();
+  renderMunicipalityPulse();
+  renderHistory();
+
+  const currentEntry = activeProductEntry();
+  if (currentEntry) {
+    renderResult(currentEntry, false);
+  } else if (state.lastQuery) {
+    renderUnknown();
+  } else {
+    renderCenters(null);
+  }
+});
+
+elements.searchButton.addEventListener("click", () => {
+  handleSearch(elements.searchInput.value);
+});
+
+elements.scanDemo.addEventListener("click", () => {
+  const barcode = demoBarcodes[state.demoIndex % demoBarcodes.length];
+  state.demoIndex += 1;
+  elements.searchInput.value = products[barcode].name.en;
+  handleSearch(barcode);
+});
+
+elements.chips.forEach((chip) => {
+  chip.addEventListener("click", () => {
+    const barcode = chip.getAttribute("data-barcode");
+    elements.searchInput.value = products[barcode].name.en;
+    handleSearch(barcode);
+  });
+});
+
+elements.municipalitySelect.addEventListener("change", () => {
+  renderMunicipalityPulse();
+
+  const currentEntry = activeProductEntry();
+  if (currentEntry) {
+    renderResult(currentEntry, false);
+  } else {
+    renderCenters(null);
+  }
+});
+
+elements.searchInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    handleSearch(elements.searchInput.value);
+  }
+});
+
+elements.copyLink.addEventListener("click", () => {
+  const path = window.location.pathname.includes("/recycling-assistant/")
+    ? `${window.location.origin}/recycling-assistant/`
+    : window.location.href;
+  copyText(path, copy().toastLink);
+});
+
+elements.copySummary.addEventListener("click", () => {
+  const currentEntry = activeProductEntry();
+  if (!currentEntry) {
+    showToast(copy().noResultCopyLink);
+    return;
+  }
+
+  copyText(summaryText(currentEntry), copy().toastSummary);
+});
+
+translatePage();
+renderQuickChips();
+renderMunicipalityPulse();
+renderCenters(null);
+renderHistory();
+
+</script>
+  </body>
+</html>
+
