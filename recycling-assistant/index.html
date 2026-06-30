@@ -1296,6 +1296,11 @@ textarea {
   gap: 14px;
 }
 
+.package-breakdown {
+  display: grid;
+  gap: 14px;
+}
+
 .comparison-grid {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
@@ -1316,6 +1321,24 @@ textarea {
   gap: 10px;
   align-items: center;
   justify-content: space-between;
+}
+
+.package-parts-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.package-part-card {
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background:
+    linear-gradient(135deg, rgba(223, 247, 239, 0.56), rgba(255, 255, 255, 0.9)),
+    rgba(255, 255, 255, 0.88);
+}
+
+.package-part-card strong {
+  display: block;
 }
 
 .routine-card,
@@ -1722,6 +1745,10 @@ textarea {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .package-parts-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .session-pills {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -1793,6 +1820,10 @@ textarea {
   }
 
   .browse-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .package-parts-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
@@ -2600,6 +2631,8 @@ const translations = {
     resultTrack: "Collection stream",
     resultWhy: "Why this answer",
     resultSteps: "Next steps",
+    resultPackageParts: "Sort the package by part",
+    resultPackagePartsCopy: "Use the breakdown below when the item has multiple materials or removable pieces.",
     resultWatchout: "Watch out for",
     resultConfidence: "Rule confidence",
     resultConfidenceCopy: "This item matched a sample product record and pilot disposal profile in the current review build.",
@@ -2884,6 +2917,8 @@ const translations = {
     resultTrack: "Flujo de recoleccion",
     resultWhy: "Por que esta respuesta",
     resultSteps: "Siguientes pasos",
+    resultPackageParts: "Separa el paquete por partes",
+    resultPackagePartsCopy: "Usa el desglose siguiente cuando el articulo tenga varios materiales o piezas removibles.",
     resultWatchout: "Ten cuidado con",
     resultConfidence: "Confianza de la regla",
     resultConfidenceCopy: "Este articulo coincide con un producto de muestra y un perfil piloto de disposicion dentro de esta version de revision.",
@@ -4572,6 +4607,385 @@ const productGroups = {
   "072000000006": "plastics"
 };
 
+const packageBreakdowns = {
+  "049000042511": [
+    {
+      label: { en: "Clean lid or dry sections", es: "Tapa limpia o secciones secas" },
+      routes: {
+        riverton: {
+          outcome: "recycle",
+          note: {
+            en: "Recycle only the dry cardboard sections that stayed free of grease.",
+            es: "Recicla solo las secciones de carton secas que quedaron libres de grasa."
+          }
+        },
+        lakewood: {
+          outcome: "recycle",
+          note: {
+            en: "Lakewood accepts the clean cardboard portions once food residue is removed.",
+            es: "Lakewood acepta las partes limpias de carton una vez retirados los residuos de comida."
+          }
+        },
+        "sunset-hills": {
+          outcome: "check_locally",
+          note: {
+            en: "Use clean cardboard sections only if your route note clearly accepts them.",
+            es: "Usa solo las secciones limpias de carton si la nota de tu ruta las acepta con claridad."
+          }
+        }
+      }
+    },
+    {
+      label: { en: "Greasy bottom or stained liner", es: "Base grasosa o forro manchado" },
+      routes: {
+        riverton: {
+          outcome: "trash",
+          note: {
+            en: "Trash the greasy bottom half and any liner that still carries oil or cheese residue.",
+            es: "Tira la mitad inferior grasosa y cualquier forro que todavia tenga aceite o restos de queso."
+          }
+        },
+        lakewood: {
+          outcome: "trash",
+          note: {
+            en: "When the cardboard is saturated with grease, keep it out of the recycling cart.",
+            es: "Cuando el carton esta saturado de grasa, mantenlo fuera del carrito de reciclaje."
+          }
+        },
+        "sunset-hills": {
+          outcome: "trash",
+          note: {
+            en: "Treat greasy pizza-box sections as trash instead of route cardboard.",
+            es: "Trata las secciones grasosas de la caja de pizza como basura y no como carton de ruta."
+          }
+        }
+      }
+    }
+  ],
+  "044000032940": [
+    {
+      label: { en: "Corrugated box", es: "Caja corrugada" },
+      routes: {
+        riverton: {
+          outcome: "recycle",
+          note: {
+            en: "Flatten the clean box and recycle it with cardboard.",
+            es: "Aplana la caja limpia y reciclarla con el carton."
+          }
+        },
+        lakewood: {
+          outcome: "recycle",
+          note: {
+            en: "Flatten the box and place it in the mixed recycling cart if it is dry.",
+            es: "Aplana la caja y colocala en el carrito mixto si esta seca."
+          }
+        },
+        "sunset-hills": {
+          outcome: "recycle",
+          note: {
+            en: "Use the route cardboard stream for the flattened box when the route note allows it.",
+            es: "Usa el flujo de carton de ruta para la caja aplanada cuando la nota de la ruta lo permita."
+          }
+        }
+      }
+    },
+    {
+      label: { en: "Plastic air pillows or film", es: "Almohadillas de aire o plastico flexible" },
+      routes: {
+        riverton: {
+          outcome: "drop_off",
+          note: {
+            en: "Keep clean plastic fillers out of the bin and use a film-plastic drop-off if you save enough to bring.",
+            es: "Mantén los rellenos plasticos limpios fuera del contenedor y usa una entrega de film plastico si juntas suficiente material."
+          }
+        },
+        lakewood: {
+          outcome: "drop_off",
+          note: {
+            en: "Treat clean plastic packing pillows like other film plastics, not like the cardboard box.",
+            es: "Trata las almohadillas plasticas limpias como otros plasticos flexibles, no como la caja de carton."
+          }
+        },
+        "sunset-hills": {
+          outcome: "trash",
+          note: {
+            en: "Sunset Hills does not run standard route recovery for plastic packing film.",
+            es: "Sunset Hills no recupera de forma estandar el film plastico de empaque en sus rutas."
+          }
+        }
+      }
+    }
+  ],
+  "072000000001": [
+    {
+      label: { en: "Paper cup body", es: "Cuerpo del vaso de papel" },
+      routes: {
+        riverton: {
+          outcome: "trash",
+          note: {
+            en: "The lined cup itself stays out of recycling even if it looks like plain paper.",
+            es: "El vaso con recubrimiento queda fuera del reciclaje aunque parezca papel comun."
+          }
+        },
+        lakewood: {
+          outcome: "trash",
+          note: {
+            en: "Lakewood rejects lined drink cups from the mixed cart.",
+            es: "Lakewood rechaza los vasos de bebidas con recubrimiento del carrito mixto."
+          }
+        },
+        "sunset-hills": {
+          outcome: "check_locally",
+          note: {
+            en: "Treat the cup like trash unless a listed compost or route note says otherwise.",
+            es: "Trata el vaso como basura salvo que una nota listada de compost o de ruta diga lo contrario."
+          }
+        }
+      }
+    },
+    {
+      label: { en: "Cardboard sleeve", es: "Funda de carton" },
+      routes: {
+        riverton: {
+          outcome: "recycle",
+          note: {
+            en: "Recycle the clean sleeve separately if it stayed dry and free of coffee residue.",
+            es: "Recicla la funda por separado si se mantuvo seca y sin residuos de cafe."
+          }
+        },
+        lakewood: {
+          outcome: "recycle",
+          note: {
+            en: "The dry cardboard sleeve can go into paper and cardboard recycling.",
+            es: "La funda seca de carton puede ir al reciclaje de papel y carton."
+          }
+        },
+        "sunset-hills": {
+          outcome: "recycle",
+          note: {
+            en: "Recycle the clean sleeve with cardboard if your route accepts paper fiber.",
+            es: "Recicla la funda limpia con el carton si tu ruta acepta fibra de papel."
+          }
+        }
+      }
+    },
+    {
+      label: { en: "Plastic lid", es: "Tapa plastica" },
+      routes: {
+        riverton: {
+          outcome: "trash",
+          note: {
+            en: "Unless the lid matches a clearly accepted rigid-plastics stream, the safer default is trash.",
+            es: "Salvo que la tapa coincida con un flujo claramente aceptado de plasticos rigidos, la opcion mas segura es la basura."
+          }
+        },
+        lakewood: {
+          outcome: "check_locally",
+          note: {
+            en: "Some rigid lids may be accepted, but treat them separately from the lined cup and confirm locally.",
+            es: "Algunas tapas rigidas pueden aceptarse, pero tratalas por separado del vaso con recubrimiento y confirma localmente."
+          }
+        },
+        "sunset-hills": {
+          outcome: "check_locally",
+          note: {
+            en: "Follow the route note for rigid-plastic lids instead of assuming they follow the cup.",
+            es: "Sigue la nota de la ruta para tapas plasticas rigidas en lugar de asumir que siguen al vaso."
+          }
+        }
+      }
+    }
+  ],
+  "072000000003": [
+    {
+      label: { en: "Outer cardboard carton", es: "Caja exterior de carton" },
+      routes: {
+        riverton: {
+          outcome: "recycle",
+          note: {
+            en: "Recycle the clean cardboard box separately from the used pods.",
+            es: "Recicla la caja de carton limpia por separado de las capsulas usadas."
+          }
+        },
+        lakewood: {
+          outcome: "recycle",
+          note: {
+            en: "The dry outer carton can go into the paper and cardboard stream.",
+            es: "La caja exterior seca puede ir al flujo de papel y carton."
+          }
+        },
+        "sunset-hills": {
+          outcome: "recycle",
+          note: {
+            en: "Flatten the carton and route it with accepted cardboard if your route allows it.",
+            es: "Aplana la caja y enviala con el carton aceptado si tu ruta lo permite."
+          }
+        }
+      }
+    },
+    {
+      label: { en: "Used pod shell", es: "Capsula usada" },
+      routes: {
+        riverton: {
+          outcome: "trash",
+          note: {
+            en: "Treat the used pod as trash unless you already use a manufacturer take-back program.",
+            es: "Trata la capsula usada como basura salvo que ya uses un programa de devolucion de la marca."
+          }
+        },
+        lakewood: {
+          outcome: "check_locally",
+          note: {
+            en: "Use trash unless the pod brand or a listed specialty program specifically accepts it.",
+            es: "Usa la basura salvo que la marca o un programa especial listado la acepte expresamente."
+          }
+        },
+        "sunset-hills": {
+          outcome: "trash",
+          note: {
+            en: "Sunset Hills does not run normal route recovery for the used pod itself.",
+            es: "Sunset Hills no recupera de forma normal la capsula usada en sus rutas."
+          }
+        }
+      }
+    }
+  ],
+  "072000000004": [
+    {
+      label: { en: "Plastic cup", es: "Vaso plastico" },
+      routes: {
+        riverton: {
+          outcome: "check_locally",
+          note: {
+            en: "Rinse the cup, then confirm whether tubs like this are listed before using the bin.",
+            es: "Enjuaga el vaso y luego confirma si los envases de este tipo aparecen listados antes de usar el contenedor."
+          }
+        },
+        lakewood: {
+          outcome: "recycle",
+          note: {
+            en: "Lakewood accepts clean rigid cups and tubs more broadly than the other pilot cities.",
+            es: "Lakewood acepta vasos y envases rigidos limpios de forma mas amplia que las otras ciudades piloto."
+          }
+        },
+        "sunset-hills": {
+          outcome: "check_locally",
+          note: {
+            en: "Route acceptance for cups and tubs varies more than bottles, so check the local note first.",
+            es: "La aceptacion por ruta para vasos y envases varia mas que para botellas, asi que revisa primero la nota local."
+          }
+        }
+      }
+    },
+    {
+      label: { en: "Foil lid", es: "Tapa de aluminio" },
+      routes: {
+        riverton: {
+          outcome: "trash",
+          note: {
+            en: "A small foil lid with yogurt residue is safer in the trash than mixed into metal recycling.",
+            es: "Una pequena tapa de aluminio con residuos de yogur es mas segura en la basura que mezclada con el reciclaje de metales."
+          }
+        },
+        lakewood: {
+          outcome: "trash",
+          note: {
+            en: "If the foil lid is still food-soiled or tiny, keep it out of the cart.",
+            es: "Si la tapa de aluminio sigue teniendo comida o es muy pequena, mantenla fuera del carrito."
+          }
+        },
+        "sunset-hills": {
+          outcome: "trash",
+          note: {
+            en: "Do not assume small foil lids belong in the route metal stream.",
+            es: "No asumas que las pequenas tapas de aluminio pertenecen al flujo metalico de la ruta."
+          }
+        }
+      }
+    },
+    {
+      label: { en: "Cardboard sleeve", es: "Funda de carton" },
+      routes: {
+        riverton: {
+          outcome: "recycle",
+          note: {
+            en: "Recycle the clean dry sleeve separately from the cup and lid.",
+            es: "Recicla la funda limpia y seca por separado del vaso y la tapa."
+          }
+        },
+        lakewood: {
+          outcome: "recycle",
+          note: {
+            en: "A dry sleeve can go with the paper and cardboard stream.",
+            es: "Una funda seca puede ir con el flujo de papel y carton."
+          }
+        },
+        "sunset-hills": {
+          outcome: "recycle",
+          note: {
+            en: "If the sleeve is dry and route paper is accepted, recycle it separately.",
+            es: "Si la funda esta seca y la ruta acepta papel, reciclala por separado."
+          }
+        }
+      }
+    }
+  ],
+  "072000000006": [
+    {
+      label: { en: "Plastic mailer body", es: "Cuerpo del sobre plastico" },
+      routes: {
+        riverton: {
+          outcome: "drop_off",
+          note: {
+            en: "Use film-plastic drop-off only if the mailer is clean and mostly plastic.",
+            es: "Usa la entrega especial de film plastico solo si el sobre esta limpio y es mayormente plastico."
+          }
+        },
+        lakewood: {
+          outcome: "drop_off",
+          note: {
+            en: "Treat the clean mailer like film plastic instead of the mixed cart.",
+            es: "Trata el sobre limpio como film plastico en lugar de ponerlo en el carrito mixto."
+          }
+        },
+        "sunset-hills": {
+          outcome: "trash",
+          note: {
+            en: "Sunset Hills does not recover padded plastic mailers through standard residential routes.",
+            es: "Sunset Hills no recupera sobres acolchados plasticos mediante las rutas residenciales estandar."
+          }
+        }
+      }
+    },
+    {
+      label: { en: "Paper insert or packing slip", es: "Inserto de papel o comprobante" },
+      routes: {
+        riverton: {
+          outcome: "recycle",
+          note: {
+            en: "Recycle clean paper inserts separately once they are removed from the mailer.",
+            es: "Recicla por separado los insertos de papel limpios una vez retirados del sobre."
+          }
+        },
+        lakewood: {
+          outcome: "recycle",
+          note: {
+            en: "Dry paper slips can go into the paper stream even if the outer mailer cannot.",
+            es: "Los comprobantes secos de papel pueden ir al flujo de papel aunque el sobre exterior no pueda."
+          }
+        },
+        "sunset-hills": {
+          outcome: "recycle",
+          note: {
+            en: "If your route accepts paper, recycle the dry insert separately from the plastic shell.",
+            es: "Si tu ruta acepta papel, recicla el inserto seco por separado de la carcasa plastica."
+          }
+        }
+      }
+    }
+  ]
+};
+
 function readStoredJson(key, fallback) {
   try {
     const raw = localStorage.getItem(key);
@@ -4676,7 +5090,7 @@ const elements = {
   reviewActions: [...document.querySelectorAll("[data-review-action]")]
 };
 
-const buildId = "2026-06-30-ui20";
+const buildId = "2026-06-30-ui21";
 const bootState = readUrlState();
 const geolocationOptions = {
   enableHighAccuracy: true,
@@ -5444,6 +5858,39 @@ function comparisonMarkup(entry) {
       <p class="support-copy">${ui.compareCopy}</p>
       <div class="comparison-grid">
         ${items}
+      </div>
+    </div>
+  `;
+}
+
+function packageBreakdownMarkup(entry) {
+  const ui = copy();
+  const municipalityKey = elements.municipalitySelect.value;
+  const parts = (packageBreakdowns[entry.barcode] || [])
+    .map((part) => {
+      const route = part.routes[municipalityKey];
+      return route ? { ...part, route } : null;
+    })
+    .filter(Boolean);
+
+  if (!parts.length) {
+    return "";
+  }
+
+  return `
+    <div class="support-card package-breakdown">
+      <strong class="detail-title">${ui.resultPackageParts}</strong>
+      <p class="support-copy">${ui.resultPackagePartsCopy}</p>
+      <div class="package-parts-grid">
+        ${parts.map((part) => `
+          <article class="package-part-card">
+            <div class="comparison-head">
+              <strong>${part.label[state.language]}</strong>
+              <span class="${outcomeClass(part.route.outcome)}">${outcomeLabel(part.route.outcome)}</span>
+            </div>
+            <p class="support-copy">${part.route.note[state.language]}</p>
+          </article>
+        `).join("")}
       </div>
     </div>
   `;
@@ -7131,6 +7578,8 @@ function renderResult(entry, trackHistory) {
           ${guidance.steps[state.language].map((step) => `<li>${step}</li>`).join("")}
         </ol>
       </div>
+
+      ${packageBreakdownMarkup(entry)}
 
       <div class="support-card result-review-card">
         <strong class="detail-title">${ui.resultReviewTitle}</strong>
