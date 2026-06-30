@@ -165,6 +165,37 @@ textarea:focus-visible,
   margin-bottom: 18px;
 }
 
+.prototype-banner {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(16, 42, 67, 0.08);
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 14px 34px rgba(10, 42, 63, 0.08);
+}
+
+.prototype-banner p {
+  margin: 0;
+  line-height: 1.56;
+  color: var(--ink-soft);
+}
+
+.prototype-pill {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(245, 158, 11, 0.14);
+  color: var(--ink-strong);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 .brand-lockup {
   align-items: center;
 }
@@ -328,11 +359,11 @@ h3 {
 }
 
 .search-panel {
-  order: 1;
+  order: -2;
 }
 
 .hero-panel {
-  order: 2;
+  order: -1;
   position: relative;
   overflow: hidden;
   display: grid;
@@ -553,6 +584,29 @@ textarea {
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 10px;
+}
+
+.review-guide {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(16, 42, 67, 0.08);
+  background:
+    linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(255, 255, 255, 0.78)),
+    rgba(255, 255, 255, 0.88);
+}
+
+.review-guide strong {
+  display: block;
+  font-size: 1.08rem;
+  font-family: var(--font-display);
+}
+
+.review-guide-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
 }
 
 .chip {
@@ -1512,14 +1566,6 @@ textarea {
   }
 
   .hero-panel {
-    order: 1;
-  }
-
-  .search-panel {
-    order: 2;
-  }
-
-  .hero-panel {
     grid-template-columns: 1.12fr 0.88fr;
     align-items: stretch;
   }
@@ -1665,6 +1711,16 @@ textarea {
         </div>
       </header>
 
+      <div class="prototype-banner" role="note" aria-live="polite">
+        <span class="prototype-pill" data-i18n="prototypeTag">Prototype data</span>
+        <p>
+          <strong data-i18n="prototypeTitle">Pilot review build.</strong>
+          <span data-i18n="prototypeCopy">
+            This experience currently uses curated sample municipality profiles and local-only feedback notes for household testing.
+          </span>
+        </p>
+      </div>
+
       <main class="app-grid">
         <section class="hero-panel glass-panel">
           <div class="hero-copy">
@@ -1745,6 +1801,24 @@ textarea {
               <button class="chip" data-barcode="049000042511" type="button"></button>
               <button class="chip" data-barcode="041333216317" type="button"></button>
               <button class="chip" data-barcode="036000291452" type="button"></button>
+            </div>
+          </div>
+
+          <div class="review-guide">
+            <div>
+              <p class="eyebrow" data-i18n="reviewEyebrow">Household review</p>
+              <strong data-i18n="reviewTitle">Best first test path</strong>
+              <p class="browse-copy" data-i18n="reviewCopy">
+                Use your real location, test a tricky item like batteries, then jump straight into feedback while the answer stays in view.
+              </p>
+            </div>
+            <div class="review-guide-actions">
+              <button class="button button-secondary" type="button" data-review-action="battery" data-i18n="reviewTryBattery">
+                Try batteries
+              </button>
+              <button class="ghost-button" type="button" data-review-action="feedback" data-i18n="reviewJumpFeedback">
+                Jump to feedback
+              </button>
             </div>
           </div>
         </section>
@@ -2081,6 +2155,9 @@ const translations = {
     heroSignalSelected: "Selected pilot city",
     heroSignalNearest: "Nearest center",
     heroSignalMaps: "Google Maps ready",
+    prototypeTag: "Prototype data",
+    prototypeTitle: "Pilot review build.",
+    prototypeCopy: "This experience currently uses curated sample municipality profiles and local-only feedback notes for household testing.",
     searchEyebrow: "Start a lookup",
     searchTitle: "Search, scan, and trust the answer",
     municipalityLabel: "Municipality",
@@ -2089,6 +2166,11 @@ const translations = {
     scanDemo: "Scan demo",
     openScanner: "Open camera scan",
     searchButton: "Get guidance",
+    reviewEyebrow: "Household review",
+    reviewTitle: "Best first test path",
+    reviewCopy: "Use your real location, test a tricky item like batteries, then jump straight into feedback while the answer stays in view.",
+    reviewTryBattery: "Try batteries",
+    reviewJumpFeedback: "Jump to feedback",
     installApp: "Install app",
     installReady: "Install prompt ready.",
     installOpen: "Opening install prompt...",
@@ -2318,6 +2400,9 @@ const translations = {
     heroSignalSelected: "Ciudad piloto seleccionada",
     heroSignalNearest: "Centro mas cercano",
     heroSignalMaps: "Google Maps listo",
+    prototypeTag: "Datos prototipo",
+    prototypeTitle: "Version piloto de revision.",
+    prototypeCopy: "Esta experiencia usa perfiles municipales de muestra y notas locales de comentarios solo para pruebas en casa.",
     searchEyebrow: "Inicia una consulta",
     searchTitle: "Busca, escanea y confia en la respuesta",
     municipalityLabel: "Municipio",
@@ -2326,6 +2411,11 @@ const translations = {
     scanDemo: "Escanear demo",
     openScanner: "Abrir camara",
     searchButton: "Ver guia",
+    reviewEyebrow: "Prueba en casa",
+    reviewTitle: "Mejor ruta inicial de prueba",
+    reviewCopy: "Usa tu ubicacion real, prueba un articulo dificil como baterias y luego salta directo a comentarios mientras la respuesta sigue visible.",
+    reviewTryBattery: "Probar baterias",
+    reviewJumpFeedback: "Ir a comentarios",
     installApp: "Instalar app",
     installReady: "La instalacion esta lista.",
     installOpen: "Abriendo instalacion...",
@@ -3985,10 +4075,11 @@ const elements = {
   copyLink: document.getElementById("copy-link"),
   copySummary: document.getElementById("copy-summary"),
   toast: document.getElementById("toast"),
-  chips: [...document.querySelectorAll(".chip")]
+  chips: [...document.querySelectorAll(".chip")],
+  reviewActions: [...document.querySelectorAll("[data-review-action]")]
 };
 
-const buildId = "2026-06-30-ui14";
+const buildId = "2026-06-30-ui15";
 const bootState = readUrlState();
 const geolocationOptions = {
   enableHighAccuracy: true,
@@ -6202,6 +6293,22 @@ elements.chips.forEach((chip) => {
     const barcode = chip.getAttribute("data-barcode");
     elements.searchInput.value = products[barcode].name[state.language];
     handleSearch(barcode);
+  });
+});
+
+elements.reviewActions.forEach((button) => {
+  button.addEventListener("click", () => {
+    const action = button.getAttribute("data-review-action");
+    if (action === "battery") {
+      const barcode = "041333216317";
+      elements.searchInput.value = products[barcode].name[state.language];
+      handleSearch(barcode);
+      return;
+    }
+
+    if (action === "feedback") {
+      scrollToSection(".feedback-card");
+    }
   });
 });
 
