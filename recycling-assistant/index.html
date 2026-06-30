@@ -193,6 +193,63 @@ textarea:focus-visible,
   color: var(--ink-soft);
 }
 
+.review-launch {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding: 18px;
+  background:
+    linear-gradient(135deg, rgba(245, 158, 11, 0.14), rgba(255, 255, 255, 0.82)),
+    var(--card);
+}
+
+.review-launch-copy {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.58;
+}
+
+.review-launch-progress {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.review-launch-steps {
+  display: grid;
+  gap: 10px;
+}
+
+.review-launch-step {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(16, 42, 67, 0.08);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.review-launch-step.is-done {
+  background: rgba(223, 247, 239, 0.92);
+  border-color: rgba(15, 118, 110, 0.18);
+}
+
+.review-launch-step strong {
+  font-size: 0.98rem;
+}
+
+.review-launch-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.review-launch-actions > * {
+  flex: 1 1 180px;
+}
+
 .prototype-pill {
   display: inline-flex;
   align-items: center;
@@ -1296,6 +1353,29 @@ textarea {
   gap: 14px;
 }
 
+.basis-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.basis-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.basis-card {
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.basis-card strong {
+  display: block;
+  margin-top: 10px;
+  font-size: 1rem;
+}
+
 .package-breakdown {
   display: grid;
   gap: 14px;
@@ -1741,11 +1821,19 @@ textarea {
     align-items: start;
   }
 
+  .review-launch-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .feedback-tags {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .package-parts-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .basis-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1826,6 +1914,10 @@ textarea {
   .package-parts-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+
+  .basis-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 
 </style>
@@ -1863,6 +1955,8 @@ textarea {
           </button>
         </div>
       </header>
+
+      <section id="review-launch-card" class="review-launch glass-panel" hidden></section>
 
       <div class="prototype-banner" role="note" aria-live="polite">
         <span class="prototype-pill" data-i18n="prototypeTag">Prototype data</span>
@@ -1906,8 +2000,8 @@ textarea {
           <div id="search-assist" class="search-assist" aria-live="polite"></div>
 
           <div class="action-row">
-            <button id="open-scanner" class="button" type="button" data-i18n="openScanner">Open camera scan</button>
-            <button id="search-button" class="button button-secondary" type="button" data-i18n="searchButton">Get guidance</button>
+            <button id="search-button" class="button" type="button" data-i18n="searchButton">Get guidance</button>
+            <button id="open-scanner" class="button button-secondary" type="button" data-i18n="openScanner">Open camera scan</button>
             <button id="scan-demo" class="ghost-button" type="button" data-i18n="scanDemo">Scan demo</button>
           </div>
 
@@ -2382,9 +2476,9 @@ const translations = {
     heroSignalSelected: "Selected pilot city",
     heroSignalNearest: "Nearest center",
     heroSignalMaps: "Google Maps ready",
-    prototypeTag: "Prototype data",
-    prototypeTitle: "Pilot review build.",
-    prototypeCopy: "This experience currently uses curated sample municipality profiles and local-only feedback notes for household testing.",
+    prototypeTag: "Pilot coverage",
+    prototypeTitle: "Household review build.",
+    prototypeCopy: "This pilot currently uses reviewed sample municipality profiles, nearby center guidance, and on-device location matching for household testing.",
     searchEyebrow: "Start a lookup",
     searchTitle: "Search, scan, and trust the answer",
     municipalityLabel: "Municipality",
@@ -2400,6 +2494,12 @@ const translations = {
     reviewCopy: "Use your real location, test a tricky item like batteries, then jump straight into feedback while the answer stays in view.",
     reviewTryBattery: "Try batteries",
     reviewJumpFeedback: "Open testing tools",
+    reviewLaunchEyebrow: "Guided review mode",
+    reviewLaunchTitle: "This link is ready for household testing.",
+    reviewLaunchCopy: "Use your real location, try a clear recycle case, compare a tricky item across cities, and save one note before you leave.",
+    reviewLaunchProgress: "Review progress",
+    reviewLaunchNotes: "Open notes",
+    reviewLaunchResident: "Return to simple mode",
     installApp: "Install app",
     installReady: "Install prompt ready.",
     installOpen: "Opening install prompt...",
@@ -2629,6 +2729,14 @@ const translations = {
     historyChecked: "Checked",
     resultMunicipality: "Municipality",
     resultTrack: "Collection stream",
+    resultBasisTitle: "Answer basis",
+    resultBasisCopy: "What this review build used to support the answer.",
+    resultBasisMatch: "Item match",
+    resultBasisProfile: "Pilot profile",
+    resultBasisPackage: "Package logic",
+    resultBasisCenter: "Center fit",
+    resultBasisSingle: "Single-material route in this pilot profile.",
+    resultBasisTripNone: "No extra trip is needed for this route.",
     resultWhy: "Why this answer",
     resultSteps: "Next steps",
     resultPackageParts: "Sort the package by part",
@@ -2668,9 +2776,9 @@ const translations = {
     heroSignalSelected: "Ciudad piloto seleccionada",
     heroSignalNearest: "Centro mas cercano",
     heroSignalMaps: "Google Maps listo",
-    prototypeTag: "Datos prototipo",
-    prototypeTitle: "Version piloto de revision.",
-    prototypeCopy: "Esta experiencia usa perfiles municipales de muestra y notas locales de comentarios solo para pruebas en casa.",
+    prototypeTag: "Cobertura piloto",
+    prototypeTitle: "Version para pruebas en casa.",
+    prototypeCopy: "Este piloto usa perfiles municipales de muestra revisados, centros cercanos y ubicacion en el dispositivo para pruebas en casa.",
     searchEyebrow: "Inicia una consulta",
     searchTitle: "Busca, escanea y confia en la respuesta",
     municipalityLabel: "Municipio",
@@ -2686,6 +2794,12 @@ const translations = {
     reviewCopy: "Usa tu ubicacion real, prueba un articulo dificil como baterias y luego salta directo a comentarios mientras la respuesta sigue visible.",
     reviewTryBattery: "Probar baterias",
     reviewJumpFeedback: "Abrir herramientas de prueba",
+    reviewLaunchEyebrow: "Modo guiado de prueba",
+    reviewLaunchTitle: "Este enlace ya esta listo para probarse en casa.",
+    reviewLaunchCopy: "Usa tu ubicacion real, prueba un caso claro de reciclaje, compara un articulo dificil entre ciudades y guarda una nota antes de salir.",
+    reviewLaunchProgress: "Progreso de revision",
+    reviewLaunchNotes: "Abrir notas",
+    reviewLaunchResident: "Volver al modo simple",
     installApp: "Instalar app",
     installReady: "La instalacion esta lista.",
     installOpen: "Abriendo instalacion...",
@@ -2915,6 +3029,14 @@ const translations = {
     historyChecked: "Consultado",
     resultMunicipality: "Municipio",
     resultTrack: "Flujo de recoleccion",
+    resultBasisTitle: "Base de la respuesta",
+    resultBasisCopy: "Lo que esta version de revision uso para respaldar la respuesta.",
+    resultBasisMatch: "Coincidencia del articulo",
+    resultBasisProfile: "Perfil piloto",
+    resultBasisPackage: "Logica del empaque",
+    resultBasisCenter: "Ajuste con el centro",
+    resultBasisSingle: "Ruta de un solo material en este perfil piloto.",
+    resultBasisTripNone: "No hace falta un viaje extra para esta ruta.",
     resultWhy: "Por que esta respuesta",
     resultSteps: "Siguientes pasos",
     resultPackageParts: "Separa el paquete por partes",
@@ -5040,6 +5162,7 @@ const elements = {
   scanDemo: document.getElementById("scan-demo"),
   useLocation: document.getElementById("use-location"),
   locationStatus: document.getElementById("location-status"),
+  reviewLaunchCard: document.getElementById("review-launch-card"),
   flowBoard: document.getElementById("flow-board"),
   nextStepCard: document.getElementById("next-step-card"),
   browseFilters: document.getElementById("browse-filters"),
@@ -5090,7 +5213,7 @@ const elements = {
   reviewActions: [...document.querySelectorAll("[data-review-action]")]
 };
 
-const buildId = "2026-06-30-ui21";
+const buildId = "2026-06-30-ui23";
 const bootState = readUrlState();
 const geolocationOptions = {
   enableHighAccuracy: true,
@@ -5428,6 +5551,7 @@ function setReviewMode(isReviewMode, options = {}) {
   elements.reviewSummary.hidden = isReviewMode;
   elements.toggleReviewTools.textContent = isReviewMode ? copy().reviewToolsClose : copy().reviewToolsOpen;
   elements.toggleReviewTools.setAttribute("aria-expanded", isReviewMode ? "true" : "false");
+  renderReviewLaunchCard();
 
   if (sync) {
     syncUrlState();
@@ -5891,6 +6015,54 @@ function packageBreakdownMarkup(entry) {
             <p class="support-copy">${part.route.note[state.language]}</p>
           </article>
         `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function answerBasisMarkup(entry, guidance, municipality, nearestCenter, needsCenterSpotlight) {
+  const ui = copy();
+  const query = state.lastQuery || entry.product.name[state.language];
+  const queryNorm = normalizeSearchText(query);
+  const barcodeMatch = queryNorm === entry.barcode;
+  const partCount = packageBreakdowns[entry.barcode]?.length || 0;
+  const matchCopy = barcodeMatch
+    ? `${entry.barcode} · ${entry.product.name[state.language]}`
+    : `${escapeHtml(query)} -> ${entry.product.name[state.language]} · ${entry.barcode}`;
+  const packageCopy = partCount
+    ? (state.language === "en"
+      ? `${partCount} package parts have separate sorting guidance in this municipality.`
+      : `${partCount} partes del empaque tienen orientacion de clasificacion separada en este municipio.`)
+    : ui.resultBasisSingle;
+  const centerCopy = needsCenterSpotlight && nearestCenter
+    ? `${nearestCenter.name[state.language]} · ${nearestCenter.accepts[state.language]}`
+    : ui.resultBasisTripNone;
+
+  return `
+    <div class="support-card basis-panel">
+      <strong class="detail-title">${ui.resultBasisTitle}</strong>
+      <p class="support-copy">${ui.resultBasisCopy}</p>
+      <div class="basis-grid">
+        <article class="basis-card">
+          <span class="mini-pill">${ui.resultBasisMatch}</span>
+          <strong>${entry.product.confidence}%</strong>
+          <p class="support-copy">${matchCopy}</p>
+        </article>
+        <article class="basis-card">
+          <span class="mini-pill">${ui.resultBasisProfile}</span>
+          <strong>${municipality.updated[state.language]}</strong>
+          <p class="support-copy">${municipality.program[state.language]}</p>
+        </article>
+        <article class="basis-card">
+          <span class="mini-pill">${ui.resultBasisPackage}</span>
+          <strong>${entry.product.family[state.language]}</strong>
+          <p class="support-copy">${packageCopy}</p>
+        </article>
+        <article class="basis-card">
+          <span class="mini-pill">${ui.resultBasisCenter}</span>
+          <strong>${needsCenterSpotlight && nearestCenter ? ui.resultCenterSpotlight : outcomeLabel(guidance.outcome)}</strong>
+          <p class="support-copy">${centerCopy}</p>
+        </article>
       </div>
     </div>
   `;
@@ -7073,6 +7245,80 @@ function renderFeedbackCurrentAnswer() {
   });
 }
 
+function renderReviewLaunchCard() {
+  if (!state.reviewMode) {
+    elements.reviewLaunchCard.hidden = true;
+    elements.reviewLaunchCard.innerHTML = "";
+    return;
+  }
+
+  const ui = copy();
+  const items = checklistItems();
+  const completed = items.filter((item) => item.done).length;
+  const progress = Math.round((completed / items.length) * 100);
+  const nextItem = nextPendingChecklistItem();
+
+  elements.reviewLaunchCard.hidden = false;
+  elements.reviewLaunchCard.innerHTML = `
+    <div class="panel-heading">
+      <div>
+        <p class="eyebrow">${ui.reviewLaunchEyebrow}</p>
+        <h3>${ui.reviewLaunchTitle}</h3>
+      </div>
+      <span class="mini-pill">${completed}/${items.length}</span>
+    </div>
+    <p class="review-launch-copy">${ui.reviewLaunchCopy}</p>
+    <div class="review-launch-progress">
+      <strong>${ui.reviewLaunchProgress}</strong>
+      <span class="mini-pill">${progress}%</span>
+    </div>
+    <div class="session-progress-track" aria-hidden="true">
+      <div class="session-progress-fill" style="width:${progress}%"></div>
+    </div>
+    <div class="review-launch-steps">
+      ${items.map((item) => `
+        <article class="review-launch-step${item.done ? " is-done" : ""}">
+          <div class="comparison-head">
+            <strong>${ui[item.key]}</strong>
+            <span class="mini-pill">${item.done ? ui.checklistDone : ui.checklistNext}</span>
+          </div>
+        </article>
+      `).join("")}
+    </div>
+    <div class="review-launch-actions">
+      <button class="button" type="button" data-review-launch-action="next"${nextItem ? "" : " disabled"}>
+        ${nextItem ? `${ui.sessionRunNext}: ${ui[nextItem.key]}` : ui.sessionDone}
+      </button>
+      <button class="button button-secondary" type="button" data-review-launch-action="notes">
+        ${ui.reviewLaunchNotes}
+      </button>
+      <button class="ghost-button" type="button" data-review-launch-action="resident">
+        ${ui.reviewLaunchResident}
+      </button>
+    </div>
+  `;
+
+  elements.reviewLaunchCard.querySelectorAll("[data-review-launch-action]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const action = button.getAttribute("data-review-launch-action");
+      if (action === "next" && nextItem) {
+        runChecklistAction(nextItem.action);
+        return;
+      }
+
+      if (action === "notes") {
+        openReviewTools({ scroll: true, focusNotes: true });
+        return;
+      }
+
+      if (action === "resident") {
+        setReviewMode(false);
+        scrollToSection(".search-panel");
+      }
+    });
+  });
+}
+
 function renderSessionSnapshot() {
   const ui = copy();
   const uniqueItems = state.sessionCoverage.barcodes.length;
@@ -7155,6 +7401,7 @@ function renderSessionOverview() {
   renderSessionSnapshot();
   renderSessionChecklist();
   renderFeedbackCurrentAnswer();
+  renderReviewLaunchCard();
 }
 
 function runChecklistAction(action) {
@@ -7559,6 +7806,8 @@ function renderResult(entry, trackHistory) {
         <p class="support-copy"><strong>${ui.resultMunicipality}:</strong> ${municipality.name[state.language]}</p>
         <p class="support-copy"><strong>${ui.resultUpdated}:</strong> ${guidance.updated[state.language]}</p>
       </div>
+
+      ${answerBasisMarkup(entry, guidance, municipality, nearestCenter, needsCenterSpotlight)}
 
       <div class="result-detail-grid">
         <div class="support-card">
