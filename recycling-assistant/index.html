@@ -967,6 +967,17 @@ textarea {
   font-size: 1rem;
 }
 
+.history-button {
+  width: 100%;
+  text-align: left;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.history-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(10, 42, 63, 0.08);
+}
+
 .center-tags,
 .municipality-tags {
   display: flex;
@@ -1476,7 +1487,7 @@ textarea {
           <button class="ghost-button" id="install-app" type="button" data-i18n="installApp">
             Install app
           </button>
-          <button class="ghost-button compact-button" id="copy-link" type="button" data-i18n="copyLink">
+          <button class="ghost-button" id="copy-link" type="button" data-i18n="copyLink">
             Copy link
           </button>
           <button class="language-toggle" id="language-toggle" type="button" aria-label="Switch language">
@@ -1540,9 +1551,10 @@ textarea {
 
             <label class="field field-search">
               <span data-i18n="searchLabel">Barcode or product name</span>
-              <input id="search-input" type="text" autocomplete="off" placeholder="Try aluminum can or 012345678905">
+              <input id="search-input" type="text" autocomplete="off" list="product-suggestions" placeholder="Try aluminum can or 012345678905">
             </label>
           </div>
+          <datalist id="product-suggestions"></datalist>
 
           <div class="action-row">
             <button id="open-scanner" class="button" type="button" data-i18n="openScanner">Open camera scan</button>
@@ -1840,7 +1852,7 @@ textarea {
 const translations = {
   en: {
     brandTitle: "Recycling Assistant",
-    copyLink: "Copy link",
+    copyLink: "Share link",
     heroKicker: "Location-aware household recycling guide",
     heroTitle: "Know exactly where this item goes in your city.",
     heroCopy:
@@ -1971,6 +1983,7 @@ const translations = {
     feedbackNeedNote: "Add a short note before saving feedback.",
     feedbackContext: "Context",
     feedbackDate: "Saved",
+    feedbackLink: "Review link",
     scenarioTitle: "Suggested test prompts",
     scenarioCopy: "Use these scenarios to evaluate clarity, confidence, and speed on a phone.",
     trustEyebrow: "Why it feels reliable",
@@ -1988,7 +2001,7 @@ const translations = {
     noCenters: "Search an item to reveal nearby drop-off and recycling options.",
     noHistory: "Your last few lookups will appear here once you start checking items.",
     noResultCopyLink: "Check a product first, then copy the answer.",
-    toastLink: "Preview link copied.",
+    toastLink: "Review link copied.",
     toastSummary: "Answer summary copied.",
     toastFallback: "Copying is not available in this browser.",
     unknownTitle: "We could not confidently identify that item.",
@@ -2026,7 +2039,7 @@ const translations = {
   },
   es: {
     brandTitle: "Asistente de Reciclaje",
-    copyLink: "Copiar enlace",
+    copyLink: "Compartir enlace",
     heroKicker: "Guia domestica de reciclaje con ubicacion",
     heroTitle: "Sabe exactamente donde va este articulo en tu ciudad.",
     heroCopy:
@@ -2157,6 +2170,7 @@ const translations = {
     feedbackNeedNote: "Agrega una nota corta antes de guardar el comentario.",
     feedbackContext: "Contexto",
     feedbackDate: "Guardado",
+    feedbackLink: "Enlace de revision",
     scenarioTitle: "Pruebas sugeridas",
     scenarioCopy: "Usa estos escenarios para evaluar claridad, confianza y rapidez desde un telefono.",
     trustEyebrow: "Por que inspira confianza",
@@ -3613,6 +3627,7 @@ const elements = {
   municipalityCard: document.getElementById("municipality-card"),
   heroSignalCard: document.getElementById("hero-signal-card"),
   searchInput: document.getElementById("search-input"),
+  productSuggestions: document.getElementById("product-suggestions"),
   searchButton: document.getElementById("search-button"),
   installApp: document.getElementById("install-app"),
   openScanner: document.getElementById("open-scanner"),
@@ -3649,7 +3664,16 @@ const elements = {
   chips: [...document.querySelectorAll(".chip")]
 };
 
-const buildId = "2026-06-30-ui7";
+const buildId = "2026-06-30-ui8";
+const bootState = readUrlState();
+
+if (bootState.language && translations[bootState.language]) {
+  state.language = bootState.language;
+}
+
+if (bootState.municipality && municipalities[bootState.municipality]) {
+  elements.municipalitySelect.value = bootState.municipality;
+}
 const demoBarcodes = Object.keys(products);
 const testScenarios = [
   {
@@ -3852,6 +3876,45 @@ function setLocationStatus(message) {
 
 function setResultContentState(isEmpty) {
   elements.resultContent.classList.toggle("result-empty", isEmpty);
+}
+
+function readUrlState() {
+  if (typeof window === "undefined" || !window.location) {
+    return {};
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  return {
+    language: params.get("lang"),
+    municipality: params.get("m"),
+    item: params.get("item"),
+    query: params.get("q")
+  };
+}
+
+function currentAppUrl() {
+  const url = new URL(window.location.href);
+  url.search = "";
+  url.hash = "";
+  url.searchParams.set("v", buildId);
+  url.searchParams.set("lang", state.language);
+  url.searchParams.set("m", elements.municipalitySelect.value);
+
+  if (state.currentBarcode) {
+    url.searchParams.set("item", state.currentBarcode);
+  } else if (state.lastQuery) {
+    url.searchParams.set("q", state.lastQuery);
+  }
+
+  return url.toString();
+}
+
+function syncUrlState() {
+  if (!window.history || typeof window.history.replaceState !== "function") {
+    return;
+  }
+
+  window.history.replaceState({}, "", currentAppUrl());
 }
 
 function scrollToSection(selector) {
@@ -4483,6 +4546,7 @@ function requestUserLocation() {
     elements.municipalitySelect.value = match.key;
     setLocationStatus(locationMatchStatus(match));
     refreshMunicipalityViews();
+    syncUrlState();
 
     const currentEntry = activeProductEntry();
     if (currentEntry) {
@@ -4545,6 +4609,17 @@ function renderQuickChips() {
     const barcode = chip.getAttribute("data-barcode");
     chip.textContent = products[barcode].name[state.language];
   });
+}
+
+function renderProductSuggestions() {
+  const options = Object.entries(products)
+    .sort((left, right) => left[1].name[state.language].localeCompare(right[1].name[state.language]))
+    .map(([barcode, product]) => {
+      const label = `${product.name[state.language]} · ${product.family[state.language]} · ${barcode}`;
+      return `<option value="${product.name[state.language]}" label="${label}"></option>`;
+    });
+
+  elements.productSuggestions.innerHTML = options.join("");
 }
 
 function browseEntries() {
@@ -4761,14 +4836,32 @@ function renderHistory() {
       return;
     }
 
-    const item = document.createElement("div");
-    item.className = "history-card";
+    const item = document.createElement("button");
+    item.className = "history-card history-button";
+    item.type = "button";
+    item.dataset.historyBarcode = entry.barcode;
+    item.dataset.historyMunicipality = entry.municipality;
     item.innerHTML = `
       <strong>${product.name[state.language]}</strong>
       <p class="history-meta">${outcomeLabel(entry.outcome)} &middot; ${municipality.name[state.language]}</p>
       <p class="history-meta">${ui.historyChecked} ${formatHistoryTime(entry.timestamp)}</p>
     `;
     elements.historyList.appendChild(item);
+  });
+
+  elements.historyList.querySelectorAll("[data-history-barcode]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const barcode = button.getAttribute("data-history-barcode");
+      const municipality = button.getAttribute("data-history-municipality");
+      if (!products[barcode] || !municipalities[municipality]) {
+        return;
+      }
+
+      elements.municipalitySelect.value = municipality;
+      elements.searchInput.value = products[barcode].name[state.language];
+      refreshMunicipalityViews();
+      handleSearch(barcode, { trackHistory: false });
+    });
   });
 }
 
@@ -4829,8 +4922,9 @@ function feedbackReportText() {
       `${ui.feedbackClarity}: ${entry.clarity}/5`,
       `${ui.feedbackTrust}: ${entry.trust}/5`,
       `${ui.feedbackSpeed}: ${entry.speed}/5`,
-      entry.notes
-    ].join("\n");
+      entry.notes,
+      entry.url ? `${ui.feedbackLink}: ${entry.url}` : null
+    ].filter(Boolean).join("\n");
   }).join("\n\n");
 }
 
@@ -4851,6 +4945,7 @@ function saveFeedbackEntry() {
     trust: elements.trustRating.value,
     speed: elements.speedRating.value,
     notes,
+    url: currentAppUrl(),
     timestamp: Date.now()
   });
   state.feedback = state.feedback.slice(0, 20);
@@ -4902,6 +4997,32 @@ async function copyText(value, successMessage) {
   }
 }
 
+async function shareCurrentLink() {
+  const url = currentAppUrl();
+  const currentEntry = activeProductEntry();
+  const shareTitle = `LindaData ${copy().brandTitle}`;
+  const shareText = currentEntry
+    ? `${currentEntry.product.name[state.language]} - ${activeMunicipality().name[state.language]}`
+    : copy().heroTitle;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: shareTitle,
+        text: shareText,
+        url
+      });
+      return;
+    } catch (error) {
+      if (error && error.name === "AbortError") {
+        return;
+      }
+    }
+  }
+
+  await copyText(url, copy().toastLink);
+}
+
 function findProductEntry(query) {
   const normalized = query.trim().toLowerCase();
   if (!normalized) {
@@ -4923,6 +5044,29 @@ function findProductEntry(query) {
   }
 
   return null;
+}
+
+function renderEmptyResult() {
+  const ui = copy();
+  state.currentBarcode = null;
+  state.lastQuery = "";
+  setResultContentState(true);
+  elements.resultContent.innerHTML = `
+    <div class="empty-state">
+      <div class="empty-art" aria-hidden="true">
+        <span></span>
+      </div>
+      <div>
+        <p class="empty-title">${ui.resultEmptyTitle}</p>
+        <p class="empty-copy">${ui.resultEmptyCopy}</p>
+      </div>
+    </div>
+  `;
+
+  renderFlowBoard();
+  renderNextStepCard();
+  renderBrowseCatalog();
+  renderCenters(null);
 }
 
 function renderUnknown() {
@@ -4972,7 +5116,8 @@ function summaryText(entry) {
     `${ui.resultMunicipality}: ${municipality.name[state.language]}`,
     `${ui.resultTrack}: ${guidance.lane[state.language]}`,
     guidance.instructions[state.language],
-    `${ui.resultWhy}: ${guidance.rationale[state.language]}`
+    `${ui.resultWhy}: ${guidance.rationale[state.language]}`,
+    currentAppUrl()
   ].join("\n");
 }
 
@@ -5050,18 +5195,34 @@ function renderResult(entry, trackHistory) {
   renderCenters(entry);
 }
 
-function handleSearch(value) {
+function handleSearch(value, options = {}) {
+  const { trackHistory = true, scroll = true } = options;
   state.lastQuery = value.trim();
+  if (!state.lastQuery) {
+    renderEmptyResult();
+    syncUrlState();
+    if (scroll) {
+      scrollToSection(".result-stage");
+    }
+    return;
+  }
+
   const entry = findProductEntry(value);
   if (!entry) {
     renderUnknown();
-    scrollToSection(".result-stage");
+    syncUrlState();
+    if (scroll) {
+      scrollToSection(".result-stage");
+    }
     return;
   }
 
   state.currentBarcode = entry.barcode;
-  renderResult(entry, true);
-  scrollToSection(".result-stage");
+  renderResult(entry, trackHistory);
+  syncUrlState();
+  if (scroll) {
+    scrollToSection(".result-stage");
+  }
 }
 
 function runDemoScan() {
@@ -5078,6 +5239,7 @@ elements.languageToggle.addEventListener("click", () => {
   updateInstallButton();
   refreshLocationStatus();
   renderQuickChips();
+  renderProductSuggestions();
   renderScenarios();
   refreshMunicipalityViews();
   renderHistory();
@@ -5091,6 +5253,8 @@ elements.languageToggle.addEventListener("click", () => {
   } else {
     renderCenters(null);
   }
+
+  syncUrlState();
 });
 
 elements.searchButton.addEventListener("click", () => {
@@ -5179,6 +5343,8 @@ elements.municipalitySelect.addEventListener("change", () => {
   } else {
     renderCenters(null);
   }
+
+  syncUrlState();
 });
 
 elements.searchInput.addEventListener("keydown", (event) => {
@@ -5187,11 +5353,8 @@ elements.searchInput.addEventListener("keydown", (event) => {
   }
 });
 
-elements.copyLink.addEventListener("click", () => {
-  const path = window.location.pathname.includes("/recycling-assistant/")
-    ? `${window.location.origin}/recycling-assistant/?v=${buildId}`
-    : window.location.href;
-  copyText(path, copy().toastLink);
+elements.copyLink.addEventListener("click", async () => {
+  await shareCurrentLink();
 });
 
 elements.copySummary.addEventListener("click", () => {
@@ -5216,7 +5379,7 @@ elements.clearFeedback.addEventListener("click", () => {
   clearFeedbackForm();
 });
 
-if (state.userLocation) {
+if (state.userLocation && !bootState.municipality) {
   const match = nearestMunicipalityForLocation(state.userLocation.latitude, state.userLocation.longitude);
   elements.municipalitySelect.value = match.key;
 }
@@ -5249,11 +5412,22 @@ translatePage();
 updateInstallButton();
 refreshLocationStatus();
 renderQuickChips();
+renderProductSuggestions();
 renderScenarios();
 refreshMunicipalityViews();
-renderCenters(null);
 renderHistory();
 renderFeedbackLog();
+
+if (bootState.item && products[bootState.item]) {
+  elements.searchInput.value = products[bootState.item].name[state.language];
+  handleSearch(bootState.item, { trackHistory: false, scroll: false });
+} else if (bootState.query) {
+  elements.searchInput.value = bootState.query;
+  handleSearch(bootState.query, { trackHistory: false, scroll: false });
+} else {
+  renderCenters(null);
+  syncUrlState();
+}
 
 </script>
   </body>
