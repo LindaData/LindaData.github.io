@@ -1071,6 +1071,115 @@ textarea {
   transform: translateX(-50%) translateY(0);
 }
 
+.scanner-modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(16, 42, 67, 0.48);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+  z-index: 30;
+}
+
+.scanner-modal.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.scanner-dialog {
+  width: min(560px, 100%);
+  padding: 20px;
+}
+
+.scanner-topbar,
+.scanner-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.scanner-topbar {
+  flex-wrap: wrap;
+}
+
+.scanner-copy,
+.scanner-status {
+  margin: 14px 0 0;
+  color: var(--ink-soft);
+  line-height: 1.56;
+}
+
+.scanner-stage {
+  position: relative;
+  margin-top: 16px;
+  border-radius: 28px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(15, 118, 110, 0.18), transparent 40%),
+    linear-gradient(180deg, #0f2438 0%, #081723 100%);
+  aspect-ratio: 3 / 4;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+}
+
+#scanner-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.scanner-frame {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.scanner-frame span {
+  width: min(72vw, 280px);
+  height: min(36vw, 160px);
+  border-radius: 22px;
+  border: 3px solid rgba(255, 255, 255, 0.94);
+  box-shadow:
+    0 0 0 999px rgba(8, 23, 35, 0.34),
+    inset 0 0 0 1px rgba(15, 118, 110, 0.7);
+  position: relative;
+}
+
+.scanner-frame span::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.95), transparent);
+  box-shadow: 0 0 22px rgba(245, 158, 11, 0.8);
+  animation: scanner-sweep 2s ease-in-out infinite;
+}
+
+@keyframes scanner-sweep {
+  0%,
+  100% {
+    transform: translateY(-44px);
+  }
+
+  50% {
+    transform: translateY(44px);
+  }
+}
+
+.scanner-actions {
+  margin-top: 16px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
 @media (min-width: 760px) {
   .compact-button {
     display: inline-flex;
@@ -1252,8 +1361,9 @@ textarea {
           </div>
 
           <div class="action-row">
-            <button id="scan-demo" class="button button-secondary" type="button" data-i18n="scanDemo">Scan demo</button>
-            <button id="search-button" class="button" type="button" data-i18n="searchButton">Get guidance</button>
+            <button id="open-scanner" class="button" type="button" data-i18n="openScanner">Open camera scan</button>
+            <button id="search-button" class="button button-secondary" type="button" data-i18n="searchButton">Get guidance</button>
+            <button id="scan-demo" class="ghost-button" type="button" data-i18n="scanDemo">Scan demo</button>
           </div>
 
           <div class="location-row">
@@ -1491,6 +1601,41 @@ textarea {
       </main>
     </div>
 
+    <div class="scanner-modal" id="scanner-modal" aria-hidden="true">
+      <div class="scanner-dialog glass-panel">
+        <div class="scanner-topbar">
+          <div>
+            <p class="eyebrow" data-i18n="scannerEyebrow">Live barcode scan</p>
+            <h3 data-i18n="scannerTitle">Point the camera at the barcode</h3>
+          </div>
+          <button class="ghost-button" id="close-scanner" type="button" data-i18n="closeScanner">
+            Close
+          </button>
+        </div>
+
+        <p class="scanner-copy" data-i18n="scannerCopy">
+          The camera stays on-device. If detection fails, use the product search or the sample scan below.
+        </p>
+
+        <div class="scanner-stage">
+          <video id="scanner-video" playsinline muted></video>
+          <div class="scanner-frame" aria-hidden="true">
+            <span></span>
+          </div>
+        </div>
+
+        <p id="scanner-status" class="scanner-status" aria-live="polite" data-i18n="scannerIdle">
+          Camera is ready when you are.
+        </p>
+
+        <div class="scanner-actions">
+          <button class="button button-secondary" id="scanner-demo" type="button" data-i18n="scannerUseSample">
+            Use sample instead
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script>
@@ -1516,6 +1661,7 @@ const translations = {
     searchLabel: "Barcode or product name",
     searchPlaceholder: "Try aluminum can or 012345678905",
     scanDemo: "Scan demo",
+    openScanner: "Open camera scan",
     searchButton: "Get guidance",
     installApp: "Install app",
     installReady: "Install prompt ready.",
@@ -1540,7 +1686,7 @@ const translations = {
     flowLocateTitle: "Locate",
     flowLocatePending: "Use your location or choose a pilot municipality.",
     flowItemTitle: "Identify",
-    flowItemPending: "Search a product or run the sample scan to identify the package.",
+    flowItemPending: "Search a product or use the live camera scan to identify the package.",
     flowDecisionTitle: "Decide",
     flowDecisionPending: "The answer card will show the local outcome and why it changed.",
     flowNextTitle: "Go",
@@ -1557,6 +1703,18 @@ const translations = {
     briefNextStep: "Best next step",
     briefFlowHint: "Then search an item or run the sample scan.",
     briefOpenNearest: "Open nearest center",
+    scannerEyebrow: "Live barcode scan",
+    scannerTitle: "Point the camera at the barcode",
+    scannerCopy: "The camera stays on-device. If detection fails, use the product search or the sample scan below.",
+    scannerIdle: "Camera is ready when you are.",
+    scannerStarting: "Opening the camera...",
+    scannerSearching: "Looking for a supported barcode...",
+    scannerUnsupported: "Live camera scanning is not supported in this browser yet. Use search or the sample scan instead.",
+    scannerPermissionDenied: "Camera access was denied. You can still search by product name or barcode.",
+    scannerError: "We could not start the camera right now. Try again or use search instead.",
+    scannerDetected: "Barcode detected.",
+    scannerUseSample: "Use sample instead",
+    closeScanner: "Close",
     quickLabel: "Popular lookups",
     resultEyebrow: "Answer card",
     resultTitle: "Your local recycling guidance",
@@ -1674,6 +1832,7 @@ const translations = {
     searchLabel: "Codigo de barras o nombre del producto",
     searchPlaceholder: "Prueba aluminum can o 012345678905",
     scanDemo: "Escanear demo",
+    openScanner: "Abrir camara",
     searchButton: "Ver guia",
     installApp: "Instalar app",
     installReady: "La instalacion esta lista.",
@@ -1698,7 +1857,7 @@ const translations = {
     flowLocateTitle: "Ubicar",
     flowLocatePending: "Usa tu ubicacion o elige un municipio piloto.",
     flowItemTitle: "Identificar",
-    flowItemPending: "Busca un producto o usa la muestra para identificar el empaque.",
+    flowItemPending: "Busca un producto o usa la camara para identificar el empaque.",
     flowDecisionTitle: "Decidir",
     flowDecisionPending: "La tarjeta mostrara el resultado local y por que cambia.",
     flowNextTitle: "Ir",
@@ -1715,6 +1874,18 @@ const translations = {
     briefNextStep: "Mejor siguiente paso",
     briefFlowHint: "Despues busca un articulo o usa la muestra.",
     briefOpenNearest: "Abrir centro mas cercano",
+    scannerEyebrow: "Escaneo en vivo",
+    scannerTitle: "Apunta la camara al codigo de barras",
+    scannerCopy: "La camara permanece en el dispositivo. Si la deteccion falla, usa la busqueda o la muestra de abajo.",
+    scannerIdle: "La camara esta lista cuando quieras.",
+    scannerStarting: "Abriendo la camara...",
+    scannerSearching: "Buscando un codigo de barras compatible...",
+    scannerUnsupported: "El escaneo en vivo aun no esta disponible en este navegador. Usa la busqueda o la muestra.",
+    scannerPermissionDenied: "Se nego el acceso a la camara. Aun puedes buscar por nombre o codigo.",
+    scannerError: "No pudimos iniciar la camara ahora. Intenta otra vez o usa la busqueda.",
+    scannerDetected: "Codigo detectado.",
+    scannerUseSample: "Usar muestra",
+    closeScanner: "Cerrar",
     quickLabel: "Consultas populares",
     resultEyebrow: "Tarjeta de respuesta",
     resultTitle: "Tu guia local de reciclaje",
@@ -1844,11 +2015,11 @@ const municipalities = {
       },
       focus: {
         en: "Keep aluminum and cardboard loose so the curbside stream stays clean and sortable.",
-        es: "Mantén aluminio y carton sueltos para que el flujo residencial se mantenga limpio y clasificable."
+        es: "Manten aluminio y carton sueltos para que el flujo residencial se mantenga limpio y clasificable."
       },
       why: {
         en: "Small prep steps at home reduce contamination and make local rules easier to follow consistently.",
-        es: "Pequenos pasos de preparacion en casa reducen contaminacion y facilitan seguir las reglas locales."
+        es: "Pequenos pasos de preparacion en casa reducen la contaminacion y facilitan seguir las reglas locales."
       },
       timeline: {
         en: [
@@ -1858,7 +2029,7 @@ const municipalities = {
           "Saturday: complete drop-off run before noon"
         ],
         es: [
-          "Lunes: reinicia los contenedores de cocina y bano",
+          "Lunes: reorganiza los contenedores de cocina y bano",
           "Miercoles: aplana carton limpio y revisa grasa",
           "Viernes: cubre baterias y prepara articulos especiales",
           "Sabado: completa la entrega especial antes del mediodia"
@@ -1872,7 +2043,7 @@ const municipalities = {
         { zone: "Garage", rule: "Store batteries and electronics in one labeled safety tub." }
       ],
       es: [
-        { zone: "Cocina", rule: "Mantén un contenedor de enjuague para latas y frascos junto al fregadero." },
+        { zone: "Cocina", rule: "Manten un contenedor de enjuague para latas y frascos junto al fregadero." },
         { zone: "Entrada", rule: "Usa un espacio angosto para carton y aplanalo de inmediato." },
         { zone: "Garaje", rule: "Guarda baterias y electronicos en una caja de seguridad etiquetada." }
       ]
@@ -2048,7 +2219,7 @@ const municipalities = {
         { zone: "Garage", rule: "Create one uncertainty shelf for items that need sign confirmation before disposal." }
       ],
       es: [
-        { zone: "Cocina", rule: "Mantén una bandeja para el contenedor amarillo solo con metal y carton limpios." },
+        { zone: "Cocina", rule: "Manten una bandeja para el contenedor amarillo solo con metal y carton limpios." },
         { zone: "Closet de servicio", rule: "Pega una nota de ruta para revisar plasticos aceptados rapidamente." },
         { zone: "Garaje", rule: "Crea un estante de dudas para articulos que necesitan confirmacion antes de desecharse." }
       ]
@@ -2393,6 +2564,11 @@ const state = {
   feedback: JSON.parse(localStorage.getItem("recycling-feedback-v1") || "[]"),
   userLocation: JSON.parse(localStorage.getItem("recycling-user-location-v1") || "null"),
   installPromptEvent: null,
+  scannerStream: null,
+  scannerDetector: null,
+  scannerFrameId: null,
+  scannerActive: false,
+  scannerBusy: false,
   currentBarcode: null,
   lastQuery: "",
   demoIndex: 0
@@ -2406,11 +2582,17 @@ const elements = {
   searchInput: document.getElementById("search-input"),
   searchButton: document.getElementById("search-button"),
   installApp: document.getElementById("install-app"),
+  openScanner: document.getElementById("open-scanner"),
   scanDemo: document.getElementById("scan-demo"),
   useLocation: document.getElementById("use-location"),
   locationStatus: document.getElementById("location-status"),
   flowBoard: document.getElementById("flow-board"),
   nextStepCard: document.getElementById("next-step-card"),
+  scannerModal: document.getElementById("scanner-modal"),
+  closeScanner: document.getElementById("close-scanner"),
+  scannerVideo: document.getElementById("scanner-video"),
+  scannerStatus: document.getElementById("scanner-status"),
+  scannerDemo: document.getElementById("scanner-demo"),
   resultContent: document.getElementById("result-content"),
   routineCard: document.getElementById("routine-card"),
   playbookCard: document.getElementById("playbook-card"),
@@ -2432,7 +2614,7 @@ const elements = {
   chips: [...document.querySelectorAll(".chip")]
 };
 
-const buildId = "2026-06-30-ui4";
+const buildId = "2026-06-30-ui5";
 const demoBarcodes = Object.keys(products);
 const testScenarios = [
   {
@@ -2612,6 +2794,21 @@ function updateInstallButton() {
   }
 
   elements.installApp.textContent = copy().installApp;
+}
+
+function setScannerStatus(message) {
+  elements.scannerStatus.textContent = message;
+}
+
+function setScannerOpen(isOpen) {
+  if (isOpen) {
+    elements.scannerModal.classList.add("is-open");
+    elements.scannerModal.setAttribute("aria-hidden", "false");
+    return;
+  }
+
+  elements.scannerModal.classList.remove("is-open");
+  elements.scannerModal.setAttribute("aria-hidden", "true");
 }
 
 function setLocationStatus(message) {
@@ -2814,7 +3011,7 @@ function renderNextStepCard() {
         </div>
         <div class="brief-actions">
           <button class="button" type="button" data-next-action="location">${ui.useMyLocation}</button>
-          <button class="ghost-button" type="button" data-next-action="demo">${ui.scanDemo}</button>
+          <button class="ghost-button" type="button" data-next-action="scan">${ui.openScanner}</button>
         </div>
       </div>
     `;
@@ -2830,7 +3027,8 @@ function renderNextStepCard() {
         <p class="brief-meta"><strong>${ui.briefNextStep}:</strong> ${firstTimelineStep}</p>
         <p class="brief-meta"><strong>${ui.briefNearestCenter}:</strong> ${nearestCenter ? `${nearestCenter.name[state.language]} · ${centerDistanceText(nearestCenter)}` : municipality.program[state.language]}</p>
         <div class="brief-actions">
-          <button class="button" type="button" data-next-action="demo">${ui.scanDemo}</button>
+          <button class="button" type="button" data-next-action="scan">${ui.openScanner}</button>
+          <button class="ghost-button" type="button" data-next-action="demo">${ui.scanDemo}</button>
           ${nearestCenter ? `<a class="center-link center-link-primary" href="${mapsDirectionsUrl(nearestCenter)}" target="_blank" rel="noreferrer">${ui.briefOpenNearest}</a>` : ""}
         </div>
       </div>
@@ -2852,6 +3050,7 @@ function renderNextStepCard() {
       <p class="brief-meta"><strong>${ui.resultTrack}:</strong> ${guidance.lane[state.language]}</p>
       ${nearestCenter ? `<p class="brief-meta"><strong>${ui.briefNearestCenter}:</strong> ${nearestCenter.name[state.language]} · ${centerDistanceText(nearestCenter)}</p>` : ""}
       <div class="brief-actions">
+        <button class="ghost-button" type="button" data-next-action="scan">${ui.openScanner}</button>
         ${needsCenterAction && nearestCenter ? `<a class="center-link center-link-primary" href="${mapsDirectionsUrl(nearestCenter)}" target="_blank" rel="noreferrer">${ui.centerDirections}</a>` : ""}
         ${nearestCenter ? `<a class="center-link" href="${mapsSearchUrl(nearestCenter)}" target="_blank" rel="noreferrer">${ui.centerMap}</a>` : ""}
         <button class="ghost-button" type="button" data-next-action="demo">${ui.scanDemo}</button>
@@ -2867,6 +3066,128 @@ function refreshMunicipalityViews() {
   renderMarkGuide();
   renderFlowBoard();
   renderNextStepCard();
+}
+
+function scannerSupportAvailable() {
+  return typeof window.BarcodeDetector === "function"
+    && navigator.mediaDevices
+    && typeof navigator.mediaDevices.getUserMedia === "function";
+}
+
+function scannerErrorMessage(error) {
+  const ui = copy();
+  if (error && (error.name === "NotAllowedError" || error.name === "PermissionDeniedError")) {
+    return ui.scannerPermissionDenied;
+  }
+
+  return ui.scannerError;
+}
+
+function stopScanner(closeModal = true) {
+  state.scannerActive = false;
+  state.scannerBusy = false;
+  state.scannerDetector = null;
+
+  if (state.scannerFrameId) {
+    window.cancelAnimationFrame(state.scannerFrameId);
+    state.scannerFrameId = null;
+  }
+
+  if (state.scannerStream) {
+    state.scannerStream.getTracks().forEach((track) => track.stop());
+    state.scannerStream = null;
+  }
+
+  if (elements.scannerVideo.srcObject) {
+    elements.scannerVideo.srcObject = null;
+  }
+
+  if (closeModal) {
+    setScannerOpen(false);
+  }
+
+  setScannerStatus(copy().scannerIdle);
+}
+
+async function handleDetectedBarcode(barcode) {
+  const ui = copy();
+  stopScanner();
+  elements.searchInput.value = barcode;
+  showToast(ui.scannerDetected, 2200);
+  handleSearch(barcode);
+}
+
+async function scannerLoop() {
+  if (!state.scannerActive) {
+    return;
+  }
+
+  if (state.scannerBusy || !state.scannerDetector || !elements.scannerVideo.srcObject || elements.scannerVideo.readyState < 2) {
+    state.scannerFrameId = window.requestAnimationFrame(scannerLoop);
+    return;
+  }
+
+  state.scannerBusy = true;
+
+  try {
+    const detections = await state.scannerDetector.detect(elements.scannerVideo);
+    const match = detections.find((item) => item.rawValue);
+    if (match && match.rawValue) {
+      state.scannerBusy = false;
+      await handleDetectedBarcode(match.rawValue.trim());
+      return;
+    }
+  } catch (error) {
+    setScannerStatus(scannerErrorMessage(error));
+    stopScanner();
+    return;
+  }
+
+  state.scannerBusy = false;
+  state.scannerFrameId = window.requestAnimationFrame(scannerLoop);
+}
+
+async function openScanner() {
+  const ui = copy();
+  stopScanner(false);
+  setScannerOpen(true);
+
+  if (!scannerSupportAvailable()) {
+    setScannerStatus(ui.scannerUnsupported);
+    return;
+  }
+
+  setScannerStatus(ui.scannerStarting);
+
+  try {
+    const desiredFormats = ["ean_13", "ean_8", "upc_a", "upc_e", "code_128", "code_39"];
+    const supportedFormats = typeof window.BarcodeDetector.getSupportedFormats === "function"
+      ? await window.BarcodeDetector.getSupportedFormats()
+      : desiredFormats;
+    const formats = desiredFormats.filter((format) => supportedFormats.includes(format));
+
+    if (!formats.length) {
+      setScannerStatus(ui.scannerUnsupported);
+      return;
+    }
+
+    state.scannerDetector = new window.BarcodeDetector({ formats });
+    state.scannerStream = await navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: {
+        facingMode: { ideal: "environment" },
+        width: { ideal: 1280 },
+        height: { ideal: 720 }
+      }
+    });
+    elements.scannerVideo.srcObject = state.scannerStream;
+    await elements.scannerVideo.play();
+    state.scannerActive = true;
+    setScannerStatus(ui.scannerSearching);
+    state.scannerFrameId = window.requestAnimationFrame(scannerLoop);
+  } catch (error) {
+    setScannerStatus(scannerErrorMessage(error));
+  }
 }
 
 async function handleInstallAction() {
@@ -3462,12 +3783,31 @@ elements.installApp.addEventListener("click", () => {
   handleInstallAction();
 });
 
+elements.openScanner.addEventListener("click", () => {
+  openScanner();
+});
+
 elements.scanDemo.addEventListener("click", () => {
   runDemoScan();
 });
 
 elements.useLocation.addEventListener("click", () => {
   requestUserLocation();
+});
+
+elements.closeScanner.addEventListener("click", () => {
+  stopScanner();
+});
+
+elements.scannerDemo.addEventListener("click", () => {
+  stopScanner();
+  runDemoScan();
+});
+
+elements.scannerModal.addEventListener("click", (event) => {
+  if (event.target === elements.scannerModal) {
+    stopScanner();
+  }
 });
 
 elements.nextStepCard.addEventListener("click", (event) => {
@@ -3479,6 +3819,11 @@ elements.nextStepCard.addEventListener("click", (event) => {
   const action = target.getAttribute("data-next-action");
   if (action === "location") {
     requestUserLocation();
+    return;
+  }
+
+  if (action === "scan") {
+    openScanner();
     return;
   }
 
@@ -3562,6 +3907,12 @@ window.addEventListener("appinstalled", () => {
   state.installPromptEvent = null;
   updateInstallButton();
   showToast(copy().installAccepted, 2800);
+});
+
+window.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && elements.scannerModal.getAttribute("aria-hidden") === "false") {
+    stopScanner();
+  }
 });
 
 translatePage();
