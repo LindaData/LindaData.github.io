@@ -465,6 +465,7 @@ textarea {
 }
 
 .result-stage,
+.routine-grid,
 .lower-grid {
   display: grid;
   gap: 18px;
@@ -698,6 +699,56 @@ textarea {
   gap: 14px;
 }
 
+.routine-card,
+.playbook-card,
+.rhythm-step,
+.zone-card {
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.rhythm-list,
+.zone-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.rhythm-step strong,
+.zone-card strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.rhythm-step p,
+.zone-card p,
+.routine-card p,
+.playbook-card p {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.56;
+}
+
+.routine-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 0;
+}
+
+.rhythm-list {
+  margin-top: 14px;
+}
+
+.routine-tail {
+  margin-top: 14px;
+}
+
+.zone-grid {
+  margin-top: 14px;
+}
+
 .scenario-card,
 .feedback-card,
 .feedback-entry {
@@ -809,6 +860,10 @@ textarea {
   }
 
   .result-detail-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .routine-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -989,6 +1044,28 @@ textarea {
           </aside>
         </section>
 
+        <section class="routine-grid">
+          <article class="glass-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow" data-i18n="routineEyebrow">Neighborhood rhythm</p>
+                <h3 data-i18n="routineTitle">Build a weekly sorting routine</h3>
+              </div>
+            </div>
+            <div id="routine-card"></div>
+          </article>
+
+          <article class="glass-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow" data-i18n="playbookEyebrow">Home playbook</p>
+                <h3 data-i18n="playbookTitle">Set up the house like a sorting system</h3>
+              </div>
+            </div>
+            <div id="playbook-card"></div>
+          </article>
+        </section>
+
         <section class="lower-grid">
           <article class="glass-panel">
             <div class="panel-heading">
@@ -1140,6 +1217,14 @@ const translations = {
     municipalityTitle: "Municipality pulse",
     centersEyebrow: "Nearby help",
     centersTitle: "Recycling centers",
+    routineEyebrow: "Neighborhood rhythm",
+    routineTitle: "Build a weekly sorting routine",
+    playbookEyebrow: "Home playbook",
+    playbookTitle: "Set up the house like a sorting system",
+    routineSummaryLabel: "This week",
+    routineFocusLabel: "Prep focus",
+    routineWhyLabel: "Why this rhythm works",
+    playbookSubtitle: "Sort where the item first becomes waste so the right choice feels automatic.",
     historyEyebrow: "Recent activity",
     historyTitle: "What you checked recently",
     feedbackEyebrow: "Household testing",
@@ -1243,6 +1328,14 @@ const translations = {
     municipalityTitle: "Pulso del municipio",
     centersEyebrow: "Ayuda cercana",
     centersTitle: "Centros de reciclaje",
+    routineEyebrow: "Ritmo del vecindario",
+    routineTitle: "Crea una rutina semanal de separacion",
+    playbookEyebrow: "Manual del hogar",
+    playbookTitle: "Organiza la casa como un sistema de separacion",
+    routineSummaryLabel: "Esta semana",
+    routineFocusLabel: "Enfoque de preparacion",
+    routineWhyLabel: "Por que este ritmo funciona",
+    playbookSubtitle: "Separa donde el articulo se convierte en residuo para que la decision correcta sea automatica.",
     historyEyebrow: "Actividad reciente",
     historyTitle: "Lo que revisaste recientemente",
     feedbackEyebrow: "Prueba en casa",
@@ -1338,6 +1431,46 @@ const municipalities = {
       en: ["Curbside metals", "Cardboard sorting", "Battery drop-off"],
       es: ["Metales residenciales", "Separacion de carton", "Entrega de baterias"]
     },
+    routine: {
+      summary: {
+        en: "Rinse containers nightly, flatten cardboard midweek, and stage special items before Saturday drop-off.",
+        es: "Enjuaga envases cada noche, aplana carton a mitad de semana y prepara articulos especiales antes del sabado."
+      },
+      focus: {
+        en: "Keep aluminum and cardboard loose so the curbside stream stays clean and sortable.",
+        es: "MantÃ©n aluminio y carton sueltos para que el flujo residencial se mantenga limpio y clasificable."
+      },
+      why: {
+        en: "Small prep steps at home reduce contamination and make local rules easier to follow consistently.",
+        es: "Pequenos pasos de preparacion en casa reducen contaminacion y facilitan seguir las reglas locales."
+      },
+      timeline: {
+        en: [
+          "Monday: reset kitchen and bathroom sorting bins",
+          "Wednesday: flatten clean cardboard and check for grease",
+          "Friday: tape batteries and special items for drop-off",
+          "Saturday: complete drop-off run before noon"
+        ],
+        es: [
+          "Lunes: reinicia los contenedores de cocina y bano",
+          "Miercoles: aplana carton limpio y revisa grasa",
+          "Viernes: cubre baterias y prepara articulos especiales",
+          "Sabado: completa la entrega especial antes del mediodia"
+        ]
+      }
+    },
+    playbook: {
+      en: [
+        { zone: "Kitchen", rule: "Keep one rinse-first bin for cans and jars next to the sink." },
+        { zone: "Entry", rule: "Use a narrow cardboard slot so boxes get flattened immediately." },
+        { zone: "Garage", rule: "Store batteries and electronics in one labeled safety tub." }
+      ],
+      es: [
+        { zone: "Cocina", rule: "MantÃ©n un contenedor de enjuague para latas y frascos junto al fregadero." },
+        { zone: "Entrada", rule: "Usa un espacio angosto para carton y aplanalo de inmediato." },
+        { zone: "Garaje", rule: "Guarda baterias y electronicos en una caja de seguridad etiquetada." }
+      ]
+    },
     centers: [
       {
         name: { en: "Riverton Transfer Station", es: "Estacion de Transferencia Riverton" },
@@ -1383,6 +1516,46 @@ const municipalities = {
       en: ["Mixed cart", "Rigid plastics", "No batteries curbside"],
       es: ["Carrito mixto", "Plasticos rigidos", "Sin baterias en la acera"]
     },
+    routine: {
+      summary: {
+        en: "Use the mixed recycling cart for clean packaging, but run a separate battery and specialty box near the door.",
+        es: "Usa el carrito mixto para empaques limpios, pero mantÃ©n una caja separada para baterias y articulos especiales."
+      },
+      focus: {
+        en: "Food residue is the biggest trust-breaker here, so clean paper and plastics more aggressively.",
+        es: "Los restos de comida rompen la confianza aqui, asi que limpia papel y plasticos con mas rigor."
+      },
+      why: {
+        en: "Lakewood is convenient when the household separates contamination from recyclables early.",
+        es: "Lakewood es comodo cuando el hogar separa la contaminacion de los reciclables desde el inicio."
+      },
+      timeline: {
+        en: [
+          "Tuesday: check the mixed cart for greasy paper before pickup",
+          "Thursday: rinse clamshells and rigid plastics after grocery runs",
+          "Friday: move batteries to the collection box bag",
+          "Weekend: make one quick eco-center stop if the battery box is full"
+        ],
+        es: [
+          "Martes: revisa papel grasoso en el carrito antes de la recoleccion",
+          "Jueves: enjuaga envases rigidos despues de las compras",
+          "Viernes: pasa baterias a la bolsa de recoleccion",
+          "Fin de semana: haz una parada rapida si la caja de baterias esta llena"
+        ]
+      }
+    },
+    playbook: {
+      en: [
+        { zone: "Kitchen", rule: "Put a contamination reminder above the recycling cart: no grease, no food, no doubt." },
+        { zone: "Pantry", rule: "Keep a shelf basket for clamshells until they are rinsed and dry." },
+        { zone: "Laundry room", rule: "Place the battery drop-off pouch where chargers and spare batteries already live." }
+      ],
+      es: [
+        { zone: "Cocina", rule: "Coloca un recordatorio sobre contaminacion: sin grasa, sin comida, sin dudas." },
+        { zone: "Despensa", rule: "Guarda envases plasticos en una canasta hasta que esten limpios y secos." },
+        { zone: "Lavanderia", rule: "Pon la bolsa de baterias donde ya se guardan cargadores y pilas." }
+      ]
+    },
     centers: [
       {
         name: { en: "Lakewood Eco Center", es: "Centro Eco Lakewood" },
@@ -1427,6 +1600,46 @@ const municipalities = {
     tags: {
       en: ["Route variability", "Yellow sorting bin", "Special handling"],
       es: ["Variacion por ruta", "Contenedor amarillo", "Manejo especial"]
+    },
+    routine: {
+      summary: {
+        en: "Treat Sunset Hills like a route-based sorting system: confirm the route, then prep items before bin day.",
+        es: "Trata Sunset Hills como un sistema por rutas: confirma la ruta y luego prepara los articulos antes del dia de recoleccion."
+      },
+      focus: {
+        en: "Because routes differ, the safest routine is to confirm signs first and keep uncertain plastics out of the bin.",
+        es: "Como las rutas difieren, la rutina mas segura es confirmar senales y dejar plasticos dudosos fuera del contenedor."
+      },
+      why: {
+        en: "A cautious routine lowers mistakes when local collection rules vary street by street.",
+        es: "Una rutina cautelosa reduce errores cuando las reglas cambian segun la calle."
+      },
+      timeline: {
+        en: [
+          "Monday: check route signage or neighborhood notices",
+          "Wednesday: separate aluminum into the yellow-bin prep tray",
+          "Friday: inspect plastics for resin code and route compatibility",
+          "Weekend: use the staffed yard for anything still uncertain"
+        ],
+        es: [
+          "Lunes: revisa senales de ruta o avisos del vecindario",
+          "Miercoles: separa aluminio en la bandeja del contenedor amarillo",
+          "Viernes: inspecciona plasticos segun codigo de resina y ruta",
+          "Fin de semana: usa el centro con personal para lo que siga incierto"
+        ]
+      }
+    },
+    playbook: {
+      en: [
+        { zone: "Kitchen", rule: "Keep a yellow-bin prep tray for clean metal and cardboard only." },
+        { zone: "Utility closet", rule: "Tape a route note where the family can check accepted plastics quickly." },
+        { zone: "Garage", rule: "Create one uncertainty shelf for items that need sign confirmation before disposal." }
+      ],
+      es: [
+        { zone: "Cocina", rule: "MantÃ©n una bandeja para el contenedor amarillo solo con metal y carton limpios." },
+        { zone: "Closet de servicio", rule: "Pega una nota de ruta para revisar plasticos aceptados rapidamente." },
+        { zone: "Garaje", rule: "Crea un estante de dudas para articulos que necesitan confirmacion antes de desecharse." }
+      ]
     },
     centers: [
       {
@@ -1778,6 +1991,8 @@ const elements = {
   searchButton: document.getElementById("search-button"),
   scanDemo: document.getElementById("scan-demo"),
   resultContent: document.getElementById("result-content"),
+  routineCard: document.getElementById("routine-card"),
+  playbookCard: document.getElementById("playbook-card"),
   centerList: document.getElementById("center-list"),
   historyList: document.getElementById("history-list"),
   feedbackLog: document.getElementById("feedback-log"),
@@ -1904,6 +2119,42 @@ function renderMunicipalityPulse() {
       <p class="rule-note"><strong>${ui.municipalityCoverageLabel}:</strong> ${municipality.coverage[state.language]}</p>
       <div class="municipality-tags">
         ${municipality.tags[state.language].map((tag) => `<span class="mini-pill">${tag}</span>`).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderRoutineCard() {
+  const ui = copy();
+  const municipality = activeMunicipality();
+  const routine = municipality.routine;
+
+  elements.routineCard.innerHTML = `
+    <div class="routine-card">
+      <p><strong>${ui.routineSummaryLabel}:</strong> ${routine.summary[state.language]}</p>
+      <div class="routine-meta">
+        <span class="mini-pill">${municipality.name[state.language]}</span>
+        <span class="mini-pill">${ui.routineFocusLabel}</span>
+      </div>
+      <p class="routine-tail"><strong>${ui.routineFocusLabel}:</strong> ${routine.focus[state.language]}</p>
+      <div class="rhythm-list">
+        ${routine.timeline[state.language].map((step) => `<div class="rhythm-step"><strong>${step.split(":")[0]}</strong><p>${step.split(":").slice(1).join(":").trim()}</p></div>`).join("")}
+      </div>
+      <p class="routine-tail"><strong>${ui.routineWhyLabel}:</strong> ${routine.why[state.language]}</p>
+    </div>
+  `;
+}
+
+function renderPlaybookCard() {
+  const ui = copy();
+  const municipality = activeMunicipality();
+  const zones = municipality.playbook[state.language];
+
+  elements.playbookCard.innerHTML = `
+    <div class="playbook-card">
+      <p>${ui.playbookSubtitle}</p>
+      <div class="zone-grid">
+        ${zones.map((zone) => `<div class="zone-card"><strong>${zone.zone}</strong><p>${zone.rule}</p></div>`).join("")}
       </div>
     </div>
   `;
@@ -2257,6 +2508,8 @@ elements.languageToggle.addEventListener("click", () => {
   renderQuickChips();
   renderScenarios();
   renderMunicipalityPulse();
+  renderRoutineCard();
+  renderPlaybookCard();
   renderHistory();
   renderFeedbackLog();
 
@@ -2291,6 +2544,8 @@ elements.chips.forEach((chip) => {
 
 elements.municipalitySelect.addEventListener("change", () => {
   renderMunicipalityPulse();
+  renderRoutineCard();
+  renderPlaybookCard();
 
   const currentEntry = activeProductEntry();
   if (currentEntry) {
@@ -2339,6 +2594,8 @@ translatePage();
 renderQuickChips();
 renderScenarios();
 renderMunicipalityPulse();
+renderRoutineCard();
+renderPlaybookCard();
 renderCenters(null);
 renderHistory();
 renderFeedbackLog();
