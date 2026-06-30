@@ -16,6 +16,8 @@
     >
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://lindadata.github.io/recycling-assistant/">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+    <link rel="manifest" href="manifest.webmanifest">
     <style>
 :root {
   --ink-strong: #102a43;
@@ -243,6 +245,12 @@ h3 {
 
 .topbar-actions {
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.topbar-actions .ghost-button {
+  white-space: nowrap;
 }
 
 .language-toggle,
@@ -1173,6 +1181,9 @@ textarea {
         </div>
 
         <div class="topbar-actions">
+          <button class="ghost-button" id="install-app" type="button" data-i18n="installApp">
+            Install app
+          </button>
           <button class="ghost-button compact-button" id="copy-link" type="button" data-i18n="copyLink">
             Copy link
           </button>
@@ -1185,10 +1196,10 @@ textarea {
       <main class="app-grid">
         <section class="hero-panel glass-panel">
           <div class="hero-copy">
-            <p class="kicker" data-i18n="heroKicker">Pilot-ready family review build</p>
-            <h2 data-i18n="heroTitle">Get the right recycling answer for the place you are standing in.</h2>
+            <p class="kicker" data-i18n="heroKicker">Location-aware household recycling guide</p>
+            <h2 data-i18n="heroTitle">Know exactly where this item goes in your city.</h2>
             <p class="hero-text" data-i18n="heroCopy">
-              Scan a package or search by name, confirm the municipality, and get a clear answer with local reasoning, next steps, and nearby drop-off options.
+              Search a package or use a sample scan, match the nearest municipality, and get a local answer with nearby drop-off directions when needed.
             </p>
 
             <div class="hero-ribbon">
@@ -1198,19 +1209,19 @@ textarea {
             </div>
           </div>
 
-          <div class="hero-sidebar">
-            <div class="metric-card">
-              <span class="metric-label" data-i18n="metricOneLabel">Decision speed</span>
+            <div class="hero-sidebar">
+              <div class="metric-card">
+              <span class="metric-label" data-i18n="metricOneLabel">Mobile-first</span>
               <strong>30s</strong>
-              <p data-i18n="metricOneCopy">The answer card is designed to land in one glance.</p>
+              <p data-i18n="metricOneCopy">One tap to location and one search to a local answer.</p>
+              </div>
+              <div class="metric-card">
+              <span class="metric-label" data-i18n="metricTwoLabel">Pilot coverage</span>
+              <strong data-i18n="metricTwoValue">3 cities</strong>
+              <p data-i18n="metricTwoCopy">The current release focuses on reviewed municipal profiles and nearby center guidance.</p>
+              </div>
             </div>
-            <div class="metric-card">
-              <span class="metric-label" data-i18n="metricTwoLabel">What changes by city</span>
-              <strong data-i18n="metricTwoValue">Rules</strong>
-              <p data-i18n="metricTwoCopy">The same package can be recycled, trashed, or dropped off depending on the municipality.</p>
-            </div>
-          </div>
-        </section>
+          </section>
 
         <section class="search-panel glass-panel">
           <div class="panel-heading">
@@ -1506,6 +1517,14 @@ const translations = {
     searchPlaceholder: "Try aluminum can or 012345678905",
     scanDemo: "Scan demo",
     searchButton: "Get guidance",
+    installApp: "Install app",
+    installReady: "Install prompt ready.",
+    installOpen: "Opening install prompt...",
+    installUnsupported: "Install is not available here yet, but the site still works in the browser.",
+    installIOS: "On iPhone: tap Share, then Add to Home Screen.",
+    installInstalled: "This app is already installed on this device.",
+    installAccepted: "App installed.",
+    installDismissed: "Install was dismissed.",
     useMyLocation: "Use my location",
     locationIdle: "Location stays on-device until you request it.",
     locationLocating: "Checking your location and matching the nearest pilot municipality...",
@@ -1656,6 +1675,14 @@ const translations = {
     searchPlaceholder: "Prueba aluminum can o 012345678905",
     scanDemo: "Escanear demo",
     searchButton: "Ver guia",
+    installApp: "Instalar app",
+    installReady: "La instalacion esta lista.",
+    installOpen: "Abriendo instalacion...",
+    installUnsupported: "La instalacion aun no esta disponible aqui, pero el sitio sigue funcionando en el navegador.",
+    installIOS: "En iPhone: toca Compartir y luego Agregar a pantalla de inicio.",
+    installInstalled: "Esta app ya esta instalada en este dispositivo.",
+    installAccepted: "App instalada.",
+    installDismissed: "La instalacion fue cerrada.",
     useMyLocation: "Usar mi ubicacion",
     locationIdle: "La ubicacion permanece en tu dispositivo hasta que la solicites.",
     locationLocating: "Buscando tu ubicacion y el municipio piloto mas cercano...",
@@ -2365,6 +2392,7 @@ const state = {
   history: JSON.parse(localStorage.getItem("recycling-history-v2") || "[]"),
   feedback: JSON.parse(localStorage.getItem("recycling-feedback-v1") || "[]"),
   userLocation: JSON.parse(localStorage.getItem("recycling-user-location-v1") || "null"),
+  installPromptEvent: null,
   currentBarcode: null,
   lastQuery: "",
   demoIndex: 0
@@ -2377,6 +2405,7 @@ const elements = {
   municipalityCard: document.getElementById("municipality-card"),
   searchInput: document.getElementById("search-input"),
   searchButton: document.getElementById("search-button"),
+  installApp: document.getElementById("install-app"),
   scanDemo: document.getElementById("scan-demo"),
   useLocation: document.getElementById("use-location"),
   locationStatus: document.getElementById("location-status"),
@@ -2403,7 +2432,7 @@ const elements = {
   chips: [...document.querySelectorAll(".chip")]
 };
 
-const buildId = "2026-06-30-ui3";
+const buildId = "2026-06-30-ui4";
 const demoBarcodes = Object.keys(products);
 const testScenarios = [
   {
@@ -2565,6 +2594,24 @@ function activeProductEntry() {
   }
 
   return { barcode: state.currentBarcode, product: products[state.currentBarcode] };
+}
+
+function isStandaloneMode() {
+  return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches)
+    || window.navigator.standalone === true;
+}
+
+function isIOS() {
+  return /iphone|ipad|ipod/i.test(window.navigator.userAgent || "");
+}
+
+function updateInstallButton() {
+  if (isStandaloneMode()) {
+    elements.installApp.textContent = copy().installInstalled;
+    return;
+  }
+
+  elements.installApp.textContent = copy().installApp;
 }
 
 function setLocationStatus(message) {
@@ -2820,6 +2867,32 @@ function refreshMunicipalityViews() {
   renderMarkGuide();
   renderFlowBoard();
   renderNextStepCard();
+}
+
+async function handleInstallAction() {
+  const ui = copy();
+
+  if (isStandaloneMode()) {
+    showToast(ui.installInstalled, 3200);
+    return;
+  }
+
+  if (state.installPromptEvent) {
+    showToast(ui.installOpen, 2200);
+    state.installPromptEvent.prompt();
+    const choice = await state.installPromptEvent.userChoice;
+    state.installPromptEvent = null;
+    updateInstallButton();
+    showToast(choice.outcome === "accepted" ? ui.installAccepted : ui.installDismissed, 2800);
+    return;
+  }
+
+  if (isIOS()) {
+    showToast(ui.installIOS, 4600);
+    return;
+  }
+
+  showToast(ui.installUnsupported, 3600);
 }
 
 function requestUserLocation() {
@@ -3179,13 +3252,13 @@ function addHistory(barcode, outcome, municipality) {
   renderHistory();
 }
 
-function showToast(message) {
+function showToast(message, duration = 1800) {
   elements.toast.textContent = message;
   elements.toast.classList.add("is-visible");
   window.clearTimeout(showToast.timeoutId);
   showToast.timeoutId = window.setTimeout(() => {
     elements.toast.classList.remove("is-visible");
-  }, 1800);
+  }, duration);
 }
 
 async function copyText(value, successMessage) {
@@ -3363,6 +3436,7 @@ elements.languageToggle.addEventListener("click", () => {
   state.language = state.language === "en" ? "es" : "en";
   localStorage.setItem("recycling-language", state.language);
   translatePage();
+  updateInstallButton();
   refreshLocationStatus();
   renderQuickChips();
   renderScenarios();
@@ -3382,6 +3456,10 @@ elements.languageToggle.addEventListener("click", () => {
 
 elements.searchButton.addEventListener("click", () => {
   handleSearch(elements.searchInput.value);
+});
+
+elements.installApp.addEventListener("click", () => {
+  handleInstallAction();
 });
 
 elements.scanDemo.addEventListener("click", () => {
@@ -3468,7 +3546,26 @@ if (state.userLocation) {
   elements.municipalitySelect.value = match.key;
 }
 
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js");
+  });
+}
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  state.installPromptEvent = event;
+  updateInstallButton();
+});
+
+window.addEventListener("appinstalled", () => {
+  state.installPromptEvent = null;
+  updateInstallButton();
+  showToast(copy().installAccepted, 2800);
+});
+
 translatePage();
+updateInstallButton();
 refreshLocationStatus();
 renderQuickChips();
 renderScenarios();

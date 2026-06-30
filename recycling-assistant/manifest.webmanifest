@@ -1,0 +1,19 @@
+{
+  "name": "LindaData Recycling Assistant",
+  "short_name": "Recycle",
+  "description": "Location-aware recycling guidance with municipality matching, answer cards, and nearby recycling center directions.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#eef5f4",
+  "theme_color": "#0f3b36",
+  "lang": "en-US",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
