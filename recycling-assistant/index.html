@@ -993,6 +993,10 @@ textarea {
   margin-top: 14px;
 }
 
+.result-review-card {
+  background: linear-gradient(180deg, rgba(246, 190, 81, 0.18), rgba(255, 255, 255, 0.98));
+}
+
 .center-link {
   display: inline-flex;
   align-items: center;
@@ -2147,6 +2151,9 @@ const translations = {
     resultEyebrow: "Answer card",
     resultTitle: "Your local recycling guidance",
     copySummary: "Copy summary",
+    resultReviewTitle: "Keep the review moving",
+    resultReviewCopy: "Jump straight to the feedback capture area while this answer stays visible.",
+    resultRateAnswer: "Rate this answer",
     resultEmptyTitle: "Search an item to reveal the answer card.",
     resultEmptyCopy:
       "The layout will highlight the disposal outcome, what changed because of your municipality, and the safest next step.",
@@ -2381,6 +2388,9 @@ const translations = {
     resultEyebrow: "Tarjeta de respuesta",
     resultTitle: "Tu guia local de reciclaje",
     copySummary: "Copiar resumen",
+    resultReviewTitle: "Mantener activa la revision",
+    resultReviewCopy: "Salta directo al area de comentarios mientras esta respuesta permanece visible.",
+    resultRateAnswer: "Calificar esta respuesta",
     resultEmptyTitle: "Busca un articulo para revelar la tarjeta de respuesta.",
     resultEmptyCopy:
       "El diseno destacara el resultado, lo que cambia por municipio y el paso mas seguro para el usuario.",
@@ -3909,6 +3919,8 @@ const state = {
     outcomes: []
   }),
   userLocation: readStoredJson("recycling-user-location-v1", null),
+  followUserLocation: true,
+  locationWatchId: null,
   installPromptEvent: null,
   browseFilter: "all",
   feedbackTags: [],
@@ -3976,14 +3988,20 @@ const elements = {
   chips: [...document.querySelectorAll(".chip")]
 };
 
-const buildId = "2026-06-30-ui13";
+const buildId = "2026-06-30-ui14";
 const bootState = readUrlState();
+const geolocationOptions = {
+  enableHighAccuracy: true,
+  timeout: 10000,
+  maximumAge: 300000
+};
 
 if (bootState.language && translations[bootState.language]) {
   state.language = bootState.language;
 }
 
 if (bootState.municipality && municipalities[bootState.municipality]) {
+  state.followUserLocation = false;
   elements.municipalitySelect.value = bootState.municipality;
 }
 const demoBarcodes = Object.keys(products);
@@ -4344,6 +4362,67 @@ function refreshLocationStatus() {
 
   const match = nearestMunicipalityForLocation(state.userLocation.latitude, state.userLocation.longitude);
   setLocationStatus(locationMatchStatus(match));
+}
+
+function stopLocationWatch() {
+  if (!navigator.geolocation || state.locationWatchId == null) {
+    return;
+  }
+
+  navigator.geolocation.clearWatch(state.locationWatchId);
+  state.locationWatchId = null;
+}
+
+function applyUserLocation(latitude, longitude, options = {}) {
+  const { forceMunicipality = false, scrollSelector = null } = options;
+  state.userLocation = {
+    latitude,
+    longitude,
+    timestamp: Date.now()
+  };
+  localStorage.setItem("recycling-user-location-v1", JSON.stringify(state.userLocation));
+
+  const match = nearestMunicipalityForLocation(latitude, longitude);
+  if (forceMunicipality || state.followUserLocation) {
+    elements.municipalitySelect.value = match.key;
+  }
+
+  setLocationStatus(locationMatchStatus(match));
+  refreshMunicipalityViews();
+  syncUrlState();
+
+  const currentEntry = activeProductEntry();
+  if (currentEntry) {
+    renderResult(currentEntry, false);
+  } else {
+    renderCenters(null);
+  }
+
+  if (scrollSelector) {
+    scrollToSection(scrollSelector);
+  }
+}
+
+function handleLocationError(error) {
+  const ui = copy();
+
+  if (error && error.code === 1) {
+    stopLocationWatch();
+    setLocationStatus(ui.locationDenied);
+    return;
+  }
+
+  setLocationStatus(ui.locationUnavailable);
+}
+
+function ensureLocationWatch() {
+  if (!navigator.geolocation || state.locationWatchId != null) {
+    return;
+  }
+
+  state.locationWatchId = navigator.geolocation.watchPosition((position) => {
+    applyUserLocation(position.coords.latitude, position.coords.longitude);
+  }, handleLocationError, geolocationOptions);
 }
 
 function mapsSearchUrl(center) {
@@ -4911,50 +4990,46 @@ async function handleInstallAction() {
   showToast(ui.installUnsupported, 3600);
 }
 
-function requestUserLocation() {
+function requestUserLocation(options = {}) {
   const ui = copy();
+  const { scroll = true, silent = false } = options;
 
   if (!navigator.geolocation) {
     setLocationStatus(ui.locationUnsupported);
     return;
   }
 
-  setLocationStatus(ui.locationLocating);
+  state.followUserLocation = true;
+  if (!silent) {
+    setLocationStatus(ui.locationLocating);
+  }
 
   navigator.geolocation.getCurrentPosition((position) => {
-    state.userLocation = {
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude,
-      timestamp: Date.now()
-    };
-    localStorage.setItem("recycling-user-location-v1", JSON.stringify(state.userLocation));
+    ensureLocationWatch();
+    applyUserLocation(position.coords.latitude, position.coords.longitude, {
+      forceMunicipality: true,
+      scrollSelector: scroll ? (activeProductEntry() || state.lastQuery ? ".result-stage" : ".control-grid") : null
+    });
+  }, handleLocationError, geolocationOptions);
+}
 
-    const match = nearestMunicipalityForLocation(state.userLocation.latitude, state.userLocation.longitude);
-    elements.municipalitySelect.value = match.key;
-    setLocationStatus(locationMatchStatus(match));
-    refreshMunicipalityViews();
-    syncUrlState();
+async function syncLocationFromPermission() {
+  if (bootState.municipality) {
+    return;
+  }
 
-    const currentEntry = activeProductEntry();
-    if (currentEntry) {
-      renderResult(currentEntry, false);
-    } else {
-      renderCenters(null);
+  if (!navigator.geolocation || !navigator.permissions || typeof navigator.permissions.query !== "function") {
+    return;
+  }
+
+  try {
+    const permission = await navigator.permissions.query({ name: "geolocation" });
+    if (permission.state === "granted") {
+      requestUserLocation({ scroll: false, silent: Boolean(state.userLocation) });
     }
-
-    scrollToSection(currentEntry || state.lastQuery ? ".result-stage" : ".control-grid");
-  }, (error) => {
-    if (error && error.code === 1) {
-      setLocationStatus(ui.locationDenied);
-      return;
-    }
-
-    setLocationStatus(ui.locationUnavailable);
-  }, {
-    enableHighAccuracy: true,
-    timeout: 10000,
-    maximumAge: 300000
-  });
+  } catch {
+    // Ignore permission-query failures and preserve tap-to-locate behavior.
+  }
 }
 
 function outcomeLabel(outcome) {
@@ -5694,23 +5769,24 @@ function resetReviewSession() {
     municipalities: [],
     outcomes: []
   };
-  state.userLocation = null;
   state.currentBarcode = null;
   state.lastQuery = "";
   state.feedbackTags = [];
   state.browseFilter = "all";
+  state.followUserLocation = Boolean(state.userLocation);
 
   localStorage.removeItem("recycling-history-v2");
   localStorage.removeItem("recycling-feedback-v1");
   localStorage.removeItem("recycling-session-coverage-v1");
-  localStorage.removeItem("recycling-user-location-v1");
 
   elements.searchInput.value = "";
   elements.feedbackNotes.value = "";
   elements.clarityRating.value = "5";
   elements.trustRating.value = "5";
   elements.speedRating.value = "5";
-  elements.municipalitySelect.value = "riverton";
+  elements.municipalitySelect.value = state.userLocation
+    ? nearestMunicipalityForLocation(state.userLocation.latitude, state.userLocation.longitude).key
+    : "riverton";
   renderFeedbackPresets();
   renderFeedbackTags();
   refreshLocationStatus();
@@ -5962,6 +6038,14 @@ function renderResult(entry, trackHistory) {
         </ol>
       </div>
 
+      <div class="support-card result-review-card">
+        <strong class="detail-title">${ui.resultReviewTitle}</strong>
+        <p class="support-copy">${ui.resultReviewCopy}</p>
+        <div class="center-actions">
+          <button class="button button-secondary" type="button" data-result-action="feedback">${ui.resultRateAnswer}</button>
+        </div>
+      </div>
+
       <div class="impact-card">
         <strong>${ui.resultImpact}</strong>
         <p class="support-copy">${entry.product.impact[state.language]}</p>
@@ -6121,7 +6205,25 @@ elements.chips.forEach((chip) => {
   });
 });
 
+elements.resultContent.addEventListener("click", (event) => {
+  const target = event.target.closest("[data-result-action]");
+  if (!target) {
+    return;
+  }
+
+  if (target.getAttribute("data-result-action") === "feedback") {
+    scrollToSection(".feedback-card");
+  }
+});
+
 elements.municipalitySelect.addEventListener("change", () => {
+  if (state.userLocation) {
+    const match = nearestMunicipalityForLocation(state.userLocation.latitude, state.userLocation.longitude);
+    state.followUserLocation = elements.municipalitySelect.value === match.key;
+  } else {
+    state.followUserLocation = false;
+  }
+
   refreshMunicipalityViews();
 
   const currentEntry = activeProductEntry();
@@ -6180,6 +6282,7 @@ elements.resetSession.addEventListener("click", () => {
 
 if (state.userLocation && !bootState.municipality) {
   const match = nearestMunicipalityForLocation(state.userLocation.latitude, state.userLocation.longitude);
+  state.followUserLocation = true;
   elements.municipalitySelect.value = match.key;
 }
 
@@ -6218,6 +6321,7 @@ renderScenarios();
 refreshMunicipalityViews();
 renderHistory();
 renderFeedbackLog();
+syncLocationFromPermission();
 
 if (bootState.item && products[bootState.item]) {
   elements.searchInput.value = products[bootState.item].name[state.language];
