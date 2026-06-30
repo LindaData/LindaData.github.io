@@ -1372,6 +1372,38 @@ textarea {
   margin-top: 14px;
 }
 
+.review-summary,
+.review-suite {
+  margin-top: 12px;
+}
+
+.review-summary {
+  padding: 18px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(16, 42, 67, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(239, 244, 246, 0.9));
+}
+
+.review-summary strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+}
+
+.review-summary p {
+  margin: 10px 0 0;
+  color: var(--ink-soft);
+  line-height: 1.56;
+}
+
+.review-summary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
 .scenario-card,
 .feedback-card,
 .feedback-entry {
@@ -1909,7 +1941,7 @@ textarea {
         </section>
 
         <section class="routine-grid">
-          <article class="glass-panel">
+          <article class="glass-panel review-panel">
             <div class="panel-heading">
               <div>
                 <p class="eyebrow" data-i18n="routineEyebrow">Neighborhood rhythm</p>
@@ -1954,117 +1986,144 @@ textarea {
           <article class="glass-panel">
             <div class="panel-heading">
               <div>
-                <p class="eyebrow" data-i18n="feedbackEyebrow">Household testing</p>
-                <h3 data-i18n="feedbackTitle">Capture feedback inside the product</h3>
+                <p class="eyebrow" data-i18n="feedbackEyebrow">Testing tools</p>
+                <h3 data-i18n="feedbackTitle">Optional review workspace</h3>
+              </div>
+              <button
+                id="toggle-review-tools"
+                class="ghost-button"
+                type="button"
+                aria-expanded="false"
+                aria-controls="review-suite"
+                data-i18n="reviewToolsOpen"
+              >
+                Open testing tools
+              </button>
+            </div>
+
+            <div id="review-summary" class="review-summary">
+              <strong data-i18n="reviewSummaryTitle">Keep daily use simple.</strong>
+              <p data-i18n="reviewSummaryCopy">
+                Open testing tools only when you want to capture notes, run guided scenarios, or export a feedback report.
+              </p>
+              <div class="review-summary-actions">
+                <button class="button button-secondary" type="button" data-review-action="battery" data-i18n="reviewTryBattery">
+                  Try batteries
+                </button>
+                <button class="ghost-button" type="button" data-review-action="feedback" data-i18n="reviewToolsOpen">
+                  Open testing tools
+                </button>
               </div>
             </div>
 
-            <div class="feedback-grid">
-              <div class="scenario-card">
-                <strong data-i18n="scenarioTitle">Suggested test prompts</strong>
-                <p data-i18n="scenarioCopy">
-                  Use these scenarios to evaluate clarity, confidence, and speed on a phone.
-                </p>
-                <ul id="scenario-list" class="scenario-list"></ul>
-              </div>
+            <div id="review-suite" class="review-suite" hidden>
+              <div class="feedback-grid">
+                <div class="scenario-card">
+                  <strong data-i18n="scenarioTitle">Suggested test prompts</strong>
+                  <p data-i18n="scenarioCopy">
+                    Use these scenarios to evaluate clarity, confidence, and speed on a phone.
+                  </p>
+                  <ul id="scenario-list" class="scenario-list"></ul>
+                </div>
 
-              <div class="feedback-card">
-                <div class="session-strip">
-                  <div class="panel-heading session-heading">
-                    <div>
-                      <p class="eyebrow" data-i18n="sessionEyebrow">Review session</p>
-                      <h3 data-i18n="sessionTitle">Current test snapshot</h3>
+                <div class="feedback-card">
+                  <div class="session-strip">
+                    <div class="panel-heading session-heading">
+                      <div>
+                        <p class="eyebrow" data-i18n="sessionEyebrow">Review session</p>
+                        <h3 data-i18n="sessionTitle">Current test snapshot</h3>
+                      </div>
+                    </div>
+                    <div id="session-snapshot" class="session-grid"></div>
+                    <div class="session-checklist-wrap">
+                      <strong data-i18n="checklistTitle">Recommended review route</strong>
+                      <p class="browse-copy" data-i18n="checklistCopy">
+                        Work through the steps below so the product team sees clarity issues across real local outcomes.
+                      </p>
+                      <div id="session-checklist" class="session-checklist"></div>
+                      <div class="session-actions">
+                        <button id="run-next-step" class="button button-secondary" type="button" data-i18n="sessionRunNext">Run next step</button>
+                        <button id="reset-session" class="ghost-button" type="button" data-i18n="sessionReset">Reset session</button>
+                      </div>
                     </div>
                   </div>
-                  <div id="session-snapshot" class="session-grid"></div>
-                  <div class="session-checklist-wrap">
-                    <strong data-i18n="checklistTitle">Recommended review route</strong>
-                    <p class="browse-copy" data-i18n="checklistCopy">
-                      Work through the steps below so the product team sees clarity issues across real local outcomes.
-                    </p>
-                    <div id="session-checklist" class="session-checklist"></div>
-                    <div class="session-actions">
-                      <button id="run-next-step" class="button button-secondary" type="button" data-i18n="sessionRunNext">Run next step</button>
-                      <button id="reset-session" class="ghost-button" type="button" data-i18n="sessionReset">Reset session</button>
+
+                  <div class="feedback-answer-wrap">
+                    <div class="panel-heading session-heading">
+                      <div>
+                        <p class="eyebrow" data-i18n="currentAnswerEyebrow">Current answer</p>
+                        <h3 data-i18n="currentAnswerTitle">Review the answer you are rating</h3>
+                      </div>
                     </div>
+                    <div id="feedback-current-answer" class="feedback-current-answer"></div>
                   </div>
-                </div>
 
-                <div class="feedback-answer-wrap">
-                  <div class="panel-heading session-heading">
-                    <div>
-                      <p class="eyebrow" data-i18n="currentAnswerEyebrow">Current answer</p>
-                      <h3 data-i18n="currentAnswerTitle">Review the answer you are rating</h3>
+                  <div class="rating-grid">
+                    <div class="feedback-presets-wrap">
+                      <strong data-i18n="presetTitle">Quick reactions</strong>
+                      <div id="feedback-presets" class="feedback-tags"></div>
                     </div>
+                    <label class="field">
+                      <span data-i18n="feedbackClarity">Clarity</span>
+                      <select id="clarity-rating">
+                        <option value="5">5</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
+                      </select>
+                    </label>
+
+                    <label class="field">
+                      <span data-i18n="feedbackTrust">Trust</span>
+                      <select id="trust-rating">
+                        <option value="5">5</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
+                      </select>
+                    </label>
+
+                    <label class="field">
+                      <span data-i18n="feedbackSpeed">Speed</span>
+                      <select id="speed-rating">
+                        <option value="5">5</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
+                      </select>
+                    </label>
                   </div>
-                  <div id="feedback-current-answer" class="feedback-current-answer"></div>
-                </div>
 
-                <div class="rating-grid">
-                  <div class="feedback-presets-wrap">
-                    <strong data-i18n="presetTitle">Quick reactions</strong>
-                    <div id="feedback-presets" class="feedback-tags"></div>
+                  <div class="feedback-tags-wrap">
+                    <strong data-i18n="feedbackTagPrompt">Quick flags</strong>
+                    <div id="feedback-tags" class="feedback-tags"></div>
                   </div>
-                  <label class="field">
-                    <span data-i18n="feedbackClarity">Clarity</span>
-                    <select id="clarity-rating">
-                      <option value="5">5</option>
-                      <option value="4">4</option>
-                      <option value="3">3</option>
-                      <option value="2">2</option>
-                      <option value="1">1</option>
-                    </select>
-                  </label>
 
                   <label class="field">
-                    <span data-i18n="feedbackTrust">Trust</span>
-                    <select id="trust-rating">
-                      <option value="5">5</option>
-                      <option value="4">4</option>
-                      <option value="3">3</option>
-                      <option value="2">2</option>
-                      <option value="1">1</option>
-                    </select>
+                    <span data-i18n="feedbackNotes">Tester notes</span>
+                    <textarea id="feedback-notes" rows="5" data-i18n-placeholder="feedbackPlaceholder" placeholder="What felt clear, confusing, slow, or untrustworthy?"></textarea>
                   </label>
 
-                  <label class="field">
-                    <span data-i18n="feedbackSpeed">Speed</span>
-                    <select id="speed-rating">
-                      <option value="5">5</option>
-                      <option value="4">4</option>
-                      <option value="3">3</option>
-                      <option value="2">2</option>
-                      <option value="1">1</option>
-                    </select>
-                  </label>
-                </div>
-
-                <div class="feedback-tags-wrap">
-                  <strong data-i18n="feedbackTagPrompt">Quick flags</strong>
-                  <div id="feedback-tags" class="feedback-tags"></div>
-                </div>
-
-                <label class="field">
-                  <span data-i18n="feedbackNotes">Tester notes</span>
-                  <textarea id="feedback-notes" rows="5" data-i18n-placeholder="feedbackPlaceholder" placeholder="What felt clear, confusing, slow, or untrustworthy?"></textarea>
-                </label>
-
-                <div class="action-row">
-                  <button id="save-feedback" class="button" type="button" data-i18n="saveFeedback">Save feedback</button>
-                  <button id="copy-feedback" class="button button-secondary" type="button" data-i18n="copyFeedback">Copy report</button>
-                  <button id="clear-feedback" class="ghost-button" type="button" data-i18n="clearFeedback">Clear notes</button>
+                  <div class="action-row">
+                    <button id="save-feedback" class="button" type="button" data-i18n="saveFeedback">Save feedback</button>
+                    <button id="copy-feedback" class="button button-secondary" type="button" data-i18n="copyFeedback">Copy report</button>
+                    <button id="clear-feedback" class="ghost-button" type="button" data-i18n="clearFeedback">Clear notes</button>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div class="feedback-log">
-              <div class="panel-heading">
-                <div>
-                  <p class="eyebrow" data-i18n="feedbackLogEyebrow">Saved notes</p>
-                  <h3 data-i18n="feedbackLogTitle">Recent tester feedback</h3>
+              <div class="feedback-log">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow" data-i18n="feedbackLogEyebrow">Saved notes</p>
+                    <h3 data-i18n="feedbackLogTitle">Recent tester feedback</h3>
+                  </div>
                 </div>
+                <div id="feedback-log" class="stack-list"></div>
               </div>
-              <div id="feedback-log" class="stack-list"></div>
             </div>
           </article>
 
@@ -2147,7 +2206,7 @@ const translations = {
     metricOneCopy: "One tap to location and one search to a local answer.",
     metricTwoLabel: "Pilot coverage",
     metricTwoValue: "3 cities",
-    metricTwoCopy: "The current release focuses on reviewed municipal profiles and nearby center guidance.",
+    metricTwoCopy: "The current release focuses on sample pilot profiles and nearby center guidance.",
     heroSignalLabel: "Live location",
     heroSignalIdleTitle: "Match your area and open the right route.",
     heroSignalIdleCopy: "Start with your device location to reveal the nearest pilot municipality and the closest center in Google Maps.",
@@ -2170,7 +2229,7 @@ const translations = {
     reviewTitle: "Best first test path",
     reviewCopy: "Use your real location, test a tricky item like batteries, then jump straight into feedback while the answer stays in view.",
     reviewTryBattery: "Try batteries",
-    reviewJumpFeedback: "Jump to feedback",
+    reviewJumpFeedback: "Open testing tools",
     installApp: "Install app",
     installReady: "Install prompt ready.",
     installOpen: "Opening install prompt...",
@@ -2258,8 +2317,12 @@ const translations = {
     playbookSubtitle: "Sort where the item first becomes waste so the right choice feels automatic.",
     historyEyebrow: "Recent activity",
     historyTitle: "What you checked recently",
-    feedbackEyebrow: "Household testing",
-    feedbackTitle: "Capture feedback inside the product",
+    feedbackEyebrow: "Testing tools",
+    feedbackTitle: "Optional review workspace",
+    reviewSummaryTitle: "Keep daily use simple.",
+    reviewSummaryCopy: "Open testing tools only when you want to capture notes, run guided scenarios, or export a feedback report.",
+    reviewToolsOpen: "Open testing tools",
+    reviewToolsClose: "Hide testing tools",
     currentAnswerEyebrow: "Current answer",
     currentAnswerTitle: "Review the answer you are rating",
     currentAnswerEmpty: "Run a search, scenario, or checklist step to keep the active answer visible here while you leave feedback.",
@@ -2351,10 +2414,10 @@ const translations = {
     unknownReason: "Use the material type, resin code, or local packaging label before disposing of the item.",
     unknownImpactTitle: "Why the app stops here",
     unknownImpactCopy: "A wrong local answer is worse than no answer, so uncertain matches stay cautious.",
-    municipalityCardTitle: "Current rule window",
-    municipalityUpdatedLabel: "Last local review",
+    municipalityCardTitle: "Current pilot profile",
+    municipalityUpdatedLabel: "Sample profile date",
     municipalityProgramLabel: "Program setup",
-    municipalityCoverageLabel: "Coverage note",
+    municipalityCoverageLabel: "Prototype coverage note",
     centerMap: "Open map",
     centerDirections: "Directions",
     centerAccepts: "Accepts",
@@ -2367,9 +2430,9 @@ const translations = {
     resultSteps: "Next steps",
     resultWatchout: "Watch out for",
     resultConfidence: "Rule confidence",
-    resultConfidenceCopy: "This item matched a known product record and a reviewed local disposal rule.",
+    resultConfidenceCopy: "This item matched a sample product record and pilot disposal profile in the current review build.",
     resultImpact: "Why this matters",
-    resultUpdated: "Local rule review",
+    resultUpdated: "Pilot profile date",
     resultCenterSpotlight: "Nearest center route",
     resultCenterCopy: "Open the map or start directions without leaving the answer flow.",
     tryAnother: "Try another item",
@@ -2392,7 +2455,7 @@ const translations = {
     metricOneCopy: "Un toque para ubicacion y una busqueda para una respuesta local.",
     metricTwoLabel: "Cobertura piloto",
     metricTwoValue: "3 ciudades",
-    metricTwoCopy: "La version actual se enfoca en perfiles municipales revisados y centros cercanos.",
+    metricTwoCopy: "La version actual se enfoca en perfiles piloto de muestra y centros cercanos.",
     heroSignalLabel: "Ubicacion en vivo",
     heroSignalIdleTitle: "Ubica tu zona y abre la ruta correcta.",
     heroSignalIdleCopy: "Empieza con la ubicacion del dispositivo para revelar el municipio piloto mas cercano y el centro mas cercano en Google Maps.",
@@ -2415,7 +2478,7 @@ const translations = {
     reviewTitle: "Mejor ruta inicial de prueba",
     reviewCopy: "Usa tu ubicacion real, prueba un articulo dificil como baterias y luego salta directo a comentarios mientras la respuesta sigue visible.",
     reviewTryBattery: "Probar baterias",
-    reviewJumpFeedback: "Ir a comentarios",
+    reviewJumpFeedback: "Abrir herramientas de prueba",
     installApp: "Instalar app",
     installReady: "La instalacion esta lista.",
     installOpen: "Abriendo instalacion...",
@@ -2503,8 +2566,12 @@ const translations = {
     playbookSubtitle: "Separa donde el articulo se convierte en residuo para que la decision correcta sea automatica.",
     historyEyebrow: "Actividad reciente",
     historyTitle: "Lo que revisaste recientemente",
-    feedbackEyebrow: "Prueba en casa",
-    feedbackTitle: "Captura comentarios dentro del producto",
+    feedbackEyebrow: "Herramientas de prueba",
+    feedbackTitle: "Espacio opcional de revision",
+    reviewSummaryTitle: "Mantener simple el uso diario.",
+    reviewSummaryCopy: "Abre las herramientas de prueba solo cuando quieras guardar notas, ejecutar escenarios guiados o compartir un reporte.",
+    reviewToolsOpen: "Abrir herramientas de prueba",
+    reviewToolsClose: "Ocultar herramientas de prueba",
     currentAnswerEyebrow: "Respuesta actual",
     currentAnswerTitle: "Revisa la respuesta que estas evaluando",
     currentAnswerEmpty: "Ejecuta una busqueda, escenario o paso de revision para mantener aqui visible la respuesta activa mientras dejas comentarios.",
@@ -2596,10 +2663,10 @@ const translations = {
     unknownReason: "Usa el tipo de material, el codigo de resina o la etiqueta local antes de desechar el articulo.",
     unknownImpactTitle: "Por que la app se detiene aqui",
     unknownImpactCopy: "Una respuesta local incorrecta es peor que no responder, por eso los casos inciertos se tratan con cautela.",
-    municipalityCardTitle: "Ventana actual de reglas",
-    municipalityUpdatedLabel: "Ultima revision local",
+    municipalityCardTitle: "Perfil piloto actual",
+    municipalityUpdatedLabel: "Fecha del perfil de muestra",
     municipalityProgramLabel: "Programa",
-    municipalityCoverageLabel: "Cobertura",
+    municipalityCoverageLabel: "Nota de cobertura del prototipo",
     centerMap: "Abrir mapa",
     centerDirections: "Como llegar",
     centerAccepts: "Acepta",
@@ -2612,9 +2679,9 @@ const translations = {
     resultSteps: "Siguientes pasos",
     resultWatchout: "Ten cuidado con",
     resultConfidence: "Confianza de la regla",
-    resultConfidenceCopy: "Este articulo coincide con un producto conocido y una regla local revisada.",
+    resultConfidenceCopy: "Este articulo coincide con un producto de muestra y un perfil piloto de disposicion dentro de esta version de revision.",
     resultImpact: "Por que importa",
-    resultUpdated: "Revision local",
+    resultUpdated: "Fecha del perfil piloto",
     resultCenterSpotlight: "Ruta al centro mas cercano",
     resultCenterCopy: "Abre el mapa o inicia indicaciones sin salir de la respuesta.",
     tryAnother: "Probar otro articulo",
@@ -4009,6 +4076,7 @@ const state = {
     outcomes: []
   }),
   userLocation: readStoredJson("recycling-user-location-v1", null),
+  reviewMode: localStorage.getItem("recycling-review-mode") === "review",
   followUserLocation: true,
   locationWatchId: null,
   installPromptEvent: null,
@@ -4057,6 +4125,9 @@ const elements = {
   centerList: document.getElementById("center-list"),
   historyList: document.getElementById("history-list"),
   feedbackLog: document.getElementById("feedback-log"),
+  reviewSummary: document.getElementById("review-summary"),
+  reviewSuite: document.getElementById("review-suite"),
+  toggleReviewTools: document.getElementById("toggle-review-tools"),
   sessionSnapshot: document.getElementById("session-snapshot"),
   sessionChecklist: document.getElementById("session-checklist"),
   feedbackCurrentAnswer: document.getElementById("feedback-current-answer"),
@@ -4079,7 +4150,7 @@ const elements = {
   reviewActions: [...document.querySelectorAll("[data-review-action]")]
 };
 
-const buildId = "2026-06-30-ui15";
+const buildId = "2026-06-30-ui16";
 const bootState = readUrlState();
 const geolocationOptions = {
   enableHighAccuracy: true,
@@ -4089,6 +4160,10 @@ const geolocationOptions = {
 
 if (bootState.language && translations[bootState.language]) {
   state.language = bootState.language;
+}
+
+if (bootState.mode === "review") {
+  state.reviewMode = true;
 }
 
 if (bootState.municipality && municipalities[bootState.municipality]) {
@@ -4352,7 +4427,8 @@ function readUrlState() {
     language: params.get("lang"),
     municipality: params.get("m"),
     item: params.get("item"),
-    query: params.get("q")
+    query: params.get("q"),
+    mode: params.get("mode")
   };
 }
 
@@ -4363,6 +4439,9 @@ function currentAppUrl() {
   url.searchParams.set("v", buildId);
   url.searchParams.set("lang", state.language);
   url.searchParams.set("m", elements.municipalitySelect.value);
+  if (state.reviewMode) {
+    url.searchParams.set("mode", "review");
+  }
 
   if (state.currentBarcode) {
     url.searchParams.set("item", state.currentBarcode);
@@ -4389,6 +4468,35 @@ function scrollToSection(selector) {
   const section = document.querySelector(selector);
   if (section && typeof section.scrollIntoView === "function") {
     section.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
+function setReviewMode(isReviewMode, options = {}) {
+  const { sync = true } = options;
+  state.reviewMode = isReviewMode;
+  localStorage.setItem("recycling-review-mode", isReviewMode ? "review" : "resident");
+  elements.reviewSuite.hidden = !isReviewMode;
+  elements.reviewSummary.hidden = isReviewMode;
+  elements.toggleReviewTools.textContent = isReviewMode ? copy().reviewToolsClose : copy().reviewToolsOpen;
+  elements.toggleReviewTools.setAttribute("aria-expanded", isReviewMode ? "true" : "false");
+
+  if (sync) {
+    syncUrlState();
+  }
+}
+
+function openReviewTools(options = {}) {
+  const { scroll = false, focusNotes = false } = options;
+  if (!state.reviewMode) {
+    setReviewMode(true);
+  }
+
+  if (scroll) {
+    scrollToSection(".review-panel");
+  }
+
+  if (focusNotes) {
+    elements.feedbackNotes.focus();
   }
 }
 
@@ -5155,6 +5263,8 @@ function translatePage() {
       node.textContent = ui[key];
     }
   });
+
+  setReviewMode(state.reviewMode, { sync: false });
 }
 
 function renderQuickChips() {
@@ -5756,15 +5866,14 @@ function runChecklistAction(action) {
         elements.searchInput.value = products[barcode].name[state.language];
         handleSearch(barcode, { scroll: false });
       } else {
-        scrollToSection(".feedback-card");
+        openReviewTools({ scroll: true });
       }
     }
     return;
   }
 
   if (action === "feedback") {
-    scrollToSection(".feedback-card");
-    elements.feedbackNotes.focus();
+    openReviewTools({ scroll: true, focusNotes: true });
   }
 }
 
@@ -6307,9 +6416,18 @@ elements.reviewActions.forEach((button) => {
     }
 
     if (action === "feedback") {
-      scrollToSection(".feedback-card");
+      openReviewTools({ scroll: true, focusNotes: true });
     }
   });
+});
+
+elements.toggleReviewTools.addEventListener("click", () => {
+  if (state.reviewMode) {
+    setReviewMode(false);
+    return;
+  }
+
+  openReviewTools({ scroll: true });
 });
 
 elements.resultContent.addEventListener("click", (event) => {
@@ -6319,7 +6437,7 @@ elements.resultContent.addEventListener("click", (event) => {
   }
 
   if (target.getAttribute("data-result-action") === "feedback") {
-    scrollToSection(".feedback-card");
+    openReviewTools({ scroll: true, focusNotes: true });
   }
 });
 
