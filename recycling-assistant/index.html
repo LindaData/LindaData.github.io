@@ -209,6 +209,17 @@ textarea:focus-visible,
   line-height: 1.58;
 }
 
+.review-launch-context {
+  display: grid;
+  gap: 8px;
+}
+
+.review-launch-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .review-launch-progress {
   display: flex;
   flex-wrap: wrap;
@@ -248,6 +259,11 @@ textarea:focus-visible,
 
 .review-launch-actions > * {
   flex: 1 1 180px;
+}
+
+body[data-review-mode="review"] .prototype-banner {
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.72);
 }
 
 .prototype-pill {
@@ -2498,7 +2514,13 @@ const translations = {
     reviewLaunchTitle: "This link is ready for household testing.",
     reviewLaunchCopy: "Use your real location, try a clear recycle case, compare a tricky item across cities, and save one note before you leave.",
     reviewLaunchProgress: "Review progress",
+    reviewLaunchContext: "Current test context",
+    reviewLaunchArea: "Area",
+    reviewLaunchItem: "Item",
+    reviewLaunchNoItem: "No item selected yet",
     reviewLaunchNotes: "Open notes",
+    reviewLaunchCompare: "Compare city",
+    reviewLaunchShare: "Share report",
     reviewLaunchResident: "Return to simple mode",
     installApp: "Install app",
     installReady: "Install prompt ready.",
@@ -2798,7 +2820,13 @@ const translations = {
     reviewLaunchTitle: "Este enlace ya esta listo para probarse en casa.",
     reviewLaunchCopy: "Usa tu ubicacion real, prueba un caso claro de reciclaje, compara un articulo dificil entre ciudades y guarda una nota antes de salir.",
     reviewLaunchProgress: "Progreso de revision",
+    reviewLaunchContext: "Contexto actual",
+    reviewLaunchArea: "Zona",
+    reviewLaunchItem: "Articulo",
+    reviewLaunchNoItem: "Todavia no hay articulo seleccionado",
     reviewLaunchNotes: "Abrir notas",
+    reviewLaunchCompare: "Comparar ciudad",
+    reviewLaunchShare: "Compartir reporte",
     reviewLaunchResident: "Volver al modo simple",
     installApp: "Instalar app",
     installReady: "La instalacion esta lista.",
@@ -5213,7 +5241,7 @@ const elements = {
   reviewActions: [...document.querySelectorAll("[data-review-action]")]
 };
 
-const buildId = "2026-06-30-ui23";
+const buildId = "2026-06-30-ui24";
 const bootState = readUrlState();
 const geolocationOptions = {
   enableHighAccuracy: true,
@@ -5547,6 +5575,7 @@ function setReviewMode(isReviewMode, options = {}) {
   const { sync = true } = options;
   state.reviewMode = isReviewMode;
   localStorage.setItem("recycling-review-mode", isReviewMode ? "review" : "resident");
+  document.body.dataset.reviewMode = isReviewMode ? "review" : "resident";
   elements.reviewSuite.hidden = !isReviewMode;
   elements.reviewSummary.hidden = isReviewMode;
   elements.toggleReviewTools.textContent = isReviewMode ? copy().reviewToolsClose : copy().reviewToolsOpen;
@@ -7257,6 +7286,9 @@ function renderReviewLaunchCard() {
   const completed = items.filter((item) => item.done).length;
   const progress = Math.round((completed / items.length) * 100);
   const nextItem = nextPendingChecklistItem();
+  const currentEntry = activeProductEntry();
+  const currentItem = currentEntry ? currentEntry.product.name[state.language] : ui.reviewLaunchNoItem;
+  const currentArea = activeMunicipality().name[state.language];
 
   elements.reviewLaunchCard.hidden = false;
   elements.reviewLaunchCard.innerHTML = `
@@ -7268,6 +7300,13 @@ function renderReviewLaunchCard() {
       <span class="mini-pill">${completed}/${items.length}</span>
     </div>
     <p class="review-launch-copy">${ui.reviewLaunchCopy}</p>
+    <div class="review-launch-context">
+      <strong>${ui.reviewLaunchContext}</strong>
+      <div class="review-launch-chip-row">
+        <span class="mini-pill">${ui.reviewLaunchArea}: ${currentArea}</span>
+        <span class="mini-pill">${ui.reviewLaunchItem}: ${currentItem}</span>
+      </div>
+    </div>
     <div class="review-launch-progress">
       <strong>${ui.reviewLaunchProgress}</strong>
       <span class="mini-pill">${progress}%</span>
@@ -7289,8 +7328,17 @@ function renderReviewLaunchCard() {
       <button class="button" type="button" data-review-launch-action="next"${nextItem ? "" : " disabled"}>
         ${nextItem ? `${ui.sessionRunNext}: ${ui[nextItem.key]}` : ui.sessionDone}
       </button>
+      <button class="button button-secondary" type="button" data-review-launch-action="battery">
+        ${ui.reviewTryBattery}
+      </button>
+      <button class="ghost-button" type="button" data-review-launch-action="compare">
+        ${ui.reviewLaunchCompare}
+      </button>
       <button class="button button-secondary" type="button" data-review-launch-action="notes">
         ${ui.reviewLaunchNotes}
+      </button>
+      <button class="ghost-button" type="button" data-review-launch-action="share">
+        ${ui.reviewLaunchShare}
       </button>
       <button class="ghost-button" type="button" data-review-launch-action="resident">
         ${ui.reviewLaunchResident}
@@ -7308,6 +7356,24 @@ function renderReviewLaunchCard() {
 
       if (action === "notes") {
         openReviewTools({ scroll: true, focusNotes: true });
+        return;
+      }
+
+      if (action === "battery") {
+        const barcode = "041333216317";
+        elements.searchInput.value = products[barcode].name[state.language];
+        handleSearch(barcode, { scroll: false });
+        scrollToSection(".result-stage");
+        return;
+      }
+
+      if (action === "compare") {
+        runChecklistAction("cities");
+        return;
+      }
+
+      if (action === "share") {
+        shareFeedbackReport();
         return;
       }
 
