@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LindaData Municipality Admin</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar card">
+        <div>
+          <p class="eyebrow">LindaData</p>
+          <h1>Municipality Review Console</h1>
+          <p class="subcopy">Local prototype for reviewing resident and business verification requests before a real backend exists.</p>
+        </div>
+        <div class="status-block">
+          <span class="status-pill">Prototype queue</span>
+          <span id="status-meta" class="status-meta">Waiting for verification requests</span>
+        </div>
+      </header>
+
+      <main class="dashboard">
+        <section id="stats-grid" class="stats-grid"></section>
+
+        <section class="workspace-grid">
+          <article class="card">
+            <div class="section-header split-header">
+              <div>
+                <p class="eyebrow">Verification queue</p>
+                <h2>Incoming requests</h2>
+              </div>
+              <div id="queue-filters" class="chip-row"></div>
+            </div>
+            <div id="queue-list" class="queue-list"></div>
+          </article>
+
+          <article class="card">
+            <div class="section-header">
+              <p class="eyebrow">Request detail</p>
+              <h2 id="detail-title">Select a request</h2>
+            </div>
+            <div id="detail-panel" class="detail-panel"></div>
+            <div class="button-row">
+              <button id="start-review" class="button button-secondary" type="button">Start review</button>
+              <button id="needs-data" class="button button-secondary" type="button">Needs data</button>
+              <button id="resolve-request" class="button" type="button">Resolve</button>
+            </div>
+          </article>
+        </section>
+
+        <section class="workspace-grid">
+          <article class="card">
+            <div class="section-header">
+              <p class="eyebrow">Rule editor</p>
+              <h2>Draft local guidance update</h2>
+            </div>
+
+            <div class="editor-grid">
+              <label class="field">
+                <span>Municipality</span>
+                <select id="rule-municipality">
+                  <option value="riverton">Riverton</option>
+                  <option value="lakewood">Lakewood</option>
+                  <option value="sunset-hills">Sunset Hills</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Outcome</span>
+                <select id="rule-outcome">
+                  <option value="drop_off">Drop-off</option>
+                  <option value="recycle">Recycle</option>
+                  <option value="trash">Trash</option>
+                  <option value="check_locally">Check locally</option>
+                </select>
+              </label>
+            </div>
+
+            <label class="field">
+              <span>Item or issue focus</span>
+              <input id="rule-item" type="text" value="">
+            </label>
+
+            <div class="editor-grid">
+              <label class="field">
+                <span>Effective date</span>
+                <input id="rule-effective" type="date">
+              </label>
+              <label class="field">
+                <span>Source URL</span>
+                <input id="rule-source" type="text" value="">
+              </label>
+            </div>
+
+            <label class="field">
+              <span>Instructions (EN)</span>
+              <textarea id="rule-copy-en" rows="4"></textarea>
+            </label>
+
+            <label class="field">
+              <span>Instructions (ES)</span>
+              <textarea id="rule-copy-es" rows="4"></textarea>
+            </label>
+
+            <div class="button-row">
+              <button id="save-draft" class="button button-secondary" type="button">Save draft</button>
+              <button id="publish-rule" class="button" type="button">Publish version</button>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="section-header">
+              <p class="eyebrow">Release checks</p>
+              <h2>Checklist and audit</h2>
+            </div>
+            <div id="checklist-panel" class="checklist-panel"></div>
+            <div class="audit-block">
+              <div class="section-header">
+                <p class="eyebrow">Audit log</p>
+                <h2>Recent actions</h2>
+              </div>
+              <div id="audit-log" class="audit-log"></div>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

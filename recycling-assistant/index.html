@@ -1691,7 +1691,7 @@ textarea {
   }
 
   .lower-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .mark-grid {
@@ -1941,7 +1941,7 @@ textarea {
         </section>
 
         <section class="routine-grid">
-          <article class="glass-panel review-panel">
+          <article class="glass-panel">
             <div class="panel-heading">
               <div>
                 <p class="eyebrow" data-i18n="routineEyebrow">Neighborhood rhythm</p>
@@ -1983,7 +1983,70 @@ textarea {
             <div id="history-list" class="stack-list"></div>
           </article>
 
-          <article class="glass-panel">
+          <article class="glass-panel public-feedback-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow" data-i18n="publicFeedbackEyebrow">Verification requests</p>
+                <h3 data-i18n="publicFeedbackTitle">Need us to review an item or local rule?</h3>
+              </div>
+            </div>
+            <p class="browse-copy" data-i18n="publicFeedbackCopy">
+              Send a quick request when an item is missing, the municipality guidance feels wrong, or a business wants a product reviewed.
+            </p>
+
+            <div id="public-feedback-context" class="feedback-scores"></div>
+
+            <div class="field-grid">
+              <label class="field">
+                <span data-i18n="publicFeedbackItem">Item or barcode</span>
+                <input id="public-feedback-item" type="text" autocomplete="off" data-i18n-placeholder="publicFeedbackItemPlaceholder" placeholder="Example: plastic clamshell or 041333216317">
+              </label>
+
+              <label class="field">
+                <span data-i18n="publicFeedbackType">Request type</span>
+                <select id="public-feedback-type">
+                  <option value="unknown" data-i18n="publicFeedbackTypeUnknown">Missing or unknown item</option>
+                  <option value="rule" data-i18n="publicFeedbackTypeRule">Local rule seems wrong</option>
+                  <option value="center" data-i18n="publicFeedbackTypeCenter">Center or hours need correction</option>
+                  <option value="business" data-i18n="publicFeedbackTypeBusiness">Business product submission</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="field-grid">
+              <label class="field">
+                <span data-i18n="publicFeedbackBusiness">Business or organization</span>
+                <input id="public-feedback-business" type="text" autocomplete="organization" data-i18n-placeholder="publicFeedbackBusinessPlaceholder" placeholder="Optional business name">
+              </label>
+
+              <label class="field">
+                <span data-i18n="publicFeedbackContact">Contact email or phone</span>
+                <input id="public-feedback-contact" type="text" autocomplete="email" data-i18n-placeholder="publicFeedbackContactPlaceholder" placeholder="Optional follow-up contact">
+              </label>
+            </div>
+
+            <label class="field">
+              <span data-i18n="publicFeedbackNotes">What should we verify?</span>
+              <textarea id="public-feedback-notes" rows="4" data-i18n-placeholder="publicFeedbackNotesPlaceholder" placeholder="Tell us what looks wrong, missing, or outdated."></textarea>
+            </label>
+
+            <div class="action-row">
+              <button id="submit-public-feedback" class="button" type="button" data-i18n="publicFeedbackSubmit">Send verification request</button>
+              <button id="clear-public-feedback" class="ghost-button" type="button" data-i18n="publicFeedbackClear">Clear</button>
+            </div>
+
+            <div class="feedback-log">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow" data-i18n="publicFeedbackRecentEyebrow">Submitted requests</p>
+                  <h3 data-i18n="publicFeedbackRecentTitle">Recent verification requests</h3>
+                </div>
+              </div>
+              <div id="public-feedback-list" class="stack-list"></div>
+            </div>
+          </article>
+
+          <article class="glass-panel review-panel">
             <div class="panel-heading">
               <div>
                 <p class="eyebrow" data-i18n="feedbackEyebrow">Testing tools</p>
@@ -2292,9 +2355,9 @@ const translations = {
     resultEyebrow: "Answer card",
     resultTitle: "Your local recycling guidance",
     copySummary: "Copy summary",
-    resultReviewTitle: "Keep the review moving",
-    resultReviewCopy: "Jump straight to the feedback capture area while this answer stays visible.",
-    resultRateAnswer: "Rate this answer",
+    resultReviewTitle: "Something look wrong?",
+    resultReviewCopy: "Send a verification request if this item, local rule, or center information needs review.",
+    resultRateAnswer: "Request verification",
     resultEmptyTitle: "Search an item to reveal the answer card.",
     resultEmptyCopy:
       "The layout will highlight the disposal outcome, what changed because of your municipality, and the safest next step.",
@@ -2317,6 +2380,37 @@ const translations = {
     playbookSubtitle: "Sort where the item first becomes waste so the right choice feels automatic.",
     historyEyebrow: "Recent activity",
     historyTitle: "What you checked recently",
+    publicFeedbackEyebrow: "Verification requests",
+    publicFeedbackTitle: "Need us to review an item or local rule?",
+    publicFeedbackCopy: "Send a quick request when an item is missing, the municipality guidance feels wrong, or a business wants a product reviewed.",
+    publicFeedbackItem: "Item or barcode",
+    publicFeedbackItemPlaceholder: "Example: plastic clamshell or 041333216317",
+    publicFeedbackType: "Request type",
+    publicFeedbackTypeUnknown: "Missing or unknown item",
+    publicFeedbackTypeRule: "Local rule seems wrong",
+    publicFeedbackTypeCenter: "Center or hours need correction",
+    publicFeedbackTypeBusiness: "Business product submission",
+    publicFeedbackBusiness: "Business or organization",
+    publicFeedbackBusinessPlaceholder: "Optional business name",
+    publicFeedbackContact: "Contact email or phone",
+    publicFeedbackContactPlaceholder: "Optional follow-up contact",
+    publicFeedbackNotes: "What should we verify?",
+    publicFeedbackNotesPlaceholder: "Tell us what looks wrong, missing, or outdated.",
+    publicFeedbackSubmit: "Send verification request",
+    publicFeedbackClear: "Clear",
+    publicFeedbackRecentEyebrow: "Submitted requests",
+    publicFeedbackRecentTitle: "Recent verification requests",
+    publicFeedbackContext: "Current context",
+    publicFeedbackStatus: "Status",
+    publicFeedbackStatusNew: "New",
+    publicFeedbackStatusReviewing: "Reviewing",
+    publicFeedbackStatusResolved: "Resolved",
+    publicFeedbackStatusNeedsData: "Needs data",
+    publicFeedbackEmpty: "No verification requests yet. Submit one when something looks missing or wrong.",
+    publicFeedbackSaved: "Verification request saved.",
+    publicFeedbackCleared: "Verification form cleared.",
+    publicFeedbackNeedDetails: "Add an item name or a note before sending a verification request.",
+    publicFeedbackOpenAdmin: "Open admin review",
     feedbackEyebrow: "Testing tools",
     feedbackTitle: "Optional review workspace",
     reviewSummaryTitle: "Keep daily use simple.",
@@ -2541,9 +2635,9 @@ const translations = {
     resultEyebrow: "Tarjeta de respuesta",
     resultTitle: "Tu guia local de reciclaje",
     copySummary: "Copiar resumen",
-    resultReviewTitle: "Mantener activa la revision",
-    resultReviewCopy: "Salta directo al area de comentarios mientras esta respuesta permanece visible.",
-    resultRateAnswer: "Calificar esta respuesta",
+    resultReviewTitle: "Algo parece incorrecto?",
+    resultReviewCopy: "Envia una solicitud de verificacion si este articulo, regla local o informacion del centro necesita revision.",
+    resultRateAnswer: "Solicitar verificacion",
     resultEmptyTitle: "Busca un articulo para revelar la tarjeta de respuesta.",
     resultEmptyCopy:
       "El diseno destacara el resultado, lo que cambia por municipio y el paso mas seguro para el usuario.",
@@ -2566,6 +2660,37 @@ const translations = {
     playbookSubtitle: "Separa donde el articulo se convierte en residuo para que la decision correcta sea automatica.",
     historyEyebrow: "Actividad reciente",
     historyTitle: "Lo que revisaste recientemente",
+    publicFeedbackEyebrow: "Solicitudes de verificacion",
+    publicFeedbackTitle: "Necesitas que revisemos un articulo o una regla local?",
+    publicFeedbackCopy: "Envia una solicitud rapida cuando falte un articulo, la guia municipal se sienta incorrecta o un negocio quiera que revisemos un producto.",
+    publicFeedbackItem: "Articulo o codigo de barras",
+    publicFeedbackItemPlaceholder: "Ejemplo: envase clamshell o 041333216317",
+    publicFeedbackType: "Tipo de solicitud",
+    publicFeedbackTypeUnknown: "Articulo faltante o desconocido",
+    publicFeedbackTypeRule: "La regla local parece incorrecta",
+    publicFeedbackTypeCenter: "Centro u horario necesita correccion",
+    publicFeedbackTypeBusiness: "Envio de producto de negocio",
+    publicFeedbackBusiness: "Negocio u organizacion",
+    publicFeedbackBusinessPlaceholder: "Nombre opcional del negocio",
+    publicFeedbackContact: "Correo o telefono de contacto",
+    publicFeedbackContactPlaceholder: "Contacto opcional para seguimiento",
+    publicFeedbackNotes: "Que debemos verificar?",
+    publicFeedbackNotesPlaceholder: "Dinos que parece incorrecto, faltante o desactualizado.",
+    publicFeedbackSubmit: "Enviar solicitud de verificacion",
+    publicFeedbackClear: "Limpiar",
+    publicFeedbackRecentEyebrow: "Solicitudes enviadas",
+    publicFeedbackRecentTitle: "Solicitudes recientes de verificacion",
+    publicFeedbackContext: "Contexto actual",
+    publicFeedbackStatus: "Estado",
+    publicFeedbackStatusNew: "Nueva",
+    publicFeedbackStatusReviewing: "En revision",
+    publicFeedbackStatusResolved: "Resuelta",
+    publicFeedbackStatusNeedsData: "Falta informacion",
+    publicFeedbackEmpty: "Todavia no hay solicitudes de verificacion. Envia una cuando algo parezca faltante o incorrecto.",
+    publicFeedbackSaved: "Solicitud de verificacion guardada.",
+    publicFeedbackCleared: "Formulario de verificacion limpiado.",
+    publicFeedbackNeedDetails: "Agrega un articulo o una nota antes de enviar la solicitud de verificacion.",
+    publicFeedbackOpenAdmin: "Abrir revision administrativa",
     feedbackEyebrow: "Herramientas de prueba",
     feedbackTitle: "Espacio opcional de revision",
     reviewSummaryTitle: "Mantener simple el uso diario.",
@@ -4070,6 +4195,7 @@ const state = {
   language: localStorage.getItem("recycling-language") || "en",
   history: readStoredJson("recycling-history-v2", []),
   feedback: readStoredJson("recycling-feedback-v1", []),
+  publicFeedback: readStoredJson("recycling-public-feedback-v1", []),
   sessionCoverage: readStoredJson("recycling-session-coverage-v1", {
     barcodes: [],
     municipalities: [],
@@ -4124,6 +4250,15 @@ const elements = {
   markGuide: document.getElementById("mark-guide"),
   centerList: document.getElementById("center-list"),
   historyList: document.getElementById("history-list"),
+  publicFeedbackContext: document.getElementById("public-feedback-context"),
+  publicFeedbackItem: document.getElementById("public-feedback-item"),
+  publicFeedbackType: document.getElementById("public-feedback-type"),
+  publicFeedbackBusiness: document.getElementById("public-feedback-business"),
+  publicFeedbackContact: document.getElementById("public-feedback-contact"),
+  publicFeedbackNotes: document.getElementById("public-feedback-notes"),
+  submitPublicFeedback: document.getElementById("submit-public-feedback"),
+  clearPublicFeedback: document.getElementById("clear-public-feedback"),
+  publicFeedbackList: document.getElementById("public-feedback-list"),
   feedbackLog: document.getElementById("feedback-log"),
   reviewSummary: document.getElementById("review-summary"),
   reviewSuite: document.getElementById("review-suite"),
@@ -4150,7 +4285,7 @@ const elements = {
   reviewActions: [...document.querySelectorAll("[data-review-action]")]
 };
 
-const buildId = "2026-06-30-ui16";
+const buildId = "2026-06-30-ui17";
 const bootState = readUrlState();
 const geolocationOptions = {
   enableHighAccuracy: true,
@@ -4469,6 +4604,15 @@ function scrollToSection(selector) {
   if (section && typeof section.scrollIntoView === "function") {
     section.scrollIntoView({ behavior: "smooth", block: "start" });
   }
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll("\"", "&quot;")
+    .replaceAll("'", "&#39;");
 }
 
 function setReviewMode(isReviewMode, options = {}) {
@@ -4923,6 +5067,7 @@ function refreshMunicipalityViews() {
   renderFlowBoard();
   renderNextStepCard();
   renderBrowseCatalog();
+  renderPublicFeedbackContext();
   renderSessionOverview();
 }
 
@@ -5256,6 +5401,10 @@ function translatePage() {
   elements.searchInput.setAttribute("aria-label", ui.searchLabel);
   elements.searchInput.placeholder = ui.searchPlaceholder;
   elements.feedbackNotes.placeholder = ui.feedbackPlaceholder;
+  elements.publicFeedbackItem.placeholder = ui.publicFeedbackItemPlaceholder;
+  elements.publicFeedbackBusiness.placeholder = ui.publicFeedbackBusinessPlaceholder;
+  elements.publicFeedbackContact.placeholder = ui.publicFeedbackContactPlaceholder;
+  elements.publicFeedbackNotes.placeholder = ui.publicFeedbackNotesPlaceholder;
 
   document.querySelectorAll("[data-i18n]").forEach((node) => {
     const key = node.getAttribute("data-i18n");
@@ -5283,6 +5432,130 @@ function renderProductSuggestions() {
     });
 
   elements.productSuggestions.innerHTML = options.join("");
+}
+
+function publicFeedbackStatusLabel(status) {
+  const ui = copy();
+  if (status === "resolved") return ui.publicFeedbackStatusResolved;
+  if (status === "reviewing") return ui.publicFeedbackStatusReviewing;
+  if (status === "needs_data") return ui.publicFeedbackStatusNeedsData;
+  return ui.publicFeedbackStatusNew;
+}
+
+function currentPublicFeedbackContext() {
+  const currentEntry = activeProductEntry();
+  return {
+    barcode: state.currentBarcode,
+    itemName: currentEntry ? currentEntry.product.name[state.language] : state.lastQuery,
+    municipality: elements.municipalitySelect.value
+  };
+}
+
+function renderPublicFeedbackContext() {
+  const ui = copy();
+  const context = currentPublicFeedbackContext();
+  const municipality = municipalities[context.municipality];
+  const pills = [];
+
+  if (context.itemName) {
+    pills.push(`<span class="mini-pill">${escapeHtml(context.itemName)}</span>`);
+  }
+  if (municipality) {
+    pills.push(`<span class="mini-pill">${ui.resultMunicipality}: ${municipality.name[state.language]}</span>`);
+  }
+  if (context.barcode) {
+    pills.push(`<span class="mini-pill">${context.barcode}</span>`);
+  }
+
+  elements.publicFeedbackContext.innerHTML = pills.length
+    ? pills.join("")
+    : `<span class="mini-pill">${ui.publicFeedbackContext}: ${activeMunicipality().name[state.language]}</span>`;
+
+  if (!elements.publicFeedbackItem.value.trim() && context.itemName) {
+    elements.publicFeedbackItem.value = context.itemName;
+  }
+}
+
+function renderPublicFeedbackList() {
+  const ui = copy();
+  elements.publicFeedbackList.innerHTML = "";
+
+  if (!state.publicFeedback.length) {
+    elements.publicFeedbackList.innerHTML = `<div class="feedback-entry"><p>${ui.publicFeedbackEmpty}</p></div>`;
+    return;
+  }
+
+  state.publicFeedback.slice(0, 6).forEach((entry) => {
+    const item = document.createElement("div");
+    item.className = "feedback-entry";
+    const municipality = entry.municipality ? municipalities[entry.municipality] : null;
+    const contextParts = [
+      entry.itemName,
+      municipality ? municipality.name[state.language] : null
+    ].filter(Boolean);
+
+    item.innerHTML = `
+      <strong>${escapeHtml(entry.itemName || ui.publicFeedbackTypeUnknown)}</strong>
+      <p class="feedback-meta">${escapeHtml(contextParts.join(" · "))}</p>
+      <div class="feedback-scores">
+        <span class="mini-pill">${ui.publicFeedbackStatus}: ${publicFeedbackStatusLabel(entry.status)}</span>
+        <span class="mini-pill">${copy()[`publicFeedbackType${entry.type === "unknown" ? "Unknown" : entry.type === "rule" ? "Rule" : entry.type === "center" ? "Center" : "Business"}`]}</span>
+        <span class="mini-pill">${formatHistoryTime(entry.createdAt)}</span>
+      </div>
+      ${entry.note ? `<p>${escapeHtml(entry.note)}</p>` : ""}
+    `;
+    elements.publicFeedbackList.appendChild(item);
+  });
+}
+
+function clearPublicFeedbackForm() {
+  elements.publicFeedbackItem.value = activeProductEntry() ? activeProductEntry().product.name[state.language] : state.lastQuery || "";
+  elements.publicFeedbackType.value = "unknown";
+  elements.publicFeedbackBusiness.value = "";
+  elements.publicFeedbackContact.value = "";
+  elements.publicFeedbackNotes.value = "";
+}
+
+function openPublicFeedback(options = {}) {
+  const { focusNotes = false } = options;
+  renderPublicFeedbackContext();
+  scrollToSection(".public-feedback-panel");
+  if (focusNotes) {
+    elements.publicFeedbackNotes.focus();
+  }
+}
+
+function savePublicFeedbackEntry() {
+  const ui = copy();
+  const context = currentPublicFeedbackContext();
+  const itemName = elements.publicFeedbackItem.value.trim() || context.itemName || context.barcode || "";
+  const note = elements.publicFeedbackNotes.value.trim();
+
+  if (!itemName && !note) {
+    showToast(ui.publicFeedbackNeedDetails);
+    return;
+  }
+
+  state.publicFeedback.unshift({
+    id: `req-${Date.now()}`,
+    type: elements.publicFeedbackType.value,
+    itemName,
+    barcode: context.barcode,
+    municipality: context.municipality,
+    business: elements.publicFeedbackBusiness.value.trim(),
+    contact: elements.publicFeedbackContact.value.trim(),
+    note,
+    status: "new",
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+    url: currentAppUrl()
+  });
+  state.publicFeedback = state.publicFeedback.slice(0, 24);
+  localStorage.setItem("recycling-public-feedback-v1", JSON.stringify(state.publicFeedback));
+  renderPublicFeedbackList();
+  clearPublicFeedbackForm();
+  renderPublicFeedbackContext();
+  showToast(ui.publicFeedbackSaved);
 }
 
 function feedbackTagLabel(tagKey) {
@@ -6126,6 +6399,7 @@ function renderEmptyResult() {
   renderFlowBoard();
   renderNextStepCard();
   renderBrowseCatalog();
+  renderPublicFeedbackContext();
   renderCenters(null);
 }
 
@@ -6155,6 +6429,13 @@ function renderUnknown() {
         <strong>${ui.unknownImpactTitle}</strong>
         <p class="support-copy">${ui.unknownImpactCopy}</p>
       </div>
+      <div class="support-card result-review-card">
+        <strong class="detail-title">${ui.resultReviewTitle}</strong>
+        <p class="support-copy">${ui.resultReviewCopy}</p>
+        <div class="center-actions">
+          <button class="button button-secondary" type="button" data-result-action="request">${ui.resultRateAnswer}</button>
+        </div>
+      </div>
       ${state.userLocation ? centerSpotlightMarkup(nearestCenterForCurrentMunicipality()) : ""}
     </div>
   `;
@@ -6162,6 +6443,7 @@ function renderUnknown() {
   renderFlowBoard();
   renderNextStepCard();
   renderBrowseCatalog();
+  renderPublicFeedbackContext();
   renderCenters(null);
 }
 
@@ -6242,7 +6524,7 @@ function renderResult(entry, trackHistory) {
         <strong class="detail-title">${ui.resultReviewTitle}</strong>
         <p class="support-copy">${ui.resultReviewCopy}</p>
         <div class="center-actions">
-          <button class="button button-secondary" type="button" data-result-action="feedback">${ui.resultRateAnswer}</button>
+          <button class="button button-secondary" type="button" data-result-action="request">${ui.resultRateAnswer}</button>
         </div>
       </div>
 
@@ -6262,6 +6544,7 @@ function renderResult(entry, trackHistory) {
   renderFlowBoard();
   renderNextStepCard();
   renderBrowseCatalog();
+  renderPublicFeedbackContext();
   renderCenters(entry);
 }
 
@@ -6316,6 +6599,8 @@ elements.languageToggle.addEventListener("click", () => {
   refreshMunicipalityViews();
   renderHistory();
   renderFeedbackLog();
+  renderPublicFeedbackList();
+  renderPublicFeedbackContext();
 
   const currentEntry = activeProductEntry();
   if (currentEntry) {
@@ -6421,6 +6706,16 @@ elements.reviewActions.forEach((button) => {
   });
 });
 
+elements.submitPublicFeedback.addEventListener("click", () => {
+  savePublicFeedbackEntry();
+});
+
+elements.clearPublicFeedback.addEventListener("click", () => {
+  clearPublicFeedbackForm();
+  renderPublicFeedbackContext();
+  showToast(copy().publicFeedbackCleared);
+});
+
 elements.toggleReviewTools.addEventListener("click", () => {
   if (state.reviewMode) {
     setReviewMode(false);
@@ -6436,8 +6731,8 @@ elements.resultContent.addEventListener("click", (event) => {
     return;
   }
 
-  if (target.getAttribute("data-result-action") === "feedback") {
-    openReviewTools({ scroll: true, focusNotes: true });
+  if (target.getAttribute("data-result-action") === "request") {
+    openPublicFeedback({ focusNotes: true });
   }
 });
 
@@ -6546,6 +6841,9 @@ renderScenarios();
 refreshMunicipalityViews();
 renderHistory();
 renderFeedbackLog();
+renderPublicFeedbackList();
+clearPublicFeedbackForm();
+renderPublicFeedbackContext();
 syncLocationFromPermission();
 
 if (bootState.item && products[bootState.item]) {
