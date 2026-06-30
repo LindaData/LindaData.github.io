@@ -1708,6 +1708,7 @@ const translations = {
     scannerCopy: "The camera stays on-device. If detection fails, use the product search or the sample scan below.",
     scannerIdle: "Camera is ready when you are.",
     scannerStarting: "Opening the camera...",
+    scannerLoadingFallback: "Loading cross-browser scanner support...",
     scannerSearching: "Looking for a supported barcode...",
     scannerUnsupported: "Live camera scanning is not supported in this browser yet. Use search or the sample scan instead.",
     scannerPermissionDenied: "Camera access was denied. You can still search by product name or barcode.",
@@ -1879,6 +1880,7 @@ const translations = {
     scannerCopy: "La camara permanece en el dispositivo. Si la deteccion falla, usa la busqueda o la muestra de abajo.",
     scannerIdle: "La camara esta lista cuando quieras.",
     scannerStarting: "Abriendo la camara...",
+    scannerLoadingFallback: "Cargando compatibilidad adicional para el escaneo...",
     scannerSearching: "Buscando un codigo de barras compatible...",
     scannerUnsupported: "El escaneo en vivo aun no esta disponible en este navegador. Usa la busqueda o la muestra.",
     scannerPermissionDenied: "Se nego el acceso a la camara. Aun puedes buscar por nombre o codigo.",
@@ -2566,9 +2568,12 @@ const state = {
   installPromptEvent: null,
   scannerStream: null,
   scannerDetector: null,
+  scannerControls: null,
+  scannerControlsPromise: null,
   scannerFrameId: null,
   scannerActive: false,
   scannerBusy: false,
+  zxingPromise: null,
   currentBarcode: null,
   lastQuery: "",
   demoIndex: 0
@@ -2614,7 +2619,7 @@ const elements = {
   chips: [...document.querySelectorAll(".chip")]
 };
 
-const buildId = "2026-06-30-ui5";
+const buildId = "2026-06-30-ui6";
 const demoBarcodes = Object.keys(products);
 const testScenarios = [
   {
@@ -3069,9 +3074,52 @@ function refreshMunicipalityViews() {
 }
 
 function scannerSupportAvailable() {
-  return typeof window.BarcodeDetector === "function"
-    && navigator.mediaDevices
+  return navigator.mediaDevices
     && typeof navigator.mediaDevices.getUserMedia === "function";
+}
+
+function nativeBarcodeDetectorAvailable() {
+  return typeof window.BarcodeDetector === "function";
+}
+
+async function loadZxingBrowser() {
+  if (window.ZXingBrowser) {
+    return window.ZXingBrowser;
+  }
+
+  if (state.zxingPromise) {
+    return state.zxingPromise;
+  }
+
+  state.zxingPromise = new Promise((resolve, reject) => {
+    if (!document.head) {
+      reject(new Error("document head unavailable"));
+      return;
+    }
+
+    const existing = typeof document.querySelector === "function"
+      ? document.querySelector('script[data-zxing-browser="true"]')
+      : null;
+    if (existing) {
+      existing.addEventListener("load", () => resolve(window.ZXingBrowser), { once: true });
+      existing.addEventListener("error", () => reject(new Error("ZXing script failed to load")), { once: true });
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://unpkg.com/@zxing/browser@0.2.0";
+    script.async = true;
+    script.defer = true;
+    script.dataset.zxingBrowser = "true";
+    script.onload = () => resolve(window.ZXingBrowser);
+    script.onerror = () => reject(new Error("ZXing script failed to load"));
+    document.head.appendChild(script);
+  }).catch((error) => {
+    state.zxingPromise = null;
+    throw error;
+  });
+
+  return state.zxingPromise;
 }
 
 function scannerErrorMessage(error) {
@@ -3087,6 +3135,12 @@ function stopScanner(closeModal = true) {
   state.scannerActive = false;
   state.scannerBusy = false;
   state.scannerDetector = null;
+
+  if (state.scannerControls && typeof state.scannerControls.stop === "function") {
+    state.scannerControls.stop();
+    state.scannerControls = null;
+  }
+  state.scannerControlsPromise = null;
 
   if (state.scannerFrameId) {
     window.cancelAnimationFrame(state.scannerFrameId);
@@ -3115,6 +3169,86 @@ async function handleDetectedBarcode(barcode) {
   elements.searchInput.value = barcode;
   showToast(ui.scannerDetected, 2200);
   handleSearch(barcode);
+}
+
+async function startNativeBarcodeScanner() {
+  const ui = copy();
+  const desiredFormats = ["ean_13", "ean_8", "upc_a", "upc_e", "code_128", "code_39"];
+  const supportedFormats = typeof window.BarcodeDetector.getSupportedFormats === "function"
+    ? await window.BarcodeDetector.getSupportedFormats()
+    : desiredFormats;
+  const formats = desiredFormats.filter((format) => supportedFormats.includes(format));
+
+  if (!formats.length) {
+    throw new Error(ui.scannerUnsupported);
+  }
+
+  state.scannerDetector = new window.BarcodeDetector({ formats });
+  state.scannerStream = await navigator.mediaDevices.getUserMedia({
+    audio: false,
+    video: {
+      facingMode: { ideal: "environment" },
+      width: { ideal: 1280 },
+      height: { ideal: 720 }
+    }
+  });
+  elements.scannerVideo.srcObject = state.scannerStream;
+  await elements.scannerVideo.play();
+  state.scannerActive = true;
+  setScannerStatus(ui.scannerSearching);
+  state.scannerFrameId = window.requestAnimationFrame(scannerLoop);
+}
+
+function preferredVideoDevice(devices) {
+  return devices.find((device) => /back|rear|environment|world/gi.test(device.label || ""))
+    || devices[0]
+    || null;
+}
+
+async function startZxingScanner() {
+  const ui = copy();
+  setScannerStatus(ui.scannerLoadingFallback);
+  const ZXingBrowser = await loadZxingBrowser();
+  if (!ZXingBrowser || !ZXingBrowser.BrowserMultiFormatReader) {
+    throw new Error(ui.scannerUnsupported);
+  }
+
+  const reader = new ZXingBrowser.BrowserMultiFormatReader();
+  const devices = ZXingBrowser.BrowserCodeReader
+    && typeof ZXingBrowser.BrowserCodeReader.listVideoInputDevices === "function"
+    ? await ZXingBrowser.BrowserCodeReader.listVideoInputDevices()
+    : [];
+  const selectedDevice = preferredVideoDevice(devices);
+
+  state.scannerActive = true;
+  setScannerStatus(ui.scannerSearching);
+  const controlsPromise = reader.decodeFromVideoDevice(
+    selectedDevice ? selectedDevice.deviceId : undefined,
+    elements.scannerVideo,
+    (result) => {
+      if (!result || state.scannerBusy) {
+        return;
+      }
+
+      const value = typeof result.getText === "function"
+        ? result.getText()
+        : result.text || result.rawValue || "";
+      if (!value) {
+        return;
+      }
+
+      state.scannerBusy = true;
+      handleDetectedBarcode(String(value).trim());
+    }
+  );
+  state.scannerControlsPromise = controlsPromise;
+  state.scannerControls = await controlsPromise;
+  state.scannerControlsPromise = null;
+
+  if (!state.scannerActive && state.scannerControls && typeof state.scannerControls.stop === "function") {
+    state.scannerControls.stop();
+    state.scannerControls = null;
+  }
 }
 
 async function scannerLoop() {
@@ -3160,32 +3294,18 @@ async function openScanner() {
   setScannerStatus(ui.scannerStarting);
 
   try {
-    const desiredFormats = ["ean_13", "ean_8", "upc_a", "upc_e", "code_128", "code_39"];
-    const supportedFormats = typeof window.BarcodeDetector.getSupportedFormats === "function"
-      ? await window.BarcodeDetector.getSupportedFormats()
-      : desiredFormats;
-    const formats = desiredFormats.filter((format) => supportedFormats.includes(format));
+    if (nativeBarcodeDetectorAvailable()) {
+      await startNativeBarcodeScanner();
+      return;
+    }
 
-    if (!formats.length) {
+    await startZxingScanner();
+  } catch (error) {
+    if (error && typeof error.message === "string" && error.message === ui.scannerUnsupported) {
       setScannerStatus(ui.scannerUnsupported);
       return;
     }
 
-    state.scannerDetector = new window.BarcodeDetector({ formats });
-    state.scannerStream = await navigator.mediaDevices.getUserMedia({
-      audio: false,
-      video: {
-        facingMode: { ideal: "environment" },
-        width: { ideal: 1280 },
-        height: { ideal: 720 }
-      }
-    });
-    elements.scannerVideo.srcObject = state.scannerStream;
-    await elements.scannerVideo.play();
-    state.scannerActive = true;
-    setScannerStatus(ui.scannerSearching);
-    state.scannerFrameId = window.requestAnimationFrame(scannerLoop);
-  } catch (error) {
     setScannerStatus(scannerErrorMessage(error));
   }
 }
