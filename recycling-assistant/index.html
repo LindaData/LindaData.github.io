@@ -319,6 +319,7 @@ h3 {
 .search-panel,
 .flow-panel,
 .brief-panel,
+.browse-panel,
 .result-shell,
 .info-card,
 .mark-guide-panel,
@@ -326,7 +327,12 @@ h3 {
   padding: 22px;
 }
 
+.search-panel {
+  order: 1;
+}
+
 .hero-panel {
+  order: 2;
   position: relative;
   overflow: hidden;
   display: grid;
@@ -398,6 +404,68 @@ h3 {
   margin: 10px 0 0;
   line-height: 1.5;
   color: var(--ink-soft);
+}
+
+.signal-card {
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background:
+    radial-gradient(circle at top right, rgba(245, 158, 11, 0.28), transparent 32%),
+    linear-gradient(145deg, rgba(16, 42, 67, 0.98), rgba(15, 118, 110, 0.92));
+  color: white;
+  box-shadow: var(--shadow);
+}
+
+.signal-card strong {
+  display: block;
+  font-size: 1.3rem;
+  font-family: var(--font-display);
+  line-height: 1.1;
+}
+
+.signal-label {
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.signal-copy {
+  margin: 10px 0 0;
+  color: rgba(255, 255, 255, 0.84);
+  line-height: 1.56;
+}
+
+.signal-meta,
+.signal-actions,
+.result-context {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.signal-meta,
+.signal-actions {
+  margin-top: 16px;
+}
+
+.signal-card .mini-pill {
+  background: rgba(255, 255, 255, 0.14);
+  color: white;
+}
+
+.signal-card .center-link {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.signal-card .center-link-primary {
+  background: white;
+  color: var(--leaf-deep);
 }
 
 .panel-heading {
@@ -506,6 +574,88 @@ textarea {
 .lower-grid {
   display: grid;
   gap: 18px;
+}
+
+.browse-copy {
+  margin: 0 0 16px;
+  color: var(--ink-soft);
+  line-height: 1.56;
+}
+
+.browse-filters,
+.browse-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.browse-filters {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.browse-filter,
+.browse-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.browse-filter {
+  padding: 0.88rem 0.95rem;
+  font-weight: 800;
+  color: var(--ink-strong);
+  text-align: center;
+}
+
+.browse-filter.is-active {
+  background: linear-gradient(135deg, rgba(15, 118, 110, 0.94), rgba(11, 79, 74, 0.94));
+  color: white;
+  box-shadow: var(--shadow);
+}
+
+.browse-card {
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+  text-align: left;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.browse-card:hover {
+  transform: translateY(-1px);
+}
+
+.browse-card.is-selected {
+  border-color: rgba(15, 118, 110, 0.42);
+  box-shadow: 0 14px 28px rgba(10, 42, 63, 0.1);
+}
+
+.browse-card-head,
+.browse-card-meta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.browse-card-meta {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.browse-card strong {
+  display: block;
+  font-size: 1rem;
+  color: var(--ink-strong);
+}
+
+.browse-card p {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.result-context {
+  margin-bottom: 4px;
 }
 
 .result-empty {
@@ -795,6 +945,14 @@ textarea {
 .impact-card {
   background:
     linear-gradient(135deg, rgba(223, 247, 239, 0.9), rgba(255, 255, 255, 0.9));
+}
+
+.center-spotlight {
+  display: grid;
+  gap: 12px;
+  background:
+    linear-gradient(135deg, rgba(255, 246, 233, 0.96), rgba(255, 255, 255, 0.94));
+  border-color: rgba(245, 158, 11, 0.18);
 }
 
 .stack-list {
@@ -1186,6 +1344,14 @@ textarea {
   }
 
   .hero-panel {
+    order: 1;
+  }
+
+  .search-panel {
+    order: 2;
+  }
+
+  .hero-panel {
     grid-template-columns: 1.12fr 0.88fr;
     align-items: stretch;
   }
@@ -1203,9 +1369,22 @@ textarea {
     align-items: center;
   }
 
+  .browse-filters {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .browse-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .feedback-grid {
     grid-template-columns: 0.85fr 1.15fr;
     align-items: start;
+  }
+
+  .center-spotlight {
+    grid-template-columns: 1fr auto;
+    align-items: end;
   }
 
   .flow-board {
@@ -1263,6 +1442,10 @@ textarea {
 
   .flow-board {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .browse-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -1329,6 +1512,7 @@ textarea {
               <strong data-i18n="metricTwoValue">3 cities</strong>
               <p data-i18n="metricTwoCopy">The current release focuses on reviewed municipal profiles and nearby center guidance.</p>
               </div>
+              <div id="hero-signal-card" class="signal-card signal-card-live"></div>
             </div>
           </section>
 
@@ -1404,6 +1588,20 @@ textarea {
             </div>
             <div id="next-step-card"></div>
           </article>
+        </section>
+
+        <section class="glass-panel browse-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow" data-i18n="browseEyebrow">Browse items</p>
+              <h3 data-i18n="browseTitle">Tap common household items to test local answers</h3>
+            </div>
+          </div>
+          <p class="browse-copy" data-i18n="browseCopy">
+            Use the catalog below to test more products quickly without typing a barcode.
+          </p>
+          <div id="browse-filters" class="browse-filters"></div>
+          <div id="browse-grid" class="browse-grid"></div>
         </section>
 
         <section class="result-stage">
@@ -1655,6 +1853,13 @@ const translations = {
     metricTwoLabel: "Pilot coverage",
     metricTwoValue: "3 cities",
     metricTwoCopy: "The current release focuses on reviewed municipal profiles and nearby center guidance.",
+    heroSignalLabel: "Live location",
+    heroSignalIdleTitle: "Match your area and open the right route.",
+    heroSignalIdleCopy: "Start with your device location to reveal the nearest pilot municipality and the closest center in Google Maps.",
+    heroSignalReadyTitle: "Your live area is matched.",
+    heroSignalSelected: "Selected pilot area",
+    heroSignalNearest: "Nearest center",
+    heroSignalMaps: "Google Maps ready",
     searchEyebrow: "Start a lookup",
     searchTitle: "Search, scan, and trust the answer",
     municipalityLabel: "Municipality",
@@ -1716,6 +1921,11 @@ const translations = {
     scannerDetected: "Barcode detected.",
     scannerUseSample: "Use sample instead",
     closeScanner: "Close",
+    browseEyebrow: "Browse items",
+    browseTitle: "Tap common household items to test local answers",
+    browseCopy: "Use the catalog below to test more products quickly without typing a barcode.",
+    browseNoItems: "No items match that filter yet.",
+    browseTap: "Tap for the local answer",
     quickLabel: "Popular lookups",
     resultEyebrow: "Answer card",
     resultTitle: "Your local recycling guidance",
@@ -1806,6 +2016,8 @@ const translations = {
     resultConfidenceCopy: "This item matched a known product record and a reviewed local disposal rule.",
     resultImpact: "Why this matters",
     resultUpdated: "Local rule review",
+    resultCenterSpotlight: "Nearest center route",
+    resultCenterCopy: "Open the map or start directions without leaving the answer flow.",
     tryAnother: "Try another item",
     outcomeRecycle: "Recycle",
     outcomeTrash: "Trash",
@@ -1827,11 +2039,18 @@ const translations = {
     metricTwoLabel: "Cobertura piloto",
     metricTwoValue: "3 ciudades",
     metricTwoCopy: "La version actual se enfoca en perfiles municipales revisados y centros cercanos.",
+    heroSignalLabel: "Ubicacion en vivo",
+    heroSignalIdleTitle: "Ubica tu zona y abre la ruta correcta.",
+    heroSignalIdleCopy: "Empieza con la ubicacion del dispositivo para revelar el municipio piloto mas cercano y el centro mas cercano en Google Maps.",
+    heroSignalReadyTitle: "Tu zona en vivo ya esta ubicada.",
+    heroSignalSelected: "Area piloto seleccionada",
+    heroSignalNearest: "Centro mas cercano",
+    heroSignalMaps: "Google Maps listo",
     searchEyebrow: "Inicia una consulta",
     searchTitle: "Busca, escanea y confia en la respuesta",
     municipalityLabel: "Municipio",
     searchLabel: "Codigo de barras o nombre del producto",
-    searchPlaceholder: "Prueba aluminum can o 012345678905",
+    searchPlaceholder: "Prueba lata de aluminio o 012345678905",
     scanDemo: "Escanear demo",
     openScanner: "Abrir camara",
     searchButton: "Ver guia",
@@ -1888,6 +2107,11 @@ const translations = {
     scannerDetected: "Codigo detectado.",
     scannerUseSample: "Usar muestra",
     closeScanner: "Cerrar",
+    browseEyebrow: "Explorar articulos",
+    browseTitle: "Toca articulos comunes para probar respuestas locales",
+    browseCopy: "Usa el catalogo para probar mas productos sin escribir un codigo.",
+    browseNoItems: "Todavia no hay articulos para ese filtro.",
+    browseTap: "Toca para ver la respuesta local",
     quickLabel: "Consultas populares",
     resultEyebrow: "Tarjeta de respuesta",
     resultTitle: "Tu guia local de reciclaje",
@@ -1978,6 +2202,8 @@ const translations = {
     resultConfidenceCopy: "Este articulo coincide con un producto conocido y una regla local revisada.",
     resultImpact: "Por que importa",
     resultUpdated: "Revision local",
+    resultCenterSpotlight: "Ruta al centro mas cercano",
+    resultCenterCopy: "Abre el mapa o inicia indicaciones sin salir de la respuesta.",
     tryAnother: "Probar otro articulo",
     outcomeRecycle: "Reciclar",
     outcomeTrash: "Basura",
@@ -2560,12 +2786,813 @@ const products = {
   }
 };
 
+const additionalProducts = {
+  "078742147898": {
+    mark: "GL",
+    family: { en: "Glass beverage bottle", es: "Botella de vidrio" },
+    aliases: ["glass bottle", "beer bottle", "wine bottle", "glass beverage bottle"],
+    confidence: 91,
+    impact: {
+      en: "Glass stays valuable when it is separated cleanly and kept out of mixed contamination.",
+      es: "El vidrio conserva valor cuando se separa limpio y se mantiene fuera de la contaminacion mixta."
+    },
+    name: { en: "Glass bottle", es: "Botella de vidrio" },
+    outcomes: {
+      riverton: {
+        outcome: "drop_off",
+        lane: { en: "Glass depot drop-off", es: "Entrega especial para vidrio" },
+        instructions: {
+          en: "Rinse the bottle and bring it to the listed reuse depot instead of the curbside bin.",
+          es: "Enjuaga la botella y llevala al deposito listado en lugar del contenedor residencial."
+        },
+        rationale: {
+          en: "Riverton keeps household glass out of curbside sorting to reduce breakage contamination.",
+          es: "Riverton mantiene el vidrio fuera de la recoleccion residencial para reducir la contaminacion por roturas."
+        },
+        caution: {
+          en: "Do not bag broken glass into curbside recycling.",
+          es: "No pongas vidrio roto dentro del reciclaje residencial."
+        },
+        steps: {
+          en: ["Empty contents", "Quick rinse", "Use a listed drop-off center"],
+          es: ["Vaciar contenido", "Enjuagar rapido", "Usar un centro listado"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      lakewood: {
+        outcome: "recycle",
+        lane: { en: "Mixed cart glass", es: "Vidrio en carrito mixto" },
+        instructions: {
+          en: "Rinse the bottle and place it loose in the mixed recycling cart.",
+          es: "Enjuaga la botella y colocala suelta en el carrito de reciclaje mixto."
+        },
+        rationale: {
+          en: "Lakewood accepts container glass in the city recycling cart.",
+          es: "Lakewood acepta vidrio de envases en el carrito de reciclaje de la ciudad."
+        },
+        caution: {
+          en: "Avoid ceramic or heat-treated glass, which is a different material stream.",
+          es: "Evita ceramica o vidrio tratado para calor, que pertenece a otro flujo."
+        },
+        steps: {
+          en: ["Rinse", "Leave bottle loose", "Place in mixed cart"],
+          es: ["Enjuagar", "Dejar la botella suelta", "Colocar en el carrito mixto"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      "sunset-hills": {
+        outcome: "drop_off",
+        lane: { en: "Staffed glass collection", es: "Recoleccion de vidrio con personal" },
+        instructions: {
+          en: "Use the staffed drop-off location for glass containers unless your route signage says otherwise.",
+          es: "Usa el centro con personal para envases de vidrio salvo que tu ruta indique otra cosa."
+        },
+        rationale: {
+          en: "Sunset Hills handles glass separately to reduce breakage in route collection.",
+          es: "Sunset Hills maneja el vidrio por separado para reducir roturas durante la recoleccion por ruta."
+        },
+        caution: {
+          en: "Keep broken pieces contained and separate from bottles meant for recovery.",
+          es: "Mantén los pedazos rotos separados de las botellas destinadas a recuperacion."
+        },
+        steps: {
+          en: ["Rinse bottle", "Check route note", "Use staffed drop-off if uncertain"],
+          es: ["Enjuagar la botella", "Revisar la nota de ruta", "Usar el centro con personal si hay duda"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      }
+    }
+  },
+  "050000012345": {
+    mark: "ST",
+    family: { en: "Steel food can", es: "Lata de acero" },
+    aliases: ["steel can", "food can", "soup can", "tin can"],
+    confidence: 94,
+    impact: {
+      en: "Steel cans are a strong recovery material when emptied and kept loose.",
+      es: "Las latas de acero son un material valioso cuando se vacian y se mantienen sueltas."
+    },
+    name: { en: "Steel food can", es: "Lata de acero" },
+    outcomes: {
+      riverton: {
+        outcome: "recycle",
+        lane: { en: "Curbside metals", es: "Metales residenciales" },
+        instructions: {
+          en: "Empty and lightly rinse the can, then place it loose in curbside recycling.",
+          es: "Vacía y enjuaga ligeramente la lata, luego colócala suelta en el reciclaje residencial."
+        },
+        rationale: {
+          en: "Riverton accepts empty steel food cans with the metal stream.",
+          es: "Riverton acepta latas de acero vacías dentro del flujo de metales."
+        },
+        caution: {
+          en: "Do not nest cans together if food residue is still inside.",
+          es: "No apiles latas entre sí si todavía tienen restos de comida."
+        },
+        steps: {
+          en: ["Empty contents", "Quick rinse", "Place loose in curbside bin"],
+          es: ["Vaciar contenido", "Enjuagar rapido", "Colocar suelta en el contenedor"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      lakewood: {
+        outcome: "recycle",
+        lane: { en: "Mixed recycling cart", es: "Carrito de reciclaje mixto" },
+        instructions: {
+          en: "Rinse and place the can in the mixed recycling cart.",
+          es: "Enjuaga y coloca la lata en el carrito de reciclaje mixto."
+        },
+        rationale: {
+          en: "Lakewood accepts steel cans with the mixed recycling stream.",
+          es: "Lakewood acepta latas de acero con el flujo de reciclaje mixto."
+        },
+        caution: {
+          en: "Keep sharp lids tucked inside safely if removed.",
+          es: "Mantén las tapas filosas seguras dentro de la lata si las retiras."
+        },
+        steps: {
+          en: ["Empty contents", "Rinse", "Use mixed recycling cart"],
+          es: ["Vaciar contenido", "Enjuagar", "Usar el carrito mixto"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      "sunset-hills": {
+        outcome: "recycle",
+        lane: { en: "Yellow sorting bin", es: "Contenedor amarillo" },
+        instructions: {
+          en: "Place the cleaned can in the yellow sorting bin with other accepted metals.",
+          es: "Coloca la lata limpia en el contenedor amarillo con los otros metales aceptados."
+        },
+        rationale: {
+          en: "Sunset Hills routes steel cans through its metal sorting lane.",
+          es: "Sunset Hills dirige las latas de acero al flujo de separacion de metales."
+        },
+        caution: {
+          en: "Emptying and rinsing matters because route crews reject food-heavy containers.",
+          es: "Vaciar y enjuagar importa porque las cuadrillas rechazan envases con mucha comida."
+        },
+        steps: {
+          en: ["Empty contents", "Rinse lightly", "Use yellow sorting bin"],
+          es: ["Vaciar contenido", "Enjuagar ligeramente", "Usar contenedor amarillo"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      }
+    }
+  },
+  "044000032940": {
+    mark: "CB",
+    family: { en: "Shipping cardboard", es: "Caja de envio de carton" },
+    aliases: ["shipping box", "cardboard box", "box", "corrugated box"],
+    confidence: 95,
+    impact: {
+      en: "Clean corrugated cardboard is one of the easiest household materials to recover consistently.",
+      es: "El carton corrugado limpio es uno de los materiales domesticos mas faciles de recuperar."
+    },
+    name: { en: "Shipping box", es: "Caja de envio" },
+    outcomes: {
+      riverton: {
+        outcome: "recycle",
+        lane: { en: "Flattened cardboard", es: "Carton aplanado" },
+        instructions: {
+          en: "Break down the box and place the flattened cardboard in the recycling stream.",
+          es: "Desarma la caja y coloca el carton aplanado en el flujo de reciclaje."
+        },
+        rationale: {
+          en: "Riverton accepts clean corrugated cardboard when it is flattened.",
+          es: "Riverton acepta carton corrugado limpio cuando esta aplanado."
+        },
+        caution: {
+          en: "Remove plastic mailers, foam, and wet labels before recycling the box.",
+          es: "Retira bolsas plasticas, espuma y etiquetas mojadas antes de reciclar la caja."
+        },
+        steps: {
+          en: ["Remove packing material", "Flatten box", "Place with cardboard"],
+          es: ["Retirar material de empaque", "Aplanar caja", "Colocar con el carton"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      lakewood: {
+        outcome: "recycle",
+        lane: { en: "Mixed paper and cardboard", es: "Papel y carton mixtos" },
+        instructions: {
+          en: "Flatten the box and place it in the recycling cart if it is dry and clean.",
+          es: "Aplana la caja y colócala en el carrito de reciclaje si está seca y limpia."
+        },
+        rationale: {
+          en: "Lakewood accepts clean cardboard broadly in curbside collection.",
+          es: "Lakewood acepta carton limpio de forma amplia en la recoleccion residencial."
+        },
+        caution: {
+          en: "Oversized boxes may need to be cut down so the lid closes safely.",
+          es: "Las cajas muy grandes pueden necesitar recorte para que la tapa cierre de forma segura."
+        },
+        steps: {
+          en: ["Flatten box", "Cut down if needed", "Place in recycling cart"],
+          es: ["Aplanar caja", "Recortar si hace falta", "Colocar en el carrito"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      "sunset-hills": {
+        outcome: "recycle",
+        lane: { en: "Route cardboard slot", es: "Espacio de carton por ruta" },
+        instructions: {
+          en: "Flatten the box and set it out with the route-approved cardboard materials.",
+          es: "Aplana la caja y colócala con los materiales de carton aprobados para la ruta."
+        },
+        rationale: {
+          en: "Sunset Hills accepts flattened cardboard on most routes.",
+          es: "Sunset Hills acepta carton aplanado en la mayoria de las rutas."
+        },
+        caution: {
+          en: "Keep wet or wax-coated boxes out of the cardboard lane.",
+          es: "Mantén fuera del flujo de carton las cajas mojadas o con recubrimiento encerado."
+        },
+        steps: {
+          en: ["Flatten box", "Confirm route note", "Place with cardboard"],
+          es: ["Aplanar caja", "Confirmar nota de ruta", "Colocar con el carton"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      }
+    }
+  },
+  "033200000123": {
+    mark: "HD",
+    family: { en: "HDPE detergent bottle", es: "Botella de detergente HDPE" },
+    aliases: ["detergent bottle", "laundry bottle", "hdpe bottle", "shampoo bottle"],
+    confidence: 90,
+    impact: {
+      en: "Large rigid plastic bottles are a better recycling candidate than many thin plastic packages.",
+      es: "Las botellas plasticas rigidas grandes son mejores candidatas al reciclaje que muchos empaques finos."
+    },
+    name: { en: "Detergent bottle", es: "Botella de detergente" },
+    outcomes: {
+      riverton: {
+        outcome: "recycle",
+        lane: { en: "Rigid bottle stream", es: "Flujo de botellas rigidas" },
+        instructions: {
+          en: "Empty, recap, and place the bottle in the rigid bottle stream.",
+          es: "Vacía, vuelve a tapar y coloca la botella en el flujo de botellas rigidas."
+        },
+        rationale: {
+          en: "Riverton accepts common rigid household bottles even though it rejects many clamshell plastics.",
+          es: "Riverton acepta botellas domesticas rigidas comunes aunque rechaza muchos envases tipo clamshell."
+        },
+        caution: {
+          en: "Do not leave detergent pooled inside the base.",
+          es: "No dejes detergente acumulado en el fondo."
+        },
+        steps: {
+          en: ["Empty bottle", "Replace cap", "Place in bottle stream"],
+          es: ["Vaciar botella", "Volver a poner la tapa", "Colocar en el flujo de botellas"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      lakewood: {
+        outcome: "recycle",
+        lane: { en: "Mixed recycling cart", es: "Carrito de reciclaje mixto" },
+        instructions: {
+          en: "Rinse if needed and place the bottle in the mixed recycling cart.",
+          es: "Enjuaga si hace falta y coloca la botella en el carrito de reciclaje mixto."
+        },
+        rationale: {
+          en: "Lakewood accepts rigid detergent and soap bottles curbside.",
+          es: "Lakewood acepta botellas rigidas de detergente y jabon en la recoleccion residencial."
+        },
+        caution: {
+          en: "Flexible refill pouches are a different stream and should not be treated like the bottle.",
+          es: "Las bolsas flexibles de recarga son otro flujo y no deben tratarse como la botella."
+        },
+        steps: {
+          en: ["Empty bottle", "Quick rinse", "Place in mixed cart"],
+          es: ["Vaciar botella", "Enjuague rapido", "Colocar en el carrito mixto"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      "sunset-hills": {
+        outcome: "check_locally",
+        lane: { en: "Route-specific rigid plastics", es: "Plasticos rigidos segun la ruta" },
+        instructions: {
+          en: "Check route signage, then place the bottle in the rigid plastics stream if listed.",
+          es: "Revisa la senalizacion de la ruta y coloca la botella en plasticos rigidos si aparece listada."
+        },
+        rationale: {
+          en: "Sunset Hills allows some rigid bottles, but route signage is still the final rule.",
+          es: "Sunset Hills permite algunas botellas rigidas, pero la senalizacion de la ruta sigue siendo la regla final."
+        },
+        caution: {
+          en: "If the route note is unclear, use the staffed center instead of guessing.",
+          es: "Si la nota de la ruta no es clara, usa el centro con personal en lugar de adivinar."
+        },
+        steps: {
+          en: ["Empty bottle", "Check route note", "Use staffed center if uncertain"],
+          es: ["Vaciar botella", "Revisar la nota de ruta", "Usar centro con personal si hay duda"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      }
+    }
+  },
+  "070847000000": {
+    mark: "FILM",
+    family: { en: "Plastic film bag", es: "Bolsa plastica flexible" },
+    aliases: ["plastic bag", "grocery bag", "shopping bag", "film plastic"],
+    confidence: 88,
+    impact: {
+      en: "Film plastic tangles sorting equipment and needs its own recovery path.",
+      es: "El plastico flexible enreda los equipos de clasificacion y necesita su propio flujo."
+    },
+    name: { en: "Plastic grocery bag", es: "Bolsa plastica" },
+    outcomes: {
+      riverton: {
+        outcome: "drop_off",
+        lane: { en: "Film plastic drop-off", es: "Entrega especial de plastico flexible" },
+        instructions: {
+          en: "Keep the bag dry and take it to a listed film-plastic collection point.",
+          es: "Mantén la bolsa seca y llévala a un punto de recoleccion de plastico flexible."
+        },
+        rationale: {
+          en: "Riverton does not allow plastic film in curbside recycling.",
+          es: "Riverton no permite plastico flexible en el reciclaje residencial."
+        },
+        caution: {
+          en: "Do not stuff plastic bags inside bottles or carts to try to recycle them curbside.",
+          es: "No metas bolsas plasticas dentro de botellas o contenedores para intentar reciclarlas en la acera."
+        },
+        steps: {
+          en: ["Keep bag clean and dry", "Store separately", "Use film-plastic drop-off"],
+          es: ["Mantener la bolsa limpia y seca", "Guardar por separado", "Usar entrega especial"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      lakewood: {
+        outcome: "drop_off",
+        lane: { en: "Store or center film collection", es: "Recoleccion de film en tienda o centro" },
+        instructions: {
+          en: "Do not place the bag in curbside recycling. Use a store or center film collection point.",
+          es: "No coloques la bolsa en el reciclaje residencial. Usa una recoleccion de film en tienda o centro."
+        },
+        rationale: {
+          en: "Lakewood treats plastic bags as a special film collection material.",
+          es: "Lakewood trata las bolsas plasticas como material especial de recoleccion de film."
+        },
+        caution: {
+          en: "Food residue or receipts inside the bag can cause the whole batch to be rejected.",
+          es: "Los restos de comida o recibos dentro de la bolsa pueden hacer que se rechace todo el lote."
+        },
+        steps: {
+          en: ["Shake out contents", "Keep dry", "Use film collection point"],
+          es: ["Vaciar el contenido", "Mantener seca", "Usar punto de recoleccion de film"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      "sunset-hills": {
+        outcome: "trash",
+        lane: { en: "Trash unless special event", es: "Basura salvo evento especial" },
+        instructions: {
+          en: "Place the bag in the trash unless a special community film collection event is posted.",
+          es: "Coloca la bolsa en la basura salvo que exista un evento especial de recoleccion de film."
+        },
+        rationale: {
+          en: "Sunset Hills does not run regular route recovery for film plastic.",
+          es: "Sunset Hills no tiene recuperacion regular de plastico flexible por ruta."
+        },
+        caution: {
+          en: "Film plastic should stay out of route bins even if it carries a resin code.",
+          es: "El plastico flexible debe mantenerse fuera de los contenedores de ruta aunque tenga codigo de resina."
+        },
+        steps: {
+          en: ["Reuse if possible", "Trash when discarded", "Watch for special events"],
+          es: ["Reutilizar si es posible", "Tirar al desechar", "Observar eventos especiales"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      }
+    }
+  },
+  "051500255162": {
+    mark: "SPRAY",
+    family: { en: "Empty aerosol can", es: "Lata de aerosol vacia" },
+    aliases: ["aerosol can", "spray can", "empty spray can"],
+    confidence: 86,
+    impact: {
+      en: "Aerosol containers create confusion because empty metal cans and pressurized contents are handled differently.",
+      es: "Los aerosoles generan confusion porque una lata vacia y un contenido presurizado se manejan de forma distinta."
+    },
+    name: { en: "Aerosol can", es: "Lata de aerosol" },
+    outcomes: {
+      riverton: {
+        outcome: "drop_off",
+        lane: { en: "Household special handling", es: "Manejo especial domestico" },
+        instructions: {
+          en: "Use the staffed drop-off system unless the can is fully empty and local guidance explicitly allows recycling.",
+          es: "Usa el sistema de entrega especial salvo que la lata este completamente vacia y la guia local permita reciclarla."
+        },
+        rationale: {
+          en: "Riverton treats aerosol cans cautiously because residents often cannot verify they are fully empty.",
+          es: "Riverton trata los aerosoles con cautela porque muchas personas no pueden verificar que esten totalmente vacios."
+        },
+        caution: {
+          en: "Do not puncture or crush the can at home.",
+          es: "No perfores ni aplastes la lata en casa."
+        },
+        steps: {
+          en: ["Do not puncture", "Keep cap on if present", "Use staffed drop-off"],
+          es: ["No perforar", "Mantener la tapa si existe", "Usar entrega especial"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      lakewood: {
+        outcome: "check_locally",
+        lane: { en: "Empty metal or special handling", es: "Metal vacio o manejo especial" },
+        instructions: {
+          en: "Recycle only if the can is completely empty; otherwise use special handling.",
+          es: "Recicla solo si la lata esta completamente vacia; de lo contrario usa manejo especial."
+        },
+        rationale: {
+          en: "Lakewood distinguishes between empty aerosol metal and pressurized hazardous contents.",
+          es: "Lakewood distingue entre metal vacio de aerosol y contenido presurizado peligroso."
+        },
+        caution: {
+          en: "If you hear product or feel pressure, do not treat it like ordinary metal recycling.",
+          es: "Si escuchas producto o sientes presion, no lo trates como reciclaje comun de metal."
+        },
+        steps: {
+          en: ["Check whether fully empty", "Recycle empty can only if confirmed", "Use special center if uncertain"],
+          es: ["Verificar si esta vacia", "Reciclar solo si esta confirmada vacia", "Usar centro especial si hay duda"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      "sunset-hills": {
+        outcome: "drop_off",
+        lane: { en: "Staffed hazardous material lane", es: "Flujo supervisado de materiales especiales" },
+        instructions: {
+          en: "Bring aerosol cans to the staffed center for review and handling.",
+          es: "Lleva las latas de aerosol al centro con personal para revision y manejo."
+        },
+        rationale: {
+          en: "Sunset Hills keeps aerosol decisions inside supervised specialty handling.",
+          es: "Sunset Hills mantiene las decisiones sobre aerosoles dentro del manejo especial supervisado."
+        },
+        caution: {
+          en: "Do not place partially full aerosol cans in any route bin.",
+          es: "No coloques latas de aerosol parcialmente llenas en ningun contenedor de ruta."
+        },
+        steps: {
+          en: ["Store upright", "Keep away from heat", "Use staffed center"],
+          es: ["Guardar de pie", "Mantener lejos del calor", "Usar centro con personal"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      }
+    }
+  },
+  "043168984214": {
+    mark: "BULB",
+    family: { en: "Light bulb", es: "Bombilla" },
+    aliases: ["light bulb", "bulb", "lamp bulb", "cfl bulb"],
+    confidence: 93,
+    impact: {
+      en: "Bulbs are easy to mis-sort because they look like glass but often contain mixed materials or hazardous elements.",
+      es: "Las bombillas se clasifican mal con facilidad porque parecen vidrio, pero suelen contener materiales mixtos o elementos peligrosos."
+    },
+    name: { en: "Light bulb", es: "Bombilla" },
+    outcomes: {
+      riverton: {
+        outcome: "drop_off",
+        lane: { en: "Bulb and electronics drop-off", es: "Entrega especial para bombillas" },
+        instructions: {
+          en: "Use the listed drop-off site for bulbs instead of curbside recycling or trash whenever possible.",
+          es: "Usa el centro listado para bombillas en lugar del reciclaje residencial o la basura cuando sea posible."
+        },
+        rationale: {
+          en: "Riverton routes bulbs through special handling to avoid contamination and breakage.",
+          es: "Riverton envia las bombillas al manejo especial para evitar contaminacion y roturas."
+        },
+        caution: {
+          en: "Do not place compact fluorescent bulbs loose in household bins.",
+          es: "No coloques bombillas fluorescentes compactas sueltas en contenedores domesticos."
+        },
+        steps: {
+          en: ["Keep bulb intact", "Store separately", "Use drop-off center"],
+          es: ["Mantener la bombilla intacta", "Guardar por separado", "Usar centro especial"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      lakewood: {
+        outcome: "drop_off",
+        lane: { en: "Special bulb collection", es: "Recoleccion especial de bombillas" },
+        instructions: {
+          en: "Bring bulbs to the eco-center or a special collection point.",
+          es: "Lleva las bombillas al eco-centro o a un punto especial de recoleccion."
+        },
+        rationale: {
+          en: "Lakewood separates bulbs from normal recycling and trash handling.",
+          es: "Lakewood separa las bombillas del reciclaje y la basura comunes."
+        },
+        caution: {
+          en: "Wrap broken pieces safely before transport if the bulb has already shattered.",
+          es: "Envuelve los pedazos rotos de forma segura antes del traslado si la bombilla ya se rompio."
+        },
+        steps: {
+          en: ["Store safely", "Transport to special collection", "Do not place in curbside cart"],
+          es: ["Guardar de forma segura", "Transportar a recoleccion especial", "No colocar en el carrito"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      "sunset-hills": {
+        outcome: "drop_off",
+        lane: { en: "Staffed special handling", es: "Manejo especial con personal" },
+        instructions: {
+          en: "Use the staffed drop-off lane for household bulbs and lamp materials.",
+          es: "Usa el flujo supervisado para bombillas domesticas y materiales de lamparas."
+        },
+        rationale: {
+          en: "Sunset Hills does not place bulbs in route recycling because material composition varies.",
+          es: "Sunset Hills no coloca bombillas en el reciclaje por ruta porque la composicion del material varia."
+        },
+        caution: {
+          en: "Treat bulbs as fragile special handling items, not simple glass containers.",
+          es: "Trata las bombillas como articulos fragiles de manejo especial, no como simples envases de vidrio."
+        },
+        steps: {
+          en: ["Keep bulb intact", "Package carefully", "Use staffed drop-off"],
+          es: ["Mantener la bombilla intacta", "Empacar con cuidado", "Usar centro con personal"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      }
+    }
+  },
+  "888600000111": {
+    mark: "JAR",
+    family: { en: "Glass food jar", es: "Frasco de vidrio" },
+    aliases: ["glass jar", "jar", "food jar", "pasta sauce jar"],
+    confidence: 92,
+    impact: {
+      en: "Reusable glass jars are easy wins when clean and properly routed.",
+      es: "Los frascos de vidrio reutilizables son aciertos faciles cuando estan limpios y bien encaminados."
+    },
+    name: { en: "Glass jar", es: "Frasco de vidrio" },
+    outcomes: {
+      riverton: {
+        outcome: "drop_off",
+        lane: { en: "Glass depot drop-off", es: "Entrega especial para vidrio" },
+        instructions: {
+          en: "Rinse the jar and take it to the glass depot or reuse center.",
+          es: "Enjuaga el frasco y llévalo al deposito de vidrio o centro de reutilizacion."
+        },
+        rationale: {
+          en: "Riverton handles jars with the same off-curb glass stream as bottles.",
+          es: "Riverton maneja los frascos con el mismo flujo de vidrio fuera de la acera que las botellas."
+        },
+        caution: {
+          en: "Metal lids may follow a different stream from the jar itself.",
+          es: "Las tapas metalicas pueden seguir un flujo distinto al del frasco."
+        },
+        steps: {
+          en: ["Empty contents", "Rinse jar", "Use glass drop-off"],
+          es: ["Vaciar contenido", "Enjuagar frasco", "Usar entrega especial de vidrio"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      lakewood: {
+        outcome: "recycle",
+        lane: { en: "Mixed cart glass", es: "Vidrio en carrito mixto" },
+        instructions: {
+          en: "Rinse the jar and place it in the recycling cart.",
+          es: "Enjuaga el frasco y colocalo en el carrito de reciclaje."
+        },
+        rationale: {
+          en: "Lakewood accepts glass jars with other accepted container glass.",
+          es: "Lakewood acepta frascos de vidrio junto con otros envases de vidrio aceptados."
+        },
+        caution: {
+          en: "Remove as much food residue as practical before recycling.",
+          es: "Retira la mayor cantidad posible de residuos de comida antes de reciclar."
+        },
+        steps: {
+          en: ["Rinse jar", "Remove obvious residue", "Place in recycling cart"],
+          es: ["Enjuagar frasco", "Retirar residuos visibles", "Colocar en el carrito"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      "sunset-hills": {
+        outcome: "drop_off",
+        lane: { en: "Staffed glass collection", es: "Recoleccion de vidrio con personal" },
+        instructions: {
+          en: "Use the staffed glass collection point unless your route specifically lists jar recovery.",
+          es: "Usa el punto de recoleccion de vidrio con personal salvo que tu ruta liste frascos de manera especifica."
+        },
+        rationale: {
+          en: "Sunset Hills separates most container glass away from route collection.",
+          es: "Sunset Hills separa la mayor parte del vidrio de envases de la recoleccion por ruta."
+        },
+        caution: {
+          en: "Do not assume jars and bottles share the same route handling without checking the local note.",
+          es: "No asumas que frascos y botellas comparten el mismo manejo por ruta sin revisar la nota local."
+        },
+        steps: {
+          en: ["Rinse jar", "Check route note", "Use staffed glass point if uncertain"],
+          es: ["Enjuagar frasco", "Revisar nota de ruta", "Usar punto de vidrio con personal si hay duda"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      }
+    }
+  },
+  "072000000001": {
+    mark: "CUP",
+    family: { en: "Paper coffee cup", es: "Vaso de cafe" },
+    aliases: ["coffee cup", "paper cup", "to-go cup", "paper coffee cup"],
+    confidence: 87,
+    impact: {
+      en: "Disposable cups look recyclable but often fail because of plastic lining and leftover liquid.",
+      es: "Los vasos desechables parecen reciclables, pero suelen fallar por su recubrimiento plastico y el liquido restante."
+    },
+    name: { en: "Paper coffee cup", es: "Vaso de cafe" },
+    outcomes: {
+      riverton: {
+        outcome: "trash",
+        lane: { en: "Trash", es: "Basura" },
+        instructions: {
+          en: "Place the disposable cup in the trash after emptying it.",
+          es: "Coloca el vaso desechable en la basura despues de vaciarlo."
+        },
+        rationale: {
+          en: "Riverton does not accept lined disposable drink cups in recycling.",
+          es: "Riverton no acepta vasos desechables con recubrimiento en el reciclaje."
+        },
+        caution: {
+          en: "The paper look is misleading because the lining changes the material stream.",
+          es: "La apariencia de papel es enganosa porque el recubrimiento cambia el flujo del material."
+        },
+        steps: {
+          en: ["Empty liquid", "Separate reusable sleeve if needed", "Trash cup"],
+          es: ["Vaciar liquido", "Separar funda reutilizable si hace falta", "Tirar el vaso"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      lakewood: {
+        outcome: "trash",
+        lane: { en: "Trash unless specialty composting exists", es: "Basura salvo compostaje especial" },
+        instructions: {
+          en: "Place the cup in the trash unless a specialty composting program is specifically listed.",
+          es: "Coloca el vaso en la basura salvo que exista un programa especial de compostaje expresamente listado."
+        },
+        rationale: {
+          en: "Lakewood rejects lined cups from the mixed recycling stream.",
+          es: "Lakewood rechaza los vasos con recubrimiento del flujo de reciclaje mixto."
+        },
+        caution: {
+          en: "Plastic lids and sleeves may follow separate local guidance.",
+          es: "Las tapas plasticas y fundas pueden seguir guias locales distintas."
+        },
+        steps: {
+          en: ["Empty liquid", "Separate accessories", "Trash cup"],
+          es: ["Vaciar liquido", "Separar accesorios", "Tirar el vaso"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      "sunset-hills": {
+        outcome: "check_locally",
+        lane: { en: "Check route or compost note", es: "Revisar ruta o nota de compostaje" },
+        instructions: {
+          en: "Treat the cup as trash unless your route or a listed compost program specifically accepts it.",
+          es: "Trata el vaso como basura salvo que tu ruta o un programa de compostaje listado lo acepte expresamente."
+        },
+        rationale: {
+          en: "Sunset Hills varies by route and event-based compost availability.",
+          es: "Sunset Hills varia segun la ruta y la disponibilidad de compostaje por eventos."
+        },
+        caution: {
+          en: "Coated fiber products are easy to over-recycle by mistake.",
+          es: "Los productos de fibra recubierta se sobre-reciclan por error con facilidad."
+        },
+        steps: {
+          en: ["Check route note", "Use trash if unclear", "Use compost only if listed"],
+          es: ["Revisar nota de ruta", "Usar basura si no esta claro", "Usar compost solo si aparece listado"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      }
+    }
+  },
+  "072000000002": {
+    mark: "E-W",
+    family: { en: "Small electronics", es: "Electronico pequeno" },
+    aliases: ["phone charger", "charger", "small electronics", "cable", "adapter"],
+    confidence: 97,
+    impact: {
+      en: "Keeping cords and electronics out of curbside bins prevents tangling, fire risk, and material loss.",
+      es: "Mantener cables y electronicos fuera de los contenedores evita enredos, riesgo de incendio y perdida de material."
+    },
+    name: { en: "Phone charger", es: "Cargador de telefono" },
+    outcomes: {
+      riverton: {
+        outcome: "drop_off",
+        lane: { en: "Electronics drop-off", es: "Entrega especial de electronicos" },
+        instructions: {
+          en: "Take the charger to the transfer station or electronics reuse point.",
+          es: "Lleva el cargador a la estacion de transferencia o punto de reutilizacion de electronicos."
+        },
+        rationale: {
+          en: "Riverton handles chargers with the electronics recovery stream.",
+          es: "Riverton maneja los cargadores con el flujo de recuperacion de electronicos."
+        },
+        caution: {
+          en: "Do not place cords and adapters in curbside recycling, where they tangle sorting equipment.",
+          es: "No coloques cables y adaptadores en el reciclaje residencial, donde enredan el equipo."
+        },
+        steps: {
+          en: ["Keep charger intact", "Bag with electronics", "Use electronics drop-off"],
+          es: ["Mantener el cargador intacto", "Guardar con electronicos", "Usar entrega especial"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      lakewood: {
+        outcome: "drop_off",
+        lane: { en: "Eco-center electronics lane", es: "Flujo de electronicos en eco-centro" },
+        instructions: {
+          en: "Bring the charger to the eco-center instead of trash or recycling carts.",
+          es: "Lleva el cargador al eco-centro en lugar de la basura o del carrito de reciclaje."
+        },
+        rationale: {
+          en: "Lakewood keeps small electronics out of curbside systems.",
+          es: "Lakewood mantiene los electronicos pequenos fuera de los sistemas residenciales."
+        },
+        caution: {
+          en: "Loose cords can tangle local sorting equipment quickly.",
+          es: "Los cables sueltos pueden enredar rapidamente el equipo de clasificacion."
+        },
+        steps: {
+          en: ["Bundle loosely", "Store with e-waste", "Use eco-center drop-off"],
+          es: ["Agrupar con cuidado", "Guardar con residuos electronicos", "Usar eco-centro"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      "sunset-hills": {
+        outcome: "drop_off",
+        lane: { en: "Staffed electronics handling", es: "Manejo supervisado de electronicos" },
+        instructions: {
+          en: "Use the staffed drop-off lane for cables, chargers, and small electronics.",
+          es: "Usa el flujo supervisado para cables, cargadores y electronicos pequenos."
+        },
+        rationale: {
+          en: "Sunset Hills routes small electronics through a supervised recovery stream.",
+          es: "Sunset Hills envia los electronicos pequenos a un flujo supervisado de recuperacion."
+        },
+        caution: {
+          en: "Do not place chargers in route bins even if they look small and harmless.",
+          es: "No coloques cargadores en los contenedores de ruta aunque parezcan pequenos e inofensivos."
+        },
+        steps: {
+          en: ["Collect charger with e-waste", "Keep dry", "Use staffed drop-off"],
+          es: ["Juntar el cargador con residuos electronicos", "Mantener seco", "Usar centro con personal"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      }
+    }
+  }
+};
+
+Object.assign(products, additionalProducts);
+
+const browseFilters = {
+  all: { en: "All", es: "Todo" },
+  metals: { en: "Metals", es: "Metales" },
+  paper: { en: "Paper", es: "Papel" },
+  plastics: { en: "Plastics", es: "Plasticos" },
+  glass: { en: "Glass", es: "Vidrio" },
+  special: { en: "Special care", es: "Manejo especial" }
+};
+
+const productGroups = {
+  "012345678905": "metals",
+  "049000042511": "paper",
+  "041333216317": "special",
+  "036000291452": "plastics",
+  "078742147898": "glass",
+  "050000012345": "metals",
+  "044000032940": "paper",
+  "033200000123": "plastics",
+  "070847000000": "plastics",
+  "051500255162": "special",
+  "043168984214": "special",
+  "888600000111": "glass",
+  "072000000001": "paper",
+  "072000000002": "special"
+};
+
+function readStoredJson(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 const state = {
   language: localStorage.getItem("recycling-language") || "en",
-  history: JSON.parse(localStorage.getItem("recycling-history-v2") || "[]"),
-  feedback: JSON.parse(localStorage.getItem("recycling-feedback-v1") || "[]"),
-  userLocation: JSON.parse(localStorage.getItem("recycling-user-location-v1") || "null"),
+  history: readStoredJson("recycling-history-v2", []),
+  feedback: readStoredJson("recycling-feedback-v1", []),
+  userLocation: readStoredJson("recycling-user-location-v1", null),
   installPromptEvent: null,
+  browseFilter: "all",
   scannerStream: null,
   scannerDetector: null,
   scannerControls: null,
@@ -2584,6 +3611,7 @@ const elements = {
   municipalitySelect: document.getElementById("municipality-select"),
   municipalityStatus: document.getElementById("municipality-status"),
   municipalityCard: document.getElementById("municipality-card"),
+  heroSignalCard: document.getElementById("hero-signal-card"),
   searchInput: document.getElementById("search-input"),
   searchButton: document.getElementById("search-button"),
   installApp: document.getElementById("install-app"),
@@ -2593,6 +3621,8 @@ const elements = {
   locationStatus: document.getElementById("location-status"),
   flowBoard: document.getElementById("flow-board"),
   nextStepCard: document.getElementById("next-step-card"),
+  browseFilters: document.getElementById("browse-filters"),
+  browseGrid: document.getElementById("browse-grid"),
   scannerModal: document.getElementById("scanner-modal"),
   closeScanner: document.getElementById("close-scanner"),
   scannerVideo: document.getElementById("scanner-video"),
@@ -2619,7 +3649,7 @@ const elements = {
   chips: [...document.querySelectorAll(".chip")]
 };
 
-const buildId = "2026-06-30-ui6";
+const buildId = "2026-06-30-ui7";
 const demoBarcodes = Object.keys(products);
 const testScenarios = [
   {
@@ -2820,6 +3850,21 @@ function setLocationStatus(message) {
   elements.locationStatus.textContent = message;
 }
 
+function setResultContentState(isEmpty) {
+  elements.resultContent.classList.toggle("result-empty", isEmpty);
+}
+
+function scrollToSection(selector) {
+  if (typeof document.querySelector !== "function") {
+    return;
+  }
+
+  const section = document.querySelector(selector);
+  if (section && typeof section.scrollIntoView === "function") {
+    section.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
 function formatMiles(distance) {
   const locale = state.language === "en" ? "en-US" : "es-ES";
   const value = new Intl.NumberFormat(locale, {
@@ -2949,6 +3994,7 @@ function renderFlowBoard() {
   const municipalityKey = elements.municipalitySelect.value;
   const guidance = currentEntry ? currentEntry.product.outcomes[municipalityKey] : null;
   const nearestCenter = nearestCenterForCurrentMunicipality();
+  const centerReady = Boolean(state.userLocation && nearestCenter);
   const locationMatch = state.userLocation
     ? nearestMunicipalityForLocation(state.userLocation.latitude, state.userLocation.longitude)
     : null;
@@ -2979,9 +4025,9 @@ function renderFlowBoard() {
     {
       index: "04",
       title: ui.flowNextTitle,
-      flag: nearestCenter ? ui.flowReady : ui.flowWaiting,
-      tone: nearestCenter ? "active" : "pending",
-      body: nearestCenter
+      flag: centerReady ? ui.flowReady : ui.flowWaiting,
+      tone: centerReady ? "active" : "pending",
+      body: centerReady
         ? `${nearestCenter.name[state.language]} · ${centerDistanceText(nearestCenter)}`
         : ui.flowNextPending
     }
@@ -3064,13 +4110,92 @@ function renderNextStepCard() {
   `;
 }
 
+function renderHeroSignalCard() {
+  const ui = copy();
+  const municipality = activeMunicipality();
+  const nearestCenter = nearestCenterForCurrentMunicipality();
+
+  if (!state.userLocation) {
+    elements.heroSignalCard.innerHTML = `
+      <p class="signal-label">${ui.heroSignalLabel}</p>
+      <strong>${ui.heroSignalIdleTitle}</strong>
+      <p class="signal-copy">${ui.heroSignalIdleCopy}</p>
+      <div class="signal-meta">
+        <span class="mini-pill">${ui.heroSignalSelected}: ${municipality.name[state.language]}</span>
+        ${nearestCenter ? `<span class="mini-pill">${ui.heroSignalNearest}: ${nearestCenter.name[state.language]}</span>` : ""}
+      </div>
+      <div class="signal-actions">
+        <button class="button" type="button" data-hero-action="location">${ui.useMyLocation}</button>
+        ${nearestCenter ? `<a class="center-link" href="${mapsSearchUrl(nearestCenter)}" target="_blank" rel="noreferrer">${ui.centerMap}</a>` : ""}
+      </div>
+    `;
+    return;
+  }
+
+  const match = nearestMunicipalityForLocation(state.userLocation.latitude, state.userLocation.longitude);
+  elements.heroSignalCard.innerHTML = `
+    <p class="signal-label">${ui.heroSignalLabel}</p>
+    <strong>${ui.heroSignalReadyTitle}</strong>
+    <p class="signal-copy">${locationMatchStatus(match)}</p>
+    <div class="signal-meta">
+      <span class="mini-pill">${ui.heroSignalNearest}: ${nearestCenter ? `${nearestCenter.name[state.language]} · ${centerDistanceText(nearestCenter)}` : municipality.program[state.language]}</span>
+      <span class="mini-pill">${ui.heroSignalMaps}</span>
+    </div>
+    <div class="signal-actions">
+      ${nearestCenter ? `<a class="center-link center-link-primary" href="${mapsDirectionsUrl(nearestCenter)}" target="_blank" rel="noreferrer">${ui.centerDirections}</a>` : ""}
+      ${nearestCenter ? `<a class="center-link" href="${mapsSearchUrl(nearestCenter)}" target="_blank" rel="noreferrer">${ui.centerMap}</a>` : ""}
+    </div>
+  `;
+}
+
+function resultContextMarkup() {
+  const ui = copy();
+  const municipality = activeMunicipality();
+  const pills = [`<span class="mini-pill">${ui.resultMunicipality}: ${municipality.name[state.language]}</span>`];
+  const profileDistance = municipalityDistance(elements.municipalitySelect.value);
+
+  if (profileDistance != null) {
+    pills.push(`<span class="mini-pill">${ui.locationPilotMatch}: ${formatMiles(profileDistance)}</span>`);
+  }
+
+  return `<div class="result-context">${pills.join("")}</div>`;
+}
+
+function centerSpotlightMarkup(center) {
+  if (!center) {
+    return "";
+  }
+
+  const ui = copy();
+  return `
+    <div class="center-card center-spotlight">
+      <div>
+        <span class="outcome-pill outcome-dropoff">${ui.resultCenterSpotlight}</span>
+        <strong>${center.name[state.language]}</strong>
+        <p class="center-meta">${center.note[state.language]}</p>
+        <div class="center-tags">
+          <span class="mini-pill">${ui.centerDistance}: ${centerDistanceText(center)}</span>
+          <span class="mini-pill">${ui.centerHours}: ${center.hours[state.language]}</span>
+        </div>
+        <p class="center-meta">${ui.resultCenterCopy}</p>
+      </div>
+      <div class="center-actions">
+        <a class="center-link" href="${mapsSearchUrl(center)}" target="_blank" rel="noreferrer">${ui.centerMap}</a>
+        <a class="center-link center-link-primary" href="${mapsDirectionsUrl(center)}" target="_blank" rel="noreferrer">${ui.centerDirections}</a>
+      </div>
+    </div>
+  `;
+}
+
 function refreshMunicipalityViews() {
+  renderHeroSignalCard();
   renderMunicipalityPulse();
   renderRoutineCard();
   renderPlaybookCard();
   renderMarkGuide();
   renderFlowBoard();
   renderNextStepCard();
+  renderBrowseCatalog();
 }
 
 function scannerSupportAvailable() {
@@ -3365,6 +4490,8 @@ function requestUserLocation() {
     } else {
       renderCenters(null);
     }
+
+    scrollToSection(currentEntry || state.lastQuery ? ".result-stage" : ".control-grid");
   }, (error) => {
     if (error && error.code === 1) {
       setLocationStatus(ui.locationDenied);
@@ -3399,6 +4526,9 @@ function translatePage() {
 
   document.documentElement.lang = state.language;
   elements.languageToggle.textContent = state.language === "en" ? "ES" : "EN";
+  elements.languageToggle.setAttribute("aria-label", state.language === "en" ? "Switch to Spanish" : "Cambiar a ingles");
+  elements.municipalitySelect.setAttribute("aria-label", ui.municipalityLabel);
+  elements.searchInput.setAttribute("aria-label", ui.searchLabel);
   elements.searchInput.placeholder = ui.searchPlaceholder;
   elements.feedbackNotes.placeholder = ui.feedbackPlaceholder;
 
@@ -3417,6 +4547,62 @@ function renderQuickChips() {
   });
 }
 
+function browseEntries() {
+  return Object.entries(products)
+    .filter(([barcode]) => state.browseFilter === "all" || productGroups[barcode] === state.browseFilter)
+    .sort((left, right) => left[1].name[state.language].localeCompare(right[1].name[state.language]));
+}
+
+function renderBrowseCatalog() {
+  const ui = copy();
+  const municipalityKey = elements.municipalitySelect.value;
+
+  elements.browseFilters.innerHTML = Object.entries(browseFilters).map(([key, label]) => `
+    <button class="browse-filter${state.browseFilter === key ? " is-active" : ""}" type="button" data-browse-filter="${key}">
+      ${label[state.language]}
+    </button>
+  `).join("");
+
+  const entries = browseEntries();
+  if (!entries.length) {
+    elements.browseGrid.innerHTML = `<div class="browse-card"><p>${ui.browseNoItems}</p></div>`;
+  } else {
+    elements.browseGrid.innerHTML = entries.map(([barcode, product]) => {
+      const guidance = product.outcomes[municipalityKey];
+      const selectedClass = barcode === state.currentBarcode ? " is-selected" : "";
+      return `
+        <button class="browse-card${selectedClass}" type="button" data-browse-barcode="${barcode}">
+          <div class="browse-card-head">
+            <span class="${outcomeClass(guidance.outcome)}">${outcomeLabel(guidance.outcome)}</span>
+            <span class="mini-pill">${browseFilters[productGroups[barcode]][state.language]}</span>
+          </div>
+          <strong>${product.name[state.language]}</strong>
+          <p>${product.family[state.language]}</p>
+          <div class="browse-card-meta">
+            <span class="mini-pill">${guidance.lane[state.language]}</span>
+            <span class="mini-pill">${ui.browseTap}</span>
+          </div>
+        </button>
+      `;
+    }).join("");
+  }
+
+  elements.browseFilters.querySelectorAll("[data-browse-filter]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.browseFilter = button.getAttribute("data-browse-filter");
+      renderBrowseCatalog();
+    });
+  });
+
+  elements.browseGrid.querySelectorAll("[data-browse-barcode]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const barcode = button.getAttribute("data-browse-barcode");
+      elements.searchInput.value = products[barcode].name[state.language];
+      handleSearch(barcode);
+    });
+  });
+}
+
 function renderScenarios() {
   elements.scenarioList.innerHTML = "";
 
@@ -3429,7 +4615,7 @@ function renderScenarios() {
   elements.scenarioList.querySelectorAll("[data-scenario-barcode]").forEach((button) => {
     button.addEventListener("click", () => {
       const barcode = button.getAttribute("data-scenario-barcode");
-      elements.searchInput.value = products[barcode].name.en;
+      elements.searchInput.value = products[barcode].name[state.language];
       handleSearch(barcode);
     });
   });
@@ -3522,7 +4708,7 @@ function renderCenters(entry) {
   const centers = sortedCentersForCurrentMunicipality();
   elements.centerList.innerHTML = "";
 
-  if (!entry && !state.userLocation) {
+  if (!centers.length) {
     elements.centerList.innerHTML = `<div class="center-card"><p class="center-meta">${ui.noCenters}</p></div>`;
     return;
   }
@@ -3742,9 +4928,11 @@ function findProductEntry(query) {
 function renderUnknown() {
   const ui = copy();
   state.currentBarcode = null;
+  setResultContentState(false);
 
   elements.resultContent.innerHTML = `
     <div class="result-card">
+      ${resultContextMarkup()}
       <div class="result-top">
         <div class="product-plate">
           <div class="product-mark">??</div>
@@ -3763,11 +4951,13 @@ function renderUnknown() {
         <strong>${ui.unknownImpactTitle}</strong>
         <p class="support-copy">${ui.unknownImpactCopy}</p>
       </div>
+      ${state.userLocation ? centerSpotlightMarkup(nearestCenterForCurrentMunicipality()) : ""}
     </div>
   `;
 
   renderFlowBoard();
   renderNextStepCard();
+  renderBrowseCatalog();
   renderCenters(null);
 }
 
@@ -3791,9 +4981,13 @@ function renderResult(entry, trackHistory) {
   const municipalityKey = elements.municipalitySelect.value;
   const municipality = municipalities[municipalityKey];
   const guidance = entry.product.outcomes[municipalityKey];
+  const nearestCenter = nearestCenterForCurrentMunicipality();
+  const needsCenterSpotlight = guidance.outcome === "drop_off" || guidance.outcome === "check_locally";
+  setResultContentState(false);
 
   elements.resultContent.innerHTML = `
     <div class="result-card">
+      ${resultContextMarkup()}
       <div class="result-top">
         <div class="product-plate">
           <div class="product-mark">${entry.product.mark}</div>
@@ -3842,6 +5036,7 @@ function renderResult(entry, trackHistory) {
         <strong>${ui.resultImpact}</strong>
         <p class="support-copy">${entry.product.impact[state.language]}</p>
       </div>
+      ${needsCenterSpotlight ? centerSpotlightMarkup(nearestCenter) : ""}
     </div>
   `;
 
@@ -3851,6 +5046,7 @@ function renderResult(entry, trackHistory) {
 
   renderFlowBoard();
   renderNextStepCard();
+  renderBrowseCatalog();
   renderCenters(entry);
 }
 
@@ -3859,17 +5055,19 @@ function handleSearch(value) {
   const entry = findProductEntry(value);
   if (!entry) {
     renderUnknown();
+    scrollToSection(".result-stage");
     return;
   }
 
   state.currentBarcode = entry.barcode;
   renderResult(entry, true);
+  scrollToSection(".result-stage");
 }
 
 function runDemoScan() {
   const barcode = demoBarcodes[state.demoIndex % demoBarcodes.length];
   state.demoIndex += 1;
-  elements.searchInput.value = products[barcode].name.en;
+  elements.searchInput.value = products[barcode].name[state.language];
   handleSearch(barcode);
 }
 
@@ -3952,10 +5150,21 @@ elements.nextStepCard.addEventListener("click", (event) => {
   }
 });
 
+elements.heroSignalCard.addEventListener("click", (event) => {
+  const target = event.target.closest("[data-hero-action]");
+  if (!target) {
+    return;
+  }
+
+  if (target.getAttribute("data-hero-action") === "location") {
+    requestUserLocation();
+  }
+});
+
 elements.chips.forEach((chip) => {
   chip.addEventListener("click", () => {
     const barcode = chip.getAttribute("data-barcode");
-    elements.searchInput.value = products[barcode].name.en;
+    elements.searchInput.value = products[barcode].name[state.language];
     handleSearch(barcode);
   });
 });
@@ -3966,6 +5175,7 @@ elements.municipalitySelect.addEventListener("change", () => {
   const currentEntry = activeProductEntry();
   if (currentEntry) {
     renderResult(currentEntry, false);
+    scrollToSection(".result-stage");
   } else {
     renderCenters(null);
   }
