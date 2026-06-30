@@ -4233,6 +4233,310 @@ const additionalProducts = {
         updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
       }
     }
+  },
+  "072000000003": {
+    mark: "POD",
+    family: { en: "Multi-material coffee pod", es: "Capsula de cafe multimaterial" },
+    aliases: ["coffee pod", "keurig pod", "k cup", "kcup", "espresso pod", "single serve pod", "coffee capsule"],
+    confidence: 93,
+    impact: {
+      en: "Coffee pods mix plastic, foil, filters, and wet grounds, so they are easy to over-recycle by mistake.",
+      es: "Las capsulas de cafe mezclan plastico, aluminio, filtros y residuos humedos, por eso es facil sobre-reciclarlas por error."
+    },
+    name: { en: "Coffee pod", es: "Capsula de cafe" },
+    outcomes: {
+      riverton: {
+        outcome: "trash",
+        lane: { en: "Trash unless brand take-back", es: "Basura salvo devolucion de marca" },
+        instructions: {
+          en: "Place used pods in the trash unless you actively use a manufacturer take-back or refill system.",
+          es: "Coloca las capsulas usadas en la basura salvo que uses un sistema activo de devolucion de marca o recarga."
+        },
+        rationale: {
+          en: "Riverton does not accept mixed-material coffee pods in curbside recycling.",
+          es: "Riverton no acepta capsulas de cafe multimaterial en el reciclaje residencial."
+        },
+        caution: {
+          en: "Do not assume the small plastic shell belongs with rigid plastic bottles or tubs.",
+          es: "No supongas que la pequena carcasa plastica pertenece al mismo flujo que las botellas o envases rigidos."
+        },
+        steps: {
+          en: ["Separate cardboard box if present", "Trash used pod", "Use a refill or take-back program only if you already participate"],
+          es: ["Separar la caja de carton si existe", "Tirar la capsula usada", "Usar un programa de recarga o devolucion solo si ya participas"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      lakewood: {
+        outcome: "check_locally",
+        lane: { en: "Brand take-back or trash", es: "Devolucion de marca o basura" },
+        instructions: {
+          en: "Treat used pods as trash unless the pod brand or a listed specialty collection specifically accepts them.",
+          es: "Trata las capsulas usadas como basura salvo que la marca o una recoleccion especial listada las acepte expresamente."
+        },
+        rationale: {
+          en: "Lakewood rejects mixed coffee pods from the curbside cart but may point residents to specialty programs.",
+          es: "Lakewood rechaza las capsulas mixtas del carrito residencial, aunque puede remitir a programas especiales."
+        },
+        caution: {
+          en: "Small size does not mean the pod belongs in mixed recycling.",
+          es: "Su tamano pequeno no significa que la capsula pertenezca al reciclaje mixto."
+        },
+        steps: {
+          en: ["Check for a listed take-back option", "Trash pod if no specialty program applies", "Keep coffee grounds out of the cart"],
+          es: ["Revisar si existe una devolucion listada", "Tirar la capsula si no aplica un programa especial", "Mantener los residuos de cafe fuera del carrito"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      "sunset-hills": {
+        outcome: "trash",
+        lane: { en: "Trash", es: "Basura" },
+        instructions: {
+          en: "Place the used pod in the trash unless a local specialty event explicitly lists pod recovery.",
+          es: "Coloca la capsula usada en la basura salvo que un evento especial local liste expresamente su recuperacion."
+        },
+        rationale: {
+          en: "Sunset Hills does not run a normal route for used multi-material pods.",
+          es: "Sunset Hills no tiene una ruta normal para capsulas usadas multimaterial."
+        },
+        caution: {
+          en: "Do not drop pods into route bins even if the packaging uses recyclable-looking symbols.",
+          es: "No dejes capsulas en los contenedores de ruta aunque el empaque tenga simbolos que parezcan reciclables."
+        },
+        steps: {
+          en: ["Reuse refillable pods if possible", "Trash used disposable pod", "Watch for special events only if listed"],
+          es: ["Reutilizar capsulas recargables si es posible", "Tirar la capsula desechable usada", "Observar eventos especiales solo si aparecen listados"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      }
+    }
+  },
+  "072000000004": {
+    mark: "PP",
+    family: { en: "Rigid yogurt cup", es: "Vaso rigido de yogur" },
+    aliases: ["yogurt cup", "yoghurt cup", "yogurt container", "greek yogurt cup", "plastic yogurt cup"],
+    confidence: 91,
+    impact: {
+      en: "Rigid tubs are common household plastics, but acceptance changes a lot more than people expect.",
+      es: "Los envases rigidos son plasticos comunes del hogar, pero su aceptacion cambia mucho mas de lo que la gente espera."
+    },
+    name: { en: "Yogurt cup", es: "Vaso de yogur" },
+    outcomes: {
+      riverton: {
+        outcome: "check_locally",
+        lane: { en: "Rigid tub if accepted", es: "Envase rigido si esta aceptado" },
+        instructions: {
+          en: "Rinse the cup and use the rigid-plastics stream only if your local pilot guidance lists tubs like this.",
+          es: "Enjuaga el envase y usa el flujo de plasticos rigidos solo si la guia piloto local lista envases de este tipo."
+        },
+        rationale: {
+          en: "Riverton accepts some rigid bottles reliably, but cups and tubs are less consistent in the pilot profile.",
+          es: "Riverton acepta algunas botellas rigidas con claridad, pero los vasos y envases son menos consistentes en el perfil piloto."
+        },
+        caution: {
+          en: "Do not group yogurt cups with thin clamshell plastics just because both feel lightweight.",
+          es: "No agrupes los vasos de yogur con envases tipo clamshell solo porque ambos se sienten livianos."
+        },
+        steps: {
+          en: ["Rinse the cup", "Check whether tubs are listed", "Use trash if the local note stays unclear"],
+          es: ["Enjuagar el vaso", "Revisar si los envases estan listados", "Usar la basura si la nota local sigue sin estar clara"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      lakewood: {
+        outcome: "recycle",
+        lane: { en: "Mixed rigid plastics", es: "Plasticos rigidos mixtos" },
+        instructions: {
+          en: "Rinse the cup and place it in the mixed recycling cart with other accepted rigid plastics.",
+          es: "Enjuaga el vaso y colocalo en el carrito mixto con otros plasticos rigidos aceptados."
+        },
+        rationale: {
+          en: "Lakewood accepts clean rigid cups and tubs more broadly than the other pilot cities.",
+          es: "Lakewood acepta vasos y envases rigidos limpios de forma mas amplia que las otras ciudades piloto."
+        },
+        caution: {
+          en: "Foil seals, lids, or food residue may need separate handling from the cup itself.",
+          es: "Los sellos de aluminio, tapas o residuos de comida pueden requerir un manejo distinto al del envase."
+        },
+        steps: {
+          en: ["Rinse cup", "Remove obvious food residue", "Place in mixed recycling cart"],
+          es: ["Enjuagar el vaso", "Retirar residuos visibles de comida", "Colocar en el carrito mixto"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      "sunset-hills": {
+        outcome: "check_locally",
+        lane: { en: "Route-specific rigid plastics", es: "Plasticos rigidos segun la ruta" },
+        instructions: {
+          en: "Check your route note before placing the cup in rigid plastics, because tub acceptance varies.",
+          es: "Revisa la nota de tu ruta antes de colocar el vaso en plasticos rigidos, porque la aceptacion de envases varia."
+        },
+        rationale: {
+          en: "Sunset Hills treats rigid tubs more cautiously than bottles because route sorting is less consistent.",
+          es: "Sunset Hills trata los envases rigidos con mas cautela que las botellas porque la separacion por ruta es menos consistente."
+        },
+        caution: {
+          en: "If the route note is missing or vague, the safer choice is to keep the cup out of the bin.",
+          es: "Si la nota de la ruta falta o es ambigua, la opcion mas segura es dejar el vaso fuera del contenedor."
+        },
+        steps: {
+          en: ["Rinse cup", "Check route note", "Keep out of the bin if still uncertain"],
+          es: ["Enjuagar el vaso", "Revisar la nota de la ruta", "Dejarlo fuera del contenedor si sigue habiendo duda"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      }
+    }
+  },
+  "072000000005": {
+    mark: "FOAM",
+    family: { en: "Foam takeout container", es: "Envase de espuma para comida" },
+    aliases: ["styrofoam container", "foam container", "foam takeout container", "takeout container", "foam clamshell", "styrofoam takeout"],
+    confidence: 92,
+    impact: {
+      en: "Foam food containers are one of the easiest items to over-recycle because they look light and cleanable but rarely belong in curbside carts.",
+      es: "Los envases de espuma son de los articulos mas faciles de sobre-reciclar porque parecen livianos y lavables, pero casi nunca van al carrito residencial."
+    },
+    name: { en: "Foam takeout container", es: "Envase de espuma" },
+    outcomes: {
+      riverton: {
+        outcome: "trash",
+        lane: { en: "Trash", es: "Basura" },
+        instructions: {
+          en: "Place the foam container in the trash after emptying food residue.",
+          es: "Coloca el envase de espuma en la basura despues de vaciar los residuos de comida."
+        },
+        rationale: {
+          en: "Riverton does not accept foam food containers in curbside recycling.",
+          es: "Riverton no acepta envases de espuma para comida en el reciclaje residencial."
+        },
+        caution: {
+          en: "Do not assume a clean foam container belongs with rigid plastic packaging.",
+          es: "No supongas que un envase de espuma limpio pertenece al mismo flujo que los empaques plasticos rigidos."
+        },
+        steps: {
+          en: ["Empty food residue", "Trash the foam container", "Recycle separate paper inserts only if clean"],
+          es: ["Vaciar residuos de comida", "Tirar el envase de espuma", "Reciclar separadamente los insertos de papel solo si estan limpios"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      lakewood: {
+        outcome: "trash",
+        lane: { en: "Trash", es: "Basura" },
+        instructions: {
+          en: "Do not place foam takeout containers in the mixed cart. Use the trash unless a special event explicitly accepts foam.",
+          es: "No coloques envases de espuma en el carrito mixto. Usa la basura salvo que un evento especial acepte espuma de forma expresa."
+        },
+        rationale: {
+          en: "Lakewood excludes foam food service items from normal recycling collection.",
+          es: "Lakewood excluye los envases de espuma para alimentos de la recoleccion normal de reciclaje."
+        },
+        caution: {
+          en: "Foam cups, trays, and takeout clamshells usually share the same exclusion even when they look clean.",
+          es: "Los vasos, bandejas y envases de espuma suelen compartir la misma exclusion aunque parezcan limpios."
+        },
+        steps: {
+          en: ["Empty food residue", "Use trash", "Watch for specialty events only if listed"],
+          es: ["Vaciar residuos de comida", "Usar la basura", "Observar eventos especiales solo si aparecen listados"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      "sunset-hills": {
+        outcome: "trash",
+        lane: { en: "Trash", es: "Basura" },
+        instructions: {
+          en: "Treat foam takeout containers as trash instead of route recycling.",
+          es: "Trata los envases de espuma como basura en lugar de reciclaje por ruta."
+        },
+        rationale: {
+          en: "Sunset Hills does not run foam food container recovery on standard residential routes.",
+          es: "Sunset Hills no recupera envases de espuma para comida en las rutas residenciales estandar."
+        },
+        caution: {
+          en: "Keep foam out of route bins even if a recycling symbol is molded into the base.",
+          es: "Mantén la espuma fuera de los contenedores de ruta aunque haya un simbolo de reciclaje en la base."
+        },
+        steps: {
+          en: ["Empty the container", "Use trash", "Do not place in route bins"],
+          es: ["Vaciar el envase", "Usar la basura", "No colocarlo en contenedores de ruta"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      }
+    }
+  },
+  "072000000006": {
+    mark: "MAIL",
+    family: { en: "Plastic bubble mailer", es: "Sobre acolchado plastico" },
+    aliases: ["bubble mailer", "plastic mailer", "amazon mailer", "padded envelope", "poly mailer", "shipping mailer"],
+    confidence: 89,
+    impact: {
+      en: "Plastic mailers look simple, but their films, labels, and padding usually need a separate path from cardboard boxes.",
+      es: "Los sobres plasticos parecen simples, pero sus peliculas, etiquetas y relleno suelen requerir un camino distinto al de las cajas de carton."
+    },
+    name: { en: "Plastic bubble mailer", es: "Sobre acolchado plastico" },
+    outcomes: {
+      riverton: {
+        outcome: "drop_off",
+        lane: { en: "Film-plastic drop-off", es: "Entrega especial de plastico flexible" },
+        instructions: {
+          en: "Use the film-plastic drop-off route if the mailer is clean and dry. Otherwise place it in the trash.",
+          es: "Usa la entrega especial de plastico flexible si el sobre esta limpio y seco. Si no, colocalo en la basura."
+        },
+        rationale: {
+          en: "Riverton keeps flexible mailers out of curbside sorting but allows cleaner films through special collection.",
+          es: "Riverton mantiene los sobres flexibles fuera de la separacion residencial, pero permite peliculas mas limpias mediante recoleccion especial."
+        },
+        caution: {
+          en: "Paper labels, foam inserts, or wet padding can change whether the mailer is worth dropping off.",
+          es: "Las etiquetas de papel, insertos de espuma o acolchado humedo pueden cambiar si vale la pena llevar el sobre a entrega especial."
+        },
+        steps: {
+          en: ["Remove paper contents", "Keep the mailer dry", "Use film drop-off or trash if contaminated"],
+          es: ["Retirar el contenido de papel", "Mantener seco el sobre", "Usar entrega de film o basura si esta contaminado"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      lakewood: {
+        outcome: "drop_off",
+        lane: { en: "Store or center film collection", es: "Recoleccion de film en tienda o centro" },
+        instructions: {
+          en: "Do not place the mailer in the mixed cart. Use a film-plastic collection point if it is dry and mostly plastic.",
+          es: "No coloques el sobre en el carrito mixto. Usa un punto de recoleccion de film plastico si esta seco y es mayormente plastico."
+        },
+        rationale: {
+          en: "Lakewood treats padded plastic mailers more like film plastic than cardboard packaging.",
+          es: "Lakewood trata los sobres acolchados plasticos mas como film plastico que como carton de empaque."
+        },
+        caution: {
+          en: "Mixed paper-and-plastic mailers may still need the trash if the layers cannot be separated.",
+          es: "Los sobres mixtos de papel y plastico pueden requerir basura si sus capas no se pueden separar."
+        },
+        steps: {
+          en: ["Remove paper inserts", "Keep dry", "Use film-plastic collection point"],
+          es: ["Retirar insertos de papel", "Mantener seco", "Usar punto de recoleccion de film plastico"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      },
+      "sunset-hills": {
+        outcome: "trash",
+        lane: { en: "Trash unless special event", es: "Basura salvo evento especial" },
+        instructions: {
+          en: "Place the mailer in the trash unless a local specialty event specifically lists plastic film mailers.",
+          es: "Coloca el sobre en la basura salvo que un evento especial local liste expresamente sobres de film plastico."
+        },
+        rationale: {
+          en: "Sunset Hills does not recover padded plastic mailers through standard route collection.",
+          es: "Sunset Hills no recupera sobres acolchados plasticos mediante la recoleccion estandar por ruta."
+        },
+        caution: {
+          en: "Do not put plastic mailers in cardboard or route-plastics bins just because they came with a shipment.",
+          es: "No coloques sobres plasticos en los contenedores de carton o plasticos de ruta solo porque llegaron con un envio."
+        },
+        steps: {
+          en: ["Remove reusable contents", "Use trash", "Watch for specialty events only if listed"],
+          es: ["Retirar el contenido reutilizable", "Usar la basura", "Observar eventos especiales solo si aparecen listados"]
+        },
+        updated: { en: "June 2026 review", es: "Revision de junio de 2026" }
+      }
+    }
   }
 };
 
@@ -4261,7 +4565,11 @@ const productGroups = {
   "043168984214": "special",
   "888600000111": "glass",
   "072000000001": "paper",
-  "072000000002": "special"
+  "072000000002": "special",
+  "072000000003": "special",
+  "072000000004": "plastics",
+  "072000000005": "special",
+  "072000000006": "plastics"
 };
 
 function readStoredJson(key, fallback) {
@@ -4368,7 +4676,7 @@ const elements = {
   reviewActions: [...document.querySelectorAll("[data-review-action]")]
 };
 
-const buildId = "2026-06-30-ui19";
+const buildId = "2026-06-30-ui20";
 const bootState = readUrlState();
 const geolocationOptions = {
   enableHighAccuracy: true,
