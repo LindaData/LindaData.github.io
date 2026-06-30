@@ -1039,6 +1039,7 @@ textarea {
 
 .session-strip,
 .session-metric,
+.feedback-presets-wrap,
 .feedback-tags-wrap,
 .comparison-card {
   border-radius: var(--radius-lg);
@@ -1047,6 +1048,7 @@ textarea {
 }
 
 .session-strip,
+.feedback-presets-wrap,
 .feedback-tags-wrap {
   padding: 16px;
 }
@@ -1073,6 +1075,8 @@ textarea {
 .session-actions {
   margin-top: 14px;
   display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   justify-content: flex-start;
 }
 
@@ -1900,12 +1904,17 @@ textarea {
                     </p>
                     <div id="session-checklist" class="session-checklist"></div>
                     <div class="session-actions">
+                      <button id="run-next-step" class="button button-secondary" type="button" data-i18n="sessionRunNext">Run next step</button>
                       <button id="reset-session" class="ghost-button" type="button" data-i18n="sessionReset">Reset session</button>
                     </div>
                   </div>
                 </div>
 
                 <div class="rating-grid">
+                  <div class="feedback-presets-wrap">
+                    <strong data-i18n="presetTitle">Quick reactions</strong>
+                    <div id="feedback-presets" class="feedback-tags"></div>
+                  </div>
                   <label class="field">
                     <span data-i18n="feedbackClarity">Clarity</span>
                     <select id="clarity-rating">
@@ -2052,8 +2061,8 @@ const translations = {
     heroSignalLabel: "Live location",
     heroSignalIdleTitle: "Match your area and open the right route.",
     heroSignalIdleCopy: "Start with your device location to reveal the nearest pilot municipality and the closest center in Google Maps.",
-    heroSignalReadyTitle: "Your live area is matched.",
-    heroSignalSelected: "Selected pilot area",
+    heroSignalReadyTitle: "Closest pilot city selected.",
+    heroSignalSelected: "Selected pilot city",
     heroSignalNearest: "Nearest center",
     heroSignalMaps: "Google Maps ready",
     searchEyebrow: "Start a lookup",
@@ -2078,7 +2087,7 @@ const translations = {
     locationUnsupported: "This browser cannot share location here. Use HTTPS or choose a municipality manually.",
     locationDenied: "Location access was denied. You can still choose a municipality manually.",
     locationUnavailable: "We could not read your location right now. Try again after enabling location services.",
-    locationPilotMatch: "Pilot match",
+    locationPilotMatch: "Closest pilot city",
     locationSeedLabel: "Location seed",
     locationSeedCopy: "Using your current device location as the starting point.",
     locationDistanceLabel: "Distance to this pilot profile",
@@ -2169,6 +2178,8 @@ const translations = {
     checklistUnclear: "Test an uncertain or caution case",
     checklistCities: "Compare at least two pilot cities",
     checklistFeedback: "Save at least one feedback note",
+    sessionRunNext: "Run next step",
+    sessionDone: "Review route complete",
     sessionReset: "Reset session",
     sessionResetConfirm: "Reset checked items, saved feedback, and the current answer?",
     sessionResetDone: "Review session reset.",
@@ -2179,6 +2190,11 @@ const translations = {
     feedbackTagLocation: "Location confusing",
     feedbackTagCenter: "Center step unclear",
     feedbackTagTrust: "Feels trustworthy",
+    presetTitle: "Quick reactions",
+    presetClear: "Clear",
+    presetConfusing: "Confusing",
+    presetSlow: "Slow",
+    presetDistrust: "Not sure I trust it",
     compareTitle: "How this answer changes by city",
     compareCopy: "Collection contracts, equipment, and contamination rules differ across municipalities.",
     compareCurrent: "Current city",
@@ -2190,7 +2206,7 @@ const translations = {
     feedbackNotes: "Tester notes",
     feedbackPlaceholder: "What felt clear, confusing, slow, or untrustworthy?",
     saveFeedback: "Save feedback",
-    copyFeedback: "Copy report",
+    copyFeedback: "Share report",
     clearFeedback: "Clear notes",
     feedbackLogEyebrow: "Saved notes",
     feedbackLogTitle: "Recent tester feedback",
@@ -2198,6 +2214,7 @@ const translations = {
     feedbackSaved: "Feedback note saved.",
     feedbackCleared: "Feedback form cleared.",
     feedbackCopied: "Feedback report copied.",
+    feedbackNeedInput: "Add a note or at least one quick flag before saving feedback.",
     feedbackNeedNote: "Add a short note before saving feedback.",
     feedbackContext: "Context",
     feedbackDate: "Saved",
@@ -2273,8 +2290,8 @@ const translations = {
     heroSignalLabel: "Ubicacion en vivo",
     heroSignalIdleTitle: "Ubica tu zona y abre la ruta correcta.",
     heroSignalIdleCopy: "Empieza con la ubicacion del dispositivo para revelar el municipio piloto mas cercano y el centro mas cercano en Google Maps.",
-    heroSignalReadyTitle: "Tu zona en vivo ya esta ubicada.",
-    heroSignalSelected: "Area piloto seleccionada",
+    heroSignalReadyTitle: "Ciudad piloto mas cercana seleccionada.",
+    heroSignalSelected: "Ciudad piloto seleccionada",
     heroSignalNearest: "Centro mas cercano",
     heroSignalMaps: "Google Maps listo",
     searchEyebrow: "Inicia una consulta",
@@ -2299,7 +2316,7 @@ const translations = {
     locationUnsupported: "Este navegador no puede compartir ubicacion aqui. Usa HTTPS o elige un municipio manualmente.",
     locationDenied: "Se nego el acceso a la ubicacion. Aun puedes elegir un municipio manualmente.",
     locationUnavailable: "No pudimos leer tu ubicacion ahora. Intentalo de nuevo despues de activar los servicios de ubicacion.",
-    locationPilotMatch: "Piloto mas cercano",
+    locationPilotMatch: "Ciudad piloto mas cercana",
     locationSeedLabel: "Punto de partida",
     locationSeedCopy: "Usando la ubicacion actual del dispositivo como punto de partida.",
     locationDistanceLabel: "Distancia a este perfil piloto",
@@ -2390,6 +2407,8 @@ const translations = {
     checklistUnclear: "Prueba un caso incierto o con cautela",
     checklistCities: "Compara al menos dos ciudades piloto",
     checklistFeedback: "Guarda al menos una nota",
+    sessionRunNext: "Ejecutar siguiente paso",
+    sessionDone: "Ruta de revision completa",
     sessionReset: "Reiniciar sesion",
     sessionResetConfirm: "Reiniciar articulos revisados, comentarios guardados y la respuesta actual?",
     sessionResetDone: "Sesion reiniciada.",
@@ -2400,6 +2419,11 @@ const translations = {
     feedbackTagLocation: "Ubicacion confusa",
     feedbackTagCenter: "Paso al centro poco claro",
     feedbackTagTrust: "Se siente confiable",
+    presetTitle: "Reacciones rapidas",
+    presetClear: "Claro",
+    presetConfusing: "Confuso",
+    presetSlow: "Lento",
+    presetDistrust: "No inspira confianza",
     compareTitle: "Como cambia esta respuesta por ciudad",
     compareCopy: "Los contratos de recoleccion, el equipo y las reglas de contaminacion cambian segun el municipio.",
     compareCurrent: "Ciudad actual",
@@ -2411,7 +2435,7 @@ const translations = {
     feedbackNotes: "Notas del evaluador",
     feedbackPlaceholder: "Que se sintio claro, confuso, lento o poco confiable?",
     saveFeedback: "Guardar comentario",
-    copyFeedback: "Copiar reporte",
+    copyFeedback: "Compartir reporte",
     clearFeedback: "Limpiar notas",
     feedbackLogEyebrow: "Notas guardadas",
     feedbackLogTitle: "Comentarios recientes",
@@ -2419,6 +2443,7 @@ const translations = {
     feedbackSaved: "Comentario guardado.",
     feedbackCleared: "Formulario limpiado.",
     feedbackCopied: "Reporte copiado.",
+    feedbackNeedInput: "Agrega una nota o al menos una marca rapida antes de guardar el comentario.",
     feedbackNeedNote: "Agrega una nota corta antes de guardar el comentario.",
     feedbackContext: "Contexto",
     feedbackDate: "Guardado",
@@ -3856,6 +3881,11 @@ const state = {
   language: localStorage.getItem("recycling-language") || "en",
   history: readStoredJson("recycling-history-v2", []),
   feedback: readStoredJson("recycling-feedback-v1", []),
+  sessionCoverage: readStoredJson("recycling-session-coverage-v1", {
+    barcodes: [],
+    municipalities: [],
+    outcomes: []
+  }),
   userLocation: readStoredJson("recycling-user-location-v1", null),
   installPromptEvent: null,
   browseFilter: "all",
@@ -3909,11 +3939,13 @@ const elements = {
   clarityRating: document.getElementById("clarity-rating"),
   trustRating: document.getElementById("trust-rating"),
   speedRating: document.getElementById("speed-rating"),
+  feedbackPresets: document.getElementById("feedback-presets"),
   feedbackNotes: document.getElementById("feedback-notes"),
   feedbackTags: document.getElementById("feedback-tags"),
   saveFeedback: document.getElementById("save-feedback"),
   copyFeedback: document.getElementById("copy-feedback"),
   clearFeedback: document.getElementById("clear-feedback"),
+  runNextStep: document.getElementById("run-next-step"),
   resetSession: document.getElementById("reset-session"),
   copyLink: document.getElementById("copy-link"),
   copySummary: document.getElementById("copy-summary"),
@@ -3921,7 +3953,7 @@ const elements = {
   chips: [...document.querySelectorAll(".chip")]
 };
 
-const buildId = "2026-06-30-ui11";
+const buildId = "2026-06-30-ui12";
 const bootState = readUrlState();
 
 if (bootState.language && translations[bootState.language]) {
@@ -3961,6 +3993,41 @@ const feedbackTagOptions = [
   { key: "location", copyKey: "feedbackTagLocation" },
   { key: "center", copyKey: "feedbackTagCenter" },
   { key: "trust", copyKey: "feedbackTagTrust" }
+];
+
+const feedbackPresets = [
+  {
+    key: "clear",
+    copyKey: "presetClear",
+    clarity: "5",
+    trust: "5",
+    speed: "5",
+    tags: ["trust"]
+  },
+  {
+    key: "confusing",
+    copyKey: "presetConfusing",
+    clarity: "2",
+    trust: "2",
+    speed: "3",
+    tags: ["outcome", "wordy"]
+  },
+  {
+    key: "slow",
+    copyKey: "presetSlow",
+    clarity: "3",
+    trust: "3",
+    speed: "2",
+    tags: ["center"]
+  },
+  {
+    key: "distrust",
+    copyKey: "presetDistrust",
+    clarity: "2",
+    trust: "1",
+    speed: "3",
+    tags: ["location", "outcome"]
+  }
 ];
 
 const materialMarks = [
@@ -4928,6 +4995,22 @@ function feedbackTagLabels(tagKeys) {
   return (tagKeys || []).map((tagKey) => feedbackTagLabel(tagKey));
 }
 
+function recordSessionCoverage(barcode, outcome, municipality) {
+  if (barcode && !state.sessionCoverage.barcodes.includes(barcode)) {
+    state.sessionCoverage.barcodes = [...state.sessionCoverage.barcodes, barcode];
+  }
+
+  if (municipality && !state.sessionCoverage.municipalities.includes(municipality)) {
+    state.sessionCoverage.municipalities = [...state.sessionCoverage.municipalities, municipality];
+  }
+
+  if (outcome && !state.sessionCoverage.outcomes.includes(outcome)) {
+    state.sessionCoverage.outcomes = [...state.sessionCoverage.outcomes, outcome];
+  }
+
+  localStorage.setItem("recycling-session-coverage-v1", JSON.stringify(state.sessionCoverage));
+}
+
 function topFeedbackTagKeys(limit = 3) {
   const counts = new Map();
 
@@ -4956,10 +5039,10 @@ function nextMunicipalityKey() {
 }
 
 function checklistItems() {
-  const uniqueCities = new Set(state.history.map((entry) => entry.municipality).filter(Boolean)).size;
-  const hasRecycle = state.history.some((entry) => entry.outcome === "recycle");
-  const hasDropoff = state.history.some((entry) => entry.outcome === "drop_off");
-  const hasUnclear = state.history.some((entry) => entry.outcome === "check_locally" || entry.outcome === "trash");
+  const uniqueCities = state.sessionCoverage.municipalities.length;
+  const hasRecycle = state.sessionCoverage.outcomes.includes("recycle");
+  const hasDropoff = state.sessionCoverage.outcomes.includes("drop_off");
+  const hasUnclear = state.sessionCoverage.outcomes.includes("check_locally") || state.sessionCoverage.outcomes.includes("trash");
 
   return [
     { key: "checklistLocation", done: Boolean(state.userLocation), action: "location" },
@@ -4969,6 +5052,33 @@ function checklistItems() {
     { key: "checklistCities", done: uniqueCities >= 2, action: "cities" },
     { key: "checklistFeedback", done: state.feedback.length >= 1, action: "feedback" }
   ];
+}
+
+function nextPendingChecklistItem() {
+  return checklistItems().find((item) => !item.done) || null;
+}
+
+function renderFeedbackPresets() {
+  elements.feedbackPresets.innerHTML = feedbackPresets.map((preset) => `
+    <button class="browse-filter feedback-tag" type="button" data-feedback-preset="${preset.key}">
+      ${copy()[preset.copyKey]}
+    </button>
+  `).join("");
+
+  elements.feedbackPresets.querySelectorAll("[data-feedback-preset]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const preset = feedbackPresets.find((item) => item.key === button.getAttribute("data-feedback-preset"));
+      if (!preset) {
+        return;
+      }
+
+      elements.clarityRating.value = preset.clarity;
+      elements.trustRating.value = preset.trust;
+      elements.speedRating.value = preset.speed;
+      state.feedbackTags = [...preset.tags];
+      renderFeedbackTags();
+    });
+  });
 }
 
 function renderFeedbackTags() {
@@ -5286,8 +5396,8 @@ function renderFeedbackLog() {
 
 function renderSessionSnapshot() {
   const ui = copy();
-  const uniqueItems = new Set(state.history.map((entry) => entry.barcode).filter(Boolean)).size;
-  const uniqueCities = new Set(state.history.map((entry) => entry.municipality).filter(Boolean)).size;
+  const uniqueItems = state.sessionCoverage.barcodes.length;
+  const uniqueCities = state.sessionCoverage.municipalities.length;
   const scoreSource = state.feedback.length
     ? state.feedback.map((entry) => (Number(entry.clarity) + Number(entry.trust) + Number(entry.speed)) / 3)
     : [];
@@ -5327,6 +5437,7 @@ function renderSessionChecklist() {
   const items = checklistItems();
   const completed = items.filter((item) => item.done).length;
   const progress = Math.round((completed / items.length) * 100);
+  const nextItem = nextPendingChecklistItem();
 
   elements.sessionChecklist.innerHTML = `
     <div class="session-progress">
@@ -5354,6 +5465,11 @@ function renderSessionChecklist() {
       runChecklistAction(button.getAttribute("data-checklist-action"));
     });
   });
+
+  elements.runNextStep.disabled = !nextItem;
+  elements.runNextStep.textContent = nextItem
+    ? `${ui.sessionRunNext}: ${ui[nextItem.key]}`
+    : ui.sessionDone;
 }
 
 function renderSessionOverview() {
@@ -5430,10 +5546,6 @@ function currentFeedbackContext() {
 
 function feedbackReportText() {
   const ui = copy();
-  if (!state.feedback.length) {
-    return ui.feedbackEmpty;
-  }
-
   const checklist = checklistItems();
   const completed = checklist.filter((item) => item.done).length;
   const topFlags = feedbackTagLabels(topFeedbackTagKeys());
@@ -5441,13 +5553,14 @@ function feedbackReportText() {
   return [
     [
       ui.sessionTitle,
-      `${ui.sessionItems}: ${new Set(state.history.map((entry) => entry.barcode).filter(Boolean)).size}`,
+      `${ui.sessionItems}: ${state.sessionCoverage.barcodes.length}`,
       `${ui.sessionFeedback}: ${state.feedback.length}`,
-      `${ui.sessionCities}: ${new Set(state.history.map((entry) => entry.municipality).filter(Boolean)).size}`,
+      `${ui.sessionCities}: ${state.sessionCoverage.municipalities.length}`,
       `${ui.checklistProgress}: ${completed}/${checklist.length}`,
       topFlags.length ? `${ui.sessionTopFlags}: ${topFlags.join(", ")}` : null
     ].filter(Boolean).join("\n"),
-    state.feedback.slice(0, 10).map((entry, index) => {
+    state.feedback.length
+      ? state.feedback.slice(0, 10).map((entry, index) => {
     return [
       `Feedback ${index + 1}`,
       `${ui.feedbackContext}: ${feedbackContextLabel(entry)}`,
@@ -5459,16 +5572,21 @@ function feedbackReportText() {
       entry.url ? `${ui.feedbackLink}: ${entry.url}` : null
     ].filter(Boolean).join("\n");
   }).join("\n\n")
+      : ui.feedbackEmpty
   ].join("\n\n");
 }
 
 function saveFeedbackEntry() {
   const ui = copy();
-  const notes = elements.feedbackNotes.value.trim();
+  let notes = elements.feedbackNotes.value.trim();
 
-  if (!notes) {
-    showToast(ui.feedbackNeedNote);
+  if (!notes && !state.feedbackTags.length) {
+    showToast(ui.feedbackNeedInput);
     return;
+  }
+
+  if (!notes && state.feedbackTags.length) {
+    notes = feedbackTagLabels(state.feedbackTags).join(", ");
   }
 
   const context = currentFeedbackContext();
@@ -5506,13 +5624,20 @@ function resetReviewSession() {
 
   state.history = [];
   state.feedback = [];
+  state.sessionCoverage = {
+    barcodes: [],
+    municipalities: [],
+    outcomes: []
+  };
   state.userLocation = null;
   state.currentBarcode = null;
   state.lastQuery = "";
   state.feedbackTags = [];
+  state.browseFilter = "all";
 
   localStorage.removeItem("recycling-history-v2");
   localStorage.removeItem("recycling-feedback-v1");
+  localStorage.removeItem("recycling-session-coverage-v1");
   localStorage.removeItem("recycling-user-location-v1");
 
   elements.searchInput.value = "";
@@ -5520,8 +5645,10 @@ function resetReviewSession() {
   elements.clarityRating.value = "5";
   elements.trustRating.value = "5";
   elements.speedRating.value = "5";
+  elements.municipalitySelect.value = "riverton";
+  renderFeedbackPresets();
   renderFeedbackTags();
-  setLocationStatus(copy().locationIdle);
+  refreshLocationStatus();
   renderEmptyResult();
   renderHistory();
   renderFeedbackLog();
@@ -5590,6 +5717,29 @@ async function shareCurrentLink() {
   }
 
   await copyText(url, copy().toastLink);
+}
+
+async function shareFeedbackReport() {
+  const report = feedbackReportText();
+  const title = `LindaData ${copy().sessionTitle}`;
+  const url = currentAppUrl();
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title,
+        text: report,
+        url
+      });
+      return;
+    } catch (error) {
+      if (error && error.name === "AbortError") {
+        return;
+      }
+    }
+  }
+
+  await copyText(report, copy().feedbackCopied);
 }
 
 function findProductEntry(query) {
@@ -5697,6 +5847,7 @@ function renderResult(entry, trackHistory) {
   const guidance = entry.product.outcomes[municipalityKey];
   const nearestCenter = nearestCenterForCurrentMunicipality();
   const needsCenterSpotlight = guidance.outcome === "drop_off" || guidance.outcome === "check_locally";
+  recordSessionCoverage(entry.barcode, guidance.outcome, municipalityKey);
   setResultContentState(false);
 
   elements.resultContent.innerHTML = `
@@ -5810,6 +5961,7 @@ elements.languageToggle.addEventListener("click", () => {
   refreshLocationStatus();
   renderQuickChips();
   renderProductSuggestions();
+  renderFeedbackPresets();
   renderFeedbackTags();
   renderScenarios();
   refreshMunicipalityViews();
@@ -5943,11 +6095,18 @@ elements.saveFeedback.addEventListener("click", () => {
 });
 
 elements.copyFeedback.addEventListener("click", () => {
-  copyText(feedbackReportText(), copy().feedbackCopied);
+  shareFeedbackReport();
 });
 
 elements.clearFeedback.addEventListener("click", () => {
   clearFeedbackForm();
+});
+
+elements.runNextStep.addEventListener("click", () => {
+  const nextItem = nextPendingChecklistItem();
+  if (nextItem) {
+    runChecklistAction(nextItem.action);
+  }
 });
 
 elements.resetSession.addEventListener("click", () => {
@@ -5988,6 +6147,7 @@ updateInstallButton();
 refreshLocationStatus();
 renderQuickChips();
 renderProductSuggestions();
+renderFeedbackPresets();
 renderFeedbackTags();
 renderScenarios();
 refreshMunicipalityViews();
