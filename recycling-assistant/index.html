@@ -1037,6 +1037,86 @@ textarea {
   gap: 14px;
 }
 
+.session-strip,
+.session-metric,
+.feedback-tags-wrap,
+.comparison-card {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.session-strip,
+.feedback-tags-wrap {
+  padding: 16px;
+}
+
+.session-heading {
+  margin-bottom: 12px;
+}
+
+.session-grid,
+.feedback-tags,
+.comparison-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.session-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.session-metric {
+  padding: 14px;
+}
+
+.session-metric strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 1.5rem;
+  font-family: var(--font-display);
+}
+
+.feedback-tags-wrap strong {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.feedback-tags {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.feedback-tag {
+  padding: 0.8rem 0.9rem;
+}
+
+.comparison-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.comparison-grid {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.comparison-card {
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.comparison-card.is-current {
+  border-color: rgba(15, 118, 110, 0.28);
+  box-shadow: 0 14px 28px rgba(10, 42, 63, 0.08);
+}
+
+.comparison-head {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .routine-card,
 .playbook-card,
 .rhythm-step,
@@ -1393,6 +1473,14 @@ textarea {
     align-items: start;
   }
 
+  .feedback-tags {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .comparison-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .center-spotlight {
     grid-template-columns: 1fr auto;
     align-items: end;
@@ -1726,6 +1814,16 @@ textarea {
               </div>
 
               <div class="feedback-card">
+                <div class="session-strip">
+                  <div class="panel-heading session-heading">
+                    <div>
+                      <p class="eyebrow" data-i18n="sessionEyebrow">Review session</p>
+                      <h3 data-i18n="sessionTitle">Current test snapshot</h3>
+                    </div>
+                  </div>
+                  <div id="session-snapshot" class="session-grid"></div>
+                </div>
+
                 <div class="rating-grid">
                   <label class="field">
                     <span data-i18n="feedbackClarity">Clarity</span>
@@ -1759,6 +1857,11 @@ textarea {
                       <option value="1">1</option>
                     </select>
                   </label>
+                </div>
+
+                <div class="feedback-tags-wrap">
+                  <strong data-i18n="feedbackTagPrompt">Quick flags</strong>
+                  <div id="feedback-tags" class="feedback-tags"></div>
                 </div>
 
                 <label class="field">
@@ -1966,6 +2069,24 @@ const translations = {
     historyTitle: "What you checked recently",
     feedbackEyebrow: "Household testing",
     feedbackTitle: "Capture feedback inside the product",
+    sessionEyebrow: "Review session",
+    sessionTitle: "Current test snapshot",
+    sessionItems: "Items checked",
+    sessionFeedback: "Notes saved",
+    sessionCities: "Cities tried",
+    sessionScore: "Average score",
+    feedbackTagPrompt: "Quick flags",
+    feedbackTagsLabel: "Quick flags",
+    feedbackTagWordy: "Too much text",
+    feedbackTagOutcome: "Outcome unclear",
+    feedbackTagLocation: "Location confusing",
+    feedbackTagCenter: "Center step unclear",
+    feedbackTagTrust: "Feels trustworthy",
+    compareTitle: "How this answer changes by city",
+    compareCopy: "Collection contracts, equipment, and contamination rules differ across municipalities.",
+    compareCurrent: "Current city",
+    compareOther: "Other pilot city",
+    compareStep: "First step",
     feedbackClarity: "Clarity",
     feedbackTrust: "Trust",
     feedbackSpeed: "Speed",
@@ -2153,6 +2274,24 @@ const translations = {
     historyTitle: "Lo que revisaste recientemente",
     feedbackEyebrow: "Prueba en casa",
     feedbackTitle: "Captura comentarios dentro del producto",
+    sessionEyebrow: "Sesion de revision",
+    sessionTitle: "Resumen actual de la prueba",
+    sessionItems: "Articulos revisados",
+    sessionFeedback: "Notas guardadas",
+    sessionCities: "Ciudades probadas",
+    sessionScore: "Promedio",
+    feedbackTagPrompt: "Marcas rapidas",
+    feedbackTagsLabel: "Marcas rapidas",
+    feedbackTagWordy: "Demasiado texto",
+    feedbackTagOutcome: "Resultado poco claro",
+    feedbackTagLocation: "Ubicacion confusa",
+    feedbackTagCenter: "Paso al centro poco claro",
+    feedbackTagTrust: "Se siente confiable",
+    compareTitle: "Como cambia esta respuesta por ciudad",
+    compareCopy: "Los contratos de recoleccion, el equipo y las reglas de contaminacion cambian segun el municipio.",
+    compareCurrent: "Ciudad actual",
+    compareOther: "Otra ciudad piloto",
+    compareStep: "Primer paso",
     feedbackClarity: "Claridad",
     feedbackTrust: "Confianza",
     feedbackSpeed: "Rapidez",
@@ -3607,6 +3746,7 @@ const state = {
   userLocation: readStoredJson("recycling-user-location-v1", null),
   installPromptEvent: null,
   browseFilter: "all",
+  feedbackTags: [],
   scannerStream: null,
   scannerDetector: null,
   scannerControls: null,
@@ -3650,11 +3790,13 @@ const elements = {
   centerList: document.getElementById("center-list"),
   historyList: document.getElementById("history-list"),
   feedbackLog: document.getElementById("feedback-log"),
+  sessionSnapshot: document.getElementById("session-snapshot"),
   scenarioList: document.getElementById("scenario-list"),
   clarityRating: document.getElementById("clarity-rating"),
   trustRating: document.getElementById("trust-rating"),
   speedRating: document.getElementById("speed-rating"),
   feedbackNotes: document.getElementById("feedback-notes"),
+  feedbackTags: document.getElementById("feedback-tags"),
   saveFeedback: document.getElementById("save-feedback"),
   copyFeedback: document.getElementById("copy-feedback"),
   clearFeedback: document.getElementById("clear-feedback"),
@@ -3664,7 +3806,7 @@ const elements = {
   chips: [...document.querySelectorAll(".chip")]
 };
 
-const buildId = "2026-06-30-ui8";
+const buildId = "2026-06-30-ui9";
 const bootState = readUrlState();
 
 if (bootState.language && translations[bootState.language]) {
@@ -3696,6 +3838,14 @@ const testScenarios = [
     en: "Is the municipality context visible enough that the user knows the answer is local, not universal?",
     es: "El contexto del municipio es lo bastante visible para que el usuario entienda que la respuesta es local y no universal?"
   }
+];
+
+const feedbackTagOptions = [
+  { key: "wordy", copyKey: "feedbackTagWordy" },
+  { key: "outcome", copyKey: "feedbackTagOutcome" },
+  { key: "location", copyKey: "feedbackTagLocation" },
+  { key: "center", copyKey: "feedbackTagCenter" },
+  { key: "trust", copyKey: "feedbackTagTrust" }
 ];
 
 const materialMarks = [
@@ -4250,6 +4400,37 @@ function centerSpotlightMarkup(center) {
   `;
 }
 
+function comparisonMarkup(entry) {
+  const ui = copy();
+  const currentMunicipality = elements.municipalitySelect.value;
+  const items = Object.entries(municipalities).map(([key, municipality]) => {
+    const guidance = entry.product.outcomes[key];
+    const isCurrent = key === currentMunicipality;
+
+    return `
+      <article class="comparison-card${isCurrent ? " is-current" : ""}">
+        <div class="comparison-head">
+          <strong>${municipality.name[state.language]}</strong>
+          <span class="mini-pill">${isCurrent ? ui.compareCurrent : ui.compareOther}</span>
+        </div>
+        <span class="${outcomeClass(guidance.outcome)}">${outcomeLabel(guidance.outcome)}</span>
+        <p class="support-copy">${guidance.lane[state.language]}</p>
+        <p class="support-copy"><strong>${ui.compareStep}:</strong> ${guidance.steps[state.language][0]}</p>
+      </article>
+    `;
+  }).join("");
+
+  return `
+    <div class="support-card comparison-panel">
+      <strong class="detail-title">${ui.compareTitle}</strong>
+      <p class="support-copy">${ui.compareCopy}</p>
+      <div class="comparison-grid">
+        ${items}
+      </div>
+    </div>
+  `;
+}
+
 function refreshMunicipalityViews() {
   renderHeroSignalCard();
   renderMunicipalityPulse();
@@ -4622,6 +4803,40 @@ function renderProductSuggestions() {
   elements.productSuggestions.innerHTML = options.join("");
 }
 
+function feedbackTagLabel(tagKey) {
+  const tag = feedbackTagOptions.find((option) => option.key === tagKey);
+  return tag ? copy()[tag.copyKey] : tagKey;
+}
+
+function feedbackTagLabels(tagKeys) {
+  return (tagKeys || []).map((tagKey) => feedbackTagLabel(tagKey));
+}
+
+function renderFeedbackTags() {
+  elements.feedbackTags.innerHTML = feedbackTagOptions.map((tag) => `
+    <button
+      class="browse-filter feedback-tag${state.feedbackTags.includes(tag.key) ? " is-active" : ""}"
+      type="button"
+      data-feedback-tag="${tag.key}"
+      aria-pressed="${state.feedbackTags.includes(tag.key) ? "true" : "false"}"
+    >
+      ${copy()[tag.copyKey]}
+    </button>
+  `).join("");
+
+  elements.feedbackTags.querySelectorAll("[data-feedback-tag]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const key = button.getAttribute("data-feedback-tag");
+      if (state.feedbackTags.includes(key)) {
+        state.feedbackTags = state.feedbackTags.filter((tag) => tag !== key);
+      } else {
+        state.feedbackTags = [...state.feedbackTags, key];
+      }
+      renderFeedbackTags();
+    });
+  });
+}
+
 function browseEntries() {
   return Object.entries(products)
     .filter(([barcode]) => state.browseFilter === "all" || productGroups[barcode] === state.browseFilter)
@@ -4826,6 +5041,7 @@ function renderHistory() {
 
   if (!state.history.length) {
     elements.historyList.innerHTML = `<div class="history-card"><p class="history-meta">${ui.noHistory}</p></div>`;
+    renderSessionSnapshot();
     return;
   }
 
@@ -4863,6 +5079,8 @@ function renderHistory() {
       handleSearch(barcode, { trackHistory: false });
     });
   });
+
+  renderSessionSnapshot();
 }
 
 function feedbackContextLabel(entry) {
@@ -4882,12 +5100,14 @@ function renderFeedbackLog() {
 
   if (!state.feedback.length) {
     elements.feedbackLog.innerHTML = `<div class="feedback-entry"><p>${ui.feedbackEmpty}</p></div>`;
+    renderSessionSnapshot();
     return;
   }
 
   state.feedback.slice(0, 5).forEach((entry) => {
     const item = document.createElement("div");
     item.className = "feedback-entry";
+    const tags = feedbackTagLabels(entry.tags);
     item.innerHTML = `
       <strong>${ui.feedbackContext}: ${feedbackContextLabel(entry)}</strong>
       <p class="feedback-meta">${ui.feedbackDate} ${formatHistoryTime(entry.timestamp)}</p>
@@ -4896,10 +5116,44 @@ function renderFeedbackLog() {
         <span class="mini-pill">${ui.feedbackTrust}: ${entry.trust}/5</span>
         <span class="mini-pill">${ui.feedbackSpeed}: ${entry.speed}/5</span>
       </div>
+      ${tags.length ? `<div class="feedback-scores">${tags.map((tag) => `<span class="mini-pill">${tag}</span>`).join("")}</div>` : ""}
       <p>${entry.notes}</p>
     `;
     elements.feedbackLog.appendChild(item);
   });
+
+  renderSessionSnapshot();
+}
+
+function renderSessionSnapshot() {
+  const ui = copy();
+  const uniqueItems = new Set(state.history.map((entry) => entry.barcode).filter(Boolean)).size;
+  const uniqueCities = new Set(state.history.map((entry) => entry.municipality).filter(Boolean)).size;
+  const scoreSource = state.feedback.length
+    ? state.feedback.map((entry) => (Number(entry.clarity) + Number(entry.trust) + Number(entry.speed)) / 3)
+    : [];
+  const averageScore = scoreSource.length
+    ? (scoreSource.reduce((total, value) => total + value, 0) / scoreSource.length).toFixed(1)
+    : "0.0";
+
+  elements.sessionSnapshot.innerHTML = `
+    <div class="session-metric">
+      <span class="metric-label">${ui.sessionItems}</span>
+      <strong>${uniqueItems}</strong>
+    </div>
+    <div class="session-metric">
+      <span class="metric-label">${ui.sessionFeedback}</span>
+      <strong>${state.feedback.length}</strong>
+    </div>
+    <div class="session-metric">
+      <span class="metric-label">${ui.sessionCities}</span>
+      <strong>${uniqueCities}</strong>
+    </div>
+    <div class="session-metric">
+      <span class="metric-label">${ui.sessionScore}</span>
+      <strong>${averageScore}</strong>
+    </div>
+  `;
 }
 
 function currentFeedbackContext() {
@@ -4922,6 +5176,7 @@ function feedbackReportText() {
       `${ui.feedbackClarity}: ${entry.clarity}/5`,
       `${ui.feedbackTrust}: ${entry.trust}/5`,
       `${ui.feedbackSpeed}: ${entry.speed}/5`,
+      entry.tags && entry.tags.length ? `${ui.feedbackTagsLabel}: ${feedbackTagLabels(entry.tags).join(", ")}` : null,
       entry.notes,
       entry.url ? `${ui.feedbackLink}: ${entry.url}` : null
     ].filter(Boolean).join("\n");
@@ -4944,6 +5199,7 @@ function saveFeedbackEntry() {
     clarity: elements.clarityRating.value,
     trust: elements.trustRating.value,
     speed: elements.speedRating.value,
+    tags: [...state.feedbackTags],
     notes,
     url: currentAppUrl(),
     timestamp: Date.now()
@@ -4959,6 +5215,8 @@ function clearFeedbackForm() {
   elements.clarityRating.value = "5";
   elements.trustRating.value = "5";
   elements.speedRating.value = "5";
+  state.feedbackTags = [];
+  renderFeedbackTags();
   showToast(copy().feedbackCleared);
 }
 
@@ -5181,6 +5439,7 @@ function renderResult(entry, trackHistory) {
         <strong>${ui.resultImpact}</strong>
         <p class="support-copy">${entry.product.impact[state.language]}</p>
       </div>
+      ${comparisonMarkup(entry)}
       ${needsCenterSpotlight ? centerSpotlightMarkup(nearestCenter) : ""}
     </div>
   `;
@@ -5240,6 +5499,7 @@ elements.languageToggle.addEventListener("click", () => {
   refreshLocationStatus();
   renderQuickChips();
   renderProductSuggestions();
+  renderFeedbackTags();
   renderScenarios();
   refreshMunicipalityViews();
   renderHistory();
@@ -5413,6 +5673,7 @@ updateInstallButton();
 refreshLocationStatus();
 renderQuickChips();
 renderProductSuggestions();
+renderFeedbackTags();
 renderScenarios();
 refreshMunicipalityViews();
 renderHistory();
