@@ -4,7 +4,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#0f3b36">
-    <title>LindaData Recycling Assistant</title>
+    <title>LindaData | Recycling Assistant</title>
+    <meta
+      name="description"
+      content="Location-aware recycling guidance with municipality matching, product lookups, and nearby recycling center directions."
+    >
+    <meta property="og:title" content="LindaData Recycling Assistant">
+    <meta
+      property="og:description"
+      content="Check how to recycle a product locally, match to a municipality, and open nearby center directions."
+    >
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lindadata.github.io/recycling-assistant/">
     <style>
 :root {
   --ink-strong: #102a43;
@@ -298,6 +309,8 @@ h3 {
 
 .hero-panel,
 .search-panel,
+.flow-panel,
+.brief-panel,
 .result-shell,
 .info-card,
 .mark-guide-panel,
@@ -480,6 +493,7 @@ textarea {
 }
 
 .result-stage,
+.control-grid,
 .routine-grid,
 .lower-grid {
   display: grid;
@@ -532,6 +546,108 @@ textarea {
 .result-card {
   display: grid;
   gap: 16px;
+}
+
+.flow-board {
+  display: grid;
+  gap: 12px;
+}
+
+.flow-item,
+.brief-card {
+  padding: 18px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.flow-active,
+.brief-card-accent {
+  background:
+    linear-gradient(135deg, rgba(223, 247, 239, 0.88), rgba(255, 255, 255, 0.9));
+}
+
+.flow-head,
+.brief-pills,
+.brief-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.flow-head {
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.flow-index,
+.flow-flag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.flow-index {
+  min-width: 48px;
+  padding: 0.46rem 0.65rem;
+  background: rgba(16, 42, 67, 0.08);
+  color: var(--ink-strong);
+}
+
+.flow-flag {
+  padding: 0.46rem 0.72rem;
+  background: rgba(15, 118, 110, 0.12);
+  color: var(--leaf-deep);
+}
+
+.flow-pending .flow-flag {
+  background: rgba(72, 101, 129, 0.14);
+  color: #2d4a68;
+}
+
+.flow-item strong,
+.brief-title {
+  display: block;
+  color: var(--ink-strong);
+}
+
+.flow-item strong {
+  margin-bottom: 6px;
+  font-size: 1rem;
+}
+
+.flow-item p,
+.brief-copy,
+.brief-meta {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.58;
+}
+
+.brief-title {
+  margin-top: 10px;
+  font-size: 1.45rem;
+  font-family: var(--font-display);
+  line-height: 1.08;
+}
+
+.brief-copy {
+  margin-top: 10px;
+}
+
+.brief-meta {
+  margin-top: 12px;
+}
+
+.brief-pills,
+.brief-actions {
+  margin-top: 16px;
 }
 
 .result-top {
@@ -975,6 +1091,10 @@ textarea {
     align-items: start;
   }
 
+  .flow-board {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .rating-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -1001,6 +1121,11 @@ textarea {
 }
 
 @media (min-width: 1024px) {
+  .control-grid {
+    grid-template-columns: 1.12fr 0.88fr;
+    align-items: start;
+  }
+
   .result-stage {
     grid-template-columns: 1.25fr 0.75fr;
     align-items: start;
@@ -1016,6 +1141,10 @@ textarea {
   }
 
   .mark-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .flow-board {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
@@ -1132,6 +1261,28 @@ textarea {
               <button class="chip" data-barcode="036000291452" type="button"></button>
             </div>
           </div>
+        </section>
+
+        <section class="control-grid">
+          <article class="glass-panel flow-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow" data-i18n="flowEyebrow">Current route</p>
+                <h3 data-i18n="flowTitle">From package in hand to the right place</h3>
+              </div>
+            </div>
+            <div id="flow-board" class="flow-board"></div>
+          </article>
+
+          <article class="glass-panel brief-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow" data-i18n="briefEyebrow">Right now</p>
+                <h3 data-i18n="briefTitle">Fastest next safe action</h3>
+              </div>
+            </div>
+            <div id="next-step-card"></div>
+          </article>
         </section>
 
         <section class="result-stage">
@@ -1336,18 +1487,18 @@ const translations = {
   en: {
     brandTitle: "Recycling Assistant",
     copyLink: "Copy link",
-    heroKicker: "Pilot-ready family review build",
-    heroTitle: "Get the right recycling answer for the place you are standing in.",
+    heroKicker: "Location-aware household recycling guide",
+    heroTitle: "Know exactly where this item goes in your city.",
     heroCopy:
-      "Scan a package or search by name, confirm the municipality, and get a clear answer with local reasoning, next steps, and nearby drop-off options.",
+      "Search a package or use a sample scan, match the nearest municipality, and get a local answer with nearby drop-off directions when needed.",
     ribbonLocal: "Local rules first",
     ribbonBilingual: "English + Spanish",
     ribbonCenters: "Drop-off guidance",
-    metricOneLabel: "Decision speed",
-    metricOneCopy: "The answer card is designed to land in one glance.",
-    metricTwoLabel: "What changes by city",
-    metricTwoValue: "Rules",
-    metricTwoCopy: "The same package can be recycled, trashed, or dropped off depending on the municipality.",
+    metricOneLabel: "Mobile-first",
+    metricOneCopy: "One tap to location and one search to a local answer.",
+    metricTwoLabel: "Pilot coverage",
+    metricTwoValue: "3 cities",
+    metricTwoCopy: "The current release focuses on reviewed municipal profiles and nearby center guidance.",
     searchEyebrow: "Start a lookup",
     searchTitle: "Search, scan, and trust the answer",
     municipalityLabel: "Municipality",
@@ -1365,6 +1516,28 @@ const translations = {
     locationSeedLabel: "Location seed",
     locationSeedCopy: "Using your current device location as the starting point.",
     locationDistanceLabel: "Distance to this pilot profile",
+    flowEyebrow: "Current route",
+    flowTitle: "From package in hand to the right place",
+    flowLocateTitle: "Locate",
+    flowLocatePending: "Use your location or choose a pilot municipality.",
+    flowItemTitle: "Identify",
+    flowItemPending: "Search a product or run the sample scan to identify the package.",
+    flowDecisionTitle: "Decide",
+    flowDecisionPending: "The answer card will show the local outcome and why it changed.",
+    flowNextTitle: "Go",
+    flowNextPending: "Nearby center guidance will appear as soon as location is available.",
+    flowReady: "Ready",
+    flowWaiting: "Waiting",
+    flowMatched: "Matched",
+    briefEyebrow: "Right now",
+    briefTitle: "Fastest next safe action",
+    briefIdleTitle: "Start by matching your current area",
+    briefIdleCopy: "Use your location for the nearest pilot municipality, then test a sample item while the local rule stays visible.",
+    briefReadyTitle: "You are set up for",
+    briefNearestCenter: "Nearest center",
+    briefNextStep: "Best next step",
+    briefFlowHint: "Then search an item or run the sample scan.",
+    briefOpenNearest: "Open nearest center",
     quickLabel: "Popular lookups",
     resultEyebrow: "Answer card",
     resultTitle: "Your local recycling guidance",
@@ -1464,18 +1637,18 @@ const translations = {
   es: {
     brandTitle: "Asistente de Reciclaje",
     copyLink: "Copiar enlace",
-    heroKicker: "Version lista para revision familiar",
-    heroTitle: "Recibe la respuesta correcta de reciclaje para el lugar donde estas.",
+    heroKicker: "Guia domestica de reciclaje con ubicacion",
+    heroTitle: "Sabe exactamente donde va este articulo en tu ciudad.",
     heroCopy:
-      "Escanea un empaque o busca por nombre, confirma el municipio y recibe una respuesta clara con razon local, pasos y centros cercanos.",
+      "Busca un empaque o usa una muestra, ubica el municipio piloto mas cercano y recibe una respuesta local con direcciones a centros cuando haga falta.",
     ribbonLocal: "Primero reglas locales",
     ribbonBilingual: "Ingles + espanol",
     ribbonCenters: "Guia de centros",
-    metricOneLabel: "Velocidad de decision",
-    metricOneCopy: "La tarjeta de respuesta esta hecha para entenderse de un vistazo.",
-    metricTwoLabel: "Que cambia por ciudad",
-    metricTwoValue: "Reglas",
-    metricTwoCopy: "El mismo empaque puede reciclarse, tirarse o llevarse a un centro segun el municipio.",
+    metricOneLabel: "Diseno movil",
+    metricOneCopy: "Un toque para ubicacion y una busqueda para una respuesta local.",
+    metricTwoLabel: "Cobertura piloto",
+    metricTwoValue: "3 ciudades",
+    metricTwoCopy: "La version actual se enfoca en perfiles municipales revisados y centros cercanos.",
     searchEyebrow: "Inicia una consulta",
     searchTitle: "Busca, escanea y confia en la respuesta",
     municipalityLabel: "Municipio",
@@ -1493,6 +1666,28 @@ const translations = {
     locationSeedLabel: "Punto de partida",
     locationSeedCopy: "Usando la ubicacion actual del dispositivo como punto de partida.",
     locationDistanceLabel: "Distancia a este perfil piloto",
+    flowEyebrow: "Ruta actual",
+    flowTitle: "Del empaque en tu mano al lugar correcto",
+    flowLocateTitle: "Ubicar",
+    flowLocatePending: "Usa tu ubicacion o elige un municipio piloto.",
+    flowItemTitle: "Identificar",
+    flowItemPending: "Busca un producto o usa la muestra para identificar el empaque.",
+    flowDecisionTitle: "Decidir",
+    flowDecisionPending: "La tarjeta mostrara el resultado local y por que cambia.",
+    flowNextTitle: "Ir",
+    flowNextPending: "La ayuda de centros cercanos aparecera en cuanto haya ubicacion.",
+    flowReady: "Listo",
+    flowWaiting: "Pendiente",
+    flowMatched: "Ubicado",
+    briefEyebrow: "Ahora",
+    briefTitle: "Siguiente accion mas segura",
+    briefIdleTitle: "Empieza por ubicar tu area actual",
+    briefIdleCopy: "Usa tu ubicacion para encontrar el municipio piloto mas cercano y luego prueba un articulo mientras la regla local se mantiene visible.",
+    briefReadyTitle: "Ya estas listo para",
+    briefNearestCenter: "Centro mas cercano",
+    briefNextStep: "Mejor siguiente paso",
+    briefFlowHint: "Despues busca un articulo o usa la muestra.",
+    briefOpenNearest: "Abrir centro mas cercano",
     quickLabel: "Consultas populares",
     resultEyebrow: "Tarjeta de respuesta",
     resultTitle: "Tu guia local de reciclaje",
@@ -2185,6 +2380,8 @@ const elements = {
   scanDemo: document.getElementById("scan-demo"),
   useLocation: document.getElementById("use-location"),
   locationStatus: document.getElementById("location-status"),
+  flowBoard: document.getElementById("flow-board"),
+  nextStepCard: document.getElementById("next-step-card"),
   resultContent: document.getElementById("result-content"),
   routineCard: document.getElementById("routine-card"),
   playbookCard: document.getElementById("playbook-card"),
@@ -2206,7 +2403,7 @@ const elements = {
   chips: [...document.querySelectorAll(".chip")]
 };
 
-const buildId = "2026-06-30-ui2";
+const buildId = "2026-06-30-ui3";
 const demoBarcodes = Object.keys(products);
 const testScenarios = [
   {
@@ -2467,11 +2664,162 @@ function centerDistanceText(center) {
   return formatMiles(miles);
 }
 
+function sortedCentersForCurrentMunicipality() {
+  const centers = [...activeMunicipality().centers];
+
+  if (!state.userLocation) {
+    return centers;
+  }
+
+  return centers.sort((left, right) => {
+    const leftDistance = haversineMiles(
+      state.userLocation.latitude,
+      state.userLocation.longitude,
+      left.coordinates.lat,
+      left.coordinates.lng
+    );
+    const rightDistance = haversineMiles(
+      state.userLocation.latitude,
+      state.userLocation.longitude,
+      right.coordinates.lat,
+      right.coordinates.lng
+    );
+
+    return leftDistance - rightDistance;
+  });
+}
+
+function nearestCenterForCurrentMunicipality() {
+  return sortedCentersForCurrentMunicipality()[0] || null;
+}
+
+function renderFlowBoard() {
+  const ui = copy();
+  const municipality = activeMunicipality();
+  const currentEntry = activeProductEntry();
+  const municipalityKey = elements.municipalitySelect.value;
+  const guidance = currentEntry ? currentEntry.product.outcomes[municipalityKey] : null;
+  const nearestCenter = nearestCenterForCurrentMunicipality();
+  const locationMatch = state.userLocation
+    ? nearestMunicipalityForLocation(state.userLocation.latitude, state.userLocation.longitude)
+    : null;
+  const steps = [
+    {
+      index: "01",
+      title: ui.flowLocateTitle,
+      flag: state.userLocation ? ui.flowMatched : ui.flowWaiting,
+      tone: state.userLocation ? "active" : "pending",
+      body: state.userLocation ? locationMatchStatus(locationMatch) : ui.flowLocatePending
+    },
+    {
+      index: "02",
+      title: ui.flowItemTitle,
+      flag: currentEntry ? ui.flowReady : ui.flowWaiting,
+      tone: currentEntry ? "active" : "pending",
+      body: currentEntry
+        ? `${currentEntry.product.name[state.language]} · ${currentEntry.product.family[state.language]}`
+        : ui.flowItemPending
+    },
+    {
+      index: "03",
+      title: ui.flowDecisionTitle,
+      flag: guidance ? outcomeLabel(guidance.outcome) : ui.flowWaiting,
+      tone: guidance ? "active" : "pending",
+      body: guidance ? `${guidance.lane[state.language]} · ${municipality.name[state.language]}` : ui.flowDecisionPending
+    },
+    {
+      index: "04",
+      title: ui.flowNextTitle,
+      flag: nearestCenter ? ui.flowReady : ui.flowWaiting,
+      tone: nearestCenter ? "active" : "pending",
+      body: nearestCenter
+        ? `${nearestCenter.name[state.language]} · ${centerDistanceText(nearestCenter)}`
+        : ui.flowNextPending
+    }
+  ];
+
+  elements.flowBoard.innerHTML = steps.map((step) => `
+    <article class="flow-item flow-${step.tone}">
+      <div class="flow-head">
+        <span class="flow-index">${step.index}</span>
+        <span class="flow-flag">${step.flag}</span>
+      </div>
+      <strong>${step.title}</strong>
+      <p>${step.body}</p>
+    </article>
+  `).join("");
+}
+
+function renderNextStepCard() {
+  const ui = copy();
+  const municipality = activeMunicipality();
+  const nearestCenter = nearestCenterForCurrentMunicipality();
+  const currentEntry = activeProductEntry();
+
+  if (!state.userLocation && !currentEntry) {
+    elements.nextStepCard.innerHTML = `
+      <div class="brief-card brief-card-accent">
+        <strong class="brief-title">${ui.briefIdleTitle}</strong>
+        <p class="brief-copy">${ui.briefIdleCopy}</p>
+        <div class="brief-pills">
+          <span class="mini-pill">${municipality.name[state.language]}</span>
+          <span class="mini-pill">${ui.flowLocateTitle}</span>
+        </div>
+        <div class="brief-actions">
+          <button class="button" type="button" data-next-action="location">${ui.useMyLocation}</button>
+          <button class="ghost-button" type="button" data-next-action="demo">${ui.scanDemo}</button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  if (!currentEntry) {
+    const firstTimelineStep = municipality.routine.timeline[state.language][0];
+    elements.nextStepCard.innerHTML = `
+      <div class="brief-card">
+        <strong class="brief-title">${ui.briefReadyTitle} ${municipality.name[state.language]}</strong>
+        <p class="brief-copy">${municipality.routine.focus[state.language]}</p>
+        <p class="brief-meta"><strong>${ui.briefNextStep}:</strong> ${firstTimelineStep}</p>
+        <p class="brief-meta"><strong>${ui.briefNearestCenter}:</strong> ${nearestCenter ? `${nearestCenter.name[state.language]} · ${centerDistanceText(nearestCenter)}` : municipality.program[state.language]}</p>
+        <div class="brief-actions">
+          <button class="button" type="button" data-next-action="demo">${ui.scanDemo}</button>
+          ${nearestCenter ? `<a class="center-link center-link-primary" href="${mapsDirectionsUrl(nearestCenter)}" target="_blank" rel="noreferrer">${ui.briefOpenNearest}</a>` : ""}
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  const municipalityKey = elements.municipalitySelect.value;
+  const guidance = currentEntry.product.outcomes[municipalityKey];
+  const needsCenterAction = guidance.outcome === "drop_off" || guidance.outcome === "check_locally";
+  const nextStep = guidance.steps[state.language][0];
+
+  elements.nextStepCard.innerHTML = `
+    <div class="brief-card brief-card-accent">
+      <span class="${outcomeClass(guidance.outcome)}">${outcomeLabel(guidance.outcome)}</span>
+      <strong class="brief-title">${currentEntry.product.name[state.language]}</strong>
+      <p class="brief-copy">${guidance.instructions[state.language]}</p>
+      <p class="brief-meta"><strong>${ui.briefNextStep}:</strong> ${nextStep}</p>
+      <p class="brief-meta"><strong>${ui.resultTrack}:</strong> ${guidance.lane[state.language]}</p>
+      ${nearestCenter ? `<p class="brief-meta"><strong>${ui.briefNearestCenter}:</strong> ${nearestCenter.name[state.language]} · ${centerDistanceText(nearestCenter)}</p>` : ""}
+      <div class="brief-actions">
+        ${needsCenterAction && nearestCenter ? `<a class="center-link center-link-primary" href="${mapsDirectionsUrl(nearestCenter)}" target="_blank" rel="noreferrer">${ui.centerDirections}</a>` : ""}
+        ${nearestCenter ? `<a class="center-link" href="${mapsSearchUrl(nearestCenter)}" target="_blank" rel="noreferrer">${ui.centerMap}</a>` : ""}
+        <button class="ghost-button" type="button" data-next-action="demo">${ui.scanDemo}</button>
+      </div>
+    </div>
+  `;
+}
+
 function refreshMunicipalityViews() {
   renderMunicipalityPulse();
   renderRoutineCard();
   renderPlaybookCard();
   renderMarkGuide();
+  renderFlowBoard();
+  renderNextStepCard();
 }
 
 function requestUserLocation() {
@@ -2657,31 +3005,12 @@ function renderMarkGuide() {
 
 function renderCenters(entry) {
   const ui = copy();
-  const municipality = activeMunicipality();
-  const centers = [...municipality.centers];
+  const centers = sortedCentersForCurrentMunicipality();
   elements.centerList.innerHTML = "";
 
   if (!entry && !state.userLocation) {
     elements.centerList.innerHTML = `<div class="center-card"><p class="center-meta">${ui.noCenters}</p></div>`;
     return;
-  }
-
-  if (state.userLocation) {
-    centers.sort((left, right) => {
-      const leftDistance = haversineMiles(
-        state.userLocation.latitude,
-        state.userLocation.longitude,
-        left.coordinates.lat,
-        left.coordinates.lng
-      );
-      const rightDistance = haversineMiles(
-        state.userLocation.latitude,
-        state.userLocation.longitude,
-        right.coordinates.lat,
-        right.coordinates.lng
-      );
-      return leftDistance - rightDistance;
-    });
   }
 
   centers.forEach((center) => {
@@ -2923,6 +3252,8 @@ function renderUnknown() {
     </div>
   `;
 
+  renderFlowBoard();
+  renderNextStepCard();
   renderCenters(null);
 }
 
@@ -3004,6 +3335,8 @@ function renderResult(entry, trackHistory) {
     addHistory(entry.barcode, guidance.outcome, municipalityKey);
   }
 
+  renderFlowBoard();
+  renderNextStepCard();
   renderCenters(entry);
 }
 
@@ -3017,6 +3350,13 @@ function handleSearch(value) {
 
   state.currentBarcode = entry.barcode;
   renderResult(entry, true);
+}
+
+function runDemoScan() {
+  const barcode = demoBarcodes[state.demoIndex % demoBarcodes.length];
+  state.demoIndex += 1;
+  elements.searchInput.value = products[barcode].name.en;
+  handleSearch(barcode);
 }
 
 elements.languageToggle.addEventListener("click", () => {
@@ -3045,14 +3385,28 @@ elements.searchButton.addEventListener("click", () => {
 });
 
 elements.scanDemo.addEventListener("click", () => {
-  const barcode = demoBarcodes[state.demoIndex % demoBarcodes.length];
-  state.demoIndex += 1;
-  elements.searchInput.value = products[barcode].name.en;
-  handleSearch(barcode);
+  runDemoScan();
 });
 
 elements.useLocation.addEventListener("click", () => {
   requestUserLocation();
+});
+
+elements.nextStepCard.addEventListener("click", (event) => {
+  const target = event.target.closest("[data-next-action]");
+  if (!target) {
+    return;
+  }
+
+  const action = target.getAttribute("data-next-action");
+  if (action === "location") {
+    requestUserLocation();
+    return;
+  }
+
+  if (action === "demo") {
+    runDemoScan();
+  }
 });
 
 elements.chips.forEach((chip) => {
