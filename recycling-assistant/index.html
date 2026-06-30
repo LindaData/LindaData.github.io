@@ -1040,6 +1040,7 @@ textarea {
 .session-strip,
 .session-metric,
 .feedback-presets-wrap,
+.feedback-answer-wrap,
 .feedback-tags-wrap,
 .comparison-card {
   border-radius: var(--radius-lg);
@@ -1049,6 +1050,7 @@ textarea {
 
 .session-strip,
 .feedback-presets-wrap,
+.feedback-answer-wrap,
 .feedback-tags-wrap {
   padding: 16px;
 }
@@ -1910,6 +1912,16 @@ textarea {
                   </div>
                 </div>
 
+                <div class="feedback-answer-wrap">
+                  <div class="panel-heading session-heading">
+                    <div>
+                      <p class="eyebrow" data-i18n="currentAnswerEyebrow">Current answer</p>
+                      <h3 data-i18n="currentAnswerTitle">Review the answer you are rating</h3>
+                    </div>
+                  </div>
+                  <div id="feedback-current-answer" class="feedback-current-answer"></div>
+                </div>
+
                 <div class="rating-grid">
                   <div class="feedback-presets-wrap">
                     <strong data-i18n="presetTitle">Quick reactions</strong>
@@ -2159,6 +2171,11 @@ const translations = {
     historyTitle: "What you checked recently",
     feedbackEyebrow: "Household testing",
     feedbackTitle: "Capture feedback inside the product",
+    currentAnswerEyebrow: "Current answer",
+    currentAnswerTitle: "Review the answer you are rating",
+    currentAnswerEmpty: "Run a search, scenario, or checklist step to keep the active answer visible here while you leave feedback.",
+    currentAnswerJump: "Jump to full answer",
+    currentAnswerDirections: "Open directions",
     sessionEyebrow: "Review session",
     sessionTitle: "Current test snapshot",
     sessionItems: "Items checked",
@@ -2388,6 +2405,11 @@ const translations = {
     historyTitle: "Lo que revisaste recientemente",
     feedbackEyebrow: "Prueba en casa",
     feedbackTitle: "Captura comentarios dentro del producto",
+    currentAnswerEyebrow: "Respuesta actual",
+    currentAnswerTitle: "Revisa la respuesta que estas evaluando",
+    currentAnswerEmpty: "Ejecuta una busqueda, escenario o paso de revision para mantener aqui visible la respuesta activa mientras dejas comentarios.",
+    currentAnswerJump: "Ir a la respuesta completa",
+    currentAnswerDirections: "Abrir indicaciones",
     sessionEyebrow: "Sesion de revision",
     sessionTitle: "Resumen actual de la prueba",
     sessionItems: "Articulos revisados",
@@ -3935,6 +3957,7 @@ const elements = {
   feedbackLog: document.getElementById("feedback-log"),
   sessionSnapshot: document.getElementById("session-snapshot"),
   sessionChecklist: document.getElementById("session-checklist"),
+  feedbackCurrentAnswer: document.getElementById("feedback-current-answer"),
   scenarioList: document.getElementById("scenario-list"),
   clarityRating: document.getElementById("clarity-rating"),
   trustRating: document.getElementById("trust-rating"),
@@ -3953,7 +3976,7 @@ const elements = {
   chips: [...document.querySelectorAll(".chip")]
 };
 
-const buildId = "2026-06-30-ui12";
+const buildId = "2026-06-30-ui13";
 const bootState = readUrlState();
 
 if (bootState.language && translations[bootState.language]) {
@@ -5175,7 +5198,7 @@ function renderScenarios() {
     button.addEventListener("click", () => {
       const barcode = button.getAttribute("data-scenario-barcode");
       elements.searchInput.value = products[barcode].name[state.language];
-      handleSearch(barcode);
+      handleSearch(barcode, { scroll: false });
     });
   });
 }
@@ -5394,6 +5417,47 @@ function renderFeedbackLog() {
   renderSessionOverview();
 }
 
+function renderFeedbackCurrentAnswer() {
+  const ui = copy();
+  const currentEntry = activeProductEntry();
+
+  if (!currentEntry) {
+    elements.feedbackCurrentAnswer.innerHTML = `<div class="feedback-entry"><p>${ui.currentAnswerEmpty}</p></div>`;
+    return;
+  }
+
+  const municipalityKey = elements.municipalitySelect.value;
+  const guidance = currentEntry.product.outcomes[municipalityKey];
+  const nearestCenter = nearestCenterForCurrentMunicipality();
+  const needsDirections = state.userLocation && (guidance.outcome === "drop_off" || guidance.outcome === "check_locally") && nearestCenter;
+
+  elements.feedbackCurrentAnswer.innerHTML = `
+    <div class="feedback-entry">
+      <div class="comparison-head">
+        <strong>${currentEntry.product.name[state.language]}</strong>
+        <span class="${outcomeClass(guidance.outcome)}">${outcomeLabel(guidance.outcome)}</span>
+      </div>
+      <p class="feedback-meta">${activeMunicipality().name[state.language]} · ${guidance.lane[state.language]}</p>
+      <p>${guidance.instructions[state.language]}</p>
+      <div class="feedback-scores">
+        <span class="mini-pill">${copy().compareStep}: ${guidance.steps[state.language][0]}</span>
+      </div>
+      <div class="center-actions">
+        <button class="ghost-button" type="button" data-feedback-answer-action="jump">${ui.currentAnswerJump}</button>
+        ${needsDirections ? `<a class="center-link center-link-primary" href="${mapsDirectionsUrl(nearestCenter)}" target="_blank" rel="noreferrer">${ui.currentAnswerDirections}</a>` : ""}
+      </div>
+    </div>
+  `;
+
+  elements.feedbackCurrentAnswer.querySelectorAll("[data-feedback-answer-action]").forEach((button) => {
+    button.addEventListener("click", () => {
+      if (button.getAttribute("data-feedback-answer-action") === "jump") {
+        scrollToSection(".result-stage");
+      }
+    });
+  });
+}
+
 function renderSessionSnapshot() {
   const ui = copy();
   const uniqueItems = state.sessionCoverage.barcodes.length;
@@ -5475,6 +5539,7 @@ function renderSessionChecklist() {
 function renderSessionOverview() {
   renderSessionSnapshot();
   renderSessionChecklist();
+  renderFeedbackCurrentAnswer();
 }
 
 function runChecklistAction(action) {
@@ -5487,7 +5552,7 @@ function runChecklistAction(action) {
     const barcode = sampleBarcodeForOutcomes(["recycle"]);
     if (barcode) {
       elements.searchInput.value = products[barcode].name[state.language];
-      handleSearch(barcode);
+      handleSearch(barcode, { scroll: false });
     }
     return;
   }
@@ -5496,7 +5561,7 @@ function runChecklistAction(action) {
     const barcode = sampleBarcodeForOutcomes(["drop_off"]);
     if (barcode) {
       elements.searchInput.value = products[barcode].name[state.language];
-      handleSearch(barcode);
+      handleSearch(barcode, { scroll: false });
     }
     return;
   }
@@ -5505,7 +5570,7 @@ function runChecklistAction(action) {
     const barcode = sampleBarcodeForOutcomes(["check_locally", "trash"]);
     if (barcode) {
       elements.searchInput.value = products[barcode].name[state.language];
-      handleSearch(barcode);
+      handleSearch(barcode, { scroll: false });
     }
     return;
   }
@@ -5518,14 +5583,14 @@ function runChecklistAction(action) {
     const currentEntry = activeProductEntry();
     if (currentEntry) {
       elements.searchInput.value = currentEntry.product.name[state.language];
-      handleSearch(currentEntry.barcode);
+      handleSearch(currentEntry.barcode, { scroll: false });
     } else {
       const barcode = sampleBarcodeForOutcomes(["recycle"]);
       if (barcode) {
         elements.searchInput.value = products[barcode].name[state.language];
-        handleSearch(barcode);
+        handleSearch(barcode, { scroll: false });
       } else {
-        scrollToSection(".result-stage");
+        scrollToSection(".feedback-card");
       }
     }
     return;
