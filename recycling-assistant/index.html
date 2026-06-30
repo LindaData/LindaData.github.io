@@ -1066,6 +1066,10 @@ textarea {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.session-checklist-wrap {
+  margin-top: 16px;
+}
+
 .session-metric {
   padding: 14px;
 }
@@ -1075,6 +1079,21 @@ textarea {
   margin-top: 8px;
   font-size: 1.5rem;
   font-family: var(--font-display);
+}
+
+.session-metric-wide {
+  grid-column: 1 / -1;
+}
+
+.session-pills,
+.checklist-list {
+  display: grid;
+  gap: 10px;
+}
+
+.session-pills {
+  margin-top: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .feedback-tags-wrap strong {
@@ -1088,6 +1107,44 @@ textarea {
 
 .feedback-tag {
   padding: 0.8rem 0.9rem;
+}
+
+.session-progress {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.session-progress-track {
+  width: 100%;
+  height: 10px;
+  margin-top: 12px;
+  border-radius: 999px;
+  background: rgba(16, 42, 67, 0.09);
+  overflow: hidden;
+}
+
+.session-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--leaf), var(--sun));
+}
+
+.checklist-list {
+  margin-top: 14px;
+}
+
+.checklist-item {
+  padding: 14px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.checklist-item.is-done {
+  border-color: rgba(15, 118, 110, 0.28);
+  background: linear-gradient(135deg, rgba(223, 247, 239, 0.8), rgba(255, 255, 255, 0.92));
 }
 
 .comparison-panel {
@@ -1477,6 +1534,10 @@ textarea {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .session-pills {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .comparison-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -1822,6 +1883,13 @@ textarea {
                     </div>
                   </div>
                   <div id="session-snapshot" class="session-grid"></div>
+                  <div class="session-checklist-wrap">
+                    <strong data-i18n="checklistTitle">Recommended review route</strong>
+                    <p class="browse-copy" data-i18n="checklistCopy">
+                      Work through the steps below so the product team sees clarity issues across real local outcomes.
+                    </p>
+                    <div id="session-checklist" class="session-checklist"></div>
+                  </div>
                 </div>
 
                 <div class="rating-grid">
@@ -2075,6 +2143,18 @@ const translations = {
     sessionFeedback: "Notes saved",
     sessionCities: "Cities tried",
     sessionScore: "Average score",
+    sessionTopFlags: "Top flags",
+    checklistTitle: "Recommended review route",
+    checklistCopy: "Work through the steps below so the product team sees clarity issues across real local outcomes.",
+    checklistProgress: "Session progress",
+    checklistDone: "Done",
+    checklistNext: "Next",
+    checklistLocation: "Match your real location",
+    checklistRecycle: "Test a clear recycle case",
+    checklistDropoff: "Test a drop-off item",
+    checklistUnclear: "Test an uncertain or caution case",
+    checklistCities: "Compare at least two pilot cities",
+    checklistFeedback: "Save at least one feedback note",
     feedbackTagPrompt: "Quick flags",
     feedbackTagsLabel: "Quick flags",
     feedbackTagWordy: "Too much text",
@@ -2280,6 +2360,18 @@ const translations = {
     sessionFeedback: "Notas guardadas",
     sessionCities: "Ciudades probadas",
     sessionScore: "Promedio",
+    sessionTopFlags: "Marcas principales",
+    checklistTitle: "Ruta recomendada de revision",
+    checklistCopy: "Completa estos pasos para que el equipo vea problemas de claridad en resultados locales reales.",
+    checklistProgress: "Progreso de la sesion",
+    checklistDone: "Hecho",
+    checklistNext: "Siguiente",
+    checklistLocation: "Usa tu ubicacion real",
+    checklistRecycle: "Prueba un caso claro de reciclaje",
+    checklistDropoff: "Prueba un articulo de entrega especial",
+    checklistUnclear: "Prueba un caso incierto o con cautela",
+    checklistCities: "Compara al menos dos ciudades piloto",
+    checklistFeedback: "Guarda al menos una nota",
     feedbackTagPrompt: "Marcas rapidas",
     feedbackTagsLabel: "Marcas rapidas",
     feedbackTagWordy: "Demasiado texto",
@@ -3791,6 +3883,7 @@ const elements = {
   historyList: document.getElementById("history-list"),
   feedbackLog: document.getElementById("feedback-log"),
   sessionSnapshot: document.getElementById("session-snapshot"),
+  sessionChecklist: document.getElementById("session-checklist"),
   scenarioList: document.getElementById("scenario-list"),
   clarityRating: document.getElementById("clarity-rating"),
   trustRating: document.getElementById("trust-rating"),
@@ -3806,7 +3899,7 @@ const elements = {
   chips: [...document.querySelectorAll(".chip")]
 };
 
-const buildId = "2026-06-30-ui9";
+const buildId = "2026-06-30-ui10";
 const bootState = readUrlState();
 
 if (bootState.language && translations[bootState.language]) {
@@ -4440,6 +4533,7 @@ function refreshMunicipalityViews() {
   renderFlowBoard();
   renderNextStepCard();
   renderBrowseCatalog();
+  renderSessionOverview();
 }
 
 function scannerSupportAvailable() {
@@ -4812,6 +4906,37 @@ function feedbackTagLabels(tagKeys) {
   return (tagKeys || []).map((tagKey) => feedbackTagLabel(tagKey));
 }
 
+function topFeedbackTagKeys(limit = 3) {
+  const counts = new Map();
+
+  state.feedback.forEach((entry) => {
+    (entry.tags || []).forEach((tag) => {
+      counts.set(tag, (counts.get(tag) || 0) + 1);
+    });
+  });
+
+  return [...counts.entries()]
+    .sort((left, right) => right[1] - left[1])
+    .slice(0, limit)
+    .map(([tag]) => tag);
+}
+
+function checklistItems() {
+  const uniqueCities = new Set(state.history.map((entry) => entry.municipality).filter(Boolean)).size;
+  const hasRecycle = state.history.some((entry) => entry.outcome === "recycle");
+  const hasDropoff = state.history.some((entry) => entry.outcome === "drop_off");
+  const hasUnclear = state.history.some((entry) => entry.outcome === "check_locally" || entry.outcome === "trash");
+
+  return [
+    { key: "checklistLocation", done: Boolean(state.userLocation) },
+    { key: "checklistRecycle", done: hasRecycle },
+    { key: "checklistDropoff", done: hasDropoff },
+    { key: "checklistUnclear", done: hasUnclear },
+    { key: "checklistCities", done: uniqueCities >= 2 },
+    { key: "checklistFeedback", done: state.feedback.length >= 1 }
+  ];
+}
+
 function renderFeedbackTags() {
   elements.feedbackTags.innerHTML = feedbackTagOptions.map((tag) => `
     <button
@@ -5041,7 +5166,7 @@ function renderHistory() {
 
   if (!state.history.length) {
     elements.historyList.innerHTML = `<div class="history-card"><p class="history-meta">${ui.noHistory}</p></div>`;
-    renderSessionSnapshot();
+    renderSessionOverview();
     return;
   }
 
@@ -5080,7 +5205,7 @@ function renderHistory() {
     });
   });
 
-  renderSessionSnapshot();
+  renderSessionOverview();
 }
 
 function feedbackContextLabel(entry) {
@@ -5100,7 +5225,7 @@ function renderFeedbackLog() {
 
   if (!state.feedback.length) {
     elements.feedbackLog.innerHTML = `<div class="feedback-entry"><p>${ui.feedbackEmpty}</p></div>`;
-    renderSessionSnapshot();
+    renderSessionOverview();
     return;
   }
 
@@ -5122,7 +5247,7 @@ function renderFeedbackLog() {
     elements.feedbackLog.appendChild(item);
   });
 
-  renderSessionSnapshot();
+  renderSessionOverview();
 }
 
 function renderSessionSnapshot() {
@@ -5135,6 +5260,7 @@ function renderSessionSnapshot() {
   const averageScore = scoreSource.length
     ? (scoreSource.reduce((total, value) => total + value, 0) / scoreSource.length).toFixed(1)
     : "0.0";
+  const topFlags = feedbackTagLabels(topFeedbackTagKeys());
 
   elements.sessionSnapshot.innerHTML = `
     <div class="session-metric">
@@ -5153,7 +5279,45 @@ function renderSessionSnapshot() {
       <span class="metric-label">${ui.sessionScore}</span>
       <strong>${averageScore}</strong>
     </div>
+    <div class="session-metric session-metric-wide">
+      <span class="metric-label">${ui.sessionTopFlags}</span>
+      <div class="session-pills">
+        ${topFlags.length ? topFlags.map((flag) => `<span class="mini-pill">${flag}</span>`).join("") : `<span class="mini-pill">${ui.checklistNext}</span>`}
+      </div>
+    </div>
   `;
+}
+
+function renderSessionChecklist() {
+  const ui = copy();
+  const items = checklistItems();
+  const completed = items.filter((item) => item.done).length;
+  const progress = Math.round((completed / items.length) * 100);
+
+  elements.sessionChecklist.innerHTML = `
+    <div class="session-progress">
+      <strong>${ui.checklistProgress}</strong>
+      <span class="mini-pill">${completed}/${items.length} · ${progress}%</span>
+    </div>
+    <div class="session-progress-track" aria-hidden="true">
+      <div class="session-progress-fill" style="width:${progress}%"></div>
+    </div>
+    <div class="checklist-list">
+      ${items.map((item) => `
+        <article class="checklist-item${item.done ? " is-done" : ""}">
+          <div class="comparison-head">
+            <strong>${ui[item.key]}</strong>
+            <span class="mini-pill">${item.done ? ui.checklistDone : ui.checklistNext}</span>
+          </div>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderSessionOverview() {
+  renderSessionSnapshot();
+  renderSessionChecklist();
 }
 
 function currentFeedbackContext() {
@@ -5169,7 +5333,20 @@ function feedbackReportText() {
     return ui.feedbackEmpty;
   }
 
-  return state.feedback.slice(0, 10).map((entry, index) => {
+  const checklist = checklistItems();
+  const completed = checklist.filter((item) => item.done).length;
+  const topFlags = feedbackTagLabels(topFeedbackTagKeys());
+
+  return [
+    [
+      ui.sessionTitle,
+      `${ui.sessionItems}: ${new Set(state.history.map((entry) => entry.barcode).filter(Boolean)).size}`,
+      `${ui.sessionFeedback}: ${state.feedback.length}`,
+      `${ui.sessionCities}: ${new Set(state.history.map((entry) => entry.municipality).filter(Boolean)).size}`,
+      `${ui.checklistProgress}: ${completed}/${checklist.length}`,
+      topFlags.length ? `${ui.sessionTopFlags}: ${topFlags.join(", ")}` : null
+    ].filter(Boolean).join("\n"),
+    state.feedback.slice(0, 10).map((entry, index) => {
     return [
       `Feedback ${index + 1}`,
       `${ui.feedbackContext}: ${feedbackContextLabel(entry)}`,
@@ -5180,7 +5357,8 @@ function feedbackReportText() {
       entry.notes,
       entry.url ? `${ui.feedbackLink}: ${entry.url}` : null
     ].filter(Boolean).join("\n");
-  }).join("\n\n");
+  }).join("\n\n")
+  ].join("\n\n");
 }
 
 function saveFeedbackEntry() {
