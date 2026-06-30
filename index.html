@@ -6,7 +6,7 @@
     <title>LindaData | Review Hub</title>
     <meta
       name="description"
-      content="Review the LindaData Recycling Assistant pilot and explore current LindaData projects."
+      content="Review the LindaData Recycling Assistant pilot, inspect live LindaData projects, and open an owner-facing review layer for concrete adjustments."
     >
     <style>
       :root {
@@ -15,13 +15,19 @@
         --leaf: #0f766e;
         --leaf-deep: #0b4f4a;
         --sun: #f59e0b;
-        --sand: #fff6e9;
+        --sun-soft: #fff4dc;
+        --rose: #b54708;
+        --sand: #fffaf2;
+        --mist: #edf4f7;
         --card: rgba(255, 255, 255, 0.84);
-        --border: rgba(16, 42, 67, 0.08);
+        --card-strong: rgba(255, 255, 255, 0.92);
+        --border: rgba(16, 42, 67, 0.1);
         --shadow: 0 24px 64px rgba(10, 42, 63, 0.12);
+        --shadow-soft: 0 18px 38px rgba(10, 42, 63, 0.08);
         --radius-xl: 30px;
         --radius-lg: 22px;
         --radius-md: 16px;
+        --radius-sm: 12px;
         --font-body: "Aptos", "Trebuchet MS", "Segoe UI", sans-serif;
         --font-display: "Georgia", "Iowan Old Style", "Palatino Linotype", serif;
       }
@@ -30,15 +36,26 @@
         box-sizing: border-box;
       }
 
+      html {
+        scroll-behavior: smooth;
+      }
+
       body {
         margin: 0;
         min-height: 100vh;
         color: var(--ink);
         font-family: var(--font-body);
         background:
+          radial-gradient(circle at top left, rgba(245, 158, 11, 0.2), transparent 28%),
+          radial-gradient(circle at top right, rgba(15, 118, 110, 0.16), transparent 26%),
+          linear-gradient(180deg, #fefbf5 0%, #eef5f4 44%, #eaf1f5 100%);
+      }
+
+      body[data-review-mode="on"] {
+        background:
           radial-gradient(circle at top left, rgba(245, 158, 11, 0.22), transparent 28%),
           radial-gradient(circle at top right, rgba(15, 118, 110, 0.18), transparent 26%),
-          linear-gradient(180deg, #fefbf5 0%, #eef5f4 44%, #eaf1f5 100%);
+          linear-gradient(180deg, #fff9ef 0%, #eef7f2 38%, #eef4fb 100%);
       }
 
       a {
@@ -51,22 +68,33 @@
         outline-offset: 4px;
       }
 
+      button {
+        font: inherit;
+      }
+
       .page-shell {
-        width: min(1180px, calc(100% - 24px));
+        width: min(1220px, calc(100% - 24px));
         margin: 0 auto;
-        padding: 20px 0 48px;
+        padding: 20px 0 56px;
       }
 
       .topbar,
-      .cta-row,
-      .feature-grid,
-      .project-grid {
+      .hero,
+      .hero-actions,
+      .signal-grid,
+      .summary-grid,
+      .review-grid,
+      .project-grid,
+      .review-columns,
+      .link-row,
+      .tag-row {
         display: grid;
         gap: 14px;
       }
 
       .topbar {
         margin-bottom: 18px;
+        align-items: start;
       }
 
       .brand-lockup {
@@ -105,6 +133,11 @@
         top: 0;
       }
 
+      .topbar-actions {
+        display: grid;
+        gap: 10px;
+      }
+
       .eyebrow {
         margin: 0 0 8px;
         color: var(--ink-soft);
@@ -123,66 +156,94 @@
       }
 
       h1 {
-        font-size: clamp(2.25rem, 9vw, 5rem);
-        max-width: 10ch;
+        font-size: clamp(2.25rem, 9vw, 4.85rem);
+        max-width: 11ch;
       }
 
       h2 {
-        font-size: 1.7rem;
+        font-size: 1.75rem;
       }
 
-      p {
+      h3 {
+        font-size: 1.1rem;
+      }
+
+      p,
+      li {
         line-height: 1.62;
       }
 
-      .hero {
-        display: grid;
-        gap: 18px;
-        padding: 24px;
-        border-radius: var(--radius-xl);
-        background:
-          linear-gradient(135deg, rgba(15, 118, 110, 0.12), rgba(255, 255, 255, 0.76)),
-          var(--card);
-        border: 1px solid rgba(255, 255, 255, 0.72);
-        box-shadow: var(--shadow);
+      .hero,
+      .signal-card,
+      .summary-card,
+      .review-card,
+      .project-card {
+        border-radius: var(--radius-lg);
+        background: var(--card);
+        border: 1px solid rgba(255, 255, 255, 0.74);
+        box-shadow: var(--shadow-soft);
         backdrop-filter: blur(14px);
       }
 
+      .hero {
+        padding: 24px;
+      }
+
       .hero-copy p,
-      .hero-note,
-      .project-card p {
+      .hero-note p,
+      .project-card p,
+      .section-note,
+      .summary-card p {
         margin: 0;
         color: var(--ink-soft);
       }
 
-      .hero-note {
-        padding: 14px 16px;
-        border-radius: var(--radius-lg);
-        background: rgba(255, 255, 255, 0.72);
-        border: 1px solid var(--border);
+      .hero-copy {
+        display: grid;
+        gap: 16px;
       }
 
-      .pill-row {
+      .pill-row,
+      .chip-row {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
       }
 
-      .pill {
+      .pill,
+      .chip {
         display: inline-flex;
         align-items: center;
         padding: 0.62rem 0.88rem;
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.76);
+        background: rgba(255, 255, 255, 0.78);
         border: 1px solid var(--border);
         font-weight: 700;
       }
 
-      .cta-row {
+      .chip {
+        padding: 0.44rem 0.72rem;
+        font-size: 0.88rem;
+      }
+
+      .hero-note {
+        display: grid;
+        gap: 16px;
+        padding: 18px;
+        border-radius: var(--radius-lg);
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(245, 158, 11, 0.12)),
+          var(--card-strong);
+        border: 1px solid var(--border);
+      }
+
+      .hero-actions,
+      .link-row {
         grid-template-columns: 1fr;
       }
 
-      .cta {
+      .cta,
+      .review-toggle {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -194,7 +255,8 @@
         transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
       }
 
-      .cta:hover {
+      .cta:hover,
+      .review-toggle:hover {
         transform: translateY(-1px);
       }
 
@@ -204,24 +266,21 @@
         box-shadow: var(--shadow);
       }
 
-      .cta-secondary {
-        background: rgba(255, 255, 255, 0.86);
+      .cta-secondary,
+      .review-toggle {
+        background: rgba(255, 255, 255, 0.9);
         border: 1px solid var(--border);
       }
 
-      .feature-card,
-      .project-card {
-        padding: 18px;
-        border-radius: var(--radius-lg);
-        background: rgba(255, 255, 255, 0.78);
-        border: 1px solid rgba(255, 255, 255, 0.72);
-        box-shadow: 0 18px 38px rgba(10, 42, 63, 0.08);
+      .review-toggle {
+        min-height: 48px;
+        color: var(--ink);
+        cursor: pointer;
       }
 
-      .feature-card strong,
-      .project-card strong {
-        display: block;
-        margin-bottom: 8px;
+      body[data-review-mode="on"] .review-toggle {
+        background: linear-gradient(135deg, var(--sun-soft), rgba(255, 255, 255, 0.92));
+        border-color: rgba(181, 71, 8, 0.18);
       }
 
       .section {
@@ -229,34 +288,200 @@
       }
 
       .section-header {
+        display: grid;
+        gap: 8px;
         margin-bottom: 14px;
       }
 
-      .project-card a {
+      .signal-card,
+      .summary-card,
+      .review-card,
+      .project-card {
+        padding: 18px;
+      }
+
+      .signal-card span,
+      .status-pill,
+      .priority-pill,
+      .meta-pill {
         display: inline-flex;
-        margin-top: 12px;
+        align-items: center;
+        justify-content: center;
+        min-height: 32px;
+        padding: 0.32rem 0.72rem;
+        border-radius: 999px;
+        font-size: 0.84rem;
         font-weight: 800;
-        text-decoration: none;
+      }
+
+      .signal-card span {
+        justify-content: flex-start;
+        min-height: auto;
+        padding: 0;
+        border-radius: 0;
+        font-size: 2rem;
         color: var(--leaf-deep);
       }
 
+      .signal-card strong,
+      .summary-card strong,
+      .project-card strong,
+      .review-card strong {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      .summary-card {
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(15, 118, 110, 0.08)),
+          var(--card-strong);
+      }
+
+      .review-layer {
+        padding: 22px;
+        border-radius: var(--radius-xl);
+        background:
+          linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(255, 255, 255, 0.76)),
+          rgba(255, 255, 255, 0.82);
+        border: 1px solid rgba(255, 255, 255, 0.78);
+        box-shadow: var(--shadow);
+      }
+
+      .review-layer[hidden] {
+        display: none;
+      }
+
+      .review-card {
+        background:
+          linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(237, 244, 247, 0.86)),
+          var(--card-strong);
+      }
+
+      .review-card-header,
+      .project-card-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: flex-start;
+        margin-bottom: 12px;
+      }
+
+      .status-pill {
+        color: var(--leaf-deep);
+        background: rgba(15, 118, 110, 0.12);
+      }
+
+      .priority-pill {
+        color: var(--rose);
+        background: rgba(181, 71, 8, 0.12);
+      }
+
+      .meta-pill {
+        color: var(--ink);
+        background: rgba(16, 42, 67, 0.08);
+      }
+
+      .review-columns {
+        margin-top: 14px;
+      }
+
+      .review-column {
+        padding: 14px;
+        border-radius: var(--radius-md);
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid var(--border);
+      }
+
+      .review-column h3 {
+        margin-bottom: 8px;
+      }
+
+      .review-list {
+        margin: 0;
+        padding-left: 1.15rem;
+        color: var(--ink-soft);
+      }
+
+      .focus-line {
+        margin-top: 12px;
+        padding: 12px 14px;
+        border-radius: var(--radius-md);
+        background: rgba(245, 158, 11, 0.08);
+        border: 1px solid rgba(245, 158, 11, 0.14);
+        color: var(--ink);
+      }
+
+      .focus-line span {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 0.76rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--rose);
+      }
+
+      .project-card .cta,
+      .review-card .cta {
+        min-height: 48px;
+      }
+
+      .project-card .cta-secondary,
+      .review-card .cta-secondary {
+        background: rgba(255, 255, 255, 0.9);
+      }
+
+      .section-note strong {
+        color: var(--ink);
+      }
+
       @media (min-width: 760px) {
+        .topbar {
+          grid-template-columns: 1fr auto;
+          align-items: center;
+        }
+
         .hero {
-          grid-template-columns: 1.1fr 0.9fr;
+          grid-template-columns: 1.08fr 0.92fr;
           align-items: stretch;
           padding: 30px;
         }
 
-        .cta-row {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
+        .hero-actions,
+        .link-row {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
-        .feature-grid {
+        .signal-grid {
           grid-template-columns: repeat(4, minmax(0, 1fr));
         }
 
+        .summary-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .review-grid,
         .project-grid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .review-columns {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (min-width: 1080px) {
+        .hero-actions {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .review-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .project-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
         }
       }
     </style>
@@ -271,91 +496,381 @@
             <h2>Review Hub</h2>
           </div>
         </div>
+        <div class="topbar-actions">
+          <div class="chip-row">
+            <span class="chip">Pages snapshot 9d374d4</span>
+            <span class="chip">Audit date June 30, 2026</span>
+          </div>
+          <button class="review-toggle" id="reviewToggle" type="button" aria-pressed="false">
+            Open founder review mode
+          </button>
+        </div>
       </header>
 
       <main>
         <section class="hero">
           <div class="hero-copy">
-            <p class="eyebrow">Current priority</p>
-            <h1>Review the Recycling Assistant pilot.</h1>
+            <div>
+              <p class="eyebrow">Current priority</p>
+              <h1>Review the Recycling Assistant pilot.</h1>
+            </div>
             <p>
-              LindaData is building a mobile-first recycling guide that helps households search or scan an item, match the right municipality, and follow the safest next disposal step.
+              LindaData is building mobile-first software that helps people make the right next decision fast. The current flagship is a recycling guide with location-aware disposal guidance, bilingual support, and an admin review path.
             </p>
             <div class="pill-row">
+              <span class="pill">Mobile-first</span>
               <span class="pill">Location-aware</span>
               <span class="pill">English + Spanish</span>
-              <span class="pill">Nearby center directions</span>
-              <span class="pill">Prototype review build</span>
+              <span class="pill">Founder review mode</span>
             </div>
           </div>
 
           <div class="hero-note">
-            <p class="eyebrow">What to review first</p>
-            <p>
-              Start with the resident experience. Use your location, search a tricky item such as batteries, then send a verification request if the guidance looks incomplete or unclear.
-            </p>
-            <div class="cta-row">
+            <div>
+              <p class="eyebrow">What to do first</p>
+              <p>
+                Start with the resident experience. Use your location, search a tricky item such as batteries or a coffee pod, then open founder review mode to see what else across GitHub needs adjustment before broader sharing.
+              </p>
+            </div>
+            <div class="hero-actions">
               <a class="cta cta-primary" href="./recycling-assistant/">Open resident review</a>
               <a class="cta cta-secondary" href="./recycling-assistant/admin/">Open admin console</a>
-              <a class="cta cta-secondary" href="#projects">Other LindaData projects</a>
+              <a class="cta cta-secondary" href="#projects">Browse live projects</a>
+              <button class="review-toggle" id="heroReviewToggle" type="button" aria-pressed="false">
+                Open founder review
+              </button>
             </div>
           </div>
         </section>
 
         <section class="section">
-          <div class="section-header">
-            <p class="eyebrow">Why this build exists</p>
-            <h2>Designed to make the right recycling decision fast.</h2>
-          </div>
-          <div class="feature-grid">
-            <article class="feature-card">
-              <strong>Start with the item</strong>
-              <p>Search or scan a product instead of reading dense municipal PDFs.</p>
+          <div class="signal-grid" aria-label="Portfolio snapshot">
+            <article class="signal-card">
+              <span>6</span>
+              <strong>Published surfaces audited</strong>
+              <p>Review notes now cover the recycling pilot plus five other live Pages experiences.</p>
             </article>
-            <article class="feature-card">
-              <strong>Stay local</strong>
-              <p>Keep municipality context visible so the answer matches where the user actually lives.</p>
+            <article class="signal-card">
+              <span>1</span>
+              <strong>Flagship product path</strong>
+              <p>Recycling Assistant is the clearest resident-facing experience and should stay the public front door.</p>
             </article>
-            <article class="feature-card">
-              <strong>Show next actions</strong>
-              <p>Point to the right curbside stream or the nearest drop-off location when curbside is unsafe.</p>
+            <article class="signal-card">
+              <span>3</span>
+              <strong>Cross-site cleanup items</strong>
+              <p>Repo docs, navigation consistency, and project discoverability are the highest-leverage adjustments.</p>
             </article>
-            <article class="feature-card">
-              <strong>Capture gaps</strong>
-              <p>Let residents and businesses request verification when the current guidance is missing.</p>
+            <article class="signal-card">
+              <span>100%</span>
+              <strong>Mobile reviewable</strong>
+              <p>The hub and the new review layer are structured for phone-first founder review and quick sharing.</p>
             </article>
           </div>
         </section>
 
+        <section class="section review-layer" id="founderReview" hidden>
+          <div class="section-header">
+            <p class="eyebrow">Founder review mode</p>
+            <h2>See what to adjust before wider review.</h2>
+            <p class="section-note">
+              This layer is owner-facing. It summarizes what is strongest, what is creating friction, and which adjustments will raise quality fastest across the live LindaData GitHub Pages footprint.
+            </p>
+          </div>
+
+          <div class="summary-grid">
+            <article class="summary-card">
+              <strong>Top cross-site adjustments</strong>
+              <ul class="review-list">
+                <li>Replace the legacy Jekyll README and root repo framing so GitHub explains the current LindaData Pages stack.</li>
+                <li>Unify top-level navigation labels. Statistical Analytics still points to a legacy "Blog" framing while the root is now a review hub.</li>
+                <li>Decide whether `macropilot` is public and curated. It is deployed, but it was not surfaced in the hub before this audit.</li>
+              </ul>
+            </article>
+            <article class="summary-card">
+              <strong>What is strongest right now</strong>
+              <ul class="review-list">
+                <li>Recycling Assistant is the most product-like experience and the clearest candidate for external review.</li>
+                <li>Ghost Tour already has memorable mobile interaction and live location value.</li>
+                <li>World Cup and Statistical Analytics have strong substance, but they need tighter landing and brand curation.</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="review-grid" id="reviewGrid"></div>
+        </section>
+
         <section class="section" id="projects">
           <div class="section-header">
-            <p class="eyebrow">Other work</p>
-            <h2>Current LindaData projects</h2>
+            <p class="eyebrow">Current work</p>
+            <h2>Live LindaData projects</h2>
+            <p class="section-note">
+              Open any surface directly, or switch on founder review mode to see the concrete adjustments attached to each project.
+            </p>
           </div>
-          <div class="project-grid">
-            <article class="project-card">
-              <strong>World Cup 2026 Betting Model</strong>
-              <p>Forecasting and scenario analysis for the 2026 tournament.</p>
-              <a href="./world-cup-2026-betting-model/">Open project</a>
-            </article>
-            <article class="project-card">
-              <strong>Statistical Analytics</strong>
-              <p>Interactive analytics demos and experimental data products.</p>
-              <a href="./statistical-analytics/">Open project</a>
-            </article>
-            <article class="project-card">
-              <strong>Ghost Tour</strong>
-              <p>Location-based storytelling prototype for local exploration.</p>
-              <a href="./ghost-tour/">Open project</a>
-            </article>
-            <article class="project-card">
-              <strong>Anthem Caption Demo</strong>
-              <p>Captioning and visual presentation experiments.</p>
-              <a href="./anthem-caption-demo/">Open project</a>
-            </article>
-          </div>
+          <div class="project-grid" id="projectGrid"></div>
         </section>
       </main>
     </div>
+
+    <script>
+      const projects = [
+        {
+          title: "Recycling Assistant",
+          state: "Flagship pilot",
+          priority: "Priority: high",
+          summary: "Mobile-first resident experience for location-aware recycling guidance, bilingual support, nearby centers, and verification requests.",
+          focus: "Back more item guidance with municipality-sourced data and keep the admin workflow tight as public review volume grows.",
+          tags: ["Resident UX", "Bilingual", "Location"],
+          links: [
+            { label: "Open resident review", href: "./recycling-assistant/", primary: true },
+            { label: "Open admin", href: "./recycling-assistant/admin/" }
+          ],
+          working: [
+            "Strongest end-to-end product flow in the portfolio.",
+            "Good mobile hierarchy with clear next steps and nearby center handoff.",
+            "Founder review can happen without needing an engineer present."
+          ],
+          adjust: [
+            "Shift more answers from seed rules to municipality-backed data files.",
+            "Add a public privacy note and stronger production trust markers before broad rollout.",
+            "Keep search, scanning, and admin evidence trails aligned as the dataset grows."
+          ]
+        },
+        {
+          title: "World Cup 2026 Betting Model",
+          state: "Research-rich",
+          priority: "Priority: medium",
+          summary: "Substantive Quarto-based model site with reports, distributions, and source access for forecasting work.",
+          focus: "Add a sharper front page summary so first-time visitors understand the current model takeaways before reading long-form reports.",
+          tags: ["Analytics", "Research", "Quarto"],
+          links: [
+            { label: "Open project", href: "./world-cup-2026-betting-model/", primary: true },
+            { label: "View GitHub", href: "https://github.com/LindaData/world-cup-2026-betting-model" }
+          ],
+          working: [
+            "Strong documentation depth and visible source lineage.",
+            "Clear report structure once a user is inside the project.",
+            "Good fit for technical audiences who want methodology detail."
+          ],
+          adjust: [
+            "Lead with key predictions, confidence, and last update before the long document body.",
+            "Reduce the initial document-density on small screens with a tighter landing summary.",
+            "Bring the visual identity closer to the newer LindaData product surfaces."
+          ]
+        },
+        {
+          title: "Statistical Analytics",
+          state: "Content-strong",
+          priority: "Priority: medium",
+          summary: "A guided statistical workbench with method selection, starter code, diagnostics, and model tuning resources.",
+          focus: "Keep the guided workbench, but align the navigation and brand framing with the current LindaData product ecosystem.",
+          tags: ["Education", "Workbench", "Code samples"],
+          links: [
+            { label: "Open project", href: "./statistical-analytics/", primary: true },
+            { label: "View source folder", href: "https://github.com/LindaData/LindaData.github.io/tree/master/statistical-analytics" }
+          ],
+          working: [
+            "Question-first workflow is much clearer than a typical documentation dump.",
+            "Resource depth is real and useful for practitioners.",
+            "The workbench already communicates quality gates well."
+          ],
+          adjust: [
+            "Replace the legacy 'Blog' top-nav language with current LindaData framing.",
+            "Tighten the homepage into fewer first-click choices on mobile.",
+            "Create a clearer bridge from this technical workbench back to flagship LindaData products."
+          ]
+        },
+        {
+          title: "Savannah After Dark",
+          state: "Experience-led",
+          priority: "Priority: medium",
+          summary: "A location-aware ghost tour with live GPS, route guidance, stop progression, and a strong mobile presentation.",
+          focus: "Preserve the immersive mobile feel, then strengthen source authority and production trust for a broader audience.",
+          tags: ["Location", "Storytelling", "Mobile"],
+          links: [
+            { label: "Open project", href: "./ghost-tour/", primary: true },
+            { label: "View source folder", href: "https://github.com/LindaData/LindaData.github.io/tree/master/ghost-tour" }
+          ],
+          working: [
+            "Visually distinctive and already optimized for phone use.",
+            "Live location and progress cues make the product feel active.",
+            "The experience has a stronger product personality than most portfolio demos."
+          ],
+          adjust: [
+            "Move more historical references to primary or official local sources where possible.",
+            "Add a clearer landing note about data use, battery use, and expected permissions.",
+            "Consider a short share screen or review CTA so users can respond after the walk."
+          ]
+        },
+        {
+          title: "Anthem Caption Demo",
+          state: "Technical demo",
+          priority: "Priority: medium",
+          summary: "A proof-of-concept comparison between raw ASR captions and corrected anthem-aware output with lookup context.",
+          focus: "Keep the technical evidence, but frame the product story and intended user so it reads as a real capability instead of an internal demo.",
+          tags: ["Media", "ASR", "Explainability"],
+          links: [
+            { label: "Open project", href: "./anthem-caption-demo/", primary: true },
+            { label: "View source folder", href: "https://github.com/LindaData/LindaData.github.io/tree/master/anthem-caption-demo" }
+          ],
+          working: [
+            "The before-and-after comparison is easy to understand.",
+            "Lookup context adds credibility to the correction workflow.",
+            "The page is lightweight and immediately usable."
+          ],
+          adjust: [
+            "Add a short product framing section that explains who this is for and why it matters.",
+            "Elevate the visual hierarchy so the corrected output feels like the hero state.",
+            "Expose one or two evaluation claims above the video instead of only raw metrics."
+          ]
+        },
+        {
+          title: "MacroPilot",
+          state: "Published but hidden",
+          priority: "Priority: high",
+          summary: "A deployed mobile web build that is currently live on Pages but was not represented in the review hub prior to this audit.",
+          focus: "Decide whether this should be part of the public portfolio. If yes, add product framing and source discoverability. If not, move it behind a controlled review path.",
+          tags: ["Hidden surface", "Mobile app", "Needs curation"],
+          links: [
+            { label: "Open project", href: "./macropilot/", primary: true },
+            { label: "View Pages folder", href: "https://github.com/LindaData/LindaData.github.io/tree/master/macropilot" }
+          ],
+          working: [
+            "A full-screen app shell is already deployed and accessible.",
+            "The build suggests a more advanced product surface than the hub previously communicated.",
+            "It can now be reviewed from the main LindaData root."
+          ],
+          adjust: [
+            "Clarify product purpose, current status, and ownership before wider sharing.",
+            "Link the live build to its actual source repo or product documentation.",
+            "Add a curated landing explanation so the first screen is not just an app artifact."
+          ]
+        }
+      ];
+
+      const projectGrid = document.getElementById("projectGrid");
+      const reviewGrid = document.getElementById("reviewGrid");
+      const reviewLayer = document.getElementById("founderReview");
+      const reviewToggle = document.getElementById("reviewToggle");
+      const heroReviewToggle = document.getElementById("heroReviewToggle");
+
+      function listMarkup(items) {
+        return `<ul class="review-list">${items.map((item) => `<li>${item}</li>`).join("")}</ul>`;
+      }
+
+      function tagsMarkup(items) {
+        return `<div class="tag-row">${items.map((item) => `<span class="meta-pill">${item}</span>`).join("")}</div>`;
+      }
+
+      function linksMarkup(items) {
+        return `
+          <div class="link-row">
+            ${items
+              .map(
+                (item) => `
+                  <a class="cta ${item.primary ? "cta-primary" : "cta-secondary"}" href="${item.href}">
+                    ${item.label}
+                  </a>
+                `
+              )
+              .join("")}
+          </div>
+        `;
+      }
+
+      function renderProjectCards() {
+        projectGrid.innerHTML = projects
+          .map(
+            (project) => `
+              <article class="project-card">
+                <div class="project-card-header">
+                  <div>
+                    <strong>${project.title}</strong>
+                    <p>${project.summary}</p>
+                  </div>
+                  <span class="status-pill">${project.state}</span>
+                </div>
+                ${tagsMarkup(project.tags)}
+                <div class="focus-line">
+                  <span>Next founder focus</span>
+                  ${project.focus}
+                </div>
+                ${linksMarkup(project.links)}
+              </article>
+            `
+          )
+          .join("");
+      }
+
+      function renderReviewCards() {
+        reviewGrid.innerHTML = projects
+          .map(
+            (project) => `
+              <article class="review-card">
+                <div class="review-card-header">
+                  <div>
+                    <strong>${project.title}</strong>
+                    <p>${project.summary}</p>
+                  </div>
+                  <span class="priority-pill">${project.priority}</span>
+                </div>
+                ${tagsMarkup(project.tags)}
+                <div class="review-columns">
+                  <div class="review-column">
+                    <h3>Working</h3>
+                    ${listMarkup(project.working)}
+                  </div>
+                  <div class="review-column">
+                    <h3>Adjust next</h3>
+                    ${listMarkup(project.adjust)}
+                  </div>
+                </div>
+                <div class="focus-line">
+                  <span>Recommended next move</span>
+                  ${project.focus}
+                </div>
+                ${linksMarkup(project.links)}
+              </article>
+            `
+          )
+          .join("");
+      }
+
+      function setReviewMode(open, updateUrl = true, scrollIntoView = false) {
+        reviewLayer.hidden = !open;
+        document.body.dataset.reviewMode = open ? "on" : "off";
+        reviewToggle.setAttribute("aria-pressed", open ? "true" : "false");
+        heroReviewToggle.setAttribute("aria-pressed", open ? "true" : "false");
+        reviewToggle.textContent = open ? "Hide founder review mode" : "Open founder review mode";
+        heroReviewToggle.textContent = open ? "Hide founder review" : "Open founder review";
+
+        if (updateUrl) {
+          const url = new URL(window.location.href);
+          if (open) {
+            url.searchParams.set("review", "1");
+          } else {
+            url.searchParams.delete("review");
+          }
+          window.history.replaceState({}, "", url);
+        }
+
+        if (open && scrollIntoView) {
+          reviewLayer.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+
+      function handleReviewToggle() {
+        setReviewMode(reviewLayer.hidden, true, true);
+      }
+
+      renderProjectCards();
+      renderReviewCards();
+
+      const openOnLoad = new URLSearchParams(window.location.search).get("review") === "1";
+      setReviewMode(openOnLoad, false, false);
+
+      reviewToggle.addEventListener("click", handleReviewToggle);
+      heroReviewToggle.addEventListener("click", handleReviewToggle);
+    </script>
   </body>
 </html>
