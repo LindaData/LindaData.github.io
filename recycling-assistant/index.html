@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -64,7 +64,9 @@ button {
 
 button:focus-visible,
 input:focus-visible,
-select:focus-visible {
+select:focus-visible,
+textarea:focus-visible,
+.center-link:focus-visible {
   outline: 3px solid var(--sun);
   outline-offset: 3px;
 }
@@ -298,6 +300,7 @@ h3 {
 .search-panel,
 .result-shell,
 .info-card,
+.mark-guide-panel,
 .lower-grid > article {
   padding: 22px;
 }
@@ -443,6 +446,18 @@ textarea {
 
 .quick-row {
   margin-top: 18px;
+}
+
+.location-row {
+  margin-top: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.location-status {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.56;
 }
 
 .chips {
@@ -678,6 +693,36 @@ textarea {
   margin-top: 12px;
 }
 
+.center-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.center-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.78rem 0.95rem;
+  border-radius: 999px;
+  border: 1px solid rgba(16, 42, 67, 0.08);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink-strong);
+  text-decoration: none;
+  font-weight: 800;
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.center-link-primary {
+  background: linear-gradient(135deg, var(--leaf) 0%, var(--leaf-deep) 100%);
+  color: white;
+}
+
+.center-link:hover {
+  transform: translateY(-1px);
+}
+
 .mini-pill {
   display: inline-flex;
   align-items: center;
@@ -707,6 +752,80 @@ textarea {
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.84);
+}
+
+.mark-guide-panel {
+  background:
+    linear-gradient(135deg, rgba(255, 246, 233, 0.88), rgba(255, 255, 255, 0.88)),
+    var(--card);
+}
+
+.mark-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.mark-card {
+  padding: 18px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.mark-head {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.mark-token {
+  min-width: 72px;
+  padding: 0.88rem 0.8rem;
+  border-radius: 18px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: white;
+  box-shadow: 0 14px 28px rgba(10, 42, 63, 0.14);
+}
+
+.mark-metal .mark-token {
+  background: linear-gradient(135deg, #1f3c58, #0f766e);
+}
+
+.mark-paper .mark-token {
+  background: linear-gradient(135deg, #8a5a2b, #d98f3a);
+}
+
+.mark-plastic .mark-token {
+  background: linear-gradient(135deg, #1b6ca8, #5db4db);
+}
+
+.mark-safety .mark-token {
+  background: linear-gradient(135deg, #b45309, #ef6c57);
+}
+
+.mark-copy strong,
+.mark-body strong {
+  color: var(--ink-strong);
+}
+
+.mark-copy p,
+.mark-body p {
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+  line-height: 1.56;
+}
+
+.mark-body {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(16, 42, 67, 0.08);
+}
+
+.mark-local {
+  margin-top: 10px;
 }
 
 .rhythm-list,
@@ -846,6 +965,11 @@ textarea {
     grid-template-columns: 0.85fr 1.15fr;
   }
 
+  .location-row {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+  }
+
   .feedback-grid {
     grid-template-columns: 0.85fr 1.15fr;
     align-items: start;
@@ -867,6 +991,10 @@ textarea {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .mark-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .lower-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -885,6 +1013,10 @@ textarea {
 
   .lower-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .mark-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
@@ -984,6 +1116,13 @@ textarea {
             <button id="search-button" class="button" type="button" data-i18n="searchButton">Get guidance</button>
           </div>
 
+          <div class="location-row">
+            <button id="use-location" class="ghost-button" type="button" data-i18n="useMyLocation">Use my location</button>
+            <p id="location-status" class="location-status" aria-live="polite" data-i18n="locationIdle">
+              Location stays on-device until you request it.
+            </p>
+          </div>
+
           <div class="quick-row">
             <span class="quick-label" data-i18n="quickLabel">Popular lookups</span>
             <div class="chips">
@@ -1064,6 +1203,16 @@ textarea {
             </div>
             <div id="playbook-card"></div>
           </article>
+        </section>
+
+        <section class="glass-panel mark-guide-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow" data-i18n="marksEyebrow">Package marks</p>
+              <h3 data-i18n="marksTitle">Learn the material cues on the package</h3>
+            </div>
+          </div>
+          <div id="mark-guide" class="mark-grid"></div>
         </section>
 
         <section class="lower-grid">
@@ -1206,6 +1355,16 @@ const translations = {
     searchPlaceholder: "Try aluminum can or 012345678905",
     scanDemo: "Scan demo",
     searchButton: "Get guidance",
+    useMyLocation: "Use my location",
+    locationIdle: "Location stays on-device until you request it.",
+    locationLocating: "Checking your location and matching the nearest pilot municipality...",
+    locationUnsupported: "This browser cannot share location here. Use HTTPS or choose a municipality manually.",
+    locationDenied: "Location access was denied. You can still choose a municipality manually.",
+    locationUnavailable: "We could not read your location right now. Try again after enabling location services.",
+    locationPilotMatch: "Pilot match",
+    locationSeedLabel: "Location seed",
+    locationSeedCopy: "Using your current device location as the starting point.",
+    locationDistanceLabel: "Distance to this pilot profile",
     quickLabel: "Popular lookups",
     resultEyebrow: "Answer card",
     resultTitle: "Your local recycling guidance",
@@ -1221,6 +1380,11 @@ const translations = {
     routineTitle: "Build a weekly sorting routine",
     playbookEyebrow: "Home playbook",
     playbookTitle: "Set up the house like a sorting system",
+    marksEyebrow: "Package marks",
+    marksTitle: "Learn the material cues on the package",
+    marksCueLabel: "Look for",
+    marksHabitLabel: "Household habit",
+    marksLocalLabel: "Local read",
     routineSummaryLabel: "This week",
     routineFocusLabel: "Prep focus",
     routineWhyLabel: "Why this rhythm works",
@@ -1276,6 +1440,8 @@ const translations = {
     municipalityUpdatedLabel: "Last local review",
     municipalityProgramLabel: "Program setup",
     municipalityCoverageLabel: "Coverage note",
+    centerMap: "Open map",
+    centerDirections: "Directions",
     centerAccepts: "Accepts",
     centerHours: "Hours",
     centerDistance: "Distance",
@@ -1317,6 +1483,16 @@ const translations = {
     searchPlaceholder: "Prueba aluminum can o 012345678905",
     scanDemo: "Escanear demo",
     searchButton: "Ver guia",
+    useMyLocation: "Usar mi ubicacion",
+    locationIdle: "La ubicacion permanece en tu dispositivo hasta que la solicites.",
+    locationLocating: "Buscando tu ubicacion y el municipio piloto mas cercano...",
+    locationUnsupported: "Este navegador no puede compartir ubicacion aqui. Usa HTTPS o elige un municipio manualmente.",
+    locationDenied: "Se nego el acceso a la ubicacion. Aun puedes elegir un municipio manualmente.",
+    locationUnavailable: "No pudimos leer tu ubicacion ahora. Intentalo de nuevo despues de activar los servicios de ubicacion.",
+    locationPilotMatch: "Piloto mas cercano",
+    locationSeedLabel: "Punto de partida",
+    locationSeedCopy: "Usando la ubicacion actual del dispositivo como punto de partida.",
+    locationDistanceLabel: "Distancia a este perfil piloto",
     quickLabel: "Consultas populares",
     resultEyebrow: "Tarjeta de respuesta",
     resultTitle: "Tu guia local de reciclaje",
@@ -1332,6 +1508,11 @@ const translations = {
     routineTitle: "Crea una rutina semanal de separacion",
     playbookEyebrow: "Manual del hogar",
     playbookTitle: "Organiza la casa como un sistema de separacion",
+    marksEyebrow: "Marcas del empaque",
+    marksTitle: "Aprende las pistas del material en el empaque",
+    marksCueLabel: "Busca",
+    marksHabitLabel: "Habito en casa",
+    marksLocalLabel: "Lectura local",
     routineSummaryLabel: "Esta semana",
     routineFocusLabel: "Enfoque de preparacion",
     routineWhyLabel: "Por que este ritmo funciona",
@@ -1387,6 +1568,8 @@ const translations = {
     municipalityUpdatedLabel: "Ultima revision local",
     municipalityProgramLabel: "Programa",
     municipalityCoverageLabel: "Cobertura",
+    centerMap: "Abrir mapa",
+    centerDirections: "Como llegar",
     centerAccepts: "Acepta",
     centerHours: "Horario",
     centerDistance: "Distancia",
@@ -1411,6 +1594,7 @@ const translations = {
 const municipalities = {
   riverton: {
     name: { en: "Riverton", es: "Riverton" },
+    coordinates: { lat: 40.0007, lng: -75.0101 },
     status: {
       en: "Riverton selected",
       es: "Riverton seleccionado"
@@ -1438,7 +1622,7 @@ const municipalities = {
       },
       focus: {
         en: "Keep aluminum and cardboard loose so the curbside stream stays clean and sortable.",
-        es: "MantÃ©n aluminio y carton sueltos para que el flujo residencial se mantenga limpio y clasificable."
+        es: "Mantén aluminio y carton sueltos para que el flujo residencial se mantenga limpio y clasificable."
       },
       why: {
         en: "Small prep steps at home reduce contamination and make local rules easier to follow consistently.",
@@ -1466,7 +1650,7 @@ const municipalities = {
         { zone: "Garage", rule: "Store batteries and electronics in one labeled safety tub." }
       ],
       es: [
-        { zone: "Cocina", rule: "MantÃ©n un contenedor de enjuague para latas y frascos junto al fregadero." },
+        { zone: "Cocina", rule: "Mantén un contenedor de enjuague para latas y frascos junto al fregadero." },
         { zone: "Entrada", rule: "Usa un espacio angosto para carton y aplanalo de inmediato." },
         { zone: "Garaje", rule: "Guarda baterias y electronicos en una caja de seguridad etiquetada." }
       ]
@@ -1477,6 +1661,7 @@ const municipalities = {
         accepts: { en: "batteries, electronics, cardboard", es: "baterias, electronicos, carton" },
         hours: { en: "Mon-Sat, 8 AM-6 PM", es: "Lun-Sab, 8 AM-6 PM" },
         distance: { en: "1.4 miles", es: "1.4 millas" },
+        coordinates: { lat: 40.0064, lng: -75.0162 },
         note: {
           en: "Best option for batteries and mixed special handling items.",
           es: "La mejor opcion para baterias y articulos de manejo especial."
@@ -1487,6 +1672,7 @@ const municipalities = {
         accepts: { en: "metal cans, paper, rigid plastics", es: "latas metalicas, papel, plasticos rigidos" },
         hours: { en: "Daily, 9 AM-5 PM", es: "Diario, 9 AM-5 PM" },
         distance: { en: "2.2 miles", es: "2.2 millas" },
+        coordinates: { lat: 39.9912, lng: -75.0307 },
         note: {
           en: "Fastest stop for sorted packaging items.",
           es: "La parada mas rapida para empaques ya separados."
@@ -1496,6 +1682,7 @@ const municipalities = {
   },
   lakewood: {
     name: { en: "Lakewood", es: "Lakewood" },
+    coordinates: { lat: 40.0979, lng: -74.2176 },
     status: {
       en: "Lakewood selected",
       es: "Lakewood seleccionado"
@@ -1519,7 +1706,7 @@ const municipalities = {
     routine: {
       summary: {
         en: "Use the mixed recycling cart for clean packaging, but run a separate battery and specialty box near the door.",
-        es: "Usa el carrito mixto para empaques limpios, pero mantÃ©n una caja separada para baterias y articulos especiales."
+        es: "Usa el carrito mixto para empaques limpios, pero mantén una caja separada para baterias y articulos especiales."
       },
       focus: {
         en: "Food residue is the biggest trust-breaker here, so clean paper and plastics more aggressively.",
@@ -1562,6 +1749,7 @@ const municipalities = {
         accepts: { en: "batteries, glass, rigid plastics", es: "baterias, vidrio, plasticos rigidos" },
         hours: { en: "Tue-Sun, 10 AM-6 PM", es: "Mar-Dom, 10 AM-6 PM" },
         distance: { en: "0.9 miles", es: "0.9 millas" },
+        coordinates: { lat: 40.0886, lng: -74.2214 },
         note: {
           en: "Recommended for battery and plastic clamshell questions.",
           es: "Recomendado para dudas sobre baterias y envases plasticos."
@@ -1572,6 +1760,7 @@ const municipalities = {
         accepts: { en: "paper, cardboard, aluminum", es: "papel, carton, aluminio" },
         hours: { en: "Mon-Fri, 7 AM-4 PM", es: "Lun-Vie, 7 AM-4 PM" },
         distance: { en: "3.1 miles", es: "3.1 millas" },
+        coordinates: { lat: 40.1034, lng: -74.1848 },
         note: {
           en: "Useful when curbside guidance is unclear for paper packaging.",
           es: "Util cuando la guia residencial para empaques de papel no es clara."
@@ -1581,6 +1770,7 @@ const municipalities = {
   },
   "sunset-hills": {
     name: { en: "Sunset Hills", es: "Sunset Hills" },
+    coordinates: { lat: 38.5388, lng: -90.4071 },
     status: {
       en: "Sunset Hills selected",
       es: "Sunset Hills seleccionado"
@@ -1636,7 +1826,7 @@ const municipalities = {
         { zone: "Garage", rule: "Create one uncertainty shelf for items that need sign confirmation before disposal." }
       ],
       es: [
-        { zone: "Cocina", rule: "MantÃ©n una bandeja para el contenedor amarillo solo con metal y carton limpios." },
+        { zone: "Cocina", rule: "Mantén una bandeja para el contenedor amarillo solo con metal y carton limpios." },
         { zone: "Closet de servicio", rule: "Pega una nota de ruta para revisar plasticos aceptados rapidamente." },
         { zone: "Garaje", rule: "Crea un estante de dudas para articulos que necesitan confirmacion antes de desecharse." }
       ]
@@ -1647,6 +1837,7 @@ const municipalities = {
         accepts: { en: "yard waste, cardboard, batteries", es: "residuos de jardin, carton, baterias" },
         hours: { en: "Wed-Sun, 8 AM-4 PM", es: "Mie-Dom, 8 AM-4 PM" },
         distance: { en: "1.8 miles", es: "1.8 millas" },
+        coordinates: { lat: 38.5331, lng: -90.4053 },
         note: {
           en: "Best starting point for route-specific recycling questions.",
           es: "Mejor punto de partida para preguntas segun la ruta."
@@ -1657,6 +1848,7 @@ const municipalities = {
         accepts: { en: "electronics, scrap metal, glass", es: "electronicos, metal, vidrio" },
         hours: { en: "Daily, 9 AM-6 PM", es: "Diario, 9 AM-6 PM" },
         distance: { en: "2.7 miles", es: "2.7 millas" },
+        coordinates: { lat: 38.5214, lng: -90.4321 },
         note: {
           en: "Good backup option when route collection rules are uncertain.",
           es: "Buena opcion de respaldo cuando las reglas por ruta no son claras."
@@ -1977,6 +2169,7 @@ const state = {
   language: localStorage.getItem("recycling-language") || "en",
   history: JSON.parse(localStorage.getItem("recycling-history-v2") || "[]"),
   feedback: JSON.parse(localStorage.getItem("recycling-feedback-v1") || "[]"),
+  userLocation: JSON.parse(localStorage.getItem("recycling-user-location-v1") || "null"),
   currentBarcode: null,
   lastQuery: "",
   demoIndex: 0
@@ -1990,9 +2183,12 @@ const elements = {
   searchInput: document.getElementById("search-input"),
   searchButton: document.getElementById("search-button"),
   scanDemo: document.getElementById("scan-demo"),
+  useLocation: document.getElementById("use-location"),
+  locationStatus: document.getElementById("location-status"),
   resultContent: document.getElementById("result-content"),
   routineCard: document.getElementById("routine-card"),
   playbookCard: document.getElementById("playbook-card"),
+  markGuide: document.getElementById("mark-guide"),
   centerList: document.getElementById("center-list"),
   historyList: document.getElementById("history-list"),
   feedbackLog: document.getElementById("feedback-log"),
@@ -2010,6 +2206,7 @@ const elements = {
   chips: [...document.querySelectorAll(".chip")]
 };
 
+const buildId = "2026-06-30-ui2";
 const demoBarcodes = Object.keys(products);
 const testScenarios = [
   {
@@ -2034,6 +2231,129 @@ const testScenarios = [
   }
 ];
 
+const materialMarks = [
+  {
+    token: "ALU",
+    tone: "metal",
+    title: {
+      en: "Aluminum cue",
+      es: "Pista de aluminio"
+    },
+    cue: {
+      en: "Look for metallic shine, can pull-tabs, or ALU stamped on trays and lids.",
+      es: "Busca brillo metalico, anillas de latas o ALU grabado en bandejas y tapas."
+    },
+    habit: {
+      en: "Give it a quick rinse and keep metal loose instead of nesting it inside paper or plastic.",
+      es: "Dale un enjuague rapido y deja el metal suelto en lugar de meterlo dentro de papel o plastico."
+    },
+    local: {
+      riverton: {
+        en: "Riverton is strongest on loose curbside metals once the container is empty and dry.",
+        es: "Riverton funciona mejor con metales sueltos en la acera cuando el envase esta vacio y seco."
+      },
+      lakewood: {
+        en: "Lakewood accepts clean aluminum in the mixed cart, but residue still knocks it out.",
+        es: "Lakewood acepta aluminio limpio en el carrito mixto, pero los residuos aun lo invalidan."
+      },
+      "sunset-hills": {
+        en: "Sunset Hills usually takes rigid aluminum, while soft foil still needs extra caution by route.",
+        es: "Sunset Hills normalmente acepta aluminio rigido, mientras que el papel aluminio requiere mas cautela segun la ruta."
+      }
+    }
+  },
+  {
+    token: "PAP",
+    tone: "paper",
+    title: {
+      en: "Paper and cardboard cue",
+      es: "Pista de papel y carton"
+    },
+    cue: {
+      en: "Look for paper-fiber labels, corrugated edges, or dry food boxes without grease soak-through.",
+      es: "Busca etiquetas de fibra, bordes corrugados o cajas secas sin grasa absorbida."
+    },
+    habit: {
+      en: "Flatten it early and separate any greasy layer before it touches the recycling stream.",
+      es: "Aplanalo temprano y separa cualquier parte grasosa antes de que toque el flujo de reciclaje."
+    },
+    local: {
+      riverton: {
+        en: "Riverton rewards flattened clean cardboard because sorters can pull it fast at the curb.",
+        es: "Riverton aprovecha mejor el carton limpio y aplanado porque se clasifica rapido en la acera."
+      },
+      lakewood: {
+        en: "Lakewood accepts more paper overall, but greasy fiber is still the main contamination risk.",
+        es: "Lakewood acepta mas papel en general, pero la fibra con grasa sigue siendo el riesgo principal."
+      },
+      "sunset-hills": {
+        en: "Sunset Hills works best when cardboard is obvious and clean before route pickup starts.",
+        es: "Sunset Hills funciona mejor cuando el carton esta claramente limpio antes de la recoleccion por ruta."
+      }
+    }
+  },
+  {
+    token: "1 PET",
+    tone: "plastic",
+    title: {
+      en: "PET bottle cue",
+      es: "Pista de botella PET"
+    },
+    cue: {
+      en: "Look for clear drink bottles, clamshell rigidity, and a number 1 resin triangle near the base.",
+      es: "Busca botellas claras, rigidez de envase y un triangulo con numero 1 cerca de la base."
+    },
+    habit: {
+      en: "Empty it fully, keep the shape readable, and do not treat thin plastic film like a PET bottle.",
+      es: "Vacialo por completo, conserva su forma visible y no confundas pelicula plastica delgada con una botella PET."
+    },
+    local: {
+      riverton: {
+        en: "Riverton is safest with known rigid bottles and containers, not soft wraps or film.",
+        es: "Riverton es mas seguro con botellas y envases rigidos conocidos, no con envolturas o peliculas blandas."
+      },
+      lakewood: {
+        en: "Lakewood is the most forgiving on rigid PET if it is clean, dry, and truly bottle-grade.",
+        es: "Lakewood es el mas flexible con PET rigido si esta limpio, seco y realmente es tipo botella."
+      },
+      "sunset-hills": {
+        en: "Sunset Hills changes by route, so the resin code is your start point, not the final answer.",
+        es: "Sunset Hills cambia por ruta, asi que el codigo de resina es el punto de inicio, no la respuesta final."
+      }
+    }
+  },
+  {
+    token: "BAT",
+    tone: "safety",
+    title: {
+      en: "Battery warning cue",
+      es: "Pista de advertencia de bateria"
+    },
+    cue: {
+      en: "Look for lithium, rechargeable, or crossed-bin battery symbols on gadgets, pods, and tools.",
+      es: "Busca simbolos de litio, recargable o bateria tachada en aparatos, cartuchos y herramientas."
+    },
+    habit: {
+      en: "Tape the contacts, isolate the item from curbside recycling, and stage it in one safety pouch.",
+      es: "Cubre los contactos, separa el articulo del reciclaje residencial y guardalo en una sola bolsa de seguridad."
+    },
+    local: {
+      riverton: {
+        en: "Riverton wants batteries out of the blue bin and into the staffed transfer station flow.",
+        es: "Riverton quiere las baterias fuera del contenedor azul y dentro del flujo supervisado del centro especial."
+      },
+      lakewood: {
+        en: "Lakewood supports battery collection boxes, so build the habit around one dedicated drop bag.",
+        es: "Lakewood usa cajas de recoleccion de baterias, asi que conviene crear el habito con una bolsa dedicada."
+      },
+      "sunset-hills": {
+        en: "Sunset Hills treats batteries as a staffed special-handling item every time.",
+        es: "Sunset Hills trata las baterias como un articulo de manejo especial con personal en todo momento."
+      }
+    }
+  }
+];
+
 function copy() {
   return translations[state.language];
 }
@@ -2048,6 +2368,153 @@ function activeProductEntry() {
   }
 
   return { barcode: state.currentBarcode, product: products[state.currentBarcode] };
+}
+
+function setLocationStatus(message) {
+  elements.locationStatus.textContent = message;
+}
+
+function formatMiles(distance) {
+  const locale = state.language === "en" ? "en-US" : "es-ES";
+  const value = new Intl.NumberFormat(locale, {
+    maximumFractionDigits: distance < 10 ? 1 : 0
+  }).format(distance);
+  return state.language === "en" ? `${value} miles` : `${value} millas`;
+}
+
+function haversineMiles(fromLat, fromLng, toLat, toLng) {
+  const toRadians = (value) => value * (Math.PI / 180);
+  const earthRadiusMiles = 3958.8;
+  const deltaLat = toRadians(toLat - fromLat);
+  const deltaLng = toRadians(toLng - fromLng);
+  const startLat = toRadians(fromLat);
+  const endLat = toRadians(toLat);
+
+  const a = Math.sin(deltaLat / 2) ** 2
+    + Math.cos(startLat) * Math.cos(endLat) * Math.sin(deltaLng / 2) ** 2;
+
+  return earthRadiusMiles * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+}
+
+function municipalityDistance(municipalityKey) {
+  if (!state.userLocation) {
+    return null;
+  }
+
+  const municipality = municipalities[municipalityKey];
+  return haversineMiles(
+    state.userLocation.latitude,
+    state.userLocation.longitude,
+    municipality.coordinates.lat,
+    municipality.coordinates.lng
+  );
+}
+
+function nearestMunicipalityForLocation(latitude, longitude) {
+  return Object.entries(municipalities)
+    .map(([key, municipality]) => ({
+      key,
+      distanceMiles: haversineMiles(latitude, longitude, municipality.coordinates.lat, municipality.coordinates.lng)
+    }))
+    .sort((left, right) => left.distanceMiles - right.distanceMiles)[0];
+}
+
+function locationMatchStatus(match) {
+  const ui = copy();
+  const municipality = municipalities[match.key];
+  return `${ui.locationPilotMatch}: ${municipality.name[state.language]} (${formatMiles(match.distanceMiles)})`;
+}
+
+function refreshLocationStatus() {
+  const ui = copy();
+
+  if (!state.userLocation) {
+    setLocationStatus(ui.locationIdle);
+    return;
+  }
+
+  const match = nearestMunicipalityForLocation(state.userLocation.latitude, state.userLocation.longitude);
+  setLocationStatus(locationMatchStatus(match));
+}
+
+function mapsSearchUrl(center) {
+  const query = encodeURIComponent(`${center.name.en} ${center.coordinates.lat},${center.coordinates.lng}`);
+  return `https://www.google.com/maps/search/?api=1&query=${query}`;
+}
+
+function mapsDirectionsUrl(center) {
+  const destination = encodeURIComponent(`${center.coordinates.lat},${center.coordinates.lng}`);
+
+  if (!state.userLocation) {
+    return `https://www.google.com/maps/dir/?api=1&destination=${destination}&travelmode=driving`;
+  }
+
+  const origin = encodeURIComponent(`${state.userLocation.latitude},${state.userLocation.longitude}`);
+  return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`;
+}
+
+function centerDistanceText(center) {
+  if (!state.userLocation) {
+    return center.distance[state.language];
+  }
+
+  const miles = haversineMiles(
+    state.userLocation.latitude,
+    state.userLocation.longitude,
+    center.coordinates.lat,
+    center.coordinates.lng
+  );
+  return formatMiles(miles);
+}
+
+function refreshMunicipalityViews() {
+  renderMunicipalityPulse();
+  renderRoutineCard();
+  renderPlaybookCard();
+  renderMarkGuide();
+}
+
+function requestUserLocation() {
+  const ui = copy();
+
+  if (!navigator.geolocation) {
+    setLocationStatus(ui.locationUnsupported);
+    return;
+  }
+
+  setLocationStatus(ui.locationLocating);
+
+  navigator.geolocation.getCurrentPosition((position) => {
+    state.userLocation = {
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude,
+      timestamp: Date.now()
+    };
+    localStorage.setItem("recycling-user-location-v1", JSON.stringify(state.userLocation));
+
+    const match = nearestMunicipalityForLocation(state.userLocation.latitude, state.userLocation.longitude);
+    elements.municipalitySelect.value = match.key;
+    setLocationStatus(locationMatchStatus(match));
+    refreshMunicipalityViews();
+
+    const currentEntry = activeProductEntry();
+    if (currentEntry) {
+      renderResult(currentEntry, false);
+    } else {
+      renderCenters(null);
+    }
+  }, (error) => {
+    if (error && error.code === 1) {
+      setLocationStatus(ui.locationDenied);
+      return;
+    }
+
+    setLocationStatus(ui.locationUnavailable);
+  }, {
+    enableHighAccuracy: true,
+    timeout: 10000,
+    maximumAge: 300000
+  });
 }
 
 function outcomeLabel(outcome) {
@@ -2108,7 +2575,13 @@ function renderScenarios() {
 
 function renderMunicipalityPulse() {
   const ui = copy();
-  const municipality = activeMunicipality();
+  const municipalityKey = elements.municipalitySelect.value;
+  const municipality = municipalities[municipalityKey];
+  const profileDistance = municipalityDistance(municipalityKey);
+  const locationMeta = state.userLocation ? `
+      <p class="rule-note"><strong>${ui.locationSeedLabel}:</strong> ${ui.locationSeedCopy}</p>
+      <p class="rule-note"><strong>${ui.locationDistanceLabel}:</strong> ${formatMiles(profileDistance)}</p>
+  ` : "";
 
   elements.municipalityStatus.textContent = `${ui.municipalityStatusPrefix} ${municipality.name[state.language]}`;
   elements.municipalityCard.innerHTML = `
@@ -2117,6 +2590,7 @@ function renderMunicipalityPulse() {
       <p class="rule-note"><strong>${ui.municipalityUpdatedLabel}:</strong> ${municipality.updated[state.language]}</p>
       <p class="rule-note"><strong>${ui.municipalityProgramLabel}:</strong> ${municipality.program[state.language]}</p>
       <p class="rule-note"><strong>${ui.municipalityCoverageLabel}:</strong> ${municipality.coverage[state.language]}</p>
+      ${locationMeta}
       <div class="municipality-tags">
         ${municipality.tags[state.language].map((tag) => `<span class="mini-pill">${tag}</span>`).join("")}
       </div>
@@ -2160,27 +2634,71 @@ function renderPlaybookCard() {
   `;
 }
 
+function renderMarkGuide() {
+  const ui = copy();
+  const municipalityKey = elements.municipalitySelect.value;
+
+  elements.markGuide.innerHTML = materialMarks.map((mark) => `
+    <article class="mark-card mark-${mark.tone}">
+      <div class="mark-head">
+        <span class="mark-token">${mark.token}</span>
+        <div class="mark-copy">
+          <strong>${mark.title[state.language]}</strong>
+          <p><strong>${ui.marksCueLabel}:</strong> ${mark.cue[state.language]}</p>
+        </div>
+      </div>
+      <div class="mark-body">
+        <p><strong>${ui.marksHabitLabel}:</strong> ${mark.habit[state.language]}</p>
+        <p class="mark-local"><strong>${ui.marksLocalLabel}:</strong> ${mark.local[municipalityKey][state.language]}</p>
+      </div>
+    </article>
+  `).join("");
+}
+
 function renderCenters(entry) {
   const ui = copy();
   const municipality = activeMunicipality();
+  const centers = [...municipality.centers];
   elements.centerList.innerHTML = "";
 
-  if (!entry) {
+  if (!entry && !state.userLocation) {
     elements.centerList.innerHTML = `<div class="center-card"><p class="center-meta">${ui.noCenters}</p></div>`;
     return;
   }
 
-  municipality.centers.forEach((center) => {
+  if (state.userLocation) {
+    centers.sort((left, right) => {
+      const leftDistance = haversineMiles(
+        state.userLocation.latitude,
+        state.userLocation.longitude,
+        left.coordinates.lat,
+        left.coordinates.lng
+      );
+      const rightDistance = haversineMiles(
+        state.userLocation.latitude,
+        state.userLocation.longitude,
+        right.coordinates.lat,
+        right.coordinates.lng
+      );
+      return leftDistance - rightDistance;
+    });
+  }
+
+  centers.forEach((center) => {
     const card = document.createElement("div");
     card.className = "center-card";
     card.innerHTML = `
       <strong>${center.name[state.language]}</strong>
       <p class="center-meta">${center.note[state.language]}</p>
       <div class="center-tags">
-        <span class="mini-pill">${ui.centerDistance}: ${center.distance[state.language]}</span>
+        <span class="mini-pill">${ui.centerDistance}: ${centerDistanceText(center)}</span>
         <span class="mini-pill">${ui.centerHours}: ${center.hours[state.language]}</span>
       </div>
       <p class="center-meta"><strong>${ui.centerAccepts}:</strong> ${center.accepts[state.language]}</p>
+      <div class="center-actions">
+        <a class="center-link" href="${mapsSearchUrl(center)}" target="_blank" rel="noreferrer">${ui.centerMap}</a>
+        <a class="center-link center-link-primary" href="${mapsDirectionsUrl(center)}" target="_blank" rel="noreferrer">${ui.centerDirections}</a>
+      </div>
     `;
     elements.centerList.appendChild(card);
   });
@@ -2505,11 +3023,10 @@ elements.languageToggle.addEventListener("click", () => {
   state.language = state.language === "en" ? "es" : "en";
   localStorage.setItem("recycling-language", state.language);
   translatePage();
+  refreshLocationStatus();
   renderQuickChips();
   renderScenarios();
-  renderMunicipalityPulse();
-  renderRoutineCard();
-  renderPlaybookCard();
+  refreshMunicipalityViews();
   renderHistory();
   renderFeedbackLog();
 
@@ -2534,6 +3051,10 @@ elements.scanDemo.addEventListener("click", () => {
   handleSearch(barcode);
 });
 
+elements.useLocation.addEventListener("click", () => {
+  requestUserLocation();
+});
+
 elements.chips.forEach((chip) => {
   chip.addEventListener("click", () => {
     const barcode = chip.getAttribute("data-barcode");
@@ -2543,9 +3064,7 @@ elements.chips.forEach((chip) => {
 });
 
 elements.municipalitySelect.addEventListener("change", () => {
-  renderMunicipalityPulse();
-  renderRoutineCard();
-  renderPlaybookCard();
+  refreshMunicipalityViews();
 
   const currentEntry = activeProductEntry();
   if (currentEntry) {
@@ -2563,7 +3082,7 @@ elements.searchInput.addEventListener("keydown", (event) => {
 
 elements.copyLink.addEventListener("click", () => {
   const path = window.location.pathname.includes("/recycling-assistant/")
-    ? `${window.location.origin}/recycling-assistant/`
+    ? `${window.location.origin}/recycling-assistant/?v=${buildId}`
     : window.location.href;
   copyText(path, copy().toastLink);
 });
@@ -2590,12 +3109,16 @@ elements.clearFeedback.addEventListener("click", () => {
   clearFeedbackForm();
 });
 
+if (state.userLocation) {
+  const match = nearestMunicipalityForLocation(state.userLocation.latitude, state.userLocation.longitude);
+  elements.municipalitySelect.value = match.key;
+}
+
 translatePage();
+refreshLocationStatus();
 renderQuickChips();
 renderScenarios();
-renderMunicipalityPulse();
-renderRoutineCard();
-renderPlaybookCard();
+refreshMunicipalityViews();
 renderCenters(null);
 renderHistory();
 renderFeedbackLog();
