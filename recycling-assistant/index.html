@@ -573,6 +573,67 @@ textarea {
   justify-content: flex-start;
 }
 
+.search-assist {
+  margin-top: 14px;
+}
+
+.search-assist-card {
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(16, 42, 67, 0.08);
+  background:
+    linear-gradient(135deg, rgba(223, 247, 239, 0.64), rgba(255, 255, 255, 0.9)),
+    rgba(255, 255, 255, 0.88);
+}
+
+.search-assist-head strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 1rem;
+}
+
+.search-assist-head p {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.search-assist-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.search-assist-button {
+  width: 100%;
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.92);
+  text-align: left;
+  box-shadow: 0 8px 22px rgba(10, 42, 63, 0.06);
+}
+
+.search-assist-button strong {
+  display: block;
+  font-size: 1rem;
+}
+
+.search-assist-meta {
+  color: var(--ink-soft);
+  line-height: 1.48;
+}
+
+.search-assist-button .mini-pill {
+  width: fit-content;
+}
+
+.search-assist-button:hover {
+  transform: translateY(-1px);
+}
+
 .quick-row {
   margin-top: 18px;
 }
@@ -1635,6 +1696,10 @@ textarea {
     grid-template-columns: 0.85fr 1.15fr;
   }
 
+  .search-assist-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .location-row {
     grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
@@ -1807,6 +1872,7 @@ textarea {
             </label>
           </div>
           <datalist id="product-suggestions"></datalist>
+          <div id="search-assist" class="search-assist" aria-live="polite"></div>
 
           <div class="action-row">
             <button id="open-scanner" class="button" type="button" data-i18n="openScanner">Open camera scan</button>
@@ -2293,6 +2359,8 @@ const translations = {
     municipalityLabel: "Municipality",
     searchLabel: "Barcode or product name",
     searchPlaceholder: "Try aluminum can or 012345678905",
+    searchAssistTitle: "Closest matches",
+    searchAssistCopy: "Use a likely match if it looks like the item in your hand.",
     scanDemo: "Scan demo",
     openScanner: "Open camera scan",
     searchButton: "Get guidance",
@@ -2514,6 +2582,8 @@ const translations = {
     unknownCopy: "Try another search, use one of the popular examples, or review the packaging label.",
     unknownReasonLabel: "What to do next",
     unknownReason: "Use the material type, resin code, or local packaging label before disposing of the item.",
+    unknownMatchesTitle: "Closest pilot matches",
+    unknownMatchesCopy: "Pick the closest match below if it looks right. If not, send a verification request instead of guessing.",
     unknownImpactTitle: "Why the app stops here",
     unknownImpactCopy: "A wrong local answer is worse than no answer, so uncertain matches stay cautious.",
     municipalityCardTitle: "Current pilot profile",
@@ -2573,6 +2643,8 @@ const translations = {
     municipalityLabel: "Municipio",
     searchLabel: "Codigo de barras o nombre del producto",
     searchPlaceholder: "Prueba lata de aluminio o 012345678905",
+    searchAssistTitle: "Coincidencias cercanas",
+    searchAssistCopy: "Usa una coincidencia probable si se parece al articulo que tienes en la mano.",
     scanDemo: "Escanear demo",
     openScanner: "Abrir camara",
     searchButton: "Ver guia",
@@ -2794,6 +2866,8 @@ const translations = {
     unknownCopy: "Intenta otra busqueda, usa uno de los ejemplos populares o revisa la etiqueta del empaque.",
     unknownReasonLabel: "Que hacer ahora",
     unknownReason: "Usa el tipo de material, el codigo de resina o la etiqueta local antes de desechar el articulo.",
+    unknownMatchesTitle: "Coincidencias piloto cercanas",
+    unknownMatchesCopy: "Elige la coincidencia mas cercana si parece correcta. Si no, envia una solicitud de verificacion en lugar de adivinar.",
     unknownImpactTitle: "Por que la app se detiene aqui",
     unknownImpactCopy: "Una respuesta local incorrecta es peor que no responder, por eso los casos inciertos se tratan con cautela.",
     municipalityCardTitle: "Perfil piloto actual",
@@ -3172,7 +3246,7 @@ const products = {
   "049000042511": {
     mark: "PZ",
     family: { en: "Food-soiled cardboard", es: "Carton con residuos de comida" },
-    aliases: ["pizza box", "cardboard pizza box", "pizza"],
+    aliases: ["pizza box", "cardboard pizza box", "pizza", "greasy pizza box", "takeout pizza box"],
     confidence: 89,
     impact: {
       en: "Cardboard is recyclable only until food grease pushes it into contamination territory.",
@@ -3248,7 +3322,7 @@ const products = {
   "041333216317": {
     mark: "BT",
     family: { en: "Household hazardous item", es: "Articulo domestico de manejo especial" },
-    aliases: ["battery", "batteries", "aa battery", "household batteries"],
+    aliases: ["battery", "batteries", "aa battery", "aa batteries", "aaa battery", "aaa batteries", "household batteries", "alkaline battery", "battery pack"],
     confidence: 98,
     impact: {
       en: "Keeping batteries out of curbside bins reduces fire risk and contamination in the waste stream.",
@@ -3324,7 +3398,7 @@ const products = {
   "036000291452": {
     mark: "PC",
     family: { en: "Plastic produce packaging", es: "Empaque plastico para alimentos" },
-    aliases: ["plastic clamshell", "berry container", "plastic container", "clamshell"],
+    aliases: ["plastic clamshell", "berry container", "plastic container", "clamshell", "produce container", "salad container", "fruit container"],
     confidence: 84,
     impact: {
       en: "Rigid plastics create confusion because local sorting capability matters more than the package alone.",
@@ -3555,7 +3629,7 @@ const additionalProducts = {
   "044000032940": {
     mark: "CB",
     family: { en: "Shipping cardboard", es: "Caja de envio de carton" },
-    aliases: ["shipping box", "cardboard box", "box", "corrugated box"],
+    aliases: ["shipping box", "cardboard box", "box", "corrugated box", "amazon box", "delivery box", "package box", "mailer box"],
     confidence: 95,
     impact: {
       en: "Clean corrugated cardboard is one of the easiest household materials to recover consistently.",
@@ -3631,7 +3705,7 @@ const additionalProducts = {
   "033200000123": {
     mark: "HD",
     family: { en: "HDPE detergent bottle", es: "Botella de detergente HDPE" },
-    aliases: ["detergent bottle", "laundry bottle", "hdpe bottle", "shampoo bottle"],
+    aliases: ["detergent bottle", "laundry bottle", "hdpe bottle", "shampoo bottle", "detergent jug", "laundry detergent bottle"],
     confidence: 90,
     impact: {
       en: "Large rigid plastic bottles are a better recycling candidate than many thin plastic packages.",
@@ -3859,7 +3933,7 @@ const additionalProducts = {
   "043168984214": {
     mark: "BULB",
     family: { en: "Light bulb", es: "Bombilla" },
-    aliases: ["light bulb", "bulb", "lamp bulb", "cfl bulb"],
+    aliases: ["light bulb", "bulb", "lamp bulb", "cfl bulb", "led bulb", "incandescent bulb"],
     confidence: 93,
     impact: {
       en: "Bulbs are easy to mis-sort because they look like glass but often contain mixed materials or hazardous elements.",
@@ -3935,7 +4009,7 @@ const additionalProducts = {
   "888600000111": {
     mark: "JAR",
     family: { en: "Glass food jar", es: "Frasco de vidrio" },
-    aliases: ["glass jar", "jar", "food jar", "pasta sauce jar"],
+    aliases: ["glass jar", "jar", "food jar", "pasta sauce jar", "mason jar", "salsa jar", "pickle jar"],
     confidence: 92,
     impact: {
       en: "Reusable glass jars are easy wins when clean and properly routed.",
@@ -4011,7 +4085,7 @@ const additionalProducts = {
   "072000000001": {
     mark: "CUP",
     family: { en: "Paper coffee cup", es: "Vaso de cafe" },
-    aliases: ["coffee cup", "paper cup", "to-go cup", "paper coffee cup"],
+    aliases: ["coffee cup", "paper cup", "to-go cup", "paper coffee cup", "disposable coffee cup", "takeout cup", "starbucks cup"],
     confidence: 87,
     impact: {
       en: "Disposable cups look recyclable but often fail because of plastic lining and leftover liquid.",
@@ -4087,7 +4161,7 @@ const additionalProducts = {
   "072000000002": {
     mark: "E-W",
     family: { en: "Small electronics", es: "Electronico pequeno" },
-    aliases: ["phone charger", "charger", "small electronics", "cable", "adapter"],
+    aliases: ["phone charger", "charger", "small electronics", "cable", "adapter", "charging cable", "usb cable", "phone cable", "power adapter"],
     confidence: 97,
     impact: {
       en: "Keeping cords and electronics out of curbside bins prevents tangling, fire risk, and material loss.",
@@ -4237,6 +4311,7 @@ const elements = {
   heroSignalCard: document.getElementById("hero-signal-card"),
   searchInput: document.getElementById("search-input"),
   productSuggestions: document.getElementById("product-suggestions"),
+  searchAssist: document.getElementById("search-assist"),
   searchButton: document.getElementById("search-button"),
   installApp: document.getElementById("install-app"),
   openScanner: document.getElementById("open-scanner"),
@@ -4293,7 +4368,7 @@ const elements = {
   reviewActions: [...document.querySelectorAll("[data-review-action]")]
 };
 
-const buildId = "2026-06-30-ui18";
+const buildId = "2026-06-30-ui19";
 const bootState = readUrlState();
 const geolocationOptions = {
   enableHighAccuracy: true,
@@ -5077,6 +5152,7 @@ function refreshMunicipalityViews() {
   renderBrowseCatalog();
   renderPublicFeedbackContext();
   renderSessionOverview();
+  renderSearchAssist(elements.searchInput.value);
 }
 
 function scannerSupportAvailable() {
@@ -5440,6 +5516,233 @@ function renderProductSuggestions() {
     });
 
   elements.productSuggestions.innerHTML = options.join("");
+}
+
+function normalizeSearchText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function singularizeToken(token) {
+  if (token.endsWith("ies") && token.length > 4) {
+    return `${token.slice(0, -3)}y`;
+  }
+
+  if (/(ches|shes|sses|xes|zes)$/.test(token) && token.length > 4) {
+    return token.slice(0, -2);
+  }
+
+  if (token.endsWith("s") && token.length > 3 && !token.endsWith("ss")) {
+    return token.slice(0, -1);
+  }
+
+  return token;
+}
+
+function tokenizeSearch(value) {
+  const normalized = normalizeSearchText(value);
+  if (!normalized) {
+    return [];
+  }
+
+  const seen = new Set();
+  const tokens = [];
+
+  normalized.split(" ").forEach((token) => {
+    [token, singularizeToken(token)].forEach((variant) => {
+      if (variant && !seen.has(variant)) {
+        seen.add(variant);
+        tokens.push(variant);
+      }
+    });
+  });
+
+  return tokens;
+}
+
+function productSearchCorpus(barcode, product) {
+  return [
+    barcode,
+    product.mark,
+    product.name.en,
+    product.name.es,
+    product.family.en,
+    product.family.es,
+    ...(product.aliases || [])
+  ]
+    .map((item) => normalizeSearchText(item))
+    .filter(Boolean);
+}
+
+function scoreSearchCandidate(queryNorm, queryTokens, candidateNorm) {
+  if (!candidateNorm || !queryNorm) {
+    return 0;
+  }
+
+  if (queryNorm === candidateNorm) {
+    return 1;
+  }
+
+  if (candidateNorm.startsWith(queryNorm)) {
+    return Math.min(0.98, 0.9 + (queryNorm.length / Math.max(candidateNorm.length, 1)) * 0.08);
+  }
+
+  if (candidateNorm.includes(queryNorm)) {
+    return 0.82;
+  }
+
+  const candidateTokens = tokenizeSearch(candidateNorm);
+  if (!candidateTokens.length || !queryTokens.length) {
+    return 0;
+  }
+
+  const overlap = queryTokens.filter((token) => candidateTokens.includes(token)).length;
+  if (!overlap) {
+    return 0;
+  }
+
+  const coverage = overlap / queryTokens.length;
+  const density = overlap / candidateTokens.length;
+  let score = coverage * 0.62 + density * 0.18;
+
+  if (coverage === 1) {
+    score += 0.18;
+  }
+
+  if (queryTokens.length === 1 && coverage === 1) {
+    score = Math.min(score, 0.76);
+  }
+
+  return score;
+}
+
+function rankedProductMatches(query, limit = 4) {
+  const queryNorm = normalizeSearchText(query);
+  const queryTokens = tokenizeSearch(query);
+  if (!queryNorm) {
+    return [];
+  }
+
+  return Object.entries(products)
+    .map(([barcode, product]) => {
+      const score = productSearchCorpus(barcode, product).reduce((bestScore, candidate) => {
+        return Math.max(bestScore, scoreSearchCandidate(queryNorm, queryTokens, candidate));
+      }, 0);
+
+      return { barcode, product, score };
+    })
+    .filter((match) => match.score > 0)
+    .sort((left, right) => {
+      if (right.score !== left.score) {
+        return right.score - left.score;
+      }
+
+      return left.product.name[state.language].localeCompare(right.product.name[state.language]);
+    })
+    .slice(0, limit);
+}
+
+function resolveSearchMatch(query, rankedMatches = rankedProductMatches(query, 4)) {
+  const topMatch = rankedMatches[0];
+  if (!topMatch) {
+    return null;
+  }
+
+  const secondScore = rankedMatches[1]?.score ?? 0;
+  const queryTokens = tokenizeSearch(query);
+
+  if (topMatch.score >= 0.95) {
+    return topMatch;
+  }
+
+  if (queryTokens.length >= 2 && topMatch.score >= 0.84 && topMatch.score - secondScore >= 0.12) {
+    return topMatch;
+  }
+
+  if (queryTokens.length === 1 && topMatch.score >= 0.9 && topMatch.score - secondScore >= 0.2) {
+    return topMatch;
+  }
+
+  return null;
+}
+
+function searchSuggestionMarkup(match) {
+  const municipalityKey = elements.municipalitySelect.value;
+  const guidance = match.product.outcomes[municipalityKey];
+
+  return `
+    <button class="search-assist-button" type="button" data-search-suggestion="${match.barcode}">
+      <strong>${escapeHtml(match.product.name[state.language])}</strong>
+      <span class="search-assist-meta">${escapeHtml(match.product.family[state.language])}</span>
+      <span class="mini-pill">${outcomeLabel(guidance.outcome)}</span>
+    </button>
+  `;
+}
+
+function wireSearchSuggestionButtons(container) {
+  if (!container) {
+    return;
+  }
+
+  container.querySelectorAll("[data-search-suggestion]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const barcode = button.getAttribute("data-search-suggestion");
+      if (!products[barcode]) {
+        return;
+      }
+
+      elements.searchInput.value = products[barcode].name[state.language];
+      renderSearchAssist(products[barcode].name[state.language]);
+      handleSearch(barcode);
+    });
+  });
+}
+
+function renderSearchAssist(query = elements.searchInput.value) {
+  const normalized = normalizeSearchText(query);
+  if (!normalized || normalized.length < 2) {
+    elements.searchAssist.innerHTML = "";
+    return;
+  }
+
+  const matches = rankedProductMatches(query, 3);
+  if (!matches.length) {
+    elements.searchAssist.innerHTML = "";
+    return;
+  }
+
+  const exactVisibleMatch = [
+    matches[0].barcode,
+    matches[0].product.name.en,
+    matches[0].product.name.es
+  ]
+    .map((item) => normalizeSearchText(item))
+    .includes(normalized);
+
+  if (exactVisibleMatch) {
+    elements.searchAssist.innerHTML = "";
+    return;
+  }
+
+  const ui = copy();
+  elements.searchAssist.innerHTML = `
+    <div class="search-assist-card">
+      <div class="search-assist-head">
+        <strong>${ui.searchAssistTitle}</strong>
+        <p>${ui.searchAssistCopy}</p>
+      </div>
+      <div class="search-assist-list">
+        ${matches.map((match) => searchSuggestionMarkup(match)).join("")}
+      </div>
+    </div>
+  `;
+
+  wireSearchSuggestionButtons(elements.searchAssist);
 }
 
 function publicFeedbackStatusLabel(status) {
@@ -6365,26 +6668,7 @@ async function shareFeedbackReport() {
 }
 
 function findProductEntry(query) {
-  const normalized = query.trim().toLowerCase();
-  if (!normalized) {
-    return null;
-  }
-
-  for (const [barcode, product] of Object.entries(products)) {
-    const aliases = [product.name.en, product.name.es, ...product.aliases].map((item) => item.toLowerCase());
-    if (barcode === normalized || aliases.includes(normalized)) {
-      return { barcode, product };
-    }
-  }
-
-  for (const [barcode, product] of Object.entries(products)) {
-    const aliases = [product.name.en, product.name.es, ...product.aliases].map((item) => item.toLowerCase());
-    if (aliases.some((item) => item.includes(normalized))) {
-      return { barcode, product };
-    }
-  }
-
-  return null;
+  return resolveSearchMatch(query);
 }
 
 function renderEmptyResult() {
@@ -6409,12 +6693,22 @@ function renderEmptyResult() {
   renderBrowseCatalog();
   renderPublicFeedbackContext();
   renderCenters(null);
+  renderSearchAssist("");
 }
 
-function renderUnknown() {
+function renderUnknown(suggestions = []) {
   const ui = copy();
   state.currentBarcode = null;
   setResultContentState(false);
+  const suggestionPanel = suggestions.length ? `
+      <div class="support-card suggestion-panel">
+        <strong class="detail-title">${ui.unknownMatchesTitle}</strong>
+        <p class="support-copy">${ui.unknownMatchesCopy}</p>
+        <div class="search-assist-list">
+          ${suggestions.map((match) => searchSuggestionMarkup(match)).join("")}
+        </div>
+      </div>
+  ` : "";
 
   elements.resultContent.innerHTML = `
     <div class="result-card">
@@ -6437,6 +6731,7 @@ function renderUnknown() {
         <strong>${ui.unknownImpactTitle}</strong>
         <p class="support-copy">${ui.unknownImpactCopy}</p>
       </div>
+      ${suggestionPanel}
       <div class="support-card result-review-card">
         <strong class="detail-title">${ui.resultReviewTitle}</strong>
         <p class="support-copy">${ui.resultReviewCopy}</p>
@@ -6453,6 +6748,7 @@ function renderUnknown() {
   renderBrowseCatalog();
   renderPublicFeedbackContext();
   renderCenters(null);
+  wireSearchSuggestionButtons(elements.resultContent);
 }
 
 function summaryText(entry) {
@@ -6559,6 +6855,7 @@ function renderResult(entry, trackHistory) {
 function handleSearch(value, options = {}) {
   const { trackHistory = true, scroll = true } = options;
   state.lastQuery = value.trim();
+  renderSearchAssist(state.lastQuery);
   if (!state.lastQuery) {
     renderEmptyResult();
     syncUrlState();
@@ -6568,9 +6865,10 @@ function handleSearch(value, options = {}) {
     return;
   }
 
-  const entry = findProductEntry(value);
+  const rankedMatches = rankedProductMatches(value, 4);
+  const entry = resolveSearchMatch(value, rankedMatches);
   if (!entry) {
-    renderUnknown();
+    renderUnknown(rankedMatches);
     syncUrlState();
     if (scroll) {
       scrollToSection(".result-stage");
@@ -6579,6 +6877,8 @@ function handleSearch(value, options = {}) {
   }
 
   state.currentBarcode = entry.barcode;
+  elements.searchInput.value = entry.product.name[state.language];
+  renderSearchAssist(elements.searchInput.value);
   renderResult(entry, trackHistory);
   syncUrlState();
   if (scroll) {
@@ -6614,7 +6914,7 @@ elements.languageToggle.addEventListener("click", () => {
   if (currentEntry) {
     renderResult(currentEntry, false);
   } else if (state.lastQuery) {
-    renderUnknown();
+    renderUnknown(rankedProductMatches(state.lastQuery, 4));
   } else {
     renderCenters(null);
   }
@@ -6758,6 +7058,8 @@ elements.municipalitySelect.addEventListener("change", () => {
   if (currentEntry) {
     renderResult(currentEntry, false);
     scrollToSection(".result-stage");
+  } else if (state.lastQuery) {
+    renderUnknown(rankedProductMatches(state.lastQuery, 4));
   } else {
     renderCenters(null);
   }
@@ -6769,6 +7071,10 @@ elements.searchInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
     handleSearch(elements.searchInput.value);
   }
+});
+
+elements.searchInput.addEventListener("input", () => {
+  renderSearchAssist(elements.searchInput.value);
 });
 
 elements.copyLink.addEventListener("click", async () => {
