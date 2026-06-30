@@ -1070,6 +1070,12 @@ textarea {
   margin-top: 16px;
 }
 
+.session-actions {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-start;
+}
+
 .session-metric {
   padding: 14px;
 }
@@ -1145,6 +1151,10 @@ textarea {
 .checklist-item.is-done {
   border-color: rgba(15, 118, 110, 0.28);
   background: linear-gradient(135deg, rgba(223, 247, 239, 0.8), rgba(255, 255, 255, 0.92));
+}
+
+.checklist-action {
+  margin-top: 12px;
 }
 
 .comparison-panel {
@@ -1889,6 +1899,9 @@ textarea {
                       Work through the steps below so the product team sees clarity issues across real local outcomes.
                     </p>
                     <div id="session-checklist" class="session-checklist"></div>
+                    <div class="session-actions">
+                      <button id="reset-session" class="ghost-button" type="button" data-i18n="sessionReset">Reset session</button>
+                    </div>
                   </div>
                 </div>
 
@@ -2149,12 +2162,16 @@ const translations = {
     checklistProgress: "Session progress",
     checklistDone: "Done",
     checklistNext: "Next",
+    checklistTry: "Try now",
     checklistLocation: "Match your real location",
     checklistRecycle: "Test a clear recycle case",
     checklistDropoff: "Test a drop-off item",
     checklistUnclear: "Test an uncertain or caution case",
     checklistCities: "Compare at least two pilot cities",
     checklistFeedback: "Save at least one feedback note",
+    sessionReset: "Reset session",
+    sessionResetConfirm: "Reset checked items, saved feedback, and the current answer?",
+    sessionResetDone: "Review session reset.",
     feedbackTagPrompt: "Quick flags",
     feedbackTagsLabel: "Quick flags",
     feedbackTagWordy: "Too much text",
@@ -2366,12 +2383,16 @@ const translations = {
     checklistProgress: "Progreso de la sesion",
     checklistDone: "Hecho",
     checklistNext: "Siguiente",
+    checklistTry: "Probar ahora",
     checklistLocation: "Usa tu ubicacion real",
     checklistRecycle: "Prueba un caso claro de reciclaje",
     checklistDropoff: "Prueba un articulo de entrega especial",
     checklistUnclear: "Prueba un caso incierto o con cautela",
     checklistCities: "Compara al menos dos ciudades piloto",
     checklistFeedback: "Guarda al menos una nota",
+    sessionReset: "Reiniciar sesion",
+    sessionResetConfirm: "Reiniciar articulos revisados, comentarios guardados y la respuesta actual?",
+    sessionResetDone: "Sesion reiniciada.",
     feedbackTagPrompt: "Marcas rapidas",
     feedbackTagsLabel: "Marcas rapidas",
     feedbackTagWordy: "Demasiado texto",
@@ -3893,13 +3914,14 @@ const elements = {
   saveFeedback: document.getElementById("save-feedback"),
   copyFeedback: document.getElementById("copy-feedback"),
   clearFeedback: document.getElementById("clear-feedback"),
+  resetSession: document.getElementById("reset-session"),
   copyLink: document.getElementById("copy-link"),
   copySummary: document.getElementById("copy-summary"),
   toast: document.getElementById("toast"),
   chips: [...document.querySelectorAll(".chip")]
 };
 
-const buildId = "2026-06-30-ui10";
+const buildId = "2026-06-30-ui11";
 const bootState = readUrlState();
 
 if (bootState.language && translations[bootState.language]) {
@@ -4921,6 +4943,18 @@ function topFeedbackTagKeys(limit = 3) {
     .map(([tag]) => tag);
 }
 
+function sampleBarcodeForOutcomes(outcomes) {
+  const municipalityKey = elements.municipalitySelect.value;
+  const entry = Object.entries(products).find(([, product]) => outcomes.includes(product.outcomes[municipalityKey].outcome));
+  return entry ? entry[0] : null;
+}
+
+function nextMunicipalityKey() {
+  const keys = Object.keys(municipalities);
+  const currentIndex = keys.indexOf(elements.municipalitySelect.value);
+  return keys[(currentIndex + 1) % keys.length];
+}
+
 function checklistItems() {
   const uniqueCities = new Set(state.history.map((entry) => entry.municipality).filter(Boolean)).size;
   const hasRecycle = state.history.some((entry) => entry.outcome === "recycle");
@@ -4928,12 +4962,12 @@ function checklistItems() {
   const hasUnclear = state.history.some((entry) => entry.outcome === "check_locally" || entry.outcome === "trash");
 
   return [
-    { key: "checklistLocation", done: Boolean(state.userLocation) },
-    { key: "checklistRecycle", done: hasRecycle },
-    { key: "checklistDropoff", done: hasDropoff },
-    { key: "checklistUnclear", done: hasUnclear },
-    { key: "checklistCities", done: uniqueCities >= 2 },
-    { key: "checklistFeedback", done: state.feedback.length >= 1 }
+    { key: "checklistLocation", done: Boolean(state.userLocation), action: "location" },
+    { key: "checklistRecycle", done: hasRecycle, action: "recycle" },
+    { key: "checklistDropoff", done: hasDropoff, action: "dropoff" },
+    { key: "checklistUnclear", done: hasUnclear, action: "unclear" },
+    { key: "checklistCities", done: uniqueCities >= 2, action: "cities" },
+    { key: "checklistFeedback", done: state.feedback.length >= 1, action: "feedback" }
   ];
 }
 
@@ -5309,15 +5343,82 @@ function renderSessionChecklist() {
             <strong>${ui[item.key]}</strong>
             <span class="mini-pill">${item.done ? ui.checklistDone : ui.checklistNext}</span>
           </div>
+          ${item.done ? "" : `<button class="ghost-button checklist-action" type="button" data-checklist-action="${item.action}">${ui.checklistTry}</button>`}
         </article>
       `).join("")}
     </div>
   `;
+
+  elements.sessionChecklist.querySelectorAll("[data-checklist-action]").forEach((button) => {
+    button.addEventListener("click", () => {
+      runChecklistAction(button.getAttribute("data-checklist-action"));
+    });
+  });
 }
 
 function renderSessionOverview() {
   renderSessionSnapshot();
   renderSessionChecklist();
+}
+
+function runChecklistAction(action) {
+  if (action === "location") {
+    requestUserLocation();
+    return;
+  }
+
+  if (action === "recycle") {
+    const barcode = sampleBarcodeForOutcomes(["recycle"]);
+    if (barcode) {
+      elements.searchInput.value = products[barcode].name[state.language];
+      handleSearch(barcode);
+    }
+    return;
+  }
+
+  if (action === "dropoff") {
+    const barcode = sampleBarcodeForOutcomes(["drop_off"]);
+    if (barcode) {
+      elements.searchInput.value = products[barcode].name[state.language];
+      handleSearch(barcode);
+    }
+    return;
+  }
+
+  if (action === "unclear") {
+    const barcode = sampleBarcodeForOutcomes(["check_locally", "trash"]);
+    if (barcode) {
+      elements.searchInput.value = products[barcode].name[state.language];
+      handleSearch(barcode);
+    }
+    return;
+  }
+
+  if (action === "cities") {
+    const targetMunicipality = nextMunicipalityKey();
+    elements.municipalitySelect.value = targetMunicipality;
+    refreshMunicipalityViews();
+
+    const currentEntry = activeProductEntry();
+    if (currentEntry) {
+      elements.searchInput.value = currentEntry.product.name[state.language];
+      handleSearch(currentEntry.barcode);
+    } else {
+      const barcode = sampleBarcodeForOutcomes(["recycle"]);
+      if (barcode) {
+        elements.searchInput.value = products[barcode].name[state.language];
+        handleSearch(barcode);
+      } else {
+        scrollToSection(".result-stage");
+      }
+    }
+    return;
+  }
+
+  if (action === "feedback") {
+    scrollToSection(".feedback-card");
+    elements.feedbackNotes.focus();
+  }
 }
 
 function currentFeedbackContext() {
@@ -5396,6 +5497,38 @@ function clearFeedbackForm() {
   state.feedbackTags = [];
   renderFeedbackTags();
   showToast(copy().feedbackCleared);
+}
+
+function resetReviewSession() {
+  if (typeof window.confirm === "function" && !window.confirm(copy().sessionResetConfirm)) {
+    return;
+  }
+
+  state.history = [];
+  state.feedback = [];
+  state.userLocation = null;
+  state.currentBarcode = null;
+  state.lastQuery = "";
+  state.feedbackTags = [];
+
+  localStorage.removeItem("recycling-history-v2");
+  localStorage.removeItem("recycling-feedback-v1");
+  localStorage.removeItem("recycling-user-location-v1");
+
+  elements.searchInput.value = "";
+  elements.feedbackNotes.value = "";
+  elements.clarityRating.value = "5";
+  elements.trustRating.value = "5";
+  elements.speedRating.value = "5";
+  renderFeedbackTags();
+  setLocationStatus(copy().locationIdle);
+  renderEmptyResult();
+  renderHistory();
+  renderFeedbackLog();
+  refreshMunicipalityViews();
+  syncUrlState();
+  scrollToSection(".search-panel");
+  showToast(copy().sessionResetDone);
 }
 
 function addHistory(barcode, outcome, municipality) {
@@ -5815,6 +5948,10 @@ elements.copyFeedback.addEventListener("click", () => {
 
 elements.clearFeedback.addEventListener("click", () => {
   clearFeedbackForm();
+});
+
+elements.resetSession.addEventListener("click", () => {
+  resetReviewSession();
 });
 
 if (state.userLocation && !bootState.municipality) {
