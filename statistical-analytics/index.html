@@ -33,6 +33,7 @@
         <div class="action-row">
           <a class="button" href="#method-finder">Start with a question</a>
           <a class="button secondary" href="regression-visual-guide.html">Visual regression guide</a>
+          <a class="button secondary" href="#quality-gates">Run quality gates</a>
           <a class="button secondary" href="samples.html">Open sample library</a>
           <a class="button secondary" href="model-tuning.html">Tune a model</a>
           <a class="button secondary" href="https://github.com/LindaData/LindaData.github.io/tree/master/statistical-analytics">View source</a>
@@ -79,7 +80,7 @@
       </div>
     </section>
 
-    <section>
+    <section id="guided-routes">
       <h2>What The User Gets</h2>
       <p class="section-note">The site should make work easier, not prove that every statistical term can fit on one page.</p>
       <div class="card-grid">
@@ -87,30 +88,30 @@
           <small>Choose</small>
           <h3>Question-first navigation</h3>
           <p>Users start with their business or research question, then move into the right statistical family.</p>
-          <a href="#method-finder">Use the finder</a>
+          <div class="action-row"><a class="button secondary small" href="#method-finder">Use the finder</a></div>
         </article>
         <article class="method-card">
           <small>Understand</small>
           <h3>Visual regression guide</h3>
           <p>See real fitted R models and generated visuals for the core regression families before choosing code.</p>
-          <a href="regression-visual-guide.html">Open visual guide</a>
+          <div class="action-row"><a class="button secondary small" href="regression-visual-guide.html">Open visual guide</a></div>
         </article>
         <article class="method-card">
           <small>Copy</small>
           <h3>Swap-data templates</h3>
           <p>The sample library gives small working blocks for R, Python, and SQL with obvious placeholders.</p>
-          <a href="samples.html">Open samples</a>
+          <div class="action-row"><a class="button secondary small" href="samples.html">Open samples</a></div>
         </article>
         <article class="method-card">
           <small>Improve</small>
           <h3>Tuning without guesswork</h3>
           <p>The tuning guide explains validation, stepwise selection, trees, XGBoost, calibration, and model cards.</p>
-          <a href="model-tuning.html">Open tuning guide</a>
+          <div class="action-row"><a class="button secondary small" href="model-tuning.html">Open tuning guide</a></div>
         </article>
       </div>
     </section>
 
-    <section>
+    <section id="quality-gates">
       <h2>Quality Gates</h2>
       <p class="section-note">These are the review gates that make the page useful for real team work. If one gate fails, the analysis is not ready to present.</p>
       <div class="quality-grid">
@@ -121,9 +122,15 @@
         <article class="quality-card"><h3>Diagnostics</h3><p>Collinearity, residuals, imbalance, and dependence are checked.</p></article>
         <article class="quality-card"><h3>Model card</h3><p>Assumptions, limits, owner, and version are documented.</p></article>
       </div>
+      <div class="route-panel">
+        <strong>Next:</strong>
+        <a class="button secondary small" href="data/diagnostics_checklist.csv">Open diagnostics checklist</a>
+        <a class="button secondary small" href="samples.html#ols-diagnostics">Copy diagnostic starter</a>
+        <a class="button secondary small" href="model-tuning.html#model-card-standard">Write the model card</a>
+      </div>
     </section>
 
-    <section>
+    <section id="core-workflows">
       <h2>Core Workflows</h2>
       <div class="sample-grid">
         <article class="sample-card">
@@ -133,6 +140,7 @@
           <pre><code>fit <- lm(TARGET ~ x1 + x2 + x3, data = DATA)
 summary(fit)
 run_lm_diagnostics(fit, DATA)</code></pre>
+          <div class="action-row"><a class="button secondary small" href="samples.html#ols-diagnostics">Open OLS sample</a></div>
         </article>
         <article class="sample-card">
           <small>Model selection</small>
@@ -141,6 +149,7 @@ run_lm_diagnostics(fit, DATA)</code></pre>
           <pre><code>DATA$split <- make_split(DATA)
 train <- DATA[DATA$split == "train", ]
 test <- DATA[DATA$split == "test", ]</code></pre>
+          <div class="action-row"><a class="button secondary small" href="model-tuning.html#validation-design">Pick validation design</a></div>
         </article>
         <article class="sample-card">
           <small>LLM evaluation</small>
@@ -148,6 +157,7 @@ test <- DATA[DATA$split == "test", ]</code></pre>
           <p>One row per output, claim, rater, or prompt-item pair. Compare score, factuality, confidence, cost, and latency.</p>
           <pre><code>summary(lm(score ~ prompt_id, data = LLM_DATA))
 mean((LLM_DATA$factual - LLM_DATA$confidence)^2)</code></pre>
+          <div class="action-row"><a class="button secondary small" href="samples.html#llm-calibration">Open LLM sample</a></div>
         </article>
         <article class="sample-card">
           <small>SQL</small>
@@ -157,11 +167,12 @@ mean((LLM_DATA$factual - LLM_DATA$confidence)^2)</code></pre>
 SELECT target, x1, x2, row_id % 5 AS fold_id
 FROM data_table
 WHERE target IS NOT NULL;</code></pre>
+          <div class="action-row"><a class="button secondary small" href="samples.html#model-ready-feature-view">Open SQL sample</a></div>
         </article>
       </div>
     </section>
 
-    <section>
+    <section id="resource-library">
       <h2>Resource Library</h2>
       <p class="section-note">The exhaustive material is still here, but it is treated as a library. The user-facing workflow stays guided.</p>
       <div class="asset-grid">
@@ -169,30 +180,30 @@ WHERE target IS NOT NULL;</code></pre>
           <small>Catalog</small>
           <h3>Statistical techniques</h3>
           <p>100 methods with data structure, use case, and language entry points.</p>
-          <a href="data/statistical_techniques_catalog.csv">Download CSV</a>
+          <div class="action-row"><a class="button secondary small" href="data/statistical_techniques_catalog.csv">Download CSV</a></div>
         </article>
         <article class="asset-card">
           <small>Catalog</small>
           <h3>Regression families</h3>
           <p>Model families, targets, assumptions, diagnostics, and starter tools.</p>
-          <a href="data/regression_catalog.csv">Download CSV</a>
+          <div class="action-row"><a class="button secondary small" href="data/regression_catalog.csv">Download CSV</a></div>
         </article>
         <article class="asset-card">
           <small>Catalog</small>
           <h3>Model tuning</h3>
           <p>Validation, search, regularization, boosting, calibration, monitoring, and model cards.</p>
-          <a href="data/model_tuning_catalog.csv">Download CSV</a>
+          <div class="action-row"><a class="button secondary small" href="data/model_tuning_catalog.csv">Download CSV</a></div>
         </article>
         <article class="asset-card">
           <small>Checklist</small>
           <h3>Diagnostics</h3>
           <p>Pre-model review for leakage, collinearity, heteroskedasticity, dependence, and assumption checks.</p>
-          <a href="data/diagnostics_checklist.csv">Download CSV</a>
+          <div class="action-row"><a class="button secondary small" href="data/diagnostics_checklist.csv">Download CSV</a></div>
         </article>
       </div>
     </section>
 
-    <section>
+    <section id="starter-files">
       <h2>Starter Files</h2>
       <div class="table-wrap">
         <table>
@@ -210,7 +221,7 @@ WHERE target IS NOT NULL;</code></pre>
       </div>
     </section>
 
-    <section class="split">
+    <section id="github-review" class="split">
       <div class="callout">
         <h2>GitHub Review Loop</h2>
         <p>Source lives in the public repository. Update the page, run checks, commit, push to <code>master</code>, and verify GitHub Pages.</p>

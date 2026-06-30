@@ -166,6 +166,79 @@ summary(glm(factual ~ prompt_id + confidence,
     });
   }
 
+  function activateTabForPanel(panel) {
+    if (!panel || !panel.hasAttribute("data-tab-panel-group")) return;
+    const group = panel.getAttribute("data-tab-panel-group");
+    qsa(`[data-tab-group="${group}"]`).forEach(button => {
+      const isActive = button.getAttribute("data-tab-target") === panel.id;
+      button.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
+    qsa(`[data-tab-panel-group="${group}"]`).forEach(item => {
+      item.hidden = item !== panel;
+    });
+  }
+
+  function slugify(text) {
+    return text.toLowerCase()
+      .replace(/^\d+\s*/, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+  }
+
+  function wireHashTargets() {
+    const openHash = () => {
+      if (!window.location.hash) return;
+      const id = window.location.hash.slice(1);
+      const target = document.getElementById(id);
+      if (!target) return;
+      const tabPanel = target.matches("[data-tab-panel-group]")
+        ? target
+        : target.closest("[data-tab-panel-group]");
+      activateTabForPanel(tabPanel);
+      target.scrollIntoView({ block: "start" });
+    };
+
+    window.addEventListener("hashchange", openHash);
+    openHash();
+  }
+
+  function wireVisualCards() {
+    const routeMap = {
+      "simple-linear-regression": [["Copy R baseline", "samples.html#ols-diagnostics"], ["Tune candidates", "model-tuning.html#r-tuning"], ["Catalog", "data/regression_catalog.csv"]],
+      "multiple-linear-regression": [["Copy R baseline", "samples.html#ols-diagnostics"], ["Tune candidates", "model-tuning.html#r-tuning"], ["Catalog", "data/regression_catalog.csv"]],
+      "polynomial-regression": [["Copy R baseline", "samples.html#ols-diagnostics"], ["Tune candidates", "model-tuning.html#r-tuning"], ["Catalog", "data/regression_catalog.csv"]],
+      "spline-regression": [["Copy R baseline", "samples.html#ols-diagnostics"], ["Tune candidates", "model-tuning.html#r-tuning"], ["Catalog", "data/regression_catalog.csv"]],
+      "interaction-regression": [["Copy R baseline", "samples.html#ols-diagnostics"], ["Diagnostics", "data/diagnostics_checklist.csv"], ["Catalog", "data/regression_catalog.csv"]],
+      "logistic-regression": [["Copy logistic template", "samples.html#logistic-regression"], ["Tune classifiers", "model-tuning.html#python-tuning"], ["Catalog", "data/regression_catalog.csv"]],
+      "probit-regression": [["Copy logistic template", "samples.html#logistic-regression"], ["Diagnostics", "data/diagnostics_checklist.csv"], ["Catalog", "data/regression_catalog.csv"]],
+      "poisson-regression": [["Prepare feature table", "samples.html#model-ready-feature-view"], ["Full R cookbook", "scripts/statistical_methods_cookbook.R"], ["Catalog", "data/regression_catalog.csv"]],
+      "negative-binomial-regression": [["Prepare feature table", "samples.html#model-ready-feature-view"], ["Full R cookbook", "scripts/statistical_methods_cookbook.R"], ["Catalog", "data/regression_catalog.csv"]],
+      "gamma-regression": [["Copy R baseline", "samples.html#ols-diagnostics"], ["Diagnostics", "data/diagnostics_checklist.csv"], ["Catalog", "data/regression_catalog.csv"]],
+      "robust-regression": [["Copy R baseline", "samples.html#ols-diagnostics"], ["Diagnostics", "data/diagnostics_checklist.csv"], ["Catalog", "data/regression_catalog.csv"]],
+      "ridge-regression": [["Tune regularization", "model-tuning.html#r-tuning"], ["Download R tuning", "scripts/model_tuning_r_templates.R"], ["Catalog", "data/regression_catalog.csv"]],
+      "mixed-effects-regression": [["Full R cookbook", "scripts/statistical_methods_cookbook.R"], ["Diagnostics", "data/diagnostics_checklist.csv"], ["Catalog", "data/regression_catalog.csv"]],
+      "fixed-effects-regression": [["Full R cookbook", "scripts/statistical_methods_cookbook.R"], ["Diagnostics", "data/diagnostics_checklist.csv"], ["Catalog", "data/regression_catalog.csv"]],
+      "cox-proportional-hazards": [["Full R cookbook", "scripts/statistical_methods_cookbook.R"], ["Diagnostics", "data/diagnostics_checklist.csv"], ["Catalog", "data/regression_catalog.csv"]],
+      "time-series-regression": [["Copy samples", "samples.html#template-cards"], ["Validation design", "model-tuning.html#validation-design"], ["Catalog", "data/regression_catalog.csv"]],
+      "decision-tree-regression": [["Tune trees", "model-tuning.html#python-tuning"], ["Download R tuning", "scripts/model_tuning_r_templates.R"], ["Catalog", "data/model_tuning_catalog.csv"]],
+      "multinomial-logistic-regression": [["Copy logistic template", "samples.html#logistic-regression"], ["Tune classifiers", "model-tuning.html#python-tuning"], ["Catalog", "data/regression_catalog.csv"]]
+    };
+
+    qsa(".visual-card").forEach(card => {
+      const heading = qs("h3", card);
+      const facts = qs(".visual-facts", card);
+      if (!heading || !facts || qs(".visual-actions", facts)) return;
+      const key = slugify(heading.textContent);
+      if (!card.id) card.id = key;
+      const links = routeMap[key];
+      if (!links) return;
+      const row = document.createElement("div");
+      row.className = "action-row visual-actions";
+      row.innerHTML = links.map(([label, href]) => `<a class="button secondary small" href="${href}">${label}</a>`).join("");
+      facts.appendChild(row);
+    });
+  }
+
   function wireCopyButtons(root) {
     qsa("pre", root).forEach((pre, index) => {
       if (pre.parentElement && pre.parentElement.classList.contains("code-shell")) return;
@@ -198,6 +271,8 @@ summary(glm(factual ~ prompt_id + confidence,
     wireRecipeButtons();
     wireTabs();
     wireFilters();
+    wireVisualCards();
     wireCopyButtons(document);
+    wireHashTargets();
   });
 })();

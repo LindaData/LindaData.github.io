@@ -31,7 +31,8 @@
         <h1>Tune models like an analyst, not like a leaderboard.</h1>
         <p class="lede">Good tuning is mostly validation design. This page keeps the order clear: baseline first, split second, tuned candidates third, model card last.</p>
         <div class="action-row">
-          <a class="button" href="scripts/model_tuning_r_templates.R">Download R tuning file</a>
+          <a class="button" href="#validation-design">Pick validation design</a>
+          <a class="button secondary" href="scripts/model_tuning_r_templates.R">Download R tuning file</a>
           <a class="button secondary" href="regression-visual-guide.html">Visual guide</a>
           <a class="button secondary" href="scripts/model_tuning_python_templates.py">Download Python file</a>
           <a class="button secondary" href="sql/model_tuning_sql_templates.sql">Download SQL file</a>
@@ -49,7 +50,7 @@
       </aside>
     </section>
 
-    <section>
+    <section id="tuning-sequence">
       <h2>The Tuning Sequence</h2>
       <div class="quality-grid">
         <article class="quality-card"><h3>1. Target</h3><p>Define outcome and prediction moment.</p></article>
@@ -61,7 +62,7 @@
       </div>
     </section>
 
-    <section>
+    <section id="choose-family">
       <h2>Choose The Family</h2>
       <div class="card-grid">
         <article class="method-card">
@@ -70,6 +71,7 @@
           <p>Use when the formula, coefficients, and feature selection story matter.</p>
           <p><strong>Tune:</strong> candidate scope, AIC/BIC, lambda, alpha.</p>
           <p><strong>Watch:</strong> collinearity, unstable selected terms, p-value overclaiming.</p>
+          <div class="action-row"><a class="button secondary small" href="#r-tuning">Open R block</a></div>
         </article>
         <article class="method-card">
           <small>Rules</small>
@@ -77,6 +79,7 @@
           <p>Use when stakeholders need understandable nonlinear rules.</p>
           <p><strong>Tune:</strong> depth, minimum leaf size, pruning penalty.</p>
           <p><strong>Watch:</strong> tiny leaves, unstable splits, overfitting.</p>
+          <div class="action-row"><a class="button secondary small" href="#python-tuning">Open tree block</a></div>
         </article>
         <article class="method-card">
           <small>Prediction</small>
@@ -84,11 +87,12 @@
           <p>Use when tabular predictive accuracy matters and interpretation is secondary.</p>
           <p><strong>Tune:</strong> learning rate, depth, trees, subsampling, regularization.</p>
           <p><strong>Watch:</strong> leakage, validation overfit, calibration drift.</p>
+          <div class="action-row"><a class="button secondary small" href="#sql-tuning">Open search grid</a></div>
         </article>
       </div>
     </section>
 
-    <section>
+    <section id="validation-design">
       <h2>Validation Design Picker</h2>
       <div class="table-wrap">
         <table>
@@ -105,9 +109,15 @@
           </tbody>
         </table>
       </div>
+      <div class="route-panel">
+        <strong>Next:</strong>
+        <a class="button secondary small" href="#tuning-blocks">Copy a tuning block</a>
+        <a class="button secondary small" href="samples.html#train-test-baseline">Start with a holdout sample</a>
+        <a class="button secondary small" href="#model-card-standard">Document the decision</a>
+      </div>
     </section>
 
-    <section>
+    <section id="tuning-blocks">
       <h2>Copy-Ready Tuning Blocks</h2>
       <div class="tabs" aria-label="Tuning language tabs">
         <button class="chip" type="button" data-tab-group="tuning" data-tab-target="r-tuning" aria-pressed="true">R</button>
@@ -127,6 +137,7 @@ PREDICTORS <- c("wt", "hp", "disp", "qsec", "am")
 fit <- lm(as.formula(paste(TARGET, "~", paste(PREDICTORS, collapse = " + "))), data = DATA)
 step_aic <- step(fit, direction = "both", trace = 0)
 summary(step_aic)</code></pre>
+            <div class="action-row"><a class="button secondary small" href="scripts/model_tuning_r_templates.R">Full R tuning file</a></div>
           </article>
           <article class="sample-card">
             <small>R</small>
@@ -137,6 +148,7 @@ if (requireNamespace("xgboost", quietly = TRUE)) {
   xgb_scores <- tune_xgboost_regression(DATA, TARGET, PREDICTORS)
   head(xgb_scores[order(xgb_scores$cv_rmse), ])
 }</code></pre>
+            <div class="action-row"><a class="button secondary small" href="data/model_tuning_catalog.csv">XGBoost catalog rows</a></div>
           </article>
         </div>
       </div>
@@ -155,6 +167,7 @@ search = GridSearchCV(
 )
 search.fit(X_train, y_train)
 print(search.best_params_)</code></pre>
+            <div class="action-row"><a class="button secondary small" href="scripts/model_tuning_python_templates.py">Full Python tuning file</a></div>
           </article>
           <article class="sample-card">
             <small>Python</small>
@@ -167,6 +180,7 @@ print(search.best_params_)</code></pre>
     max_iter=5000
 )
 model.fit(X_train, y_train)</code></pre>
+            <div class="action-row"><a class="button secondary small" href="samples.html#logistic-regression">Classifier starter</a></div>
           </article>
         </div>
       </div>
@@ -183,6 +197,7 @@ FROM (
     (0.03, 2, 1, 0.80, 0.80, 1.0),
     (0.10, 3, 5, 0.80, 1.00, 5.0)
 ) AS t(eta, max_depth, min_child_weight, subsample, colsample_bytree, reg_lambda);</code></pre>
+            <div class="action-row"><a class="button secondary small" href="sql/model_tuning_sql_templates.sql">Full SQL tuning file</a></div>
           </article>
           <article class="sample-card">
             <small>SQL</small>
@@ -196,12 +211,13 @@ FROM (
   metric_value DOUBLE,
   trained_at TIMESTAMP
 );</code></pre>
+            <div class="action-row"><a class="button secondary small" href="#model-card-standard">Model card standard</a></div>
           </article>
         </div>
       </div>
     </section>
 
-    <section>
+    <section id="model-card-standard">
       <h2>Model Card Standard</h2>
       <p class="section-note">If this information is not written down, the model is not ready for review.</p>
       <div class="card-grid">
@@ -214,7 +230,7 @@ FROM (
       </div>
     </section>
 
-    <section class="split">
+    <section id="full-assets" class="split">
       <div class="callout">
         <h2>Full Tuning Assets</h2>
         <p>The page is the workflow. The files are the implementation layer.</p>

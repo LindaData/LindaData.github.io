@@ -31,7 +31,8 @@
         <h1>Copy the pattern. Replace the names. Run the checks.</h1>
         <p class="lede">A small set of working templates beats a giant code dump. These samples are intentionally plain: they show the shape of the analysis and make the replaceable fields obvious.</p>
         <div class="action-row">
-          <a class="button" href="scripts/copy_paste_r_samples.R">Download R file</a>
+          <a class="button" href="#template-cards">Choose a template</a>
+          <a class="button secondary" href="scripts/copy_paste_r_samples.R">Download R file</a>
           <a class="button secondary" href="regression-visual-guide.html">Visual guide</a>
           <a class="button secondary" href="scripts/copy_paste_python_samples.py">Download Python file</a>
           <a class="button secondary" href="sql/copy_paste_sql_samples.sql">Download SQL file</a>
@@ -47,7 +48,7 @@
       </aside>
     </section>
 
-    <section>
+    <section id="job-picker">
       <h2>Pick The Nearest Job</h2>
       <div class="table-wrap">
         <table>
@@ -55,18 +56,18 @@
             <tr><th>Question</th><th>Best first sample</th><th>Swap</th><th>Then check</th></tr>
           </thead>
           <tbody>
-            <tr><td>What is in this dataset?</td><td>Data profile</td><td><code>DATA</code></td><td>Missingness, duplicates, grain.</td></tr>
-            <tr><td>What predicts a number?</td><td>OLS baseline</td><td><code>TARGET</code>, <code>PREDICTORS</code></td><td>Collinearity, residuals, leverage.</td></tr>
-            <tr><td>What predicts yes/no?</td><td>Logistic regression</td><td>Binary <code>TARGET</code>, predictors</td><td>Class balance, calibration, threshold.</td></tr>
-            <tr><td>What predicts counts?</td><td>Poisson or negative binomial</td><td>Count target, exposure if any</td><td>Overdispersion, zeros, offset.</td></tr>
-            <tr><td>Do groups differ?</td><td>t-test, ANOVA, chi-square</td><td><code>GROUP</code>, outcome</td><td>Independence, distribution, cell counts.</td></tr>
-            <tr><td>Which tuned model should we use?</td><td><a href="model-tuning.html">Model tuning guide</a></td><td><code>METRIC</code>, split/fold design</td><td>Leakage, validation fit, model card.</td></tr>
+            <tr><td>What is in this dataset?</td><td><a href="#data-profile">Data profile</a></td><td><code>DATA</code></td><td>Missingness, duplicates, grain.</td></tr>
+            <tr><td>What predicts a number?</td><td><a href="#ols-diagnostics">OLS baseline</a></td><td><code>TARGET</code>, <code>PREDICTORS</code></td><td>Collinearity, residuals, leverage.</td></tr>
+            <tr><td>What predicts yes/no?</td><td><a href="#logistic-regression">Logistic regression</a></td><td>Binary <code>TARGET</code>, predictors</td><td>Class balance, calibration, threshold.</td></tr>
+            <tr><td>What predicts counts?</td><td><a href="#model-ready-feature-view">Poisson or negative binomial setup</a></td><td>Count target, exposure if any</td><td>Overdispersion, zeros, offset.</td></tr>
+            <tr><td>Do groups differ?</td><td><a href="scripts/copy_paste_r_samples.R">t-test, ANOVA, chi-square file</a></td><td><code>GROUP</code>, outcome</td><td>Independence, distribution, cell counts.</td></tr>
+            <tr><td>Which tuned model should we use?</td><td><a href="model-tuning.html#tuning-blocks">Model tuning guide</a></td><td><code>METRIC</code>, split/fold design</td><td>Leakage, validation fit, model card.</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <section>
+    <section id="template-cards">
       <h2>Template Cards</h2>
       <p class="section-note">Filter by language, copy the card, then move to the full file if you need the expanded version.</p>
       <div class="chip-row" aria-label="Filter templates">
@@ -77,7 +78,24 @@
       </div>
 
       <div class="sample-grid">
-        <article class="sample-card" data-sample-kind="r">
+        <article id="data-profile" class="sample-card" data-sample-kind="r">
+          <small>R</small>
+          <h3>Data Profile</h3>
+          <p>Use before modeling to confirm the row count, target availability, missingness, and duplicate rows.</p>
+          <pre><code>DATA <- read.csv("your_data.csv")
+TARGET <- "target"
+
+data.frame(
+  rows = nrow(DATA),
+  columns = ncol(DATA),
+  missing_target = sum(is.na(DATA[[TARGET]])),
+  duplicate_rows = sum(duplicated(DATA))
+)
+sort(colMeans(is.na(DATA)), decreasing = TRUE)</code></pre>
+          <div class="action-row"><a class="button secondary small" href="data/diagnostics_checklist.csv">Diagnostics checklist</a></div>
+        </article>
+
+        <article id="ols-diagnostics" class="sample-card" data-sample-kind="r">
           <small>R</small>
           <h3>OLS With Diagnostics</h3>
           <p>Use when the target is continuous and you need a transparent baseline.</p>
@@ -87,9 +105,13 @@ DATA <- mtcars
 fit <- lm(mpg ~ wt + hp + disp, data = DATA)
 summary(fit)
 run_lm_diagnostics(fit, DATA)</code></pre>
+          <div class="action-row">
+            <a class="button secondary small" href="scripts/diagnostics_helpers.R">Full diagnostics file</a>
+            <a class="button secondary small" href="regression-visual-guide.html#simple-linear-regression">See visual</a>
+          </div>
         </article>
 
-        <article class="sample-card" data-sample-kind="python">
+        <article id="train-test-baseline" class="sample-card" data-sample-kind="python">
           <small>Python</small>
           <h3>Train/Test Baseline</h3>
           <p>Use when prediction quality matters and you need a first holdout score.</p>
@@ -103,9 +125,10 @@ y = DATA["TARGET"]
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=123)
 model = make_pipeline(StandardScaler(), LinearRegression()).fit(X_train, y_train)
 print(model.score(X_test, y_test))</code></pre>
+          <div class="action-row"><a class="button secondary small" href="model-tuning.html#validation-design">Pick validation design</a></div>
         </article>
 
-        <article class="sample-card" data-sample-kind="sql">
+        <article id="model-ready-feature-view" class="sample-card" data-sample-kind="sql">
           <small>SQL</small>
           <h3>Model-Ready Feature View</h3>
           <p>Use SQL to lock the row grain and produce a stable modeling table.</p>
@@ -120,9 +143,13 @@ SELECT
        THEN 'test' ELSE 'train' END AS split
 FROM data_table
 WHERE target IS NOT NULL;</code></pre>
+          <div class="action-row">
+            <a class="button secondary small" href="sql/copy_paste_sql_samples.sql">Full SQL file</a>
+            <a class="button secondary small" href="regression-visual-guide.html#poisson-regression">Count visual</a>
+          </div>
         </article>
 
-        <article class="sample-card" data-sample-kind="r">
+        <article id="logistic-regression" class="sample-card" data-sample-kind="r">
           <small>R</small>
           <h3>Logistic Regression</h3>
           <p>Use for yes/no outcomes, then check calibration and thresholds.</p>
@@ -130,9 +157,13 @@ WHERE target IS NOT NULL;</code></pre>
 fit <- glm(am ~ mpg + wt + hp, data = DATA, family = binomial())
 summary(fit)
 DATA$predicted_probability <- predict(fit, type = "response")</code></pre>
+          <div class="action-row">
+            <a class="button secondary small" href="regression-visual-guide.html#logistic-regression">See visual</a>
+            <a class="button secondary small" href="model-tuning.html#python-tuning">Tune classifier</a>
+          </div>
         </article>
 
-        <article class="sample-card" data-sample-kind="python">
+        <article id="llm-calibration" class="sample-card" data-sample-kind="python">
           <small>Python</small>
           <h3>LLM Calibration Table</h3>
           <p>Use when model confidence should match observed factuality.</p>
@@ -143,9 +174,10 @@ calibration = LLM_DATA.groupby("confidence_bin", observed=True).agg(
     n=("factual", "size"),
 )
 brier = ((LLM_DATA["factual"] - LLM_DATA["confidence"]) ** 2).mean()</code></pre>
+          <div class="action-row"><a class="button secondary small" href="data/llm_statistical_analysis_checklist.csv">LLM checklist</a></div>
         </article>
 
-        <article class="sample-card" data-sample-kind="sql">
+        <article id="prompt-evaluation-summary" class="sample-card" data-sample-kind="sql">
           <small>SQL</small>
           <h3>Prompt Evaluation Summary</h3>
           <p>Use for prompt, model, cost, factuality, and latency comparisons.</p>
@@ -159,11 +191,12 @@ brier = ((LLM_DATA["factual"] - LLM_DATA["confidence"]) ** 2).mean()</code></pre
   AVG(cost_usd) AS mean_cost_usd
 FROM llm_evaluations
 GROUP BY prompt_id, model_id;</code></pre>
+          <div class="action-row"><a class="button secondary small" href="sql/llm_statistical_analysis.sql">Full LLM SQL</a></div>
         </article>
       </div>
     </section>
 
-    <section class="split">
+    <section id="full-files" class="split">
       <div class="callout">
         <h2>When To Use Full Files</h2>
         <p>The cards are for quick starts. Use the full files when you need grouped models, survival analysis, time series, PCA, clustering, or the complete LLM evaluation flow.</p>

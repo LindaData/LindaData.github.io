@@ -38,6 +38,12 @@ The workbench is designed as a guided, copy-first analytics product: users start
 - Review pattern: edit the HTML, CSV, R, Python, and SQL files locally; run the checks below; commit and push to `master` for GitHub Pages publication.
 - Pull before new work when possible, and keep HVAC-related work ahead of analytics polish if both appear in the same checkout.
 
+## UI Review Standard
+
+- Every element styled as a button must either be an anchor with a real `href` or a `<button type="button">` wired through `assets/workbench.js`.
+- Recommendation tables and teaching cards should route to the exact sample, model visual, tuning block, checklist, or source file the user needs next.
+- Section anchors should be stable enough to share in GitHub reviews and team documentation.
+
 ## Local Preview
 
 If Ruby/Jekyll is not installed, preview the static hub with R:
