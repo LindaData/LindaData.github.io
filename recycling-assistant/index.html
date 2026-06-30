@@ -161,15 +161,26 @@ textarea:focus-visible,
 }
 
 .app-topbar {
+  display: grid;
   gap: 16px;
   margin-bottom: 18px;
+}
+
+.topbar-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
+}
+
+.topbar-actions > * {
+  width: 100%;
 }
 
 .prototype-banner {
   display: grid;
   gap: 8px;
   margin-bottom: 18px;
-  padding: 14px 16px;
+  padding: 12px 14px;
   border-radius: var(--radius-lg);
   border: 1px solid rgba(16, 42, 67, 0.08);
   background: rgba(255, 255, 255, 0.78);
@@ -276,8 +287,8 @@ h3 {
 
 .topbar-actions {
   align-items: center;
-  flex-wrap: wrap;
-  justify-content: flex-end;
+  gap: 10px;
+  justify-content: stretch;
 }
 
 .topbar-actions .ghost-button {
@@ -287,6 +298,9 @@ h3 {
 .language-toggle,
 .button,
 .ghost-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 999px;
   transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease;
 }
@@ -358,12 +372,7 @@ h3 {
   padding: 22px;
 }
 
-.search-panel {
-  order: -2;
-}
-
 .hero-panel {
-  order: -1;
   position: relative;
   overflow: hidden;
   display: grid;
@@ -1593,6 +1602,22 @@ textarea {
 }
 
 @media (min-width: 760px) {
+  .app-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .topbar-actions {
+    display: flex;
+    width: auto;
+    justify-content: flex-end;
+  }
+
+  .topbar-actions > * {
+    width: auto;
+  }
+
   .compact-button {
     display: inline-flex;
   }
@@ -1754,36 +1779,6 @@ textarea {
       </div>
 
       <main class="app-grid">
-        <section class="hero-panel glass-panel">
-          <div class="hero-copy">
-            <p class="kicker" data-i18n="heroKicker">Location-aware household recycling guide</p>
-            <h2 data-i18n="heroTitle">Know exactly where this item goes in your city.</h2>
-            <p class="hero-text" data-i18n="heroCopy">
-              Search a package or use a sample scan, match the nearest municipality, and get a local answer with nearby drop-off directions when needed.
-            </p>
-
-            <div class="hero-ribbon">
-              <span class="ribbon-pill" data-i18n="ribbonLocal">Local rules first</span>
-              <span class="ribbon-pill" data-i18n="ribbonBilingual">English + Spanish</span>
-              <span class="ribbon-pill" data-i18n="ribbonCenters">Drop-off guidance</span>
-            </div>
-          </div>
-
-            <div class="hero-sidebar">
-              <div class="metric-card">
-              <span class="metric-label" data-i18n="metricOneLabel">Mobile-first</span>
-              <strong>30s</strong>
-              <p data-i18n="metricOneCopy">One tap to location and one search to a local answer.</p>
-              </div>
-              <div class="metric-card">
-              <span class="metric-label" data-i18n="metricTwoLabel">Pilot coverage</span>
-              <strong data-i18n="metricTwoValue">3 cities</strong>
-              <p data-i18n="metricTwoCopy">The current release focuses on reviewed municipal profiles and nearby center guidance.</p>
-              </div>
-              <div id="hero-signal-card" class="signal-card signal-card-live"></div>
-            </div>
-          </section>
-
         <section class="search-panel glass-panel">
           <div class="panel-heading">
             <div>
@@ -1836,59 +1831,6 @@ textarea {
             </div>
           </div>
 
-          <div class="review-guide">
-            <div>
-              <p class="eyebrow" data-i18n="reviewEyebrow">Household review</p>
-              <strong data-i18n="reviewTitle">Best first test path</strong>
-              <p class="browse-copy" data-i18n="reviewCopy">
-                Use your real location, test a tricky item like batteries, then jump straight into feedback while the answer stays in view.
-              </p>
-            </div>
-            <div class="review-guide-actions">
-              <button class="button button-secondary" type="button" data-review-action="battery" data-i18n="reviewTryBattery">
-                Try batteries
-              </button>
-              <button class="ghost-button" type="button" data-review-action="feedback" data-i18n="reviewJumpFeedback">
-                Jump to feedback
-              </button>
-            </div>
-          </div>
-        </section>
-
-        <section class="control-grid">
-          <article class="glass-panel flow-panel">
-            <div class="panel-heading">
-              <div>
-                <p class="eyebrow" data-i18n="flowEyebrow">Current route</p>
-                <h3 data-i18n="flowTitle">From package in hand to the right place</h3>
-              </div>
-            </div>
-            <div id="flow-board" class="flow-board"></div>
-          </article>
-
-          <article class="glass-panel brief-panel">
-            <div class="panel-heading">
-              <div>
-                <p class="eyebrow" data-i18n="briefEyebrow">Right now</p>
-                <h3 data-i18n="briefTitle">Fastest next safe action</h3>
-              </div>
-            </div>
-            <div id="next-step-card"></div>
-          </article>
-        </section>
-
-        <section class="glass-panel browse-panel">
-          <div class="panel-heading">
-            <div>
-              <p class="eyebrow" data-i18n="browseEyebrow">Browse items</p>
-              <h3 data-i18n="browseTitle">Tap common household items to test local answers</h3>
-            </div>
-          </div>
-          <p class="browse-copy" data-i18n="browseCopy">
-            Use the catalog below to test more products quickly without typing a barcode.
-          </p>
-          <div id="browse-filters" class="browse-filters"></div>
-          <div id="browse-grid" class="browse-grid"></div>
         </section>
 
         <section class="result-stage">
@@ -1938,6 +1880,72 @@ textarea {
               <div id="center-list" class="stack-list"></div>
             </article>
           </aside>
+        </section>
+
+        <section class="control-grid">
+          <article class="glass-panel flow-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow" data-i18n="flowEyebrow">Current route</p>
+                <h3 data-i18n="flowTitle">From package in hand to the right place</h3>
+              </div>
+            </div>
+            <div id="flow-board" class="flow-board"></div>
+          </article>
+
+          <article class="glass-panel brief-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow" data-i18n="briefEyebrow">Right now</p>
+                <h3 data-i18n="briefTitle">Fastest next safe action</h3>
+              </div>
+            </div>
+            <div id="next-step-card"></div>
+          </article>
+        </section>
+
+        <section class="hero-panel glass-panel">
+          <div class="hero-copy">
+            <p class="kicker" data-i18n="heroKicker">Location-aware household recycling guide</p>
+            <h2 data-i18n="heroTitle">Know exactly where this item goes in your city.</h2>
+            <p class="hero-text" data-i18n="heroCopy">
+              Search a package or use a sample scan, match the nearest municipality, and get a local answer with nearby drop-off directions when needed.
+            </p>
+
+            <div class="hero-ribbon">
+              <span class="ribbon-pill" data-i18n="ribbonLocal">Local rules first</span>
+              <span class="ribbon-pill" data-i18n="ribbonBilingual">English + Spanish</span>
+              <span class="ribbon-pill" data-i18n="ribbonCenters">Drop-off guidance</span>
+            </div>
+          </div>
+
+          <div class="hero-sidebar">
+            <div class="metric-card">
+              <span class="metric-label" data-i18n="metricOneLabel">Mobile-first</span>
+              <strong>30s</strong>
+              <p data-i18n="metricOneCopy">One tap to location and one search to a local answer.</p>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label" data-i18n="metricTwoLabel">Pilot coverage</span>
+              <strong data-i18n="metricTwoValue">3 cities</strong>
+              <p data-i18n="metricTwoCopy">The current release focuses on reviewed municipal profiles and nearby center guidance.</p>
+            </div>
+            <div id="hero-signal-card" class="signal-card signal-card-live"></div>
+          </div>
+        </section>
+
+        <section class="glass-panel browse-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow" data-i18n="browseEyebrow">Browse items</p>
+              <h3 data-i18n="browseTitle">Tap common household items to test local answers</h3>
+            </div>
+          </div>
+          <p class="browse-copy" data-i18n="browseCopy">
+            Use the catalog below to test more products quickly without typing a barcode.
+          </p>
+          <div id="browse-filters" class="browse-filters"></div>
+          <div id="browse-grid" class="browse-grid"></div>
         </section>
 
         <section class="routine-grid">
@@ -4285,7 +4293,7 @@ const elements = {
   reviewActions: [...document.querySelectorAll("[data-review-action]")]
 };
 
-const buildId = "2026-06-30-ui17";
+const buildId = "2026-06-30-ui18";
 const bootState = readUrlState();
 const geolocationOptions = {
   enableHighAccuracy: true,
