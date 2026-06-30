@@ -53,6 +53,10 @@ select {
   font: inherit;
 }
 
+textarea {
+  font: inherit;
+}
+
 button {
   border: 0;
   cursor: pointer;
@@ -411,7 +415,8 @@ h3 {
 }
 
 input,
-select {
+select,
+textarea {
   width: 100%;
   padding: 1rem 1rem;
   border-radius: 18px;
@@ -422,6 +427,11 @@ select {
 
 .field-search input {
   font-size: 1rem;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 120px;
 }
 
 .action-row {
@@ -682,6 +692,55 @@ select {
   gap: 14px;
 }
 
+.feedback-grid,
+.rating-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.scenario-card,
+.feedback-card,
+.feedback-entry {
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.scenario-card p,
+.feedback-entry p {
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+  line-height: 1.56;
+}
+
+.scenario-list {
+  margin: 14px 0 0;
+  padding-left: 18px;
+  color: var(--ink-soft);
+}
+
+.scenario-list li + li {
+  margin-top: 10px;
+}
+
+.feedback-log {
+  margin-top: 18px;
+}
+
+.feedback-meta {
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.94rem;
+}
+
+.feedback-scores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
 .trust-item {
   padding: 16px 0 0;
   border-top: 1px solid rgba(16, 42, 67, 0.08);
@@ -736,6 +795,15 @@ select {
     grid-template-columns: 0.85fr 1.15fr;
   }
 
+  .feedback-grid {
+    grid-template-columns: 0.85fr 1.15fr;
+    align-items: start;
+  }
+
+  .rating-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .result-top {
     grid-template-columns: 1.2fr 0.8fr;
   }
@@ -759,8 +827,11 @@ select {
     display: grid;
     gap: 18px;
   }
-}
 
+  .lower-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
 
 </style>
   </head>
@@ -932,6 +1003,83 @@ select {
           <article class="glass-panel">
             <div class="panel-heading">
               <div>
+                <p class="eyebrow" data-i18n="feedbackEyebrow">Household testing</p>
+                <h3 data-i18n="feedbackTitle">Capture feedback inside the product</h3>
+              </div>
+            </div>
+
+            <div class="feedback-grid">
+              <div class="scenario-card">
+                <strong data-i18n="scenarioTitle">Suggested test prompts</strong>
+                <p data-i18n="scenarioCopy">
+                  Use these scenarios to evaluate clarity, confidence, and speed on a phone.
+                </p>
+                <ul id="scenario-list" class="scenario-list"></ul>
+              </div>
+
+              <div class="feedback-card">
+                <div class="rating-grid">
+                  <label class="field">
+                    <span data-i18n="feedbackClarity">Clarity</span>
+                    <select id="clarity-rating">
+                      <option value="5">5</option>
+                      <option value="4">4</option>
+                      <option value="3">3</option>
+                      <option value="2">2</option>
+                      <option value="1">1</option>
+                    </select>
+                  </label>
+
+                  <label class="field">
+                    <span data-i18n="feedbackTrust">Trust</span>
+                    <select id="trust-rating">
+                      <option value="5">5</option>
+                      <option value="4">4</option>
+                      <option value="3">3</option>
+                      <option value="2">2</option>
+                      <option value="1">1</option>
+                    </select>
+                  </label>
+
+                  <label class="field">
+                    <span data-i18n="feedbackSpeed">Speed</span>
+                    <select id="speed-rating">
+                      <option value="5">5</option>
+                      <option value="4">4</option>
+                      <option value="3">3</option>
+                      <option value="2">2</option>
+                      <option value="1">1</option>
+                    </select>
+                  </label>
+                </div>
+
+                <label class="field">
+                  <span data-i18n="feedbackNotes">Tester notes</span>
+                  <textarea id="feedback-notes" rows="5" data-i18n-placeholder="feedbackPlaceholder" placeholder="What felt clear, confusing, slow, or untrustworthy?"></textarea>
+                </label>
+
+                <div class="action-row">
+                  <button id="save-feedback" class="button" type="button" data-i18n="saveFeedback">Save feedback</button>
+                  <button id="copy-feedback" class="button button-secondary" type="button" data-i18n="copyFeedback">Copy report</button>
+                  <button id="clear-feedback" class="ghost-button" type="button" data-i18n="clearFeedback">Clear notes</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="feedback-log">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow" data-i18n="feedbackLogEyebrow">Saved notes</p>
+                  <h3 data-i18n="feedbackLogTitle">Recent tester feedback</h3>
+                </div>
+              </div>
+              <div id="feedback-log" class="stack-list"></div>
+            </div>
+          </article>
+
+          <article class="glass-panel">
+            <div class="panel-heading">
+              <div>
                 <p class="eyebrow" data-i18n="trustEyebrow">Why it feels reliable</p>
                 <h3 data-i18n="trustTitle">Designed for trust</h3>
               </div>
@@ -994,6 +1142,27 @@ const translations = {
     centersTitle: "Recycling centers",
     historyEyebrow: "Recent activity",
     historyTitle: "What you checked recently",
+    feedbackEyebrow: "Household testing",
+    feedbackTitle: "Capture feedback inside the product",
+    feedbackClarity: "Clarity",
+    feedbackTrust: "Trust",
+    feedbackSpeed: "Speed",
+    feedbackNotes: "Tester notes",
+    feedbackPlaceholder: "What felt clear, confusing, slow, or untrustworthy?",
+    saveFeedback: "Save feedback",
+    copyFeedback: "Copy report",
+    clearFeedback: "Clear notes",
+    feedbackLogEyebrow: "Saved notes",
+    feedbackLogTitle: "Recent tester feedback",
+    feedbackEmpty: "No feedback saved yet. Use the form after trying a few searches.",
+    feedbackSaved: "Feedback note saved.",
+    feedbackCleared: "Feedback form cleared.",
+    feedbackCopied: "Feedback report copied.",
+    feedbackNeedNote: "Add a short note before saving feedback.",
+    feedbackContext: "Context",
+    feedbackDate: "Saved",
+    scenarioTitle: "Suggested test prompts",
+    scenarioCopy: "Use these scenarios to evaluate clarity, confidence, and speed on a phone.",
     trustEyebrow: "Why it feels reliable",
     trustTitle: "Designed for trust",
     trustOneTitle: "Municipality context stays visible",
@@ -1076,6 +1245,27 @@ const translations = {
     centersTitle: "Centros de reciclaje",
     historyEyebrow: "Actividad reciente",
     historyTitle: "Lo que revisaste recientemente",
+    feedbackEyebrow: "Prueba en casa",
+    feedbackTitle: "Captura comentarios dentro del producto",
+    feedbackClarity: "Claridad",
+    feedbackTrust: "Confianza",
+    feedbackSpeed: "Rapidez",
+    feedbackNotes: "Notas del evaluador",
+    feedbackPlaceholder: "Que se sintio claro, confuso, lento o poco confiable?",
+    saveFeedback: "Guardar comentario",
+    copyFeedback: "Copiar reporte",
+    clearFeedback: "Limpiar notas",
+    feedbackLogEyebrow: "Notas guardadas",
+    feedbackLogTitle: "Comentarios recientes",
+    feedbackEmpty: "Todavia no hay comentarios guardados. Usa el formulario despues de probar algunas busquedas.",
+    feedbackSaved: "Comentario guardado.",
+    feedbackCleared: "Formulario limpiado.",
+    feedbackCopied: "Reporte copiado.",
+    feedbackNeedNote: "Agrega una nota corta antes de guardar el comentario.",
+    feedbackContext: "Contexto",
+    feedbackDate: "Guardado",
+    scenarioTitle: "Pruebas sugeridas",
+    scenarioCopy: "Usa estos escenarios para evaluar claridad, confianza y rapidez desde un telefono.",
     trustEyebrow: "Por que inspira confianza",
     trustTitle: "Disenado para confianza",
     trustOneTitle: "El contexto del municipio siempre se ve",
@@ -1573,6 +1763,7 @@ const products = {
 const state = {
   language: localStorage.getItem("recycling-language") || "en",
   history: JSON.parse(localStorage.getItem("recycling-history-v2") || "[]"),
+  feedback: JSON.parse(localStorage.getItem("recycling-feedback-v1") || "[]"),
   currentBarcode: null,
   lastQuery: "",
   demoIndex: 0
@@ -1589,6 +1780,15 @@ const elements = {
   resultContent: document.getElementById("result-content"),
   centerList: document.getElementById("center-list"),
   historyList: document.getElementById("history-list"),
+  feedbackLog: document.getElementById("feedback-log"),
+  scenarioList: document.getElementById("scenario-list"),
+  clarityRating: document.getElementById("clarity-rating"),
+  trustRating: document.getElementById("trust-rating"),
+  speedRating: document.getElementById("speed-rating"),
+  feedbackNotes: document.getElementById("feedback-notes"),
+  saveFeedback: document.getElementById("save-feedback"),
+  copyFeedback: document.getElementById("copy-feedback"),
+  clearFeedback: document.getElementById("clear-feedback"),
   copyLink: document.getElementById("copy-link"),
   copySummary: document.getElementById("copy-summary"),
   toast: document.getElementById("toast"),
@@ -1596,6 +1796,28 @@ const elements = {
 };
 
 const demoBarcodes = Object.keys(products);
+const testScenarios = [
+  {
+    barcode: "041333216317",
+    en: "Can a first-time user tell in five seconds that batteries need a special drop-off instead of curbside recycling?",
+    es: "Puede un usuario nuevo entender en cinco segundos que las baterias necesitan un centro especial y no reciclaje residencial?"
+  },
+  {
+    barcode: "049000042511",
+    en: "Does the difference between clean and greasy cardboard feel obvious enough to trust?",
+    es: "La diferencia entre carton limpio y carton con grasa se siente suficientemente clara para confiar?"
+  },
+  {
+    barcode: "036000291452",
+    en: "When the answer is uncertain, does the caution language feel helpful instead of frustrating?",
+    es: "Cuando la respuesta es incierta, el lenguaje de cautela se siente util en vez de frustrante?"
+  },
+  {
+    barcode: "012345678905",
+    en: "Is the municipality context visible enough that the user knows the answer is local, not universal?",
+    es: "El contexto del municipio es lo bastante visible para que el usuario entienda que la respuesta es local y no universal?"
+  }
+];
 
 function copy() {
   return translations[state.language];
@@ -1634,6 +1856,7 @@ function translatePage() {
   document.documentElement.lang = state.language;
   elements.languageToggle.textContent = state.language === "en" ? "ES" : "EN";
   elements.searchInput.placeholder = ui.searchPlaceholder;
+  elements.feedbackNotes.placeholder = ui.feedbackPlaceholder;
 
   document.querySelectorAll("[data-i18n]").forEach((node) => {
     const key = node.getAttribute("data-i18n");
@@ -1647,6 +1870,24 @@ function renderQuickChips() {
   elements.chips.forEach((chip) => {
     const barcode = chip.getAttribute("data-barcode");
     chip.textContent = products[barcode].name[state.language];
+  });
+}
+
+function renderScenarios() {
+  elements.scenarioList.innerHTML = "";
+
+  testScenarios.forEach((scenario) => {
+    const item = document.createElement("li");
+    item.innerHTML = `<button class="ghost-button" type="button" data-scenario-barcode="${scenario.barcode}">${scenario[state.language]}</button>`;
+    elements.scenarioList.appendChild(item);
+  });
+
+  elements.scenarioList.querySelectorAll("[data-scenario-barcode]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const barcode = button.getAttribute("data-scenario-barcode");
+      elements.searchInput.value = products[barcode].name.en;
+      handleSearch(barcode);
+    });
   });
 }
 
@@ -1731,6 +1972,101 @@ function renderHistory() {
     `;
     elements.historyList.appendChild(item);
   });
+}
+
+function feedbackContextLabel(entry) {
+  const product = entry.barcode ? products[entry.barcode] : null;
+  const municipality = entry.municipality ? municipalities[entry.municipality] : null;
+
+  if (!product || !municipality) {
+    return state.language === "en" ? "General site feedback" : "Comentario general del sitio";
+  }
+
+  return `${product.name[state.language]} - ${municipality.name[state.language]}`;
+}
+
+function renderFeedbackLog() {
+  const ui = copy();
+  elements.feedbackLog.innerHTML = "";
+
+  if (!state.feedback.length) {
+    elements.feedbackLog.innerHTML = `<div class="feedback-entry"><p>${ui.feedbackEmpty}</p></div>`;
+    return;
+  }
+
+  state.feedback.slice(0, 5).forEach((entry) => {
+    const item = document.createElement("div");
+    item.className = "feedback-entry";
+    item.innerHTML = `
+      <strong>${ui.feedbackContext}: ${feedbackContextLabel(entry)}</strong>
+      <p class="feedback-meta">${ui.feedbackDate} ${formatHistoryTime(entry.timestamp)}</p>
+      <div class="feedback-scores">
+        <span class="mini-pill">${ui.feedbackClarity}: ${entry.clarity}/5</span>
+        <span class="mini-pill">${ui.feedbackTrust}: ${entry.trust}/5</span>
+        <span class="mini-pill">${ui.feedbackSpeed}: ${entry.speed}/5</span>
+      </div>
+      <p>${entry.notes}</p>
+    `;
+    elements.feedbackLog.appendChild(item);
+  });
+}
+
+function currentFeedbackContext() {
+  return {
+    barcode: state.currentBarcode,
+    municipality: elements.municipalitySelect.value
+  };
+}
+
+function feedbackReportText() {
+  const ui = copy();
+  if (!state.feedback.length) {
+    return ui.feedbackEmpty;
+  }
+
+  return state.feedback.slice(0, 10).map((entry, index) => {
+    return [
+      `Feedback ${index + 1}`,
+      `${ui.feedbackContext}: ${feedbackContextLabel(entry)}`,
+      `${ui.feedbackClarity}: ${entry.clarity}/5`,
+      `${ui.feedbackTrust}: ${entry.trust}/5`,
+      `${ui.feedbackSpeed}: ${entry.speed}/5`,
+      entry.notes
+    ].join("\n");
+  }).join("\n\n");
+}
+
+function saveFeedbackEntry() {
+  const ui = copy();
+  const notes = elements.feedbackNotes.value.trim();
+
+  if (!notes) {
+    showToast(ui.feedbackNeedNote);
+    return;
+  }
+
+  const context = currentFeedbackContext();
+  state.feedback.unshift({
+    barcode: context.barcode,
+    municipality: context.municipality,
+    clarity: elements.clarityRating.value,
+    trust: elements.trustRating.value,
+    speed: elements.speedRating.value,
+    notes,
+    timestamp: Date.now()
+  });
+  state.feedback = state.feedback.slice(0, 20);
+  localStorage.setItem("recycling-feedback-v1", JSON.stringify(state.feedback));
+  renderFeedbackLog();
+  showToast(ui.feedbackSaved);
+}
+
+function clearFeedbackForm() {
+  elements.feedbackNotes.value = "";
+  elements.clarityRating.value = "5";
+  elements.trustRating.value = "5";
+  elements.speedRating.value = "5";
+  showToast(copy().feedbackCleared);
 }
 
 function addHistory(barcode, outcome, municipality) {
@@ -1919,8 +2255,10 @@ elements.languageToggle.addEventListener("click", () => {
   localStorage.setItem("recycling-language", state.language);
   translatePage();
   renderQuickChips();
+  renderScenarios();
   renderMunicipalityPulse();
   renderHistory();
+  renderFeedbackLog();
 
   const currentEntry = activeProductEntry();
   if (currentEntry) {
@@ -1985,11 +2323,25 @@ elements.copySummary.addEventListener("click", () => {
   copyText(summaryText(currentEntry), copy().toastSummary);
 });
 
+elements.saveFeedback.addEventListener("click", () => {
+  saveFeedbackEntry();
+});
+
+elements.copyFeedback.addEventListener("click", () => {
+  copyText(feedbackReportText(), copy().feedbackCopied);
+});
+
+elements.clearFeedback.addEventListener("click", () => {
+  clearFeedbackForm();
+});
+
 translatePage();
 renderQuickChips();
+renderScenarios();
 renderMunicipalityPulse();
 renderCenters(null);
 renderHistory();
+renderFeedbackLog();
 
 </script>
   </body>
