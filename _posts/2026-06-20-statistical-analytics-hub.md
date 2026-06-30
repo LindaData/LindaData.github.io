@@ -12,6 +12,7 @@ The new workbench is designed around real analyst workflows: choose the question
 - A pre-model diagnostics checklist for collinearity, heteroskedasticity, missingness, outliers, dependence, leakage, overdispersion, zero inflation, and assumption-specific checks.
 - A data pantry centered on R built-in datasets, plus no-key public APIs and key-based APIs worth adding.
 - Starter R, Python, and SQL codebooks that can be reused across future projects.
+- A visual regression guide with real R models, real datasets, and generated visuals for the core regression families.
 - A focused sample library for analysts who want to swap in their own data and column names quickly.
 - A model tuning workbench for validation design, stepwise functions, decision trees, XGBoost, random forests, regularization, calibration, ensembles, LLM tuning, and model cards.
 
@@ -19,8 +20,10 @@ The new workbench is designed around real analyst workflows: choose the question
 
 [Open the Statistical Analytics Hub](https://lindadata.github.io/statistical-analytics/index.html)
 
+[Open the visual regression guide](https://lindadata.github.io/statistical-analytics/regression-visual-guide.html)
+
 [Open the copy-paste samples](https://lindadata.github.io/statistical-analytics/samples.html)
 
 [Open the model tuning guide](https://lindadata.github.io/statistical-analytics/model-tuning.html)
 
-[Review the source on GitHub](https://github.com/lindadata/lindadata.github.io/tree/master/statistical-analytics)
+[Review the source on GitHub](https://github.com/LindaData/LindaData.github.io/tree/master/statistical-analytics)

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Visual Regression Guide | Linda Data</title>
+  <meta name="description" content="A visual guide to regression models using real R datasets, real fitted models, generated plots, diagnostics, and key parameters.">
+  <link rel="stylesheet" href="assets/workbench.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/">Linda Data</a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="/">Blog</a>
+        <a href="/world-cup-2026-betting-model/">World Cup Model</a>
+        <a href="/statistical-analytics/index.html">Analytics Hub</a>
+        <a href="/statistical-analytics/regression-visual-guide.html" aria-current="page">Visual Guide</a>
+        <a href="/statistical-analytics/samples.html">Samples</a>
+        <a href="/statistical-analytics/model-tuning.html">Model Tuning</a>
+        <a href="/about/">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="workspace-hero">
+      <div class="hero-panel">
+        <p class="eyebrow">Visual regression guide</p>
+        <h1>Real regression models, real data, real visuals.</h1>
+        <p class="lede">This guide uses R to fit each model and generate the visual. The goal is the same as a strong field guide: show what the model looks like, what problem it solves, what code fits it, and what can go wrong.</p>
+        <div class="action-row">
+          <a class="button" href="scripts/build_visual_regression_guide.R">R visual builder</a>
+          <a class="button secondary" href="data/visual_regression_guide.csv">Guide CSV</a>
+          <a class="button secondary" href="samples.html">Copy samples</a>
+          <a class="button secondary" href="model-tuning.html">Tune models</a>
+        </div>
+      </div>
+      <aside class="control-panel">
+        <p class="eyebrow">How to read it</p>
+        <div class="card"><h3>Visual</h3><p>The plot is generated from a fitted R model, not a stock illustration.</p></div>
+        <div class="card"><h3>Story</h3><p>The question explains when the model is useful.</p></div>
+        <div class="card"><h3>Guardrails</h3><p>Diagnostics and parameters show what to check before trusting the result.</p></div>
+      </aside>
+    </section>
+
+    <section class="stat-grid" aria-label="Visual guide summary">
+      <div class="stat"><strong>Visual models</strong><span>18</span>Core regression families with generated R plots.</div>
+      <div class="stat"><strong>Real datasets</strong><span>10+</span>R built-ins and recommended package datasets.</div>
+      <div class="stat"><strong>Primary language</strong><span>R</span>Every visual is reproducible from the builder script.</div>
+      <div class="stat"><strong>Full catalog</strong><span>50</span>Additional regression families remain in the CSV catalog.</div>
+    </section>
+
+    <section>
+      <h2>Visual Field Guide</h2>
+      <p class="section-note">The cards below cover the primary regression families analysts reach for first. The full 50-row catalog is still available for specialized models that require extra packages or project-specific data.</p>
+
+      <div class="visual-guide">
+        <article class="visual-card">
+          <img src="assets/regression-visuals/linear-regression.png" loading="lazy" alt="Scatterplot with a fitted simple linear regression line for mtcars miles per gallon by weight.">
+          <div class="visual-facts"><h3><span class="visual-number">1</span>Simple linear regression</h3><p><strong>Models:</strong> one numeric predictor and one continuous target.</p><p><strong>Real data:</strong> <code>mtcars</code>.</p><p><strong>R model:</strong> <code>lm(mpg ~ wt, data = mtcars)</code></p><p><strong>Check:</strong> linearity, residual spread, leverage, outliers.</p><p><strong>Key knobs:</strong> slope, intercept, residual error, R-squared.</p></div>
+        </article>
+
+        <article class="visual-card">
+          <img src="assets/regression-visuals/multiple-regression.png" loading="lazy" alt="Observed versus fitted plot for a multiple regression on mtcars.">
+          <div class="visual-facts"><h3><span class="visual-number">2</span>Multiple linear regression</h3><p><strong>Models:</strong> several predictors explaining a continuous target.</p><p><strong>Real data:</strong> <code>mtcars</code>.</p><p><strong>R model:</strong> <code>lm(mpg ~ wt + hp + disp, data = mtcars)</code></p><p><strong>Check:</strong> VIF, condition number, heteroskedasticity, influence.</p><p><strong>Key knobs:</strong> coefficients, adjusted R-squared, RMSE.</p></div>
+        </article>
+
+        <article class="visual-card">
+          <img src="assets/regression-visuals/polynomial-regression.png" loading="lazy" alt="Curved fitted polynomial regression for cars stopping distance by speed.">
+          <div class="visual-facts"><h3><span class="visual-number">3</span>Polynomial regression</h3><p><strong>Models:</strong> curved relationships using powers of a predictor.</p><p><strong>Real data:</strong> <code>cars</code>.</p><p><strong>R model:</strong> <code>lm(dist ~ speed + I(speed^2), data = cars)</code></p><p><strong>Check:</strong> residual curvature, extrapolation, overfit.</p><p><strong>Key knobs:</strong> degree, centered predictors.</p></div>
+        </article>
+
+        <article class="visual-card">
+          <img src="assets/regression-visuals/spline-regression.png" loading="lazy" alt="Smooth nonlinear spline regression curve for mtcars miles per gallon by weight.">
+          <div class="visual-facts"><h3><span class="visual-number">4</span>Spline regression</h3><p><strong>Models:</strong> flexible bends without forcing a simple polynomial.</p><p><strong>Real data:</strong> <code>mtcars</code>.</p><p><strong>R model:</strong> <code>lm(mpg ~ splines::ns(wt, df = 3), data = mtcars)</code></p><p><strong>Check:</strong> boundary behavior, degrees of freedom, residual pattern.</p><p><strong>Key knobs:</strong> knots, basis dimension, smoothness.</p></div>
+        </article>
+
+        <article class="visual-card">
+          <img src="assets/regression-visuals/interaction-model.png" loading="lazy" alt="Interaction model with separate fitted lines by supplement group in ToothGrowth.">
+          <div class="visual-facts"><h3><span class="visual-number">5</span>Interaction regression</h3><p><strong>Models:</strong> whether one effect changes by group.</p><p><strong>Real data:</strong> <code>ToothGrowth</code>.</p><p><strong>R model:</strong> <code>lm(len ~ supp * dose, data = ToothGrowth)</code></p><p><strong>Check:</strong> cell counts, centering, hierarchy, simple slopes.</p><p><strong>Key knobs:</strong> main effects and interaction coefficient.</p></div>
+        </article>
+
+        <article class="visual-card">
+          <img src="assets/regression-visuals/logistic-regression.png" loading="lazy" alt="Logistic curve showing predicted probability of manual transmission by miles per gallon.">
+          <div class="visual-facts"><h3><span class="visual-number">6</span>Logistic regression</h3><p><strong>Models:</strong> a yes/no outcome as a probability.</p><p><strong>Real data:</strong> <code>mtcars</code>.</p><p><strong>R model:</strong> <code>glm(am ~ mpg + wt, data = mtcars, family = binomial())</code></p><p><strong>Check:</strong> class balance, separation, calibration, threshold.</p><p><strong>Key knobs:</strong> odds ratio, logit link, predicted probability.</p></div>
+        </article>
+
+        <article class="visual-card">
+          <img src="assets/regression-visuals/probit-regression.png" loading="lazy" alt="Probit curve showing predicted binary outcome probability.">
+          <div class="visual-facts"><h3><span class="visual-number">7</span>Probit regression</h3><p><strong>Models:</strong> a binary outcome through a latent normal threshold.</p><p><strong>Real data:</strong> <code>mtcars</code>.</p><p><strong>R model:</strong> <code>glm(am ~ mpg + wt, data = mtcars, family = binomial(link = "probit"))</code></p><p><strong>Check:</strong> separation, calibration, marginal effects.</p><p><strong>Key knobs:</strong> normal link and z-score scale.</p></div>
+        </article>
+
+        <article class="visual-card">
+          <img src="assets/regression-visuals/poisson-regression.png" loading="lazy" alt="Poisson regression bar chart for warpbreaks counts by tension.">
+          <div class="visual-facts"><h3><span class="visual-number">8</span>Poisson regression</h3><p><strong>Models:</strong> counts over a fixed unit or exposure.</p><p><strong>Real data:</strong> <code>warpbreaks</code>.</p><p><strong>R model:</strong> <code>glm(breaks ~ wool + tension, data = warpbreaks, family = poisson())</code></p><p><strong>Check:</strong> overdispersion, exposure, zero inflation, independence.</p><p><strong>Key knobs:</strong> rate, log link, mean-variance assumption.</p></div>
+        </article>
+
+        <article class="visual-card">
+          <img src="assets/regression-visuals/negative-binomial-regression.png" loading="lazy" alt="Negative binomial regression predicted counts by tension.">
+          <div class="visual-facts"><h3><span class="visual-number">9</span>Negative binomial regression</h3><p><strong>Models:</strong> overdispersed counts.</p><p><strong>Real data:</strong> <code>warpbreaks</code>.</p><p><strong>R model:</strong> <code>MASS::glm.nb(breaks ~ wool + tension, data = warpbreaks)</code></p><p><strong>Check:</strong> residual deviance, zero rate, dispersion.</p><p><strong>Key knobs:</strong> mean, theta, log link.</p></div>
+        </article>
+
+        <article class="visual-card">
+          <img src="assets/regression-visuals/gamma-regression.png" loading="lazy" alt="Observed versus fitted plot for Gamma regression.">
+          <div class="visual-facts"><h3><span class="visual-number">10</span>Gamma regression</h3><p><strong>Models:</strong> positive continuous targets with skew.</p><p><strong>Real data:</strong> <code>mtcars</code>.</p><p><strong>R model:</strong> <code>glm(mpg ~ wt + hp, data = mtcars, family = Gamma(link = "log"))</code></p><p><strong>Check:</strong> positive target, residual shape, link fit.</p><p><strong>Key knobs:</strong> mean model, scale, log link.</p></div>
+        </article>
+
+        <article class="visual-card">
+          <img src="assets/regression-visuals/robust-regression.png" loading="lazy" alt="OLS and robust regression lines compared on mtcars data.">
+          <div class="visual-facts"><h3><span class="visual-number">11</span>Robust regression</h3><p><strong>Models:</strong> a continuous target while reducing outlier influence.</p><p><strong>Real data:</strong> <code>mtcars</code>.</p><p><strong>R model:</strong> <code>MASS::rlm(mpg ~ wt, data = mtcars)</code></p><p><strong>Check:</strong> outliers, leverage, sensitivity.</p><p><strong>Key knobs:</strong> robust loss and case weights.</p></div>
+        </article>
+
+        <article class="visual-card">
+          <img src="assets/regression-visuals/ridge-regression.png" loading="lazy" alt="Ridge regression coefficient paths over lambda values.">
+          <div class="visual-facts"><h3><span class="visual-number">12</span>Ridge regression</h3><p><strong>Models:</strong> correlated predictors with shrinkage.</p><p><strong>Real data:</strong> <code>mtcars</code>.</p><p><strong>R model:</strong> <code>MASS::lm.ridge(mpg ~ wt + hp + disp + qsec, data = mtcars)</code></p><p><strong>Check:</strong> scaling, collinearity, validation error.</p><p><strong>Key knobs:</strong> lambda shrinkage penalty.</p></div>
+        </article>
+
+        <article class="visual-card">
+          <img src="assets/regression-visuals/mixed-effects-regression.png" loading="lazy" alt="Mixed-effects regression fitted growth trend for ChickWeight data.">
+          <div class="visual-facts"><h3><span class="visual-number">13</span>Mixed-effects regression</h3><p><strong>Models:</strong> repeated rows inside subjects or groups.</p><p><strong>Real data:</strong> <code>ChickWeight</code>.</p><p><strong>R model:</strong> <code>nlme::lme(weight ~ Time + Diet, random = ~ 1 | Chick, data = ChickWeight)</code></p><p><strong>Check:</strong> cluster sizes, random-effect variance, residual dependence.</p><p><strong>Key knobs:</strong> fixed effects, random intercepts, group variance.</p></div>
+        </article>
+
+        <article class="visual-card">
+          <img src="assets/regression-visuals/fixed-effects-regression.png" loading="lazy" alt="Fixed-effects regression for CO2 uptake by concentration with plant controls.">
+          <div class="visual-facts"><h3><span class="visual-number">14</span>Fixed-effects regression</h3><p><strong>Models:</strong> repeated entities with their own baseline level.</p><p><strong>Real data:</strong> <code>CO2</code>.</p><p><strong>R model:</strong> <code>lm(uptake ~ conc + factor(Plant), data = CO2)</code></p><p><strong>Check:</strong> within-entity variation, omitted time effects, serial dependence.</p><p><strong>Key knobs:</strong> entity indicators and within effect.</p></div>
+        </article>
+
+        <article class="visual-card">
+          <img src="assets/regression-visuals/cox-regression.png" loading="lazy" alt="Cox regression survival curves by sex at average age.">
+          <div class="visual-facts"><h3><span class="visual-number">15</span>Cox proportional hazards</h3><p><strong>Models:</strong> time until event with censoring.</p><p><strong>Real data:</strong> <code>survival::lung</code>.</p><p><strong>R model:</strong> <code>survival::coxph(Surv(time, status) ~ sex + age, data = survival::lung)</code></p><p><strong>Check:</strong> censoring, proportional hazards, influential subjects.</p><p><strong>Key knobs:</strong> hazard ratio and baseline hazard.</p></div>
+        </article>
+
+        <article class="visual-card">
+          <img src="assets/regression-visuals/time-series-regression.png" loading="lazy" alt="AirPassengers time series with fitted trend and seasonal regression.">
+          <div class="visual-facts"><h3><span class="visual-number">16</span>Time-series regression</h3><p><strong>Models:</strong> trend and seasonality in a time-indexed target.</p><p><strong>Real data:</strong> <code>AirPassengers</code>.</p><p><strong>R model:</strong> <code>lm(log(AirPassengers) ~ time + month)</code></p><p><strong>Check:</strong> autocorrelation, seasonality, time split, stationarity.</p><p><strong>Key knobs:</strong> trend, seasonal effects, transformed target.</p></div>
+        </article>
+
+        <article class="visual-card">
+          <img src="assets/regression-visuals/tree-regression.png" loading="lazy" alt="Decision tree stepwise fitted prediction for mtcars miles per gallon by weight.">
+          <div class="visual-facts"><h3><span class="visual-number">17</span>Decision tree regression</h3><p><strong>Models:</strong> nonlinear prediction through simple rules.</p><p><strong>Real data:</strong> <code>mtcars</code>.</p><p><strong>R model:</strong> <code>rpart::rpart(mpg ~ wt + hp + disp, data = mtcars, method = "anova")</code></p><p><strong>Check:</strong> depth, leaf size, pruning, overfit gap.</p><p><strong>Key knobs:</strong> splits, complexity parameter, terminal-node mean.</p></div>
+        </article>
+
+        <article class="visual-card">
+          <img src="assets/regression-visuals/multinomial-regression.png" loading="lazy" alt="Multinomial logistic predicted classes for iris species by sepal measurements.">
+          <div class="visual-facts"><h3><span class="visual-number">18</span>Multinomial logistic regression</h3><p><strong>Models:</strong> more than two unordered classes.</p><p><strong>Real data:</strong> <code>iris</code>.</p><p><strong>R model:</strong> <code>nnet::multinom(Species ~ Sepal.Length + Sepal.Width, data = iris)</code></p><p><strong>Check:</strong> class balance, separation, confusion matrix.</p><p><strong>Key knobs:</strong> class logits, reference class, predicted probabilities.</p></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="split">
+      <div class="callout">
+        <h2>Rebuild Every Visual</h2>
+        <p>Run the builder script from the repository root. It fits the R models, saves the PNGs, and writes the guide CSV.</p>
+        <pre><code>Rscript statistical-analytics/scripts/build_visual_regression_guide.R</code></pre>
+      </div>
+      <div class="callout warning">
+        <h2>Specialized Models</h2>
+        <p>Models like Tobit, beta, zero-inflated, Bayesian, and spatial regression remain in the full catalog because they need extra packages or project-specific data to visualize honestly.</p>
+        <a class="button secondary" href="data/regression_catalog.csv">Open full regression catalog</a>
+      </div>
+    </section>
+
+    <footer>
+      <p>Last updated June 30, 2026. Visuals are generated from real R models and real datasets.</p>
+    </footer>
+  </main>
+
+  <script src="assets/workbench.js"></script>
+</body>
+</html>
