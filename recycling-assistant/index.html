@@ -1126,6 +1126,46 @@ textarea {
   font-family: var(--font-display);
 }
 
+.home-cue-card {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: 0 12px 24px rgba(10, 42, 63, 0.08);
+}
+
+.home-cue-card strong {
+  font-size: 1.16rem;
+  line-height: 1.2;
+}
+
+.home-cue-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.home-cue-recycle {
+  background:
+    linear-gradient(135deg, rgba(223, 247, 239, 0.92), rgba(255, 255, 255, 0.95));
+}
+
+.home-cue-trash {
+  background:
+    linear-gradient(135deg, rgba(255, 241, 242, 0.94), rgba(255, 255, 255, 0.95));
+}
+
+.home-cue-dropoff {
+  background:
+    linear-gradient(135deg, rgba(255, 247, 237, 0.94), rgba(255, 255, 255, 0.95));
+}
+
+.home-cue-check {
+  background:
+    linear-gradient(135deg, rgba(239, 246, 255, 0.94), rgba(255, 255, 255, 0.95));
+}
+
 .product-subline,
 .support-copy,
 .support-list,
@@ -2844,6 +2884,15 @@ const translations = {
     resultBasisCenter: "Center fit",
     resultBasisSingle: "Single-material route in this pilot profile.",
     resultBasisTripNone: "No extra trip is needed for this route.",
+    resultHomeCueEyebrow: "At home now",
+    resultHomeRecycleTitle: "Put this in your home recycling area",
+    resultHomeRecycleCopy: "After the quick prep below, place it with the recycling you normally stage at home for pickup day.",
+    resultHomeTrashTitle: "Put this in the trash now",
+    resultHomeTrashCopy: "Do not save this for recycling. Trash it after removing any clearly separate recyclable parts.",
+    resultHomeDropOffTitle: "Set this aside for your next drop-off trip",
+    resultHomeDropOffCopy: "Keep it in a special-care spot at home until you can bring it to a listed recycling center.",
+    resultHomeCheckTitle: "Hold this in the doubt zone until you split or verify it",
+    resultHomeCheckCopy: "Do not guess. Separate clean and dirty parts, or keep it aside until you confirm the local rule.",
     resultWhy: "Why this answer",
     resultSteps: "Next steps",
     resultPackageParts: "Sort the package by part",
@@ -3151,6 +3200,15 @@ const translations = {
     resultBasisCenter: "Ajuste con el centro",
     resultBasisSingle: "Ruta de un solo material en este perfil piloto.",
     resultBasisTripNone: "No hace falta un viaje extra para esta ruta.",
+    resultHomeCueEyebrow: "En casa ahora",
+    resultHomeRecycleTitle: "Pon esto en tu area de reciclaje en casa",
+    resultHomeRecycleCopy: "Despues de la preparacion rapida de abajo, colocalo con el reciclaje que normalmente guardas en casa para el dia de recoleccion.",
+    resultHomeTrashTitle: "Pon esto en la basura ahora",
+    resultHomeTrashCopy: "No lo guardes para reciclar. Tiralo despues de retirar cualquier parte reciclable claramente separada.",
+    resultHomeDropOffTitle: "Aparta esto para tu proximo viaje al centro",
+    resultHomeDropOffCopy: "Mantenlo en una zona de cuidado especial en casa hasta que puedas llevarlo a un centro listado.",
+    resultHomeCheckTitle: "Mantenlo en la zona de duda hasta separarlo o verificarlo",
+    resultHomeCheckCopy: "No adivines. Separa las partes limpias y sucias, o dejalo aparte hasta confirmar la regla local.",
     resultWhy: "Por que esta respuesta",
     resultSteps: "Siguientes pasos",
     resultPackageParts: "Separa el paquete por partes",
@@ -5348,7 +5406,7 @@ const elements = {
   reviewActions: [...document.querySelectorAll("[data-review-action]")]
 };
 
-const buildId = "2026-06-30-ui25";
+const buildId = "2026-06-30-ui26";
 const bootState = readUrlState();
 const geolocationOptions = {
   enableHighAccuracy: true,
@@ -6275,6 +6333,55 @@ function answerBasisMarkup(entry, guidance, municipality, nearestCenter, needsCe
           <strong>${needsCenterSpotlight && nearestCenter ? ui.resultCenterSpotlight : outcomeLabel(guidance.outcome)}</strong>
           <p class="support-copy">${centerCopy}</p>
         </article>
+      </div>
+    </div>
+  `;
+}
+
+function homeCueContent(entry, guidance) {
+  const ui = copy();
+  if (guidance.outcome === "recycle") {
+    return {
+      modifier: "recycle",
+      title: ui.resultHomeRecycleTitle,
+      copy: ui.resultHomeRecycleCopy
+    };
+  }
+
+  if (guidance.outcome === "trash") {
+    return {
+      modifier: "trash",
+      title: ui.resultHomeTrashTitle,
+      copy: ui.resultHomeTrashCopy
+    };
+  }
+
+  if (guidance.outcome === "drop_off") {
+    return {
+      modifier: "dropoff",
+      title: ui.resultHomeDropOffTitle,
+      copy: ui.resultHomeDropOffCopy
+    };
+  }
+
+  return {
+    modifier: "check",
+    title: ui.resultHomeCheckTitle,
+    copy: ui.resultHomeCheckCopy
+  };
+}
+
+function homeCueMarkup(entry, guidance) {
+  const ui = copy();
+  const cue = homeCueContent(entry, guidance);
+  return `
+    <div class="home-cue-card home-cue-${cue.modifier}">
+      <span class="mini-pill">${ui.resultHomeCueEyebrow}</span>
+      <strong>${cue.title}</strong>
+      <p class="support-copy">${cue.copy}</p>
+      <div class="home-cue-pills">
+        <span class="${outcomeClass(guidance.outcome)}">${outcomeLabel(guidance.outcome)}</span>
+        <span class="mini-pill">${guidance.steps[state.language][0]}</span>
       </div>
     </div>
   `;
@@ -8055,6 +8162,8 @@ function renderResult(entry, trackHistory) {
           </div>
         </div>
       </div>
+
+      ${homeCueMarkup(entry, guidance)}
 
       <div class="support-card">
         <strong class="detail-title">${ui.resultTrack}</strong>
