@@ -1,0 +1,168 @@
+{
+  "project": "southpaw-boxing-rebuild",
+  "status": "concept_demo_not_official",
+  "audited_at": "2026-07-01",
+  "canonical_site": "https://southpawboxing.net/",
+  "redirect_observed": {
+    "from": "https://southpawtrainingcenter.com/",
+    "to": "https://southpawboxing.net/"
+  },
+  "public_business_info": {
+    "name": "Southpaw Training Center",
+    "location": "13501 Dorman Road, Pineville, North Carolina 28134, United States",
+    "phone": "(980) 505-2291",
+    "owner_head_coach": "Jamie McGrath"
+  },
+  "operational_backend": {
+    "platform": "WellnessLiving",
+    "evidence": [
+      "Public first-class/signup links point to WellnessLiving.",
+      "Gmail operational messages come from no-reply@wellnessliving.com.",
+      "App store listings describe class signup, membership management, and event updates."
+    ],
+    "decision": "Keep WellnessLiving as scheduling, membership, payment, app, reminder, and cancellation backend for v1."
+  },
+  "current_site_navigation": [
+    "Home",
+    "Schedule",
+    "Shop",
+    "Contact Us",
+    "About Coach Jamie",
+    "Coaches",
+    "Southpaw Strong",
+    "Knockout Parkinson's",
+    "Testimonials",
+    "Training Certifications",
+    "Newsletter",
+    "Parties",
+    "Southpaw in the News",
+    "Holistic Health",
+    "Nutrition Products",
+    "Beauty Products",
+    "Connect With Us"
+  ],
+  "ux_strengths": [
+    "Coach Jamie's credentials create unusual trust for a local gym.",
+    "Small-group coaching is a strong differentiator.",
+    "WellnessLiving already handles operational complexity.",
+    "Community and family tone can reduce first-timer intimidation.",
+    "Programs have breadth: boxing, strength, agility, wellness, parties, special programs."
+  ],
+  "ux_friction": [
+    "Navigation is too broad for first-timers.",
+    "Booking handoff needs more context before sending users to WellnessLiving.",
+    "Schedule and shop pages appear thin from public text snapshot.",
+    "Program hierarchy needs a clearer primary conversion path.",
+    "Coach/media proof should be surfaced earlier and made easier to scan.",
+    "First-class anxiety questions should be answered before CTA."
+  ],
+  "benchmark_sites": [
+    {
+      "name": "Rumble Boxing",
+      "url": "https://www.rumbleboxinggym.com/",
+      "patterns": ["Bold brand voice", "Persistent book CTA", "Workout explanation", "App framing", "Studio/community visuals"]
+    },
+    {
+      "name": "TITLE Boxing Club",
+      "url": "https://www.titleboxingclub.com/",
+      "patterns": ["First class path", "Workout categories", "Member spotlight", "Featured-in proof", "Club finder"]
+    },
+    {
+      "name": "Mayweather Boxing + Fitness",
+      "url": "https://mayweather.fit/",
+      "patterns": ["Free class CTA", "Class type descriptions", "What to expect", "Testimonials", "Community framing"]
+    },
+    {
+      "name": "EverybodyFights",
+      "url": "https://everybodyfights.com/",
+      "patterns": ["Program cards", "Pricing/book now", "Locations", "App booking", "Luxury plus grit positioning"]
+    }
+  ],
+  "recommended_information_architecture": [
+    "Home",
+    "First Class",
+    "Programs",
+    "Coach Jamie",
+    "Pricing / Memberships",
+    "Schedule",
+    "Testimonials / Media",
+    "Contact"
+  ],
+  "v1_pages": [
+    {
+      "page": "Home",
+      "goal": "Convert first-time visitors to first-class signup."
+    },
+    {
+      "page": "First Class",
+      "goal": "Explain what to expect and reduce intimidation."
+    },
+    {
+      "page": "Programs",
+      "goal": "Help users self-select by goal, intensity, and experience level."
+    },
+    {
+      "page": "Coach Jamie",
+      "goal": "Turn credentials, story, and media into trust."
+    },
+    {
+      "page": "Schedule",
+      "goal": "Send users to WellnessLiving with enough context."
+    }
+  ],
+  "review_layer_schema": {
+    "project": "string",
+    "page": "string",
+    "generatedAt": "ISO timestamp",
+    "source": {
+      "href": "string",
+      "path": "string",
+      "title": "string"
+    },
+    "notes": [
+      {
+        "id": "string",
+        "createdAt": "ISO timestamp",
+        "section": "string",
+        "role": "Founder / UX / Architecture / Data / SEO / Safety",
+        "text": "string",
+        "status": "local|submitted",
+        "viewport": "string",
+        "userAgent": "string",
+        "href": "string"
+      }
+    ]
+  },
+  "next_agent_tasks": {
+    "ux": [
+      "Review first-timer flow on iPhone.",
+      "Test CTA clarity and thumb reach.",
+      "Add first-class FAQ module."
+    ],
+    "architecture": [
+      "Keep static site for demo.",
+      "Connect Cloudflare Worker review endpoint only after selecting repo/issue target.",
+      "Avoid frontend secrets."
+    ],
+    "data": [
+      "Define CTA click events.",
+      "Define lead source fields.",
+      "Create dashboard plan for program interest and review-note themes."
+    ],
+    "seo": [
+      "Create local SEO page plan.",
+      "Add schema.org LocalBusiness and SportsActivityLocation markup later.",
+      "Build title/meta map for Pineville and Charlotte search intent."
+    ],
+    "content": [
+      "Write short first-class copy.",
+      "Rewrite Coach Jamie page into scannable proof blocks.",
+      "Collect approved images/videos."
+    ],
+    "safety_legal": [
+      "Add demo disclaimer until approved.",
+      "Add health/safety disclaimer.",
+      "Link approved privacy, terms, and cancellation policies."
+    ]
+  }
+}
