@@ -533,8 +533,9 @@
               </p>
             </div>
             <div class="hero-actions">
-              <a class="cta cta-primary" href="./recycling-assistant/">Open resident review</a>
+              <a class="cta cta-primary" href="./recycling-assistant/?mode=review&amp;v=2026-06-30-ui28">Open resident review</a>
               <a class="cta cta-secondary" href="./recycling-assistant/admin/">Open admin console</a>
+              <a class="cta cta-secondary" href="https://lovable.dev/projects/d41eaa69-0730-44e4-b470-2e86a6ffd93e">Open redesign concept</a>
               <a class="cta cta-secondary" href="#projects">Browse live projects</a>
               <button class="review-toggle" id="heroReviewToggle" type="button" aria-pressed="false">
                 Open founder review
@@ -622,7 +623,7 @@
           focus: "Back more item guidance with municipality-sourced data and keep the admin workflow tight as public review volume grows.",
           tags: ["Resident UX", "Bilingual", "Location"],
           links: [
-            { label: "Open resident review", href: "./recycling-assistant/", primary: true },
+            { label: "Open resident review", href: "./recycling-assistant/?mode=review&v=2026-06-30-ui28", primary: true },
             { label: "Open admin", href: "./recycling-assistant/admin/" }
           ],
           working: [
@@ -634,6 +635,28 @@
             "Shift more answers from seed rules to municipality-backed data files.",
             "Add a public privacy note and stronger production trust markers before broad rollout.",
             "Keep search, scanning, and admin evidence trails aligned as the dataset grows."
+          ]
+        },
+        {
+          title: "Recycling Assistant Redesign",
+          state: "Lovable concept build",
+          priority: "Priority: high",
+          summary: "A premium redesign pass in Lovable focused on a map-forward, location-first resident flow inspired by GOMI MAP and tuned for founder review.",
+          focus: "Pressure-test whether the redesigned mobile shell improves trust, scan entry, and nearby-center comprehension enough to justify porting the direction into production.",
+          tags: ["Concept", "Resident UX", "Location-first"],
+          links: [
+            { label: "Open redesign concept", href: "https://lovable.dev/projects/d41eaa69-0730-44e4-b470-2e86a6ffd93e", primary: true },
+            { label: "Open current live build", href: "./recycling-assistant/?mode=review&v=2026-06-30-ui28" }
+          ],
+          working: [
+            "Design exploration is isolated from the production review build.",
+            "The brief is tightly scoped around resident utility rather than marketing.",
+            "The concept can be shared directly while the production app remains stable."
+          ],
+          adjust: [
+            "Confirm the Lovable build reaches a ready preview state before using it as the primary household test link.",
+            "Port only validated interaction improvements back into the GitHub Pages production surface.",
+            "Keep trust cues, pilot coverage notes, and center-routing limits explicit in the final UX."
           ]
         },
         {
