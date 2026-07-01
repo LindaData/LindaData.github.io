@@ -1,4 +1,4 @@
-const CACHE_NAME = "recycling-assistant-v2026-06-30-ui28";
+const CACHE_NAME = "recycling-assistant-v2026-07-01-ui29";
 const APP_SHELL = [
   "./",
   "./index.html",

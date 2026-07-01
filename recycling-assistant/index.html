@@ -1842,6 +1842,81 @@ textarea {
   margin-top: 18px;
 }
 
+.review-fab-wrap {
+  position: fixed;
+  left: calc(100vw - 104px);
+  top: calc(100vh - 112px);
+  z-index: 45;
+  touch-action: none;
+}
+
+.review-fab {
+  min-width: 84px;
+  min-height: 52px;
+  padding: 0.8rem 1rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--leaf), var(--leaf-deep));
+  color: white;
+  box-shadow: 0 18px 42px rgba(11, 79, 74, 0.26);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.review-overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(16, 42, 67, 0.24);
+  backdrop-filter: blur(8px);
+}
+
+.review-overlay {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 16px;
+  z-index: 41;
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  max-height: min(78vh, 640px);
+  overflow: auto;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(237, 244, 247, 0.96)),
+    var(--card-strong);
+  box-shadow: 0 28px 72px rgba(10, 42, 63, 0.24);
+}
+
+.review-overlay-topbar,
+.review-overlay-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.review-overlay-copy {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.56;
+}
+
+.review-overlay-ratings {
+  margin-top: -2px;
+}
+
+.review-overlay-actions {
+  flex-wrap: wrap;
+}
+
+.review-overlay-actions > * {
+  flex: 1 1 180px;
+}
+
+body[data-review-overlay="open"] {
+  overflow: hidden;
+}
+
 .feedback-meta {
   margin: 8px 0 0;
   color: var(--ink-soft);
@@ -2001,6 +2076,14 @@ textarea {
 }
 
 @media (min-width: 760px) {
+  .review-overlay {
+    left: auto;
+    right: 18px;
+    bottom: 22px;
+    width: min(440px, calc(100vw - 36px));
+    border-radius: 28px;
+  }
+
   .app-topbar {
     display: flex;
     align-items: center;
@@ -2675,6 +2758,94 @@ textarea {
       </main>
     </div>
 
+    <div id="review-fab-wrap" class="review-fab-wrap">
+      <button
+        id="review-fab"
+        class="review-fab"
+        type="button"
+        aria-controls="review-overlay"
+        aria-expanded="false"
+        aria-pressed="false"
+        data-i18n="reviewFabOpen"
+      >
+        Review
+      </button>
+    </div>
+
+    <div id="review-overlay-backdrop" class="review-overlay-backdrop" hidden></div>
+
+    <section id="review-overlay" class="review-overlay glass-panel" aria-labelledby="review-overlay-title" hidden>
+      <div class="review-overlay-topbar">
+        <div>
+          <p class="eyebrow" data-i18n="reviewOverlayEyebrow">Quick feedback</p>
+          <h3 id="review-overlay-title" data-i18n="reviewOverlayTitle">Share feedback without leaving the answer</h3>
+        </div>
+        <button id="close-review-overlay" class="ghost-button compact-button" type="button" data-i18n="closeScanner">
+          Close
+        </button>
+      </div>
+
+      <p class="review-overlay-copy" data-i18n="reviewOverlayCopy">
+        Send a quick note tied to the current item and municipality. Drag the Review button anywhere that feels natural on your screen.
+      </p>
+
+      <div id="review-overlay-context" class="feedback-scores"></div>
+
+      <div class="rating-grid review-overlay-ratings">
+        <label class="field">
+          <span data-i18n="feedbackClarity">Clarity</span>
+          <select id="review-overlay-clarity">
+            <option value="5">5</option>
+            <option value="4">4</option>
+            <option value="3">3</option>
+            <option value="2">2</option>
+            <option value="1">1</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span data-i18n="feedbackTrust">Trust</span>
+          <select id="review-overlay-trust">
+            <option value="5">5</option>
+            <option value="4">4</option>
+            <option value="3">3</option>
+            <option value="2">2</option>
+            <option value="1">1</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span data-i18n="feedbackSpeed">Speed</span>
+          <select id="review-overlay-speed">
+            <option value="5">5</option>
+            <option value="4">4</option>
+            <option value="3">3</option>
+            <option value="2">2</option>
+            <option value="1">1</option>
+          </select>
+        </label>
+      </div>
+
+      <label class="field">
+        <span data-i18n="feedbackNotes">Tester notes</span>
+        <textarea
+          id="review-overlay-notes"
+          rows="4"
+          data-i18n-placeholder="reviewOverlayPlaceholder"
+          placeholder="What felt clear, confusing, slow, or untrustworthy?"
+        ></textarea>
+      </label>
+
+      <div class="review-overlay-actions">
+        <button id="submit-review-overlay" class="button" type="button" data-i18n="reviewOverlaySubmit">
+          Send feedback
+        </button>
+        <button id="review-overlay-full-form" class="button button-secondary" type="button" data-i18n="reviewOverlayFullForm">
+          Open full request form
+        </button>
+      </div>
+    </section>
+
     <div class="scanner-modal" id="scanner-modal" aria-hidden="true">
       <div class="scanner-dialog glass-panel">
         <div class="scanner-topbar">
@@ -2756,6 +2927,15 @@ const translations = {
     reviewCopy: "Use your real location, test a tricky item like batteries, then jump straight into feedback while the answer stays in view.",
     reviewTryBattery: "Try batteries",
     reviewJumpFeedback: "Open testing tools",
+    reviewFabOpen: "Review",
+    reviewFabClose: "Hide review",
+    reviewOverlayEyebrow: "Quick feedback",
+    reviewOverlayTitle: "Share feedback without leaving the answer",
+    reviewOverlayCopy: "Send a quick note tied to the current item and municipality. Drag the Review button anywhere that feels natural on your screen.",
+    reviewOverlayPlaceholder: "What felt clear, confusing, slow, or untrustworthy?",
+    reviewOverlaySubmit: "Send feedback",
+    reviewOverlayFullForm: "Open full request form",
+    reviewOverlayNoItem: "No item selected yet",
     reviewLaunchEyebrow: "Guided review mode",
     reviewLaunchTitle: "This link is ready for household testing.",
     reviewLaunchCopy: "Use your real location, try a clear recycle case, compare a tricky item across cities, and save one note before you leave.",
@@ -3104,6 +3284,15 @@ const translations = {
     reviewCopy: "Usa tu ubicacion real, prueba un articulo dificil como baterias y luego salta directo a comentarios mientras la respuesta sigue visible.",
     reviewTryBattery: "Probar baterias",
     reviewJumpFeedback: "Abrir herramientas de prueba",
+    reviewFabOpen: "Opinar",
+    reviewFabClose: "Ocultar opinion",
+    reviewOverlayEyebrow: "Comentario rapido",
+    reviewOverlayTitle: "Comparte comentarios sin salir de la respuesta",
+    reviewOverlayCopy: "Envia una nota rapida vinculada al articulo y municipio actual. Arrastra el boton de opinion a la zona que te resulte natural en pantalla.",
+    reviewOverlayPlaceholder: "Que se sintio claro, confuso, lento o poco confiable?",
+    reviewOverlaySubmit: "Enviar comentario",
+    reviewOverlayFullForm: "Abrir formulario completo",
+    reviewOverlayNoItem: "Todavia no hay articulo seleccionado",
     reviewLaunchEyebrow: "Modo guiado de prueba",
     reviewLaunchTitle: "Este enlace ya esta listo para probarse en casa.",
     reviewLaunchCopy: "Usa tu ubicacion real, prueba un caso claro de reciclaje, compara un articulo dificil entre ciudades y guarda una nota antes de salir.",
@@ -5512,6 +5701,8 @@ const state = {
   }),
   userLocation: readStoredJson("recycling-user-location-v1", null),
   reviewMode: localStorage.getItem("recycling-review-mode") === "review",
+  reviewOverlayOpen: localStorage.getItem("recycling-review-overlay-v1") === "open",
+  reviewFabPosition: readStoredJson("recycling-review-fab-position-v1", null),
   followUserLocation: true,
   locationWatchId: null,
   installPromptEvent: null,
@@ -5571,6 +5762,18 @@ const elements = {
   submitPublicFeedback: document.getElementById("submit-public-feedback"),
   clearPublicFeedback: document.getElementById("clear-public-feedback"),
   publicFeedbackList: document.getElementById("public-feedback-list"),
+  reviewFabWrap: document.getElementById("review-fab-wrap"),
+  reviewFab: document.getElementById("review-fab"),
+  reviewOverlay: document.getElementById("review-overlay"),
+  reviewOverlayBackdrop: document.getElementById("review-overlay-backdrop"),
+  closeReviewOverlay: document.getElementById("close-review-overlay"),
+  reviewOverlayContext: document.getElementById("review-overlay-context"),
+  reviewOverlayClarity: document.getElementById("review-overlay-clarity"),
+  reviewOverlayTrust: document.getElementById("review-overlay-trust"),
+  reviewOverlaySpeed: document.getElementById("review-overlay-speed"),
+  reviewOverlayNotes: document.getElementById("review-overlay-notes"),
+  submitReviewOverlay: document.getElementById("submit-review-overlay"),
+  reviewOverlayFullForm: document.getElementById("review-overlay-full-form"),
   feedbackLog: document.getElementById("feedback-log"),
   reviewSummary: document.getElementById("review-summary"),
   reviewSuite: document.getElementById("review-suite"),
@@ -5597,7 +5800,7 @@ const elements = {
   reviewActions: [...document.querySelectorAll("[data-review-action]")]
 };
 
-const buildId = "2026-06-30-ui28";
+const buildId = "2026-07-01-ui29";
 const bootState = readUrlState();
 const geolocationOptions = {
   enableHighAccuracy: true,
@@ -5613,6 +5816,10 @@ if (bootState.language && translations[bootState.language]) {
 
 if (bootState.mode === "review") {
   state.reviewMode = true;
+}
+
+if (bootState.overlay === "review") {
+  state.reviewOverlayOpen = true;
 }
 
 if (bootState.municipality && municipalities[bootState.municipality]) {
@@ -5877,7 +6084,8 @@ function readUrlState() {
     municipality: params.get("m"),
     item: params.get("item"),
     query: params.get("q"),
-    mode: params.get("mode")
+    mode: params.get("mode"),
+    overlay: params.get("overlay")
   };
 }
 
@@ -5890,6 +6098,10 @@ function currentAppUrl() {
   url.searchParams.set("m", elements.municipalitySelect.value);
   if (state.reviewMode) {
     url.searchParams.set("mode", "review");
+  }
+
+  if (state.reviewOverlayOpen) {
+    url.searchParams.set("overlay", "review");
   }
 
   if (state.currentBarcode) {
@@ -6063,6 +6275,157 @@ function openReviewTools(options = {}) {
   if (focusNotes) {
     elements.feedbackNotes.focus();
   }
+}
+
+function clampReviewFabPosition(position) {
+  const width = window.innerWidth || 390;
+  const height = window.innerHeight || 844;
+  const minX = 12;
+  const minY = 96;
+  const maxX = Math.max(minX, width - 96);
+  const maxY = Math.max(minY, height - 72);
+  return {
+    x: Math.min(maxX, Math.max(minX, position?.x ?? maxX)),
+    y: Math.min(maxY, Math.max(minY, position?.y ?? maxY))
+  };
+}
+
+function applyReviewFabPosition(position, options = {}) {
+  const { persist = true } = options;
+  const next = clampReviewFabPosition(position);
+  state.reviewFabPosition = next;
+  elements.reviewFabWrap.style.left = `${next.x}px`;
+  elements.reviewFabWrap.style.top = `${next.y}px`;
+  if (persist) {
+    localStorage.setItem("recycling-review-fab-position-v1", JSON.stringify(next));
+  }
+}
+
+function clearReviewOverlayForm() {
+  elements.reviewOverlayClarity.value = "5";
+  elements.reviewOverlayTrust.value = "5";
+  elements.reviewOverlaySpeed.value = "5";
+  elements.reviewOverlayNotes.value = "";
+}
+
+function renderReviewOverlayContext() {
+  const ui = copy();
+  const currentEntry = activeProductEntry();
+  const areaName = activeMunicipality().name[state.language];
+  const itemName = currentEntry ? currentEntry.product.name[state.language] : ui.reviewOverlayNoItem;
+  const detailPills = [
+    `<span class="mini-pill">${ui.reviewLaunchItem}: ${escapeHtml(itemName)}</span>`,
+    `<span class="mini-pill">${ui.reviewLaunchArea}: ${escapeHtml(areaName)}</span>`
+  ];
+
+  if (state.userLocation) {
+    const match = currentLocationMatchMeta();
+    detailPills.push(`<span class="mini-pill">${escapeHtml(pilotCoverageLabel(match.band))}</span>`);
+  }
+
+  elements.reviewOverlayContext.innerHTML = detailPills.join("");
+}
+
+function setReviewOverlayOpen(isOpen, options = {}) {
+  const { sync = true, focusNotes = false } = options;
+  state.reviewOverlayOpen = isOpen;
+  localStorage.setItem("recycling-review-overlay-v1", isOpen ? "open" : "closed");
+  document.body.dataset.reviewOverlay = isOpen ? "open" : "closed";
+  elements.reviewOverlay.hidden = !isOpen;
+  elements.reviewOverlayBackdrop.hidden = !isOpen;
+  elements.reviewFab.setAttribute("aria-pressed", isOpen ? "true" : "false");
+  elements.reviewFab.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  elements.reviewFab.textContent = isOpen ? copy().reviewFabClose : copy().reviewFabOpen;
+  renderReviewOverlayContext();
+
+  if (sync) {
+    syncUrlState();
+  }
+
+  if (isOpen && focusNotes) {
+    elements.reviewOverlayNotes.focus();
+  }
+}
+
+function saveReviewOverlayEntry() {
+  const ui = copy();
+  const notes = elements.reviewOverlayNotes.value.trim();
+  if (!notes) {
+    showToast(ui.feedbackNeedNote);
+    return;
+  }
+
+  const context = currentFeedbackContext();
+  state.feedback.unshift({
+    barcode: context.barcode,
+    municipality: context.municipality,
+    clarity: elements.reviewOverlayClarity.value,
+    trust: elements.reviewOverlayTrust.value,
+    speed: elements.reviewOverlaySpeed.value,
+    tags: [],
+    notes,
+    url: currentAppUrl(),
+    timestamp: Date.now()
+  });
+  state.feedback = state.feedback.slice(0, 20);
+  localStorage.setItem("recycling-feedback-v1", JSON.stringify(state.feedback));
+  renderFeedbackLog();
+  clearReviewOverlayForm();
+  setReviewOverlayOpen(false);
+  showToast(ui.feedbackSaved);
+}
+
+function setupReviewFabDrag() {
+  let dragState = null;
+
+  elements.reviewFabWrap.addEventListener("pointerdown", (event) => {
+    if (event.button !== undefined && event.button !== 0) {
+      return;
+    }
+
+    const rect = elements.reviewFabWrap.getBoundingClientRect();
+    dragState = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      originX: rect.left,
+      originY: rect.top,
+      moved: false
+    };
+    elements.reviewFabWrap.setPointerCapture?.(event.pointerId);
+  });
+
+  elements.reviewFabWrap.addEventListener("pointermove", (event) => {
+    if (!dragState || event.pointerId !== dragState.pointerId) {
+      return;
+    }
+
+    const nextX = dragState.originX + (event.clientX - dragState.startX);
+    const nextY = dragState.originY + (event.clientY - dragState.startY);
+    if (Math.abs(event.clientX - dragState.startX) > 6 || Math.abs(event.clientY - dragState.startY) > 6) {
+      dragState.moved = true;
+      state.reviewFabSuppressClick = true;
+    }
+    applyReviewFabPosition({ x: nextX, y: nextY }, { persist: false });
+  });
+
+  const releaseDrag = (event) => {
+    if (!dragState || event.pointerId !== dragState.pointerId) {
+      return;
+    }
+
+    if (dragState.moved) {
+      applyReviewFabPosition(state.reviewFabPosition);
+      window.setTimeout(() => {
+        state.reviewFabSuppressClick = false;
+      }, 180);
+    }
+
+    dragState = null;
+  };
+
+  elements.reviewFabWrap.addEventListener("pointerup", releaseDrag);
+  elements.reviewFabWrap.addEventListener("pointercancel", releaseDrag);
 }
 
 function formatMiles(distance) {
@@ -6753,6 +7116,7 @@ function refreshMunicipalityViews() {
   renderNextStepCard();
   renderBrowseCatalog();
   renderPublicFeedbackContext();
+  renderReviewOverlayContext();
   renderSessionOverview();
   renderSearchAssist(elements.searchInput.value);
 }
@@ -8508,6 +8872,7 @@ function renderEmptyResult() {
   const ui = copy();
   state.currentBarcode = null;
   state.lastQuery = "";
+  renderReviewOverlayContext();
   setResultContentState(true);
   elements.resultContent.innerHTML = `
     <div class="empty-state">
@@ -8532,6 +8897,7 @@ function renderEmptyResult() {
 function renderUnknown(suggestions = []) {
   const ui = copy();
   state.currentBarcode = null;
+  renderReviewOverlayContext();
   setResultContentState(false);
   const suggestionPanel = suggestions.length ? `
       <div class="support-card suggestion-panel">
@@ -8620,6 +8986,7 @@ function renderResult(entry, trackHistory) {
   const nearestCenter = nearestCenterForCurrentMunicipality();
   const needsCenterSpotlight = guidance.outcome === "drop_off" || guidance.outcome === "check_locally";
   recordSessionCoverage(entry.barcode, guidance.outcome, municipalityKey);
+  renderReviewOverlayContext();
   setResultContentState(false);
 
   elements.resultContent.innerHTML = `
@@ -8764,6 +9131,7 @@ elements.languageToggle.addEventListener("click", () => {
   localStorage.setItem("recycling-language", state.language);
   translatePage();
   updateInstallButton();
+  setReviewOverlayOpen(state.reviewOverlayOpen, { sync: false });
   refreshLocationStatus();
   renderQuickChips();
   renderProductSuggestions();
@@ -8807,6 +9175,37 @@ elements.scanDemo.addEventListener("click", () => {
 
 elements.useLocation.addEventListener("click", () => {
   requestUserLocation();
+});
+
+elements.reviewFab.addEventListener("click", () => {
+  if (state.reviewFabSuppressClick) {
+    state.reviewFabSuppressClick = false;
+    return;
+  }
+
+  setReviewOverlayOpen(!state.reviewOverlayOpen, {
+    focusNotes: !state.reviewOverlayOpen
+  });
+});
+
+elements.closeReviewOverlay.addEventListener("click", () => {
+  setReviewOverlayOpen(false);
+});
+
+elements.reviewOverlayBackdrop.addEventListener("click", () => {
+  setReviewOverlayOpen(false);
+});
+
+elements.submitReviewOverlay.addEventListener("click", () => {
+  saveReviewOverlayEntry();
+});
+
+elements.reviewOverlayFullForm.addEventListener("click", () => {
+  const currentEntry = activeProductEntry();
+  elements.publicFeedbackItem.value = currentEntry ? currentEntry.product.name[state.language] : state.lastQuery || "";
+  elements.publicFeedbackNotes.value = elements.reviewOverlayNotes.value.trim();
+  setReviewOverlayOpen(false);
+  openPublicFeedback({ focusNotes: true });
 });
 
 elements.closeScanner.addEventListener("click", () => {
@@ -9051,13 +9450,26 @@ window.addEventListener("appinstalled", () => {
 });
 
 window.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && state.reviewOverlayOpen) {
+    setReviewOverlayOpen(false);
+    return;
+  }
+
   if (event.key === "Escape" && elements.scannerModal.getAttribute("aria-hidden") === "false") {
     stopScanner();
   }
 });
 
+window.addEventListener("resize", () => {
+  applyReviewFabPosition(state.reviewFabPosition, { persist: false });
+});
+
 translatePage();
 updateInstallButton();
+clearReviewOverlayForm();
+setupReviewFabDrag();
+applyReviewFabPosition(state.reviewFabPosition, { persist: false });
+setReviewOverlayOpen(state.reviewOverlayOpen, { sync: false });
 refreshLocationStatus();
 renderQuickChips();
 renderProductSuggestions();
