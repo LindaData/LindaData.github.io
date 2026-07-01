@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Javeriana - Plan de clases</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--text:#111827;--muted:#6b7280;--line:#d9e1ea;--head:#0f172a;--blue:#2563eb;--green:#059669;--orange:#f97316;--greenBg:#ecfdf5;--blueBg:#eff6ff;--shadow:0 14px 36px rgba(15,23,42,.10)}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#f8fafc,#eef3f8);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;padding:14px}.wrap{max-width:1500px;margin:auto}.card{background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:var(--shadow)}.top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:14px}.title{font-size:18px;font-weight:800;margin:0 0 8px}.stats{display:flex;gap:8px;flex-wrap:wrap}.pill{font-size:12px;border:1px solid var(--line);border-radius:999px;background:#f8fafc;padding:7px 10px}.pill strong{font-size:13px}.bar{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:12px}.search{width:100%;font-size:14px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}.actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.btn{border:1px solid var(--line);background:#fff;color:var(--text);border-radius:12px;padding:11px 12px;font-size:13px;font-weight:700;cursor:pointer}.btn:active{transform:scale(.98)}.filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 11px;font-size:13px;font-weight:700;cursor:pointer}.chip.on{background:var(--head);color:#fff;border-color:var(--head)}.tableBox{overflow:auto;max-height:calc(100vh - 182px)}table{border-collapse:separate;border-spacing:0;width:100%;min-width:1120px}th,td{border-bottom:1px solid var(--line);border-right:1px solid #eef2f7;padding:10px;vertical-align:top;text-align:left;font-size:13.5px;line-height:1.32}th{position:sticky;top:0;z-index:10;background:var(--head);color:#fff;font-size:12px;letter-spacing:.02em;text-transform:uppercase}tbody tr:nth-child(even){background:#fbfdff}tbody tr.taken{background:var(--greenBg)}tbody tr.planned{background:var(--blueBg)}tbody tr:hover{outline:2px solid rgba(37,99,235,.18);outline-offset:-2px}.statusBtns{display:flex;gap:7px;min-width:158px}.toggle{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 9px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap}.toggle.takenOn{background:var(--green);border-color:var(--green);color:#fff}.toggle.planOn{background:var(--blue);border-color:var(--blue);color:#fff}.name{font-weight:800}.desc{color:#374151}.work{color:#4b5563}.num{text-align:center;font-weight:800;white-space:nowrap}.year{font-weight:800;text-align:center}.empty{display:none;padding:22px;text-align:center;color:var(--muted);font-weight:700}.save{color:var(--green);font-weight:800}@media(max-width:760px){body{padding:8px}.card{border-radius:16px}.bar{grid-template-columns:1fr}.actions{justify-content:stretch}.btn{flex:1}.tableBox{max-height:none}table{min-width:980px}th,td{font-size:13px;padding:9px}.title{font-size:16px}.pill{font-size:11px}}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="card">
+  <div class="top">
+    <h1 class="title">Plan de clases - Ingeniería de Sistemas</h1>
+    <div class="stats">
+      <span class="pill">Tomadas: <strong id="takenCount">0</strong> clases · <strong id="takenCredits">0</strong> créditos</span>
+      <span class="pill">Tomará: <strong id="planCount">0</strong> clases · <strong id="planCredits">0</strong> créditos</span>
+      <span class="pill">Meta selección: <strong>20 créditos</strong></span>
+      <span class="pill save" id="saveState">Guardado</span>
+    </div>
+    <div class="bar">
+      <input id="search" class="search" placeholder="Buscar clase, descripción, trabajo, año..." />
+      <div class="actions">
+        <button class="btn" id="copyLink">Copiar link con selección</button>
+        <button class="btn" id="csv">Exportar CSV</button>
+        <button class="btn" id="resetBase">Restaurar feedback inicial</button>
+        <button class="btn" id="clearAll">Limpiar</button>
+      </div>
+    </div>
+    <div class="filters" id="filters">
+      <button class="chip on" data-filter="all">Todas</button>
+      <button class="chip" data-filter="pending">Pendientes</button>
+      <button class="chip" data-filter="taken">Tomadas</button>
+      <button class="chip" data-filter="planned">Tomará</button>
+      <button class="chip" data-filter="y1">Año 1</button>
+      <button class="chip" data-filter="y2">Año 2</button>
+      <button class="chip" data-filter="y3">Año 3</button>
+      <button class="chip" data-filter="y4">Año 4</button>
+    </div>
+  </div>
+  <div class="tableBox"><table id="tbl"><thead><tr><th>Estado</th><th>Clase</th><th>Descripción breve</th><th>Ejemplos de trabajo</th><th>Créditos</th><th>Año</th><th>Sem.</th></tr></thead><tbody></tbody></table><div class="empty" id="empty">No hay resultados.</div></div>
+</div></div>
+<script>
+const KEY='javeriana-plan-v5';
+const courses=[
+['c001','Cálculo Diferencial','Derivadas, tasas de cambio y modelación básica.','Resolver problemas de optimización, crecimiento o movimiento simple.',3,1,1,'taken'],
+['c002','Lógica y Matemáticas Discretas','Lógica formal y estructuras matemáticas para computación.','Tablas de verdad, conjuntos, relaciones y grafos básicos.',3,1,1,'taken'],
+['c003','Introducción a la Programación','Fundamentos de programación y pensamiento algorítmico.','Programas básicos con variables, condicionales, ciclos y funciones.',3,1,1,''],
+['c004','Pensamiento Sistémico','Analizar problemas como sistemas conectados.','Mapas de actores, diagramas de relaciones y análisis de impacto.',3,1,1,''],
+['c005','Introducción a la Ingeniería','Panorama general de la ingeniería y su forma de resolver problemas.','Análisis de problemas reales y propuesta de solución.',2,1,1,''],
+['c006','Fundamentos Seguridad de la Información','Principios básicos para proteger datos y sistemas.','Identificar riesgos, controles básicos y buenas prácticas de seguridad.',2,1,1,''],
+['c007','Cálculo Integral','Integración y acumulación de cantidades.','Áreas, acumulación y aplicaciones físicas o matemáticas.',3,1,2,'taken'],
+['c008','Álgebra Lineal','Vectores, matrices y sistemas lineales.','Resolver sistemas de ecuaciones y trabajar con matrices.',3,1,2,'taken'],
+['c009','Programación Avanzada','Programación más estructurada y modular.','Proyectos con clases, archivos, errores o estructuras complejas.',3,1,2,''],
+['c010','Gestión Financiera de Proyectos de TI','Costos, presupuesto y evaluación financiera de proyectos tecnológicos.','Armar presupuesto, estimar costos y justificar un proyecto TI.',2,1,2,''],
+['c011','Proyecto de Diseño en Ingeniería','Diseño aplicado de una solución de ingeniería.','Prototipo, propuesta técnica o solución documentada.',2,1,2,''],
+['c012','Arquitectura y Organización del Computador','Funcionamiento interno del computador.','Analizar CPU, memoria, instrucciones y componentes.',2,1,2,''],
+['c013','Electiva','Materia libre del plan.','Depende de la asignatura elegida.',3,1,2,''],
+['c014','Cálculo Vectorial','Funciones de varias variables y cálculo vectorial.','Gradientes, derivadas parciales e integrales múltiples.',3,2,3,''],
+['c015','Bases de Datos','Diseño, consulta y administración básica de datos.','Modelo entidad-relación, normalización y consultas SQL.',4,2,3,''],
+['c016','Análisis y Diseño de Software','Definir requisitos y estructurar soluciones de software.','Casos de uso, diagramas, requerimientos y diseño de solución.',3,2,3,''],
+['c017','Comunicaciones y Redes','Redes, protocolos y comunicación entre sistemas.','Topologías, direccionamiento, capas y análisis de tráfico básico.',4,2,3,''],
+['c018','Significación Teológica','Reflexión teológica dentro de la formación integral.','Ensayos, discusiones o análisis de textos.',2,2,3,''],
+['c019','Electiva','Materia libre del plan.','Depende de la asignatura elegida.',2,2,3,''],
+['c020','Física Mecánica','Movimiento, fuerzas y energía.','Problemas de cinemática, dinámica y conservación de energía.',3,2,4,'taken'],
+['c021','Estructuras de Datos','Organización eficiente de datos en memoria.','Implementar listas, pilas, colas, árboles o tablas hash.',3,2,4,''],
+['c022','Sistemas de Información','Sistemas que soportan procesos y decisiones.','Mapear procesos, datos y flujos de información organizacional.',3,2,4,''],
+['c023','Gestión de Proyectos de Innovación y Emprendimiento de TI','Planeación y gestión de proyectos tecnológicos.','Cronogramas, alcance, riesgos y entregables de proyecto.',3,2,4,''],
+['c024','Fundamentos de Ingeniería de Software','Proceso de construcción de software en equipo.','Ciclo de vida, pruebas, documentación y trabajo colaborativo.',3,2,4,''],
+['c025','Sistemas Operativos','Procesos, memoria, archivos y recursos del sistema.','Analizar planificación, concurrencia y manejo de memoria.',3,2,4,''],
+['c026','Probabilidad y Estadística','Probabilidad, inferencia y análisis de datos.','Distribuciones, intervalos, pruebas y análisis estadístico básico.',3,3,5,''],
+['c027','Teoría de la Computación','Fundamentos teóricos de autómatas y lenguajes.','Máquinas de estados, lenguajes formales y computabilidad básica.',2,3,5,''],
+['c028','Proyecto de Innovación y Emprendimiento','Proyecto aplicado con enfoque emprendedor.','Validar una idea, propuesta de valor y entregable funcional.',3,3,5,''],
+['c029','Introducción a los Sistemas Distribuidos','Sistemas que operan en múltiples nodos.','Arquitecturas cliente-servidor, comunicación y coordinación distribuida.',2,3,5,''],
+['c030','Constitución y Derecho Civil','Bases jurídicas para el ejercicio profesional.','Casos, conceptos legales y lectura normativa básica.',2,3,5,''],
+['c031','Complementaria','Línea complementaria fuera del núcleo principal.','Depende del departamento elegido.',3,3,5,''],
+['c032','Electiva','Materia libre del plan.','Depende de la asignatura elegida.',3,3,5,''],
+['c033','Ecuaciones Diferenciales','Modelos matemáticos con derivadas.','Resolver ecuaciones diferenciales y modelar fenómenos.',3,3,6,''],
+['c034','Optimización y Simulación','Modelos para decidir, optimizar y simular sistemas.','Simular procesos y comparar escenarios.',2,3,6,''],
+['c035','Análisis de Algoritmos','Eficiencia, complejidad y desempeño de algoritmos.','Comparar algoritmos por tiempo y espacio.',2,3,6,''],
+['c036','Desarrollo Web','Construcción de aplicaciones y servicios web.','Sitios o apps web con frontend, backend o APIs.',3,3,6,''],
+['c037','Introducción a la Computación Móvil','Conceptos básicos de desarrollo móvil.','Interfaces móviles, flujo de app o prototipo funcional.',2,3,6,''],
+['c038','Fe y compromiso del ingeniero','Ética, vocación y responsabilidad del ingeniero.','Reflexiones, casos éticos y análisis profesional.',2,3,6,''],
+['c039','Complementaria','Línea complementaria fuera del núcleo principal.','Depende del departamento elegido.',3,3,6,''],
+['c040','Análisis Numérico','Métodos numéricos para resolver problemas complejos.','Aproximaciones numéricas, errores y solución computacional.',3,4,7,''],
+['c041','Introducción a la Inteligencia Artificial','Bases de IA y razonamiento computacional.','Clasificación, búsqueda, reglas o modelos introductorios.',3,4,7,''],
+['c042','Planeación de Proyecto Final','Definición y planeación del trabajo de grado.','Propuesta, alcance, cronograma y marco del proyecto.',2,4,7,''],
+['c043','Arquitectura de Software','Diseño de sistemas de software grandes y mantenibles.','Patrones, componentes, calidad del sistema y decisiones de arquitectura.',3,4,7,''],
+['c044','Proyecto Social Universitario','Proyecto con componente social aplicado.','Trabajo con comunidad, diagnóstico y propuesta de intervención.',2,4,7,''],
+['c045','Ética en la Era de la información','Retos éticos de datos, software y tecnología.','Análisis de privacidad, sesgos y responsabilidad digital.',2,4,7,''],
+['c046','Énfasis','Asignatura de profundización del área elegida.','Depende de la línea de énfasis.',3,4,7,''],
+['c047','Electiva de Ciencias Básicas','Electiva del componente básico.','Depende de la asignatura elegida.',3,4,8,''],
+['c048','Tecnologías Digitales Emergentes','Panorama de tecnologías nuevas y tendencias.','Evaluar casos de uso de tecnologías emergentes.',2,4,8,''],
+['c049','Proyecto de Grado','Desarrollo y entrega del proyecto final.','Implementación, informe y sustentación.',3,4,8,''],
+['c050','Gerencia Estratégica de TI','Alineación de tecnología con estrategia del negocio.','Mapas estratégicos, priorización e iniciativas TI.',2,4,8,''],
+['c051','Epistemología de la ingeniería','Fundamentos del conocimiento y método en ingeniería.','Ensayos, discusión conceptual y análisis crítico.',2,4,8,''],
+['c052','Énfasis','Asignatura de profundización del área elegida.','Depende de la línea de énfasis.',3,4,8,'']
+];
+let filter='all';let q='';
+function baseState(){let s={};courses.forEach(c=>{s[c[0]]=c[7]||''});return s}
+function fromHash(){try{if(location.hash.startsWith('#s=')){return JSON.parse(decodeURIComponent(escape(atob(location.hash.slice(3)))))} }catch(e){} return null}
+function load(){let h=fromHash();if(h){localStorage.setItem(KEY,JSON.stringify(h));return h}let raw=localStorage.getItem(KEY);if(raw){try{return JSON.parse(raw)}catch(e){}}let s=baseState();localStorage.setItem(KEY,JSON.stringify(s));return s}
+let state=load();
+function save(){localStorage.setItem(KEY,JSON.stringify(state));document.getElementById('saveState').textContent='Guardado';}
+function statusLabel(v){return v==='taken'?'Tomada':v==='planned'?'Tomará':'Pendiente'}
+function render(){const tb=document.querySelector('tbody');tb.innerHTML='';let takenC=0,takenCr=0,planC=0,planCr=0,shown=0;courses.forEach(c=>{const [id,name,desc,work,cr,yr,sem]=c;const st=state[id]||'';if(st==='taken'){takenC++;takenCr+=cr}if(st==='planned'){planC++;planCr+=cr}const text=(name+' '+desc+' '+work+' '+cr+' '+yr+' '+sem+' '+statusLabel(st)).toLowerCase();let ok=text.includes(q);if(filter==='taken')ok=ok&&st==='taken';if(filter==='planned')ok=ok&&st==='planned';if(filter==='pending')ok=ok&&!st;if(filter[0]==='y')ok=ok&&yr===Number(filter[1]);if(!ok)return;shown++;let tr=document.createElement('tr');tr.className=st==='taken'?'taken':st==='planned'?'planned':'';tr.innerHTML=`<td><div class="statusBtns"><button class="toggle ${st==='taken'?'takenOn':''}" data-id="${id}" data-val="taken">Tomada</button><button class="toggle ${st==='planned'?'planOn':''}" data-id="${id}" data-val="planned">Tomará</button></div></td><td class="name">${name}</td><td class="desc">${desc}</td><td class="work">${work}</td><td class="num">${cr}</td><td class="year">${yr}</td><td class="year">${sem}</td>`;tb.appendChild(tr)});document.getElementById('takenCount').textContent=takenC;document.getElementById('takenCredits').textContent=takenCr;document.getElementById('planCount').textContent=planC;document.getElementById('planCredits').textContent=planCr;document.getElementById('empty').style.display=shown?'none':'block'}
+document.addEventListener('click',e=>{let b=e.target.closest('.toggle');if(b){let id=b.dataset.id,val=b.dataset.val;state[id]=state[id]===val?'':val;save();render()}let chip=e.target.closest('.chip');if(chip){document.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));chip.classList.add('on');filter=chip.dataset.filter;render()}});
+document.getElementById('search').addEventListener('input',e=>{q=e.target.value.toLowerCase().trim();render()});
+document.getElementById('clearAll').onclick=()=>{state={};courses.forEach(c=>state[c[0]]='');save();history.replaceState(null,'',location.pathname);render()};
+document.getElementById('resetBase').onclick=()=>{state=baseState();save();history.replaceState(null,'',location.pathname);render()};
+document.getElementById('copyLink').onclick=async()=>{let packed=btoa(unescape(encodeURIComponent(JSON.stringify(state))));history.replaceState(null,'','#s='+packed);try{await navigator.clipboard.writeText(location.href);document.getElementById('saveState').textContent='Link copiado'}catch(e){document.getElementById('saveState').textContent='Link listo en barra'}};
+document.getElementById('csv').onclick=()=>{let rows=[['estado','clase','descripcion','ejemplos','creditos','anio','semestre'],...courses.map(c=>[statusLabel(state[c[0]]||''),c[1],c[2],c[3],c[4],c[5],c[6]])];let csv=rows.map(r=>r.map(x=>'"'+String(x).replaceAll('"','""')+'"').join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='javeriana_clases.csv';a.click()};
+render();
+</script>
+</body>
+</html>
