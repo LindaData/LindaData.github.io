@@ -1,0 +1,21 @@
+{
+  "project": "southpaw-site-demo",
+  "status": "live_minimal_demo_plus_full_branch_pr",
+  "canonical_site": "https://southpawboxing.net/",
+  "operations_platform": "WellnessLiving",
+  "recommended_v1": [
+    "Static public website",
+    "WellnessLiving booking handoff",
+    "Mobile-first first-visit path",
+    "Founder review layer",
+    "Future local SEO pages"
+  ],
+  "review_layer": {
+    "local_notes": true,
+    "copy_json": true,
+    "secure_endpoint_future": true,
+    "frontend_secrets": false
+  },
+  "full_work_branch": "feature/southpaw-boxing-rebuild",
+  "pull_request": "https://github.com/LindaData/LindaData.github.io/pull/1"
+}
