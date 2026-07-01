@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Southpaw Boxing | LindaData Concept Rebuild</title>
+    <meta name="description" content="A mobile-first concept rebuild for Southpaw Training Center with WellnessLiving handoff and founder review mode.">
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #080808;
+        --bg-2: #111111;
+        --ink: #f7f3ec;
+        --muted: #cfc4b5;
+        --dim: #90877b;
+        --line: rgba(255, 255, 255, 0.12);
+        --card: rgba(255, 255, 255, 0.075);
+        --card-strong: rgba(255, 255, 255, 0.12);
+        --gold: #f2b84b;
+        --red: #d64032;
+        --red-deep: #8f1d18;
+        --cream: #fff5df;
+        --green: #42c17a;
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+        --radius-xl: 32px;
+        --radius-lg: 24px;
+        --radius-md: 16px;
+        --font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --font-display: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--ink);
+        font-family: var(--font-body);
+        background:
+          radial-gradient(circle at 12% 0%, rgba(214, 64, 50, 0.32), transparent 30rem),
+          radial-gradient(circle at 90% 12%, rgba(242, 184, 75, 0.18), transparent 28rem),
+          linear-gradient(180deg, #050505 0%, #111 42%, #080808 100%);
+      }
+
+      body.review-open { overflow: hidden; }
+      a { color: inherit; }
+      button, input, textarea, select { font: inherit; }
+      img { max-width: 100%; }
+      .skip-link {
+        position: absolute;
+        left: 12px;
+        top: 12px;
+        transform: translateY(-160%);
+        background: var(--cream);
+        color: #111;
+        padding: 0.75rem 1rem;
+        border-radius: 999px;
+        z-index: 30;
+      }
+      .skip-link:focus { transform: translateY(0); }
+
+      .shell { width: min(1180px, calc(100% - 28px)); margin: 0 auto; }
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        padding: 12px 0;
+        backdrop-filter: blur(20px);
+        background: linear-gradient(180deg, rgba(8, 8, 8, 0.94), rgba(8, 8, 8, 0.72));
+        border-bottom: 1px solid var(--line);
+      }
+      .topbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+        text-decoration: none;
+      }
+      .mark {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        color: #090909;
+        font-weight: 950;
+        background: linear-gradient(135deg, var(--gold), #fff0b8);
+        box-shadow: 0 10px 30px rgba(242, 184, 75, 0.24);
+      }
+      .brand strong { display: block; letter-spacing: 0.04em; }
+      .brand small { display: block; color: var(--muted); }
+      .nav-actions { display: flex; align-items: center; gap: 8px; }
+      .desktop-links { display: none; align-items: center; gap: 10px; color: var(--muted); font-weight: 800; font-size: 0.9rem; }
+      .desktop-links a { text-decoration: none; }
+      .desktop-links a:hover { color: var(--ink); }
+
+      .btn {
+        border: 0;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.45rem;
+        min-height: 48px;
+        padding: 0.85rem 1.1rem;
+        text-decoration: none;
+        font-weight: 900;
+        cursor: pointer;
+        transition: transform 150ms ease, box-shadow 150ms ease, background 150ms ease;
+      }
+      .btn:hover { transform: translateY(-1px); }
+      .btn-primary { color: #120b08; background: linear-gradient(135deg, var(--gold), #fff0b8); box-shadow: 0 16px 40px rgba(242, 184, 75, 0.22); }
+      .btn-secondary { color: var(--ink); border: 1px solid var(--line); background: rgba(255, 255, 255, 0.08); }
+      .btn-ghost { color: var(--muted); border: 1px solid var(--line); background: transparent; }
+      .btn-danger { color: white; background: linear-gradient(135deg, var(--red), var(--red-deep)); }
+      .btn-small { min-height: 40px; padding: 0.65rem 0.9rem; font-size: 0.88rem; }
+
+      .hero { padding: 34px 0 24px; }
+      .hero-grid { display: grid; gap: 18px; }
+      .hero-copy, .hero-panel, .card, .review-panel-card {
+        border: 1px solid var(--line);
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.105), rgba(255, 255, 255, 0.05));
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow);
+      }
+      .hero-copy { padding: 24px; overflow: hidden; position: relative; }
+      .hero-copy::after {
+        content: "";
+        position: absolute;
+        width: 160px;
+        height: 160px;
+        right: -52px;
+        bottom: -62px;
+        border: 24px solid rgba(214, 64, 50, 0.22);
+        border-radius: 999px;
+      }
+      .audit-kicker, .eyebrow {
+        margin: 0 0 10px;
+        color: var(--gold);
+        font-size: 0.78rem;
+        font-weight: 950;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+      h1, h2, h3 { margin: 0; line-height: 0.98; }
+      h1 {
+        font-family: var(--font-display);
+        font-size: clamp(3.45rem, 18vw, 8.8rem);
+        letter-spacing: 0.01em;
+        text-transform: uppercase;
+        max-width: 8ch;
+      }
+      h2 { font-size: clamp(2rem, 8vw, 4rem); font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.02em; }
+      h3 { font-size: 1.14rem; }
+      p { line-height: 1.65; }
+      .lede { color: var(--muted); font-size: 1.04rem; max-width: 62ch; }
+      .hero-actions, .button-row, .metric-grid, .program-grid, .agent-grid, .steps, .split, .proof-grid, .review-actions { display: grid; gap: 12px; }
+      .hero-actions { margin-top: 18px; }
+      .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--muted);
+        padding: 0.55rem 0.75rem;
+        font-weight: 850;
+        font-size: 0.9rem;
+      }
+      .hero-panel { padding: 18px; display: grid; gap: 14px; }
+      .phone-card {
+        min-height: 380px;
+        border-radius: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background:
+          linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.76)),
+          radial-gradient(circle at 50% 14%, rgba(242, 184, 75, 0.28), transparent 6rem),
+          linear-gradient(145deg, #23110f, #050505 58%);
+        padding: 18px;
+        display: grid;
+        align-content: space-between;
+        overflow: hidden;
+        position: relative;
+      }
+      .phone-card::before {
+        content: "";
+        position: absolute;
+        inset: 54px 16px auto;
+        height: 90px;
+        border: 12px solid rgba(255, 255, 255, 0.08);
+        border-radius: 999px;
+        transform: rotate(-16deg);
+      }
+      .phone-card > * { position: relative; z-index: 1; }
+      .status-dot { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-weight: 850; }
+      .status-dot::before { content: ""; width: 10px; height: 10px; border-radius: 999px; background: var(--green); box-shadow: 0 0 0 6px rgba(66, 193, 122, 0.12); }
+      .class-ticket {
+        border-radius: 22px;
+        padding: 16px;
+        background: rgba(255, 245, 223, 0.11);
+        border: 1px solid rgba(255,255,255,0.14);
+      }
+      .class-ticket strong { display: block; font-size: 1.35rem; }
+      .class-ticket span { color: var(--muted); }
+
+      .section { padding: 34px 0; }
+      .section-header { display: grid; gap: 8px; margin-bottom: 18px; }
+      .section-header p { margin: 0; color: var(--muted); max-width: 74ch; }
+      .card { padding: 18px; border-radius: var(--radius-lg); }
+      .card p, .card li { color: var(--muted); }
+      .card ul { margin: 12px 0 0; padding-left: 1.1rem; }
+      .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .metric strong { display: block; font-family: var(--font-display); font-size: 2.2rem; line-height: 1; color: var(--gold); }
+      .metric span { color: var(--muted); font-weight: 800; }
+      .program-card { min-height: 230px; display: grid; align-content: space-between; gap: 18px; }
+      .program-card .icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        color: #111;
+        background: var(--gold);
+        font-weight: 950;
+      }
+      .program-meta { color: var(--gold); font-weight: 900; }
+      .step-num {
+        width: 40px;
+        height: 40px;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        background: var(--red);
+        color: white;
+        font-weight: 950;
+      }
+      .step { display: grid; gap: 10px; align-content: start; }
+      .coach-card {
+        min-height: 420px;
+        display: grid;
+        align-content: end;
+        background:
+          linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0,0,0,0.9)),
+          radial-gradient(circle at 70% 20%, rgba(242, 184, 75, 0.24), transparent 12rem),
+          linear-gradient(145deg, #301210, #090909);
+      }
+      .quote {
+        font-family: Georgia, serif;
+        font-size: 1.25rem;
+        color: var(--cream);
+      }
+      .integration-card { background: linear-gradient(145deg, rgba(242, 184, 75, 0.14), rgba(255, 255, 255, 0.06)); }
+      .audit-card { border-color: rgba(242, 184, 75, 0.26); }
+      .source-list { display: grid; gap: 10px; margin-top: 14px; }
+      .source-list a { color: var(--gold); font-weight: 850; }
+
+      .review-fab {
+        position: fixed;
+        right: 14px;
+        bottom: 14px;
+        z-index: 40;
+        box-shadow: 0 16px 44px rgba(214, 64, 50, 0.32);
+      }
+      .review-drawer {
+        position: fixed;
+        inset: auto 0 0 0;
+        z-index: 50;
+        max-height: 92vh;
+        overflow: auto;
+        padding: 12px;
+        transform: translateY(110%);
+        transition: transform 220ms ease;
+        background: linear-gradient(180deg, rgba(8,8,8,0.2), rgba(8,8,8,0.96) 18%);
+      }
+      body.review-open .review-drawer { transform: translateY(0); }
+      .review-panel-card {
+        padding: 16px;
+        border-radius: 26px 26px 0 0;
+        background: rgba(14,14,14,0.98);
+      }
+      .review-head { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+      .review-head p { margin: 4px 0 0; color: var(--muted); }
+      .field { display: grid; gap: 6px; margin-top: 12px; }
+      .field label { color: var(--muted); font-weight: 850; font-size: 0.88rem; }
+      .field input, .field textarea, .field select {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: rgba(255,255,255,0.08);
+        color: var(--ink);
+        padding: 0.85rem;
+      }
+      .field textarea { min-height: 120px; resize: vertical; }
+      .note-list { display: grid; gap: 10px; margin-top: 14px; }
+      .note-item {
+        padding: 12px;
+        border-radius: 16px;
+        background: rgba(255,255,255,0.075);
+        border: 1px solid var(--line);
+      }
+      .note-item strong { display: block; color: var(--gold); }
+      .note-item small { color: var(--dim); }
+      .status-line { min-height: 24px; margin-top: 10px; color: var(--muted); }
+      .review-tools { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 14px; }
+
+      footer { padding: 34px 0 80px; color: var(--muted); border-top: 1px solid var(--line); }
+      footer a { color: var(--gold); }
+
+      @media (min-width: 740px) {
+        .hero { padding-top: 52px; }
+        .hero-grid, .split { grid-template-columns: 1.08fr 0.92fr; align-items: stretch; }
+        .hero-copy { padding: 34px; }
+        .hero-actions, .button-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .program-grid, .agent-grid, .proof-grid, .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .desktop-links { display: flex; }
+        .review-drawer { inset: 0 0 0 auto; width: min(460px, 100%); max-height: none; transform: translateX(110%); background: rgba(0,0,0,0.3); }
+        body.review-open .review-drawer { transform: translateX(0); }
+        .review-panel-card { min-height: 100%; border-radius: 30px 0 0 30px; }
+      }
+
+      @media (min-width: 1020px) {
+        .program-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        .metric-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="topbar">
+      <div class="shell topbar-inner">
+        <a class="brand" href="#top" aria-label="Southpaw concept home">
+          <span class="mark">SP</span>
+          <span><strong>Southpaw</strong><small>Concept rebuild by LindaData</small></span>
+        </a>
+        <nav class="desktop-links" aria-label="Main navigation">
+          <a href="#first-class">First class</a>
+          <a href="#programs">Programs</a>
+          <a href="#coach">Coach</a>
+          <a href="#backend">Book</a>
+        </nav>
+        <div class="nav-actions">
+          <button class="btn btn-secondary btn-small" type="button" data-open-review>Review</button>
+          <a class="btn btn-primary btn-small" href="https://www.wellnessliving.com/signup/southpaw_training_center">Book</a>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top" data-review-section="Hero">
+        <div class="shell hero-grid">
+          <div class="hero-copy">
+            <p class="audit-kicker">Concept rebuild · not the live official site</p>
+            <h1>Train like you belong in the ring.</h1>
+            <p class="lede">A sharper mobile-first site for a champion-led Pineville boxing gym: fast first-class booking, clear program paths, stronger proof, and a review layer so the owner can shape the site while it is being built.</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="https://www.wellnessliving.com/signup/southpaw_training_center">Book first class free</a>
+              <a class="btn btn-secondary" href="#first-class">Know what to expect</a>
+              <a class="btn btn-secondary" href="https://southpawboxing.net/">Open current site</a>
+              <button class="btn btn-ghost" type="button" data-open-review>Leave build feedback</button>
+            </div>
+            <div class="pill-row" aria-label="Quick facts">
+              <span class="pill">Pineville, NC</span>
+              <span class="pill">Small-group coaching</span>
+              <span class="pill">Boxing + strength</span>
+              <span class="pill">WellnessLiving backend</span>
+            </div>
+          </div>
+
+          <aside class="hero-panel" aria-label="Booking preview">
+            <div class="phone-card">
+              <div class="status-dot">Booking flow ready</div>
+              <div class="class-ticket">
+                <p class="eyebrow">Next best action</p>
+                <strong>First class → account → reserve</strong>
+                <p>Keep Southpaw’s WellnessLiving signup path, but make the handoff feel intentional instead of sending visitors away cold.</p>
+              </div>
+              <div class="button-row">
+                <a class="btn btn-primary" href="https://www.wellnessliving.com/signup/southpaw_training_center">Start booking</a>
+                <a class="btn btn-secondary" href="https://apps.apple.com/us/app/southpaw-training-center/id6443508199">iOS app</a>
+              </div>
+            </div>
+            <div class="metric-grid">
+              <div class="metric"><strong>3x</strong><span>Golden Gloves</span></div>
+              <div class="metric"><strong>6</strong><span>national titles</span></div>
+              <div class="metric"><strong>&lt;8</strong><span>small groups</span></div>
+              <div class="metric"><strong>45</strong><span>minute class path</span></div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section" id="first-class" data-review-section="First class flow">
+        <div class="shell split">
+          <div class="section-header">
+            <p class="eyebrow">First class flow</p>
+            <h2>Remove the fear before they walk in.</h2>
+            <p>Elite gym sites do not just say “book now.” They tell first-timers exactly what happens, who they will meet, what to bring, and why they will not look stupid on day one.</p>
+          </div>
+          <div class="steps">
+            <article class="card step">
+              <span class="step-num">1</span>
+              <h3>Choose your lane</h3>
+              <p>Beginner boxing, skills work, fight camp, youth, women’s classes, or private coaching. The user should self-identify fast.</p>
+            </article>
+            <article class="card step">
+              <span class="step-num">2</span>
+              <h3>Reserve in WellnessLiving</h3>
+              <p>Use the existing account, payment, reminder, cancellation, and app ecosystem instead of rebuilding operations too early.</p>
+            </article>
+            <article class="card step">
+              <span class="step-num">3</span>
+              <h3>Arrive confident</h3>
+              <p>Show parking, wraps/gloves expectations, class length, intensity, and “what if I’m out of shape?” answers before checkout.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="programs" data-review-section="Programs">
+        <div class="shell">
+          <div class="section-header">
+            <p class="eyebrow">Program architecture</p>
+            <h2>One gym, multiple entry points.</h2>
+            <p>The current site has strong offerings, but they need a cleaner hierarchy. This structure lets beginners, experienced boxers, families, and wellness clients find themselves immediately.</p>
+          </div>
+          <div class="program-grid">
+            <article class="card program-card">
+              <div><span class="icon">01</span><h3>First-timer boxing</h3><p>Simple intro path for adults who want fitness, stress relief, and confidence without feeling judged.</p></div>
+              <span class="program-meta">Primary conversion path</span>
+            </article>
+            <article class="card program-card">
+              <div><span class="icon">02</span><h3>Skills & drills</h3><p>Technique-focused work for members who want better hands, footwork, defense, and conditioning.</p></div>
+              <span class="program-meta">Member retention</span>
+            </article>
+            <article class="card program-card">
+              <div><span class="icon">03</span><h3>Fight camp</h3><p>Higher-intensity training for people with boxing experience who want sparring, conditioning, and next-level work.</p></div>
+              <span class="program-meta">Advanced path</span>
+            </article>
+            <article class="card program-card">
+              <div><span class="icon">04</span><h3>Women’s class</h3><p>A clear, welcoming path for women who want boxing, strength, and a confident room to train in.</p></div>
+              <span class="program-meta">Dedicated audience</span>
+            </article>
+            <article class="card program-card">
+              <div><span class="icon">05</span><h3>Strength + agility</h3><p>Position Southpaw beyond “boxing only” with strength, speed, agility, and athletic performance framing.</p></div>
+              <span class="program-meta">Broader fitness market</span>
+            </article>
+            <article class="card program-card">
+              <div><span class="icon">06</span><h3>Pilates, yoga, wellness</h3><p>Keep the integrated training story, but separate wellness content so the boxing CTA stays sharp.</p></div>
+              <span class="program-meta">Cross-sell path</span>
+            </article>
+            <article class="card program-card">
+              <div><span class="icon">07</span><h3>Youth + family</h3><p>Create a parent-friendly page for kids, parties, safety, scheduling, and what parents should expect.</p></div>
+              <span class="program-meta">Local growth</span>
+            </article>
+            <article class="card program-card">
+              <div><span class="icon">08</span><h3>Community programs</h3><p>Keep programs like Knockout Parkinson’s visible, with stronger story, trust, and inquiry conversion.</p></div>
+              <span class="program-meta">Mission proof</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="coach" data-review-section="Coach Jamie">
+        <div class="shell split">
+          <article class="card coach-card">
+            <p class="eyebrow">Coach credibility</p>
+            <h2>Jamie is the brand moat.</h2>
+            <p class="quote">The site should lead with the rare mix: champion résumé, approachable coaching, and a family-room culture.</p>
+          </article>
+          <div class="card">
+            <p class="eyebrow">Content strategy</p>
+            <h2>Make the origin story easy to scan.</h2>
+            <p>Jamie’s achievements are real conversion assets. The rebuild should convert the long bio into proof blocks: boxing credentials, coaching range, comeback story, founder mission, and media highlights.</p>
+            <ul>
+              <li>Use a short “why Jamie” section near the top, not only in a dropdown page.</li>
+              <li>Move media/news into proof cards and add a “watch Jamie” section.</li>
+              <li>Keep the approachable tone. This gym wins because it feels like family, not because it feels corporate.</li>
+            </ul>
+            <div class="button-row">
+              <a class="btn btn-secondary" href="https://southpawboxing.net/about-coach-jamie">Current Jamie page</a>
+              <a class="btn btn-secondary" href="https://southpawboxing.net/southpaw-in-the-news">Current media page</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="backend" data-review-section="Operations handoff">
+        <div class="shell split">
+          <div class="card integration-card">
+            <p class="eyebrow">Backend decision</p>
+            <h2>Do not rebuild scheduling yet.</h2>
+            <p>WellnessLiving is already handling account creation, reservations, reminders, cancellation links, payments, membership renewals, and the branded app. The new site should make that system feel premium through better calls-to-action and explanation.</p>
+            <div class="button-row">
+              <a class="btn btn-primary" href="https://www.wellnessliving.com/signup/southpaw_training_center">WellnessLiving signup</a>
+              <a class="btn btn-secondary" href="https://play.google.com/store/apps/details?hl=en&id=southpaw.training.center">Google Play app</a>
+            </div>
+          </div>
+          <div class="card audit-card">
+            <p class="eyebrow">Architecture for v1</p>
+            <h2>Static front door, SaaS operations, review layer.</h2>
+            <ul>
+              <li><strong>Frontend:</strong> GitHub Pages static site first; fast, cheap, mobile-friendly.</li>
+              <li><strong>Scheduling:</strong> Keep WellnessLiving links and app links.</li>
+              <li><strong>Feedback:</strong> Founder review layer stores locally and can post to a secure Cloudflare Worker endpoint.</li>
+              <li><strong>Analytics later:</strong> Track CTA clicks, first-class interest, program clicks, and review feedback themes.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" data-review-section="Agent review">
+        <div class="shell">
+          <div class="section-header">
+            <p class="eyebrow">Agent review board</p>
+            <h2>What each specialist should pressure-test next.</h2>
+            <p>This mirrors the CoPilot Field Pro review style: owner-friendly feedback now, structured enough for Codex/agents later.</p>
+          </div>
+          <div class="agent-grid">
+            <article class="card"><h3>UX agent</h3><p>Test first-timer path, thumb reach, sticky CTAs, anxiety-reducing copy, and form clarity.</p></article>
+            <article class="card"><h3>Architecture agent</h3><p>Keep the site static until data requirements justify a backend. Avoid exposing any operational secrets.</p></article>
+            <article class="card"><h3>Data agent</h3><p>Define CTA events, source attribution, lead quality fields, class category clicks, and review-note schema.</p></article>
+            <article class="card"><h3>SEO agent</h3><p>Build local pages for Pineville/Charlotte boxing, women’s boxing, youth boxing, personal training, and fight camp.</p></article>
+            <article class="card"><h3>Content agent</h3><p>Rewrite pages into short sections: promise, proof, who it is for, what to expect, book.</p></article>
+            <article class="card"><h3>Safety/legal agent</h3><p>Add health disclaimers, privacy links, minors policy, cancellation handoff, and clear demo/not-official status until approved.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" data-review-section="Source audit">
+        <div class="shell card">
+          <p class="eyebrow">Audit sources used</p>
+          <h2>What this concept is based on.</h2>
+          <p>This is a clean-room concept rebuild based on public Southpaw pages, public app listings, and account-flow clues from Southpaw/WellnessLiving emails. It intentionally does not copy the current site design or private account details.</p>
+          <div class="source-list">
+            <a href="https://southpawboxing.net/">Current Southpaw website</a>
+            <a href="https://www.wellnessliving.com/signup/southpaw_training_center">WellnessLiving signup flow</a>
+            <a href="https://apps.apple.com/us/app/southpaw-training-center/id6443508199">Southpaw iOS app listing</a>
+            <a href="https://www.rumbleboxinggym.com/">Rumble benchmark</a>
+            <a href="https://www.titleboxingclub.com/">TITLE Boxing benchmark</a>
+            <a href="https://mayweather.fit/">Mayweather Boxing + Fitness benchmark</a>
+            <a href="https://everybodyfights.com/">EverybodyFights benchmark</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <button class="btn btn-danger review-fab" type="button" data-open-review>Review this page</button>
+
+    <aside class="review-drawer" aria-label="Founder review drawer" aria-hidden="true">
+      <div class="review-panel-card">
+        <div class="review-head">
+          <div>
+            <p class="eyebrow">Founder review layer</p>
+            <h3>Capture feedback while browsing.</h3>
+            <p>Notes save on this device. Add a secure endpoint only when the bridge is ready.</p>
+          </div>
+          <button class="btn btn-ghost btn-small" type="button" data-close-review>Close</button>
+        </div>
+
+        <div class="field">
+          <label for="reviewSection">Page section</label>
+          <select id="reviewSection">
+            <option>Hero</option>
+            <option>First class flow</option>
+            <option>Programs</option>
+            <option>Coach Jamie</option>
+            <option>Operations handoff</option>
+            <option>Agent review</option>
+            <option>Source audit</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="reviewRole">Review lens</label>
+          <select id="reviewRole">
+            <option>Founder / owner</option>
+            <option>UX</option>
+            <option>Architecture</option>
+            <option>Data / analytics</option>
+            <option>SEO / growth</option>
+            <option>Safety / legal</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="reviewText">Note</label>
+          <textarea id="reviewText" placeholder="Example: Hero CTA should say exactly what happens after I tap Book."></textarea>
+        </div>
+
+        <div class="review-actions">
+          <button class="btn btn-primary" id="addNote" type="button">Add note</button>
+          <button class="btn btn-secondary" id="submitNotes" type="button">Submit to endpoint</button>
+        </div>
+
+        <div class="review-tools">
+          <div class="field">
+            <label for="reviewEndpoint">Review endpoint</label>
+            <input id="reviewEndpoint" type="url" placeholder="https://your-worker.example.com/submit">
+          </div>
+          <div class="field">
+            <label for="reviewKey">Optional review key</label>
+            <input id="reviewKey" type="password" placeholder="Worker shared key, not a GitHub token">
+          </div>
+          <div class="review-actions">
+            <button class="btn btn-secondary" id="saveEndpoint" type="button">Save endpoint</button>
+            <button class="btn btn-ghost" id="copyNotes" type="button">Copy notes JSON</button>
+            <button class="btn btn-ghost" id="downloadNotes" type="button">Export JSON</button>
+            <button class="btn btn-ghost" id="clearNotes" type="button">Clear local notes</button>
+          </div>
+        </div>
+
+        <p class="status-line" id="reviewStatus" aria-live="polite"></p>
+        <div class="note-list" id="noteList"></div>
+      </div>
+    </aside>
+
+    <footer>
+      <div class="shell">
+        <p><strong>LindaData concept rebuild.</strong> Not the official Southpaw site until approved by Southpaw Training Center. Public business facts are used for demo planning; operations should continue through Southpaw’s approved systems.</p>
+        <p>Current gym contact from public site: 13501 Dorman Road, Pineville, NC 28134 · (980) 505-2291 · <a href="https://southpawboxing.net/">southpawboxing.net</a></p>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        const STORAGE_KEY = "lindadata.southpaw.reviewNotes.v1";
+        const ENDPOINT_KEY = "lindadata.southpaw.reviewEndpoint.v1";
+        const REVIEW_KEY = "lindadata.southpaw.reviewKey.v1";
+        const drawer = document.querySelector(".review-drawer");
+        const noteList = document.getElementById("noteList");
+        const status = document.getElementById("reviewStatus");
+        const text = document.getElementById("reviewText");
+        const section = document.getElementById("reviewSection");
+        const role = document.getElementById("reviewRole");
+        const endpointInput = document.getElementById("reviewEndpoint");
+        const keyInput = document.getElementById("reviewKey");
+        const params = new URLSearchParams(window.location.search);
+
+        function readNotes() {
+          try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
+          catch (error) { return []; }
+        }
+
+        function writeNotes(notes) { localStorage.setItem(STORAGE_KEY, JSON.stringify(notes)); }
+        function setStatus(message) { status.textContent = message; }
+        function getVisibleSection() {
+          const sections = Array.from(document.querySelectorAll("[data-review-section]"));
+          const midpoint = window.scrollY + window.innerHeight * 0.38;
+          const active = sections.find((item) => item.offsetTop <= midpoint && item.offsetTop + item.offsetHeight >= midpoint);
+          return active ? active.getAttribute("data-review-section") : section.value;
+        }
+
+        function payload(notes) {
+          return {
+            project: "southpaw-boxing-rebuild",
+            page: "southpaw-boxing/index.html",
+            generatedAt: new Date().toISOString(),
+            source: {
+              href: window.location.href,
+              path: window.location.pathname,
+              title: document.title
+            },
+            notes
+          };
+        }
+
+        function renderNotes() {
+          const notes = readNotes();
+          noteList.innerHTML = notes.length ? notes.map((note) => `
+            <article class="note-item">
+              <strong>${escapeHtml(note.section)} · ${escapeHtml(note.role)}</strong>
+              <p>${escapeHtml(note.text)}</p>
+              <small>${new Date(note.createdAt).toLocaleString()} · ${escapeHtml(note.viewport)} · ${escapeHtml(note.status || "local")}</small>
+            </article>
+          `).join("") : `<p class="status-line">No notes yet. Add one while reviewing the site.</p>`;
+          setStatus(`${notes.length} local note${notes.length === 1 ? "" : "s"}.`);
+        }
+
+        function escapeHtml(value) {
+          return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+        }
+
+        function openReview() {
+          section.value = getVisibleSection();
+          document.body.classList.add("review-open");
+          drawer.setAttribute("aria-hidden", "false");
+          setTimeout(() => text.focus(), 120);
+        }
+
+        function closeReview() {
+          document.body.classList.remove("review-open");
+          drawer.setAttribute("aria-hidden", "true");
+        }
+
+        function addNote() {
+          const value = text.value.trim();
+          if (!value) { setStatus("Write a note first."); return; }
+          const notes = readNotes();
+          notes.unshift({
+            id: `sp-${Date.now()}`,
+            createdAt: new Date().toISOString(),
+            section: section.value,
+            role: role.value,
+            text: value,
+            status: "local",
+            viewport: `${window.innerWidth}x${window.innerHeight}`,
+            userAgent: navigator.userAgent,
+            href: window.location.href
+          });
+          writeNotes(notes);
+          text.value = "";
+          renderNotes();
+          setStatus("Note saved locally.");
+        }
+
+        async function copyNotes() {
+          const data = JSON.stringify(payload(readNotes()), null, 2);
+          try {
+            await navigator.clipboard.writeText(data);
+            setStatus("Copied notes JSON.");
+          } catch (error) {
+            setStatus("Copy failed. Use export JSON instead.");
+          }
+        }
+
+        function downloadNotes() {
+          const blob = new Blob([JSON.stringify(payload(readNotes()), null, 2)], { type: "application/json" });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = `southpaw-review-${new Date().toISOString().slice(0, 10)}.json`;
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          URL.revokeObjectURL(url);
+          setStatus("Exported notes JSON.");
+        }
+
+        function saveEndpoint() {
+          localStorage.setItem(ENDPOINT_KEY, endpointInput.value.trim());
+          localStorage.setItem(REVIEW_KEY, keyInput.value.trim());
+          setStatus("Endpoint settings saved on this device.");
+        }
+
+        async function submitNotes() {
+          const notes = readNotes();
+          const endpoint = endpointInput.value.trim();
+          const reviewKey = keyInput.value.trim();
+          if (!notes.length) { setStatus("No notes to submit."); return; }
+          if (!endpoint) { setStatus("Add a review endpoint first. No GitHub token goes here."); return; }
+          setStatus("Submitting notes...");
+          try {
+            const response = await fetch(endpoint, {
+              method: "POST",
+              headers: {
+                "content-type": "application/json",
+                ...(reviewKey ? { "x-review-key": reviewKey } : {})
+              },
+              body: JSON.stringify(payload(notes))
+            });
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const submitted = notes.map((note) => ({ ...note, status: "submitted" }));
+            writeNotes(submitted);
+            renderNotes();
+            setStatus("Submitted to review endpoint.");
+          } catch (error) {
+            setStatus(`Submit failed: ${error.message}. Notes are still saved locally.`);
+          }
+        }
+
+        function clearNotes() {
+          if (!confirm("Clear local Southpaw review notes on this device?")) return;
+          writeNotes([]);
+          renderNotes();
+          setStatus("Local notes cleared.");
+        }
+
+        document.querySelectorAll("[data-open-review]").forEach((button) => button.addEventListener("click", openReview));
+        document.querySelector("[data-close-review]").addEventListener("click", closeReview);
+        document.getElementById("addNote").addEventListener("click", addNote);
+        document.getElementById("copyNotes").addEventListener("click", copyNotes);
+        document.getElementById("downloadNotes").addEventListener("click", downloadNotes);
+        document.getElementById("saveEndpoint").addEventListener("click", saveEndpoint);
+        document.getElementById("submitNotes").addEventListener("click", submitNotes);
+        document.getElementById("clearNotes").addEventListener("click", clearNotes);
+        text.addEventListener("keydown", (event) => {
+          if ((event.metaKey || event.ctrlKey) && event.key === "Enter") addNote();
+        });
+        document.addEventListener("keydown", (event) => { if (event.key === "Escape") closeReview(); });
+
+        if (params.get("reviewEndpoint")) localStorage.setItem(ENDPOINT_KEY, params.get("reviewEndpoint"));
+        if (params.get("reviewKey")) localStorage.setItem(REVIEW_KEY, params.get("reviewKey"));
+        endpointInput.value = localStorage.getItem(ENDPOINT_KEY) || "";
+        keyInput.value = localStorage.getItem(REVIEW_KEY) || "";
+        renderNotes();
+      })();
+    </script>
+  </body>
+</html>
