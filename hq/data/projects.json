@@ -1,6 +1,6 @@
 {
   "updated": "2026-07-02",
-  "note": "Public-safe LindaData HQ project registry. Private projects are listed without internals.",
+  "note": "Public-safe LindaData HQ project registry. Private projects are listed without internals. Company Org is the canonical routing reference for every task.",
   "projects": [
     {
       "title": "HVAC Copilot / Field Copilot Pro",
@@ -100,20 +100,25 @@
       ]
     },
     {
-      "title": "LindaData Agentic Company OS",
+      "title": "Company Org / LindaData Agentic Company",
       "key": "agentic-company",
-      "category": "Company",
-      "status": "Operating model added",
+      "category": "Company Org",
+      "status": "Canonical source of truth",
       "priority": "High",
       "repo": "LindaData/LindaData.github.io",
       "visibility": "public-safe",
-      "summary": "CEO → Chief of Staff / Personal Assistant / Chiefs → specialist agents. Four Markdown files now live in the HQ repo.",
-      "morning": "Use Agents.md for routing, Context.md for current work, Workflows.md for execution, Decision_Log.md for durable decisions.",
+      "summary": "Canonical CEO → executive team → specialist-agent hierarchy. Every task routes through this org model before execution.",
+      "morning": "Reference Company_Org.md first for ownership, routing, and reporting lines.",
       "owners": [
         "Chief of Staff",
-        "CIO"
+        "CIO",
+        "CHRO"
       ],
       "links": [
+        {
+          "label": "Company Org",
+          "url": "/company/Company_Org.md"
+        },
         {
           "label": "Agents.md",
           "url": "/company/Agents.md"
@@ -125,10 +130,6 @@
         {
           "label": "Workflows.md",
           "url": "/company/Workflows.md"
-        },
-        {
-          "label": "Decision_Log.md",
-          "url": "/company/Decision_Log.md"
         }
       ]
     },
@@ -453,6 +454,10 @@
   ],
   "workflows": [
     [
+      "Company Org routing",
+      "Start every task by identifying the executive owner and specialist agents from Company_Org.md."
+    ],
+    [
       "Morning scan",
       "Check Priority 1, blocked work, needs-review work, open inbox, and next action. Output: short CEO brief."
     ],
@@ -478,6 +483,11 @@
     ]
   ],
   "companyDocs": [
+    {
+      "title": "Company Org",
+      "url": "/company/Company_Org.md",
+      "summary": "Canonical org chart, hierarchy, reporting lines, and task-routing rule."
+    },
     {
       "title": "Agents.md",
       "url": "/company/Agents.md",
