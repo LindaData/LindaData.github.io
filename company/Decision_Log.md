@@ -73,7 +73,7 @@ Decision:
 - `COO` = Chief Operating Officer
 - `PRO` = Product & Review Officer
 - `CHRO` = Chief Human Resources Officer
-- `CHO` = Chief Health & Happiness Officer
+- `CHO` = Chief Health & Optimization Officer
 - `CCO` = Chief Customer Officer
 - `CSO` = Chief Security Officer
 - `CIO` = Chief Information Officer
@@ -90,7 +90,31 @@ Impact:
 - Strategy remains shared unless a separate Chief Strategy Officer is created.
 
 Status:
-- needs confirmation
+- active
+
+---
+
+### 2026-07-02 — Company Org is the canonical routing reference
+
+Decision:
+- Create `company/Company_Org.md`.
+- Make Company Org the canonical hierarchy and reporting-line source of truth.
+- Every meaningful task must identify the executive owner and specialist agents using Company Org before execution.
+
+Reason:
+- CEO approved the organized agentic company model.
+- The structure prevents chaotic agent chatter and makes future work easier to route.
+
+Owner:
+- Chief of Staff + CIO + CHRO
+
+Impact:
+- HQ exposes a Company Org section.
+- Workflows reference Company Org during intake, Codex handoff, incident routing, and executive standup.
+- Worker agents report through the executive team, not directly to CEO.
+
+Status:
+- active
 
 ---
 
@@ -100,7 +124,7 @@ Decision:
 - Priority order:
   1. Review Layer System
   2. HVAC Copilot
-  3. LindaData Agentic Company
+  3. Company Org / Agentic Company
   4. Central HQ / Work Dashboard
   5. Southpaw Boxing Site
   6. Cloud / Codex / Infra Setup — paused
