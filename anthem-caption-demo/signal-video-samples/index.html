@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Anthem detector sample videos</title>
+  <style>
+    :root {
+      --bg: #f1eee6;
+      --panel: #fffdf8;
+      --ink: #17201d;
+      --muted: #66726d;
+      --line: #d7d1c4;
+      --green: #0f766e;
+      --blue: #1d4ed8;
+      --orange: #f97316;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: linear-gradient(180deg, #e8e1d0 0%, var(--bg) 320px); color: var(--ink); font-family: "Segoe UI", Arial, sans-serif; }
+    header { padding: 28px clamp(18px, 4vw, 52px) 18px; }
+    main { padding: 0 clamp(18px, 4vw, 52px) 40px; display: grid; gap: 18px; }
+    h1 { margin: 0; font-size: clamp(28px, 5vw, 54px); line-height: 1.02; }
+    h2 { margin: 0; font-size: 20px; }
+    h3 { margin: 0 0 10px; font-size: 15px; }
+    p { margin: 8px 0 0; color: var(--muted); }
+    .metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .metric, .panel, .sample { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
+    .metric { padding: 12px; min-height: 76px; }
+    .metric span { display: block; font-size: 12px; color: var(--muted); text-transform: uppercase; }
+    .metric strong { display: block; margin-top: 6px; font-size: 22px; }
+    .panel { padding: 16px; }
+    .sample { padding: 16px; }
+    .samplehead { display: flex; justify-content: space-between; gap: 12px; align-items: start; margin-bottom: 12px; }
+    .badge { background: #e7f2ee; color: #16584f; border: 1px solid #b8d8cf; border-radius: 999px; padding: 8px 10px; font-size: 12px; white-space: nowrap; }
+    .samplegrid { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 12px; }
+    .videopanel, .signalpanel { border: 1px solid var(--line); border-radius: 8px; padding: 12px; background: #fff; min-width: 0; }
+    video { width: 100%; aspect-ratio: 16 / 9; background: #080c0a; display: block; border-radius: 6px; }
+    .sourcebar { display: flex; justify-content: space-between; gap: 10px; margin-top: 10px; font-size: 12px; color: var(--muted); flex-wrap: wrap; }
+    .sourcebar a { color: var(--green); }
+    .readout { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+    .readout div { border: 1px solid var(--line); border-radius: 6px; padding: 8px; background: #faf8f1; }
+    .readout span { display: block; color: var(--muted); font-size: 11px; text-transform: uppercase; }
+    .readout strong { display: block; margin-top: 4px; font-size: 13px; overflow-wrap: anywhere; }
+    .signalpanel svg { width: 100%; height: 118px; display: block; }
+    .spark svg { height: 88px; }
+    .tonebar { display: flex; height: 18px; overflow: hidden; border-radius: 999px; background: #eef1ec; }
+    .tonebar span { display: block; height: 100%; }
+    .tonelabels { display: flex; gap: 10px; margin-top: 8px; font-size: 12px; color: var(--muted); flex-wrap: wrap; }
+    @media (max-width: 1080px) { .metrics, .samplegrid { grid-template-columns: 1fr; } .samplehead { flex-direction: column; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Sample videos the detector will read before looping over the corpus</h1>
+    <p>This is the review surface for actual sample videos. Each card pairs a real Commons clip with the signals the software should read from it: expected anthem prior, pitch contour, melody/chroma, tone shape, and the current fingerprint output.</p>
+  </header>
+  <main>
+    <section class="metrics">
+      <div class='metric'><span>Sample videos</span><strong>5</strong></div><div class='metric'><span>Audio-ready corpus rows</span><strong>6</strong></div><div class='metric'><span>Manual-review rows</span><strong>8</strong></div><div class='metric'><span>Title/audio mismatches</span><strong>4</strong></div>
+    </section>
+    <section class="panel">
+      <h2>What this page is for</h2>
+      <p>Before we scale to hundreds of clips, this is the visual check that the detector is looking at the right evidence. The next detector pass should use these same views programmatically across the whole corpus.</p>
+    </section>
+    
+    <article class="sample">
+      <div class="samplehead">
+        <div>
+          <h2>State Anthem of the Russian Federation</h2>
+          <p>Russia - File:Russian national anthem at Medvedev inauguration 2008.ogv</p>
+        </div>
+        <div class="badge">manual_review_required_audio_low_confidence_title_prior</div>
+      </div>
+      <div class="samplegrid">
+        <section class="videopanel">
+          <video controls preload="metadata" playsinline src="https://upload.wikimedia.org/wikipedia/commons/2/26/Russian_national_anthem_at_Medvedev_inauguration_2008.ogv"></video>
+          <div class="sourcebar">
+            <a href="https://commons.wikimedia.org/wiki/File:Russian_national_anthem_at_Medvedev_inauguration_2008.ogv" target="_blank" rel="noreferrer">Commons source</a>
+            <span>Start prior: 0</span>
+          </div>
+          <div class="readout">
+            <div><span>Expected prior</span><strong>q1225991</strong></div>
+            <div><span>Audio candidate</span><strong>q1225991</strong></div>
+            <div><span>Hashes</span><strong>39</strong></div>
+            <div><span>Match fraction</span><strong>0.000593</strong></div>
+          </div>
+        </section>
+        <section class="signalpanel">
+          <h3>Pitch contour</h3>
+          <svg viewBox='0 0 360 118' preserveAspectRatio='none'><text x='12' y='18' fill='#7d8d87' font-size='11'>99 Hz</text><text x='12' y='110' fill='#7d8d87' font-size='11'>334 Hz</text><polyline fill='none' stroke='#0f766e' stroke-width='2' points='0.0,97.6 2.0,95.8 4.0,78.4 6.0,50.9 8.0,79.7 10.1,57.3 12.1,68.0 14.1,88.7 16.1,88.2 18.1,77.8 20.1,59.2 22.1,43.7 24.1,68.0 26.1,81.4 28.2,22.3 30.2,46.2 32.2,41.1 34.2,46.2 36.2,80.3 38.2,59.2 40.2,68.0 42.2,97.6 44.2,43.7 46.3,69.5 48.3,68.0 50.3,59.1 52.3,66.3 54.3,57.3 56.3,66.3 58.3,68.0 60.3,61.1 62.3,57.3 64.4,81.4 66.4,23.5 68.4,82.5 70.4,79.1 72.4,79.1 74.4,79.1 76.4,76.6 78.4,77.8 80.4,47.3 82.5,62.9 84.5,53.1 86.5,66.3 88.5,6.0 90.5,64.7 92.5,61.1 94.5,75.9 96.5,59.2 98.5,61.1 100.6,57.3 102.6,57.3 104.6,77.8 106.6,77.8 108.6,68.0 110.6,72.5 112.6,48.6 114.6,77.8 116.6,77.8 118.7,68.0 120.7,46.2 122.7,57.3 124.7,68.0 126.7,68.0 128.7,89.6 130.7,84.7 132.7,69.5 134.7,57.3 136.8,38.3 138.8,68.0 140.8,70.2 142.8,62.0 144.8,68.0 146.8,46.2 148.8,59.2 150.8,81.4 152.8,57.3 154.9,68.0 156.9,96.9 158.9,41.1 160.9,68.0 162.9,68.0 164.9,10.4 166.9,59.2 168.9,66.3 170.9,66.3 173.0,68.0 175.0,61.1 177.0,77.8 179.0,69.5 181.0,54.2 183.0,57.3 185.0,81.4 187.0,76.6 189.1,57.3 191.1,76.6 193.1,77.8 195.1,77.8 197.1,76.6 199.1,57.3 201.1,59.2 203.1,64.6 205.1,6.0 207.2,69.5 209.2,69.5 211.2,65.5 213.2,68.0 215.2,61.1 217.2,57.3 219.2,57.3 221.2,77.8 223.2,71.0 225.3,79.1 227.3,57.3 229.3,46.2 231.3,112.0 233.3,68.0 235.3,71.0 237.3,43.7 239.3,57.3 241.3,68.0 243.4,96.1 245.4,89.6 247.4,88.7 249.4,89.6 251.4,59.2 253.4,41.1 255.4,68.0 257.4,97.2 259.4,22.3 261.5,46.2 263.5,46.2 265.5,46.2 267.5,81.4 269.5,57.3 271.5,77.8 273.5,97.6 275.5,38.3 277.5,68.0 279.6,68.0 281.6,94.6 283.6,66.3 285.6,66.3 287.6,25.8 289.6,68.0 291.6,66.3 293.6,103.9 295.6,69.5 297.7,81.4 299.7,43.7 301.7,82.5 303.7,77.8 305.7,77.8 307.7,104.4 309.7,77.8 311.7,77.8 313.7,76.6 315.8,57.3 317.8,59.2 319.8,68.0 321.8,96.9 323.8,68.0 325.8,66.3 327.8,77.8 329.8,62.9 331.8,66.3 333.9,57.3 335.9,57.3 337.9,76.6 339.9,75.2 341.9,68.0 343.9,68.0 345.9,69.5 347.9,73.9 349.9,79.1 352.0,76.6 354.0,38.3 356.0,38.3 358.0,75.2 360.0,95.0' /></svg>
+          <p>Voiced frames: <strong>98%</strong> - Mean pitch: <strong>216 Hz</strong></p>
+        </section>
+        <section class="signalpanel">
+          <h3>Melody / chroma</h3>
+          <svg viewBox='0 0 360 118' preserveAspectRatio='none'><rect x='4.0' y='14.8' width='22.0' height='85.2' rx='3' fill='#1d4ed8' /><text x='15.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>C</text><rect x='34.0' y='29.1' width='22.0' height='70.9' rx='3' fill='#1d4ed8' /><text x='45.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>C#</text><rect x='64.0' y='33.9' width='22.0' height='66.1' rx='3' fill='#1d4ed8' /><text x='75.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>D</text><rect x='94.0' y='19.9' width='22.0' height='80.1' rx='3' fill='#1d4ed8' /><text x='105.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>D#</text><rect x='124.0' y='15.1' width='22.0' height='84.9' rx='3' fill='#1d4ed8' /><text x='135.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>E</text><rect x='154.0' y='8.0' width='22.0' height='92.0' rx='3' fill='#1d4ed8' /><text x='165.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>F</text><rect x='184.0' y='38.9' width='22.0' height='61.1' rx='3' fill='#1d4ed8' /><text x='195.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>F#</text><rect x='214.0' y='16.6' width='22.0' height='83.4' rx='3' fill='#1d4ed8' /><text x='225.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>G</text><rect x='244.0' y='49.7' width='22.0' height='50.3' rx='3' fill='#1d4ed8' /><text x='255.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>G#</text><rect x='274.0' y='21.5' width='22.0' height='78.5' rx='3' fill='#1d4ed8' /><text x='285.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>A</text><rect x='304.0' y='30.4' width='22.0' height='69.6' rx='3' fill='#1d4ed8' /><text x='315.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>A#</text><rect x='334.0' y='45.8' width='22.0' height='54.2' rx='3' fill='#1d4ed8' /><text x='345.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>B</text></svg>
+          <p>Dominant pitch class: <strong>F</strong></p>
+        </section>
+        <section class="signalpanel">
+          <h3>Tone + onset shape</h3>
+          <div class='tonebar'><span style='width:18.8%;background:#0f766e'></span><span style='width:50.6%;background:#1d4ed8'></span><span style='width:30.6%;background:#f97316'></span></div><div class='tonelabels'><span>low: 19%</span> <span>mid: 51%</span> <span>high: 31%</span></div>
+          <div class="spark"><svg viewBox='0 0 360 88' preserveAspectRatio='none'><polyline fill='none' stroke='#0f766e' stroke-width='2' points='0.0,25.7 3.8,25.6 7.6,32.9 11.4,43.1 15.2,46.9 18.9,31.1 22.7,17.9 26.5,14.7 30.3,23.2 34.1,35.4 37.9,44.3 41.7,38.7 45.5,22.3 49.3,10.3 53.1,20.0 56.8,26.1 60.6,15.3 64.4,19.6 68.2,27.5 72.0,39.3 75.8,6.3 79.6,4.3 83.4,4.0 87.2,8.8 90.9,9.2 94.7,8.4 98.5,13.8 102.3,10.0 106.1,16.2 109.9,25.8 113.7,13.5 117.5,21.1 121.3,22.2 125.1,20.4 128.8,39.6 132.6,20.6 136.4,10.8 140.2,6.1 144.0,15.2 147.8,25.6 151.6,31.5 155.4,25.4 159.2,29.7 162.9,13.9 166.7,9.4 170.5,11.4 174.3,17.5 178.1,12.2 181.9,14.7 185.7,41.1 189.5,11.9 193.3,10.0 197.1,10.0 200.8,9.4 204.6,11.9 208.4,13.2 212.2,13.7 216.0,15.4 219.8,19.0 223.6,21.2 227.4,26.2 231.2,21.8 234.9,24.2 238.7,27.5 242.5,31.4 246.3,53.2 250.1,28.9 253.9,14.7 257.7,15.3 261.5,17.9 265.3,22.7 269.1,36.9 272.8,36.3 276.6,24.1 280.4,6.9 284.2,5.5 288.0,12.2 291.8,13.4 295.6,11.9 299.4,13.6 303.2,40.2 306.9,15.1 310.7,10.4 314.5,8.5 318.3,9.0 322.1,11.6 325.9,10.4 329.7,11.6 333.5,13.3 337.3,13.3 341.1,7.3 344.8,10.9 348.6,7.5 352.4,6.9 356.2,4.0 360.0,66.3' /></svg></div>
+          <p>This is the ceremony rise, band texture, and crowd-energy view.</p>
+        </section>
+      </div>
+    </article>
+    
+
+    <article class="sample">
+      <div class="samplehead">
+        <div>
+          <h2>The Star-Spangled Banner</h2>
+          <p>United States - File:StarSpan1940.ogv</p>
+        </div>
+        <div class="badge">manual_review_required_audio_low_confidence_title_prior</div>
+      </div>
+      <div class="samplegrid">
+        <section class="videopanel">
+          <video controls preload="metadata" playsinline src="https://upload.wikimedia.org/wikipedia/commons/e/ef/StarSpan1940.ogv"></video>
+          <div class="sourcebar">
+            <a href="https://commons.wikimedia.org/wiki/File:StarSpan1940.ogv" target="_blank" rel="noreferrer">Commons source</a>
+            <span>Start prior: 0</span>
+          </div>
+          <div class="readout">
+            <div><span>Expected prior</span><strong>q44696</strong></div>
+            <div><span>Audio candidate</span><strong>q1225991</strong></div>
+            <div><span>Hashes</span><strong>479</strong></div>
+            <div><span>Match fraction</span><strong>0.009256</strong></div>
+          </div>
+        </section>
+        <section class="signalpanel">
+          <h3>Pitch contour</h3>
+          <svg viewBox='0 0 360 118' preserveAspectRatio='none'><text x='12' y='18' fill='#7d8d87' font-size='11'>80 Hz</text><text x='12' y='110' fill='#7d8d87' font-size='11'>407 Hz</text><polyline fill='none' stroke='#0f766e' stroke-width='2' points='2.0,6.0 6.0,109.3 8.0,65.1 10.1,101.6 12.1,91.7 14.1,106.5 16.1,97.9 18.1,53.0 20.1,103.0 24.1,75.4 26.1,75.4 28.2,95.0 30.2,95.5 32.2,84.7 34.2,95.5 36.2,97.5 38.2,82.2 40.2,81.4 42.2,102.7 44.2,102.7 46.3,95.5 48.3,102.3 50.3,102.3 52.3,90.4 54.3,106.5 56.3,74.8 58.3,106.2 60.3,106.0 62.3,106.2 64.4,95.5 66.4,95.5 68.4,95.5 70.4,81.4 72.4,89.1 74.4,86.1 76.4,106.2 78.4,81.4 80.4,109.7 82.5,103.0 84.5,95.5 86.5,53.0 88.5,74.3 90.5,84.7 92.5,84.7 94.5,96.0 96.5,85.2 98.5,84.7 100.6,95.5 102.6,95.5 104.6,94.7 106.6,106.3 108.6,81.8 110.6,102.3 112.6,102.3 114.6,90.9 116.6,111.0 118.7,90.4 120.7,102.5 122.7,102.3 124.7,89.5 126.7,78.5 128.7,106.5 130.7,100.9 132.7,106.2 134.7,106.2 136.8,95.5 138.8,95.5 140.8,95.5 142.8,93.0 144.8,82.2 146.8,98.4 148.8,74.3 150.8,81.4 152.8,109.7 154.9,106.3 156.9,101.1 158.9,95.5 160.9,84.6 162.9,74.3 164.9,84.7 166.9,84.7 168.9,95.5 170.9,53.0 173.0,53.0 175.0,95.5 177.0,91.1 179.0,74.3 181.0,84.6 183.0,74.3 185.0,74.3 187.0,82.7 189.1,83.9 191.1,80.1 193.1,74.3 195.1,95.5 197.1,77.3 199.1,74.3 201.1,81.4 203.1,99.9 205.1,105.9 207.2,106.0 209.2,81.4 211.2,95.5 213.2,95.3 215.2,95.5 217.2,95.5 219.2,106.3 221.2,66.5 223.2,97.9 225.3,89.4 227.3,74.3 229.3,83.5 231.3,84.7 233.3,84.7 235.3,79.0 237.3,75.4 239.3,106.2 241.3,106.5 243.4,106.2 245.4,106.2 247.4,102.3 249.4,95.5 251.4,88.4 253.4,81.8 255.4,83.9 257.4,109.7 259.4,109.7 261.5,102.5 263.5,73.6 265.5,91.1 267.5,90.1 269.5,76.2 271.5,83.9 273.5,87.2 275.5,80.4 277.5,96.0 279.6,106.0 281.6,105.9 283.6,106.2 285.6,101.2 287.6,95.3 289.6,95.5 291.6,95.0 293.6,96.0 295.6,84.7 297.7,95.5 299.7,85.9 301.7,95.5 303.7,106.9 305.7,111.3 307.7,95.5 309.7,95.0 311.7,95.5 313.7,96.0 315.8,101.2 317.8,89.5 319.8,95.0 321.8,84.3 323.8,105.6 325.8,81.4 327.8,97.8 329.8,74.3 331.8,79.9 333.9,90.6 335.9,95.5 337.9,95.5 339.9,95.5 341.9,94.7 343.9,95.5 345.9,95.5 347.9,95.5 349.9,74.3 352.0,95.5 354.0,91.1 358.0,112.0' /></svg>
+          <p>Voiced frames: <strong>92%</strong> - Mean pitch: <strong>157 Hz</strong></p>
+        </section>
+        <section class="signalpanel">
+          <h3>Melody / chroma</h3>
+          <svg viewBox='0 0 360 118' preserveAspectRatio='none'><rect x='4.0' y='8.0' width='22.0' height='92.0' rx='3' fill='#1d4ed8' /><text x='15.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>C</text><rect x='34.0' y='53.0' width='22.0' height='47.0' rx='3' fill='#1d4ed8' /><text x='45.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>C#</text><rect x='64.0' y='48.6' width='22.0' height='51.4' rx='3' fill='#1d4ed8' /><text x='75.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>D</text><rect x='94.0' y='45.4' width='22.0' height='54.6' rx='3' fill='#1d4ed8' /><text x='105.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>D#</text><rect x='124.0' y='45.6' width='22.0' height='54.4' rx='3' fill='#1d4ed8' /><text x='135.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>E</text><rect x='154.0' y='33.7' width='22.0' height='66.3' rx='3' fill='#1d4ed8' /><text x='165.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>F</text><rect x='184.0' y='59.7' width='22.0' height='40.3' rx='3' fill='#1d4ed8' /><text x='195.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>F#</text><rect x='214.0' y='16.8' width='22.0' height='83.2' rx='3' fill='#1d4ed8' /><text x='225.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>G</text><rect x='244.0' y='65.2' width='22.0' height='34.8' rx='3' fill='#1d4ed8' /><text x='255.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>G#</text><rect x='274.0' y='32.7' width='22.0' height='67.3' rx='3' fill='#1d4ed8' /><text x='285.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>A</text><rect x='304.0' y='49.0' width='22.0' height='51.0' rx='3' fill='#1d4ed8' /><text x='315.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>A#</text><rect x='334.0' y='47.1' width='22.0' height='52.9' rx='3' fill='#1d4ed8' /><text x='345.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>B</text></svg>
+          <p>Dominant pitch class: <strong>C</strong></p>
+        </section>
+        <section class="signalpanel">
+          <h3>Tone + onset shape</h3>
+          <div class='tonebar'><span style='width:29.2%;background:#0f766e'></span><span style='width:41.4%;background:#1d4ed8'></span><span style='width:29.4%;background:#f97316'></span></div><div class='tonelabels'><span>low: 29%</span> <span>mid: 41%</span> <span>high: 29%</span></div>
+          <div class="spark"><svg viewBox='0 0 360 88' preserveAspectRatio='none'><polyline fill='none' stroke='#0f766e' stroke-width='2' points='0.0,82.2 3.8,81.3 7.6,77.2 11.4,71.5 15.2,65.6 18.9,79.8 22.7,81.9 26.5,43.0 30.3,16.0 34.1,31.5 37.9,27.1 41.7,46.2 45.5,13.7 49.3,10.3 53.1,20.2 56.8,21.9 60.6,51.1 64.4,17.6 68.2,26.0 72.0,32.1 75.8,30.6 79.6,45.7 83.4,26.8 87.2,27.5 90.9,42.2 94.7,41.8 98.5,39.1 102.3,21.9 106.1,36.6 109.9,30.0 113.7,34.5 117.5,35.2 121.3,16.2 125.1,28.4 128.8,27.6 132.6,45.0 136.4,46.8 140.2,4.0 144.0,34.6 147.8,34.6 151.6,57.7 155.4,29.2 159.2,26.3 162.9,33.6 166.7,33.0 170.5,40.7 174.3,43.5 178.1,29.6 181.9,39.0 185.7,36.9 189.5,35.5 193.3,36.3 197.1,35.4 200.8,38.3 204.6,32.4 208.4,35.9 212.2,26.2 216.0,25.7 219.8,18.7 223.6,34.3 227.4,14.3 231.2,17.3 234.9,20.7 238.7,24.9 242.5,40.3 246.3,29.1 250.1,18.5 253.9,29.6 257.7,31.0 261.5,32.8 265.3,43.2 269.1,31.2 272.8,30.1 276.6,29.0 280.4,16.9 284.2,43.7 288.0,13.8 291.8,24.7 295.6,19.6 299.4,29.8 303.2,13.3 306.9,17.3 310.7,70.4 314.5,21.5 318.3,28.8 322.1,36.2 325.9,23.2 329.7,15.1 333.5,35.0 337.3,7.0 341.1,18.0 344.8,12.5 348.6,16.4 352.4,36.8 356.2,81.2 360.0,81.8' /></svg></div>
+          <p>This is the ceremony rise, band texture, and crowd-energy view.</p>
+        </section>
+      </div>
+    </article>
+    
+
+    <article class="sample">
+      <div class="samplehead">
+        <div>
+          <h2>Bože pravde</h2>
+          <p>Serbia - File:Bože pravde Arena.ogv</p>
+        </div>
+        <div class="badge">manual_review_required_audio_low_confidence_title_prior</div>
+      </div>
+      <div class="samplegrid">
+        <section class="videopanel">
+          <video controls preload="metadata" playsinline src="https://upload.wikimedia.org/wikipedia/commons/d/da/Bo%C5%BEe_pravde_Arena.ogv"></video>
+          <div class="sourcebar">
+            <a href="https://commons.wikimedia.org/wiki/File:Bo%C5%BEe_pravde_Arena.ogv" target="_blank" rel="noreferrer">Commons source</a>
+            <span>Start prior: 0</span>
+          </div>
+          <div class="readout">
+            <div><span>Expected prior</span><strong>q185190</strong></div>
+            <div><span>Audio candidate</span><strong>q1075941</strong></div>
+            <div><span>Hashes</span><strong>35</strong></div>
+            <div><span>Match fraction</span><strong>0.000616</strong></div>
+          </div>
+        </section>
+        <section class="signalpanel">
+          <h3>Pitch contour</h3>
+          <svg viewBox='0 0 360 118' preserveAspectRatio='none'><text x='12' y='18' fill='#7d8d87' font-size='11'>100 Hz</text><text x='12' y='110' fill='#7d8d87' font-size='11'>580 Hz</text><polyline fill='none' stroke='#0f766e' stroke-width='2' points='0.0,94.9 2.0,96.1 4.0,99.4 6.0,88.2 8.0,70.1 10.1,70.1 12.1,94.9 14.1,94.2 16.1,23.5 18.1,32.7 20.1,28.3 22.1,53.0 24.1,41.2 26.1,66.5 28.2,64.6 30.2,68.3 32.2,12.4 34.2,18.2 36.2,91.4 38.2,70.1 40.2,92.2 42.2,89.9 44.2,112.0 46.3,112.0 48.3,82.3 50.3,82.3 52.3,45.0 54.3,12.4 56.3,6.0 58.3,74.8 60.3,58.1 62.3,90.6 64.4,105.0 66.4,94.9 68.4,76.2 70.4,96.7 72.4,23.5 74.4,32.7 76.4,83.4 78.4,104.8 80.4,85.4 82.5,94.9 84.5,85.4 86.5,104.8 88.5,95.5 90.5,95.2 92.5,95.5 94.5,94.9 96.5,12.4 98.5,81.2 100.6,84.4 102.6,94.9 104.6,18.2 106.6,18.2 108.6,84.4 110.6,6.0 112.6,6.0 114.6,6.0 116.6,58.1 118.7,101.2 120.7,55.6 122.7,94.9 124.7,95.5 126.7,99.8 128.7,95.5 130.7,104.4 132.7,94.9 134.7,95.5 136.8,95.5 138.8,88.9 140.8,83.0 142.8,6.0 144.8,6.0 146.8,68.3 148.8,98.8 150.8,108.2 152.8,81.8 154.9,94.9 156.9,82.3 158.9,44.7 160.9,81.2 162.9,58.1 164.9,6.0 166.9,6.0 168.9,6.0 170.9,68.3 173.0,94.9 175.0,94.2 177.0,81.2 179.0,83.4 181.0,28.3 183.0,82.3 185.0,82.3 187.0,101.2 189.1,83.4 191.1,82.3 193.1,75.0 195.1,84.4 197.1,62.5 199.1,99.4 201.1,47.2 203.1,47.2 205.1,47.2 207.2,47.2 209.2,81.2 211.2,81.2 213.2,82.3 215.2,82.3 217.2,94.9 219.2,94.9 221.2,108.0 223.2,108.0 225.3,82.3 227.3,82.3 229.3,58.1 231.3,82.9 233.3,58.0 235.3,85.4 237.3,68.3 239.3,6.0 241.3,88.2 243.4,86.4 245.4,68.3 247.4,100.1 249.4,95.5 251.4,36.8 253.4,23.5 255.4,82.3 257.4,108.0 259.4,102.9 261.5,94.9 263.5,82.3 265.5,82.3 267.5,28.3 269.5,82.3 271.5,82.3 273.5,82.3 275.5,83.4 277.5,82.3 279.6,82.3 281.6,64.6 283.6,82.3 285.6,97.2 287.6,98.3 289.6,45.6 291.6,47.2 293.6,90.7 295.6,55.6 297.7,81.2 299.7,81.2 301.7,81.2 303.7,82.3 305.7,93.6 307.7,28.3 309.7,12.1 311.7,81.2 313.7,108.0 315.8,101.2 317.8,82.3 319.8,82.3 321.8,55.6 323.8,66.5 325.8,87.3 327.8,74.8 329.8,95.2 331.8,93.8 333.9,88.2 335.9,89.0 337.9,37.2 339.9,98.8 341.9,94.9 343.9,93.6 345.9,87.3 347.9,93.1 349.9,83.4 352.0,101.2 354.0,95.5 356.0,84.4 358.0,98.3 360.0,85.4' /></svg>
+          <p>Voiced frames: <strong>88%</strong> - Mean pitch: <strong>279 Hz</strong></p>
+        </section>
+        <section class="signalpanel">
+          <h3>Melody / chroma</h3>
+          <svg viewBox='0 0 360 118' preserveAspectRatio='none'><rect x='4.0' y='35.0' width='22.0' height='65.0' rx='3' fill='#1d4ed8' /><text x='15.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>C</text><rect x='34.0' y='37.2' width='22.0' height='62.8' rx='3' fill='#1d4ed8' /><text x='45.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>C#</text><rect x='64.0' y='44.6' width='22.0' height='55.4' rx='3' fill='#1d4ed8' /><text x='75.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>D</text><rect x='94.0' y='23.9' width='22.0' height='76.1' rx='3' fill='#1d4ed8' /><text x='105.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>D#</text><rect x='124.0' y='36.3' width='22.0' height='63.7' rx='3' fill='#1d4ed8' /><text x='135.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>E</text><rect x='154.0' y='8.0' width='22.0' height='92.0' rx='3' fill='#1d4ed8' /><text x='165.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>F</text><rect x='184.0' y='46.4' width='22.0' height='53.6' rx='3' fill='#1d4ed8' /><text x='195.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>F#</text><rect x='214.0' y='39.6' width='22.0' height='60.4' rx='3' fill='#1d4ed8' /><text x='225.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>G</text><rect x='244.0' y='55.6' width='22.0' height='44.4' rx='3' fill='#1d4ed8' /><text x='255.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>G#</text><rect x='274.0' y='35.2' width='22.0' height='64.8' rx='3' fill='#1d4ed8' /><text x='285.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>A</text><rect x='304.0' y='17.2' width='22.0' height='82.8' rx='3' fill='#1d4ed8' /><text x='315.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>A#</text><rect x='334.0' y='63.0' width='22.0' height='37.0' rx='3' fill='#1d4ed8' /><text x='345.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>B</text></svg>
+          <p>Dominant pitch class: <strong>F</strong></p>
+        </section>
+        <section class="signalpanel">
+          <h3>Tone + onset shape</h3>
+          <div class='tonebar'><span style='width:12.6%;background:#0f766e'></span><span style='width:67.4%;background:#1d4ed8'></span><span style='width:20.0%;background:#f97316'></span></div><div class='tonelabels'><span>low: 13%</span> <span>mid: 67%</span> <span>high: 20%</span></div>
+          <div class="spark"><svg viewBox='0 0 360 88' preserveAspectRatio='none'><polyline fill='none' stroke='#0f766e' stroke-width='2' points='0.0,10.2 3.8,16.0 7.6,17.3 11.4,18.1 15.2,11.3 18.9,12.4 22.7,16.4 26.5,9.1 30.3,14.6 34.1,14.6 37.9,15.0 41.7,16.1 45.5,16.5 49.3,19.7 53.1,8.4 56.8,10.4 60.6,14.2 64.4,16.3 68.2,12.0 72.0,12.9 75.8,15.1 79.6,9.4 83.4,16.3 87.2,10.3 90.9,14.1 94.7,5.5 98.5,13.6 102.3,11.7 106.1,8.1 109.9,4.0 113.7,8.3 117.5,13.7 121.3,10.7 125.1,17.3 128.8,19.4 132.6,11.0 136.4,12.0 140.2,9.4 144.0,5.2 147.8,13.8 151.6,17.0 155.4,7.9 159.2,16.9 162.9,13.5 166.7,15.7 170.5,20.8 174.3,7.8 178.1,10.0 181.9,16.3 185.7,17.2 189.5,21.0 193.3,13.3 197.1,14.5 200.8,6.9 204.6,12.8 208.4,15.7 212.2,16.6 216.0,18.4 219.8,21.0 223.6,21.3 227.4,22.4 231.2,18.6 234.9,22.6 238.7,21.9 242.5,18.6 246.3,21.5 250.1,24.0 253.9,17.5 257.7,21.8 261.5,21.5 265.3,14.5 269.1,16.6 272.8,16.4 276.6,20.5 280.4,17.4 284.2,13.7 288.0,14.1 291.8,9.3 295.6,15.9 299.4,14.1 303.2,17.5 306.9,8.9 310.7,9.6 314.5,16.6 318.3,18.8 322.1,17.1 325.9,18.2 329.7,23.3 333.5,13.2 337.3,13.7 341.1,21.3 344.8,21.8 348.6,22.1 352.4,17.4 356.2,15.1 360.0,16.3' /></svg></div>
+          <p>This is the ceremony rise, band texture, and crowd-energy view.</p>
+        </section>
+      </div>
+    </article>
+    
+
+    <article class="sample">
+      <div class="samplehead">
+        <div>
+          <h2>National Anthem of Colombia</h2>
+          <p>Colombia - File:FWC 2018 - Round of 16 - COL v ENG - Colombia anthem.ogv</p>
+        </div>
+        <div class="badge">manual_review_required_audio_low_confidence_title_prior</div>
+      </div>
+      <div class="samplegrid">
+        <section class="videopanel">
+          <video controls preload="metadata" playsinline src="https://upload.wikimedia.org/wikipedia/commons/3/35/FWC_2018_-_Round_of_16_-_COL_v_ENG_-_Colombia_anthem.ogv"></video>
+          <div class="sourcebar">
+            <a href="https://commons.wikimedia.org/wiki/File:FWC_2018_-_Round_of_16_-_COL_v_ENG_-_Colombia_anthem.ogv" target="_blank" rel="noreferrer">Commons source</a>
+            <span>Start prior: 0</span>
+          </div>
+          <div class="readout">
+            <div><span>Expected prior</span><strong>q233391</strong></div>
+            <div><span>Audio candidate</span><strong>q1225991</strong></div>
+            <div><span>Hashes</span><strong>9</strong></div>
+            <div><span>Match fraction</span><strong>0.002082</strong></div>
+          </div>
+        </section>
+        <section class="signalpanel">
+          <h3>Pitch contour</h3>
+          <svg viewBox='0 0 360 118' preserveAspectRatio='none'><text x='12' y='18' fill='#7d8d87' font-size='11'>88 Hz</text><text x='12' y='110' fill='#7d8d87' font-size='11'>580 Hz</text><polyline fill='none' stroke='#0f766e' stroke-width='2' points='2.0,59.0 4.0,54.4 6.0,110.3 8.0,95.0 10.1,56.8 12.1,80.5 16.1,54.4 18.1,111.8 22.1,102.4 26.1,109.8 30.2,65.0 32.2,87.8 34.2,95.0 38.2,89.3 40.2,108.2 42.2,94.5 44.2,106.3 46.3,105.7 48.3,66.8 50.3,89.3 52.3,89.3 54.3,93.3 56.3,88.6 58.3,59.0 60.3,110.3 62.3,89.3 64.4,90.1 66.4,68.5 68.4,110.0 70.4,101.3 72.4,56.8 74.4,94.5 76.4,110.0 78.4,99.3 80.4,94.5 82.5,90.1 84.5,87.8 86.5,94.5 88.5,80.5 90.5,80.5 92.5,88.6 94.5,88.6 96.5,111.5 98.5,66.8 100.6,110.3 102.6,110.3 104.6,109.8 106.6,95.0 108.6,88.6 110.6,81.5 112.6,68.5 114.6,68.5 116.6,88.6 118.7,108.2 120.7,107.5 122.7,108.6 124.7,106.5 126.7,109.2 128.7,108.8 130.7,107.2 132.7,109.4 134.7,110.0 136.8,109.8 138.8,109.6 140.8,110.2 142.8,109.6 144.8,89.3 146.8,110.5 148.8,109.8 150.8,81.5 152.8,71.6 154.9,99.7 156.9,97.5 158.9,93.3 160.9,111.2 162.9,110.2 164.9,103.4 166.9,109.0 168.9,6.0 173.0,108.8 175.0,105.5 177.0,108.8 179.0,78.2 181.0,108.2 183.0,102.4 185.0,109.6 187.0,23.0 189.1,109.8 191.1,104.9 193.1,88.6 195.1,88.6 197.1,87.8 199.1,89.3 201.1,108.8 207.2,6.0 209.2,63.1 219.2,61.1 227.3,90.1 231.3,91.4 233.3,86.2 237.3,99.3 239.3,107.2 241.3,94.5 247.4,101.7 253.4,110.3 259.4,6.0 263.5,89.3 265.5,91.4 267.5,85.3 271.5,68.5 273.5,97.1 275.5,87.0 277.5,6.0 279.6,111.5 283.6,110.3 285.6,110.2 287.6,107.7 289.6,6.0 291.6,84.4 293.6,109.0 295.6,93.9 297.7,110.5 299.7,17.9 301.7,59.0 303.7,108.2 305.7,109.0 307.7,110.3 309.7,93.3 311.7,109.6 313.7,108.2 315.8,108.2 317.8,108.2 319.8,102.4 321.8,107.5 323.8,106.3 325.8,107.5 327.8,109.0 329.8,88.6 331.8,92.1 333.9,105.5 335.9,109.6 337.9,104.0 339.9,107.5 341.9,110.3 343.9,108.2 345.9,112.0' /></svg>
+          <p>Voiced frames: <strong>84%</strong> - Mean pitch: <strong>181 Hz</strong></p>
+        </section>
+        <section class="signalpanel">
+          <h3>Melody / chroma</h3>
+          <svg viewBox='0 0 360 118' preserveAspectRatio='none'><rect x='4.0' y='28.5' width='22.0' height='71.5' rx='3' fill='#1d4ed8' /><text x='15.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>C</text><rect x='34.0' y='32.4' width='22.0' height='67.6' rx='3' fill='#1d4ed8' /><text x='45.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>C#</text><rect x='64.0' y='46.5' width='22.0' height='53.5' rx='3' fill='#1d4ed8' /><text x='75.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>D</text><rect x='94.0' y='23.8' width='22.0' height='76.2' rx='3' fill='#1d4ed8' /><text x='105.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>D#</text><rect x='124.0' y='34.1' width='22.0' height='65.9' rx='3' fill='#1d4ed8' /><text x='135.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>E</text><rect x='154.0' y='8.0' width='22.0' height='92.0' rx='3' fill='#1d4ed8' /><text x='165.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>F</text><rect x='184.0' y='53.4' width='22.0' height='46.6' rx='3' fill='#1d4ed8' /><text x='195.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>F#</text><rect x='214.0' y='28.5' width='22.0' height='71.5' rx='3' fill='#1d4ed8' /><text x='225.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>G</text><rect x='244.0' y='63.3' width='22.0' height='36.7' rx='3' fill='#1d4ed8' /><text x='255.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>G#</text><rect x='274.0' y='30.4' width='22.0' height='69.6' rx='3' fill='#1d4ed8' /><text x='285.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>A</text><rect x='304.0' y='38.0' width='22.0' height='62.0' rx='3' fill='#1d4ed8' /><text x='315.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>A#</text><rect x='334.0' y='66.0' width='22.0' height='34.0' rx='3' fill='#1d4ed8' /><text x='345.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>B</text></svg>
+          <p>Dominant pitch class: <strong>F</strong></p>
+        </section>
+        <section class="signalpanel">
+          <h3>Tone + onset shape</h3>
+          <div class='tonebar'><span style='width:28.7%;background:#0f766e'></span><span style='width:58.7%;background:#1d4ed8'></span><span style='width:12.6%;background:#f97316'></span></div><div class='tonelabels'><span>low: 29%</span> <span>mid: 59%</span> <span>high: 13%</span></div>
+          <div class="spark"><svg viewBox='0 0 360 88' preserveAspectRatio='none'><polyline fill='none' stroke='#0f766e' stroke-width='2' points='0.0,35.7 3.8,17.7 7.6,12.5 11.4,21.7 15.2,27.5 18.9,17.2 22.7,15.3 26.5,20.4 30.3,35.9 34.1,39.7 37.9,35.7 41.7,38.4 45.5,33.8 49.3,33.5 53.1,29.5 56.8,30.1 60.6,32.2 64.4,17.3 68.2,33.9 72.0,38.0 75.8,39.2 79.6,28.5 83.4,39.1 87.2,33.9 90.9,31.8 94.7,35.7 98.5,29.6 102.3,30.4 106.1,38.9 109.9,28.8 113.7,28.5 117.5,32.8 121.3,33.2 125.1,34.2 128.8,27.7 132.6,29.5 136.4,23.0 140.2,27.8 144.0,31.1 147.8,33.7 151.6,31.3 155.4,41.2 159.2,41.0 162.9,38.7 166.7,42.0 170.5,40.1 174.3,45.0 178.1,46.2 181.9,39.5 185.7,43.1 189.5,42.1 193.3,35.2 197.1,45.0 200.8,31.0 204.6,4.0 208.4,29.2 212.2,28.9 216.0,22.3 219.8,14.0 223.6,15.3 227.4,24.0 231.2,13.1 234.9,13.6 238.7,18.1 242.5,23.1 246.3,26.0 250.1,17.8 253.9,15.4 257.7,16.6 261.5,22.5 265.3,27.1 269.1,27.6 272.8,24.4 276.6,35.8 280.4,36.1 284.2,35.5 288.0,30.4 291.8,31.9 295.6,17.8 299.4,34.3 303.2,38.3 306.9,40.8 310.7,33.8 314.5,25.9 318.3,23.9 322.1,29.3 325.9,33.0 329.7,27.2 333.5,32.3 337.3,38.8 341.1,22.2 344.8,25.9 348.6,36.5 352.4,42.2 356.2,22.7 360.0,32.6' /></svg></div>
+          <p>This is the ceremony rise, band texture, and crowd-energy view.</p>
+        </section>
+      </div>
+    </article>
+    
+
+    <article class="sample">
+      <div class="samplehead">
+        <div>
+          <h2>Brazilian National Anthem</h2>
+          <p>Brazil - File:Fans chant the National Anthem BRA v RSA - Rio 2016.ogv</p>
+        </div>
+        <div class="badge">manual_review_required_audio_low_confidence_title_prior</div>
+      </div>
+      <div class="samplegrid">
+        <section class="videopanel">
+          <video controls preload="metadata" playsinline src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Fans_chant_the_National_Anthem_BRA_v_RSA_-_Rio_2016.ogv"></video>
+          <div class="sourcebar">
+            <a href="https://commons.wikimedia.org/wiki/File:Fans_chant_the_National_Anthem_BRA_v_RSA_-_Rio_2016.ogv" target="_blank" rel="noreferrer">Commons source</a>
+            <span>Start prior: 0</span>
+          </div>
+          <div class="readout">
+            <div><span>Expected prior</span><strong>q134654</strong></div>
+            <div><span>Audio candidate</span><strong>q1225991</strong></div>
+            <div><span>Hashes</span><strong>335</strong></div>
+            <div><span>Match fraction</span><strong>0.009489</strong></div>
+          </div>
+        </section>
+        <section class="signalpanel">
+          <h3>Pitch contour</h3>
+          <svg viewBox='0 0 360 118' preserveAspectRatio='none'><text x='12' y='18' fill='#7d8d87' font-size='11'>93 Hz</text><text x='12' y='110' fill='#7d8d87' font-size='11'>380 Hz</text><polyline fill='none' stroke='#0f766e' stroke-width='2' points='4.0,86.6 6.0,82.9 8.0,96.8 10.1,90.7 12.1,111.1 14.1,102.7 16.1,98.0 18.1,56.0 20.1,80.8 22.1,86.6 24.1,87.5 26.1,81.8 28.2,94.3 30.2,88.3 32.2,81.8 34.2,54.4 36.2,81.8 38.2,15.1 40.2,19.2 42.2,15.1 44.2,81.8 46.3,81.8 48.3,80.8 50.3,80.8 52.3,81.8 54.3,78.6 56.3,73.8 58.3,91.5 60.3,72.4 62.3,71.1 64.4,75.0 66.4,72.4 68.4,79.7 70.4,78.6 72.4,77.5 74.4,76.3 76.4,109.5 78.4,112.0 80.4,101.8 82.5,80.8 84.5,85.7 86.5,6.0 88.5,73.8 90.5,15.1 92.5,15.1 94.5,73.8 96.5,88.7 98.5,81.8 100.6,97.4 102.6,97.4 104.6,77.5 106.6,66.3 108.6,57.9 110.6,81.8 112.6,97.4 114.6,85.7 116.6,80.8 118.7,63.4 120.7,99.7 122.7,57.9 124.7,69.6 126.7,89.9 128.7,79.3 130.7,106.4 132.7,72.4 134.7,103.6 136.8,100.2 138.8,101.3 140.8,65.0 142.8,57.9 144.8,88.3 146.8,89.9 148.8,86.6 150.8,99.7 152.8,79.7 154.9,80.8 156.9,64.0 158.9,59.8 160.9,78.6 162.9,82.9 164.9,81.8 166.9,79.7 168.9,80.8 170.9,88.3 173.0,75.0 175.0,53.9 177.0,23.0 179.0,19.2 181.0,19.2 183.0,102.7 185.0,102.7 187.0,71.1 189.1,76.3 191.1,71.0 193.1,73.8 195.1,72.4 197.1,74.4 199.1,71.8 201.1,53.7 203.1,74.4 205.1,82.8 207.2,109.8 209.2,74.4 211.2,31.5 213.2,96.5 215.2,94.5 217.2,81.8 219.2,91.4 221.2,99.5 223.2,79.7 225.3,78.5 227.3,74.4 229.3,62.5 231.3,65.8 233.3,72.4 235.3,68.0 237.3,70.3 239.3,71.0 241.3,17.1 243.4,78.5 245.4,70.0 247.4,94.7 249.4,58.9 251.4,85.5 253.4,61.6 255.4,87.5 257.4,77.5 259.4,78.6 261.5,76.9 263.5,87.9 265.5,74.4 267.5,102.9 269.5,65.2 271.5,79.1 273.5,82.0 275.5,66.5 277.5,81.1 279.6,42.3 281.6,73.1 283.6,87.7 285.6,14.9 287.6,84.3 289.6,69.6 291.6,68.9 293.6,67.4 295.6,78.2 297.7,77.2 299.7,46.6 301.7,65.8 303.7,86.6 305.7,68.2 307.7,68.9 309.7,102.2 311.7,74.4 313.7,79.2 315.8,84.4 317.8,78.3 319.8,84.4 321.8,68.2 323.8,70.4 325.8,79.7 327.8,68.1 329.8,72.4 331.8,89.9 333.9,98.6 335.9,65.0 337.9,87.0 339.9,66.6 341.9,23.0 343.9,84.9 345.9,52.2 347.9,54.9 349.9,40.5 352.0,36.5 354.0,47.4 356.0,43.3 358.0,86.6 360.0,63.4' /></svg>
+          <p>Voiced frames: <strong>97%</strong> - Mean pitch: <strong>201 Hz</strong></p>
+        </section>
+        <section class="signalpanel">
+          <h3>Melody / chroma</h3>
+          <svg viewBox='0 0 360 118' preserveAspectRatio='none'><rect x='4.0' y='31.3' width='22.0' height='68.7' rx='3' fill='#1d4ed8' /><text x='15.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>C</text><rect x='34.0' y='39.5' width='22.0' height='60.5' rx='3' fill='#1d4ed8' /><text x='45.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>C#</text><rect x='64.0' y='56.9' width='22.0' height='43.1' rx='3' fill='#1d4ed8' /><text x='75.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>D</text><rect x='94.0' y='28.8' width='22.0' height='71.2' rx='3' fill='#1d4ed8' /><text x='105.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>D#</text><rect x='124.0' y='36.3' width='22.0' height='63.7' rx='3' fill='#1d4ed8' /><text x='135.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>E</text><rect x='154.0' y='8.0' width='22.0' height='92.0' rx='3' fill='#1d4ed8' /><text x='165.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>F</text><rect x='184.0' y='39.5' width='22.0' height='60.5' rx='3' fill='#1d4ed8' /><text x='195.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>F#</text><rect x='214.0' y='30.6' width='22.0' height='69.4' rx='3' fill='#1d4ed8' /><text x='225.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>G</text><rect x='244.0' y='51.9' width='22.0' height='48.1' rx='3' fill='#1d4ed8' /><text x='255.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>G#</text><rect x='274.0' y='33.4' width='22.0' height='66.6' rx='3' fill='#1d4ed8' /><text x='285.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>A</text><rect x='304.0' y='22.1' width='22.0' height='77.9' rx='3' fill='#1d4ed8' /><text x='315.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>A#</text><rect x='334.0' y='59.5' width='22.0' height='40.5' rx='3' fill='#1d4ed8' /><text x='345.0' y='114' text-anchor='middle' fill='#7d8d87' font-size='10'>B</text></svg>
+          <p>Dominant pitch class: <strong>F</strong></p>
+        </section>
+        <section class="signalpanel">
+          <h3>Tone + onset shape</h3>
+          <div class='tonebar'><span style='width:21.0%;background:#0f766e'></span><span style='width:61.2%;background:#1d4ed8'></span><span style='width:17.8%;background:#f97316'></span></div><div class='tonelabels'><span>low: 21%</span> <span>mid: 61%</span> <span>high: 18%</span></div>
+          <div class="spark"><svg viewBox='0 0 360 88' preserveAspectRatio='none'><polyline fill='none' stroke='#0f766e' stroke-width='2' points='0.0,84.0 3.8,66.2 7.6,27.4 11.4,32.5 15.2,30.2 18.9,27.2 22.7,13.7 26.5,20.9 30.3,25.3 34.1,28.7 37.9,33.1 41.7,24.5 45.5,27.2 49.3,37.8 53.1,33.9 56.8,29.5 60.6,19.7 64.4,22.8 68.2,27.9 72.0,33.5 75.8,27.1 79.6,23.6 83.4,21.5 87.2,24.1 90.9,24.0 94.7,24.5 98.5,30.3 102.3,35.9 106.1,30.3 109.9,25.3 113.7,29.3 117.5,26.0 121.3,33.0 125.1,30.8 128.8,33.8 132.6,35.5 136.4,33.9 140.2,28.5 144.0,31.9 147.8,25.7 151.6,19.7 155.4,32.7 159.2,34.9 162.9,32.5 166.7,32.1 170.5,29.3 174.3,29.7 178.1,21.8 181.9,27.4 185.7,27.0 189.5,16.7 193.3,19.2 197.1,11.3 200.8,16.5 204.6,20.5 208.4,20.0 212.2,27.7 216.0,24.9 219.8,29.3 223.6,23.7 227.4,26.7 231.2,26.2 234.9,21.4 238.7,26.8 242.5,21.6 246.3,26.7 250.1,27.1 253.9,28.3 257.7,29.5 261.5,27.5 265.3,23.3 269.1,16.3 272.8,14.0 276.6,4.4 280.4,4.0 284.2,4.1 288.0,5.8 291.8,8.7 295.6,13.6 299.4,15.4 303.2,14.1 306.9,4.0 310.7,16.6 314.5,25.7 318.3,25.1 322.1,21.0 325.9,25.8 329.7,25.4 333.5,28.5 337.3,29.8 341.1,26.4 344.8,32.8 348.6,36.5 352.4,31.2 356.2,21.1 360.0,24.3' /></svg></div>
+          <p>This is the ceremony rise, band texture, and crowd-energy view.</p>
+        </section>
+      </div>
+    </article>
+    
+  </main>
+</body>
+</html>
