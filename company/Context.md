@@ -26,7 +26,27 @@ Review links over explanations.
 Brief but complete.
 ```
 
-## 2. Standing communication preferences
+## 2. Global operating mandate
+
+```text
+From now on, EVERYTHING runs through the LindaData Company Org.
+All work must align to the org structure before execution.
+No random execution path.
+No specialist-agent work without an executive owner.
+No claim of done without QA/proof.
+```
+
+Default routing:
+
+```text
+ChefHands / CEO
+→ Chief of Staff or correct executive owner
+→ specialist agents
+→ QA / proof
+→ CEO-facing summary or review link
+```
+
+## 3. Standing communication preferences
 
 | Preference | Rule |
 |---|---|
@@ -41,12 +61,13 @@ Brief but complete.
 | Testing | Do not claim success without proof |
 | Context | Context matters; check prior project state before acting |
 | Company Org | Every meaningful task must reference `/company/Company_Org.md` for ownership and routing |
+| Org alignment | Everything runs through the org and must be aligned to an executive owner before execution |
 | Logs | Log important work in GitHub/docs, not memory only |
 | Security | Protect private access material. Do not place private values in the frontend, commits, logs, screenshots, or chat. |
 | Cost | Free/local-first; no paid spend or auto-top-up without explicit approval |
 | Lovable apps | Preserve Lovable scaffold unless CEO says to replace it |
 
-## 3. Current operating facts
+## 4. Current operating facts
 
 | Area | Current fact |
 |---|---|
@@ -56,6 +77,7 @@ Brief but complete.
 | Execution memory | GitHub |
 | Main bounded builder | Codex |
 | Canonical company org | `company/Company_Org.md` |
+| Global mandate | Everything runs through Company Org and is aligned before execution |
 | Canonical active app repo | `LindaData/field-copilot-pro` |
 | HQ repo | `LindaData/LindaData.github.io` |
 | Older repo | `field-copilot-buddy` is history / ignore |
@@ -65,7 +87,7 @@ Brief but complete.
 | Security model | Public-safe GitHub Pages shell; private data behind real auth when needed |
 | Passkeys / Face ID | Only through a real backend challenge flow, not fake frontend security |
 
-## 4. Active project board
+## 5. Active project board
 
 As of 2026-07-02.
 
@@ -80,7 +102,7 @@ As of 2026-07-02.
 | 7 | Money Transfer | Personal Assistant / CFO | Closed by CEO | Archive from active dashboard | Closed |
 | 8 | Ghostwriting / Book Engine | Chief of Staff + CIO + CDO + Editorial | Planning | Add HQ lane; choose storage/source capture rules later | Planning |
 
-## 5. Review layer non-negotiables
+## 6. Review layer non-negotiables
 
 Build once. Reuse everywhere.
 
@@ -126,7 +148,7 @@ Inbox mapping:
 | HQ dashboard | `LindaData/field-copilot-pro` issue #61 |
 | Southpaw | Create or map dedicated issue |
 
-## 6. Review layer mental model
+## 7. Review layer mental model
 
 ```text
 Review page = clean glass layer
@@ -137,7 +159,7 @@ Implementation = only after CEO says to make the changes
 
 Review notes become tasks. Tasks become changes only after approval.
 
-## 7. Ready-for-review gate
+## 8. Ready-for-review gate
 
 Before giving the CEO a review link:
 
@@ -148,7 +170,7 @@ Before giving the CEO a review link:
 5. The first screen says what to review.
 6. The report is short.
 
-## 8. Codex / repo rules
+## 9. Codex / repo rules
 
 Before changing code:
 
@@ -162,7 +184,7 @@ Before changing code:
 
 Codex is bounded execution. ChatGPT owns architecture, QA, research, review, prompt writing, issue writing, and prioritization.
 
-## 9. Tool router
+## 10. Tool router
 
 | Need | Use first | Notes |
 |---|---|---|
@@ -175,7 +197,7 @@ Codex is bounded execution. ChatGPT owns architecture, QA, research, review, pro
 | Data / artifacts | Python / artifact tools | Create files, checks, tables, charts |
 | Calendar / email / contacts | Connected assistant tools | Read or act only when requested |
 
-## 10. Standard CEO report
+## 11. Standard CEO report
 
 ```text
 Status: green / yellow / red
@@ -193,7 +215,7 @@ Need from you:
 - ...
 ```
 
-## 11. Assumptions to confirm later
+## 12. Assumptions to confirm later
 
 | Acronym | Current meaning |
 |---|---|
@@ -204,9 +226,10 @@ Need from you:
 | CIO | Chief Information Officer |
 | CDO | Chief Data Officer |
 
-## 12. Update log
+## 13. Update log
 
 | Date | Update | Owner |
 |---|---|---|
 | 2026-07-02 | Created first-pass company operating context from current LindaData HQ, review layer, HVAC, agent company, and master brain docs | Chief of Staff |
 | 2026-07-02 | Added canonical Company Org source of truth and made it the required routing reference for every meaningful task | Chief of Staff + CIO |
+| 2026-07-02 | Locked global operating mandate: everything runs through the Company Org and must be aligned to an executive owner before execution | Chief of Staff + CIO + CHRO |
