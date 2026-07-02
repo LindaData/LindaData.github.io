@@ -40,6 +40,7 @@ Brief but complete.
 | Updates | Give short progress updates only for long or tool-heavy work |
 | Testing | Do not claim success without proof |
 | Context | Context matters; check prior project state before acting |
+| Company Org | Every meaningful task must reference `/company/Company_Org.md` for ownership and routing |
 | Logs | Log important work in GitHub/docs, not memory only |
 | Security | Protect private access material. Do not place private values in the frontend, commits, logs, screenshots, or chat. |
 | Cost | Free/local-first; no paid spend or auto-top-up without explicit approval |
@@ -54,6 +55,7 @@ Brief but complete.
 | Control room | ChatGPT |
 | Execution memory | GitHub |
 | Main bounded builder | Codex |
+| Canonical company org | `company/Company_Org.md` |
 | Canonical active app repo | `LindaData/field-copilot-pro` |
 | HQ repo | `LindaData/LindaData.github.io` |
 | Older repo | `field-copilot-buddy` is history / ignore |
@@ -71,7 +73,7 @@ As of 2026-07-02.
 |---:|---|---|---|---|---|
 | 1 | Review Layer System | CTO + PRO + CSO + QA | Reliability work active | Prove notes land as GitHub comments; implement shared client + Worker contract | No |
 | 2 | HVAC Copilot | CTO + PRO + CDO + QA | PR #59 draft; CI failed at Test. PR #60 desktop lane follows #59 | Fix PR #59 tests, finish attachment UI, then provide clean review link | No |
-| 3 | LindaData Agentic Company | Chief of Staff + CTO + QA | PR #47 open; TypeScript CI failed though tests passed | Fix TypeScript and expose HQ command view | No |
+| 3 | Company Org / Agentic Company | Chief of Staff + CIO + CHRO | Canonical org file added | Reference `Company_Org.md` for every task route | Yes |
 | 4 | Central HQ / Work Dashboard | Chief of Staff + CIO + PRO + CTO | Existing root Review Hub, but missing command needs | Add `/hq`, `data/projects.json`, status gates, links, webhook health | Prototype only |
 | 5 | Southpaw Boxing Site | PRO + CMO + CTO | Static concept exists | Replace local-only review drawer with shared live-sync layer | No |
 | 6 | Cloud / Codex / Infra Setup | CTO | Paused by CEO | Do not spend cycles until restarted | Paused |
@@ -124,7 +126,18 @@ Inbox mapping:
 | HQ dashboard | `LindaData/field-copilot-pro` issue #61 |
 | Southpaw | Create or map dedicated issue |
 
-## 6. Ready-for-review gate
+## 6. Review layer mental model
+
+```text
+Review page = clean glass layer
+Main page = artwork/paper underneath
+Annotations = marker on glass
+Implementation = only after CEO says to make the changes
+```
+
+Review notes become tasks. Tasks become changes only after approval.
+
+## 7. Ready-for-review gate
 
 Before giving the CEO a review link:
 
@@ -135,20 +148,21 @@ Before giving the CEO a review link:
 5. The first screen says what to review.
 6. The report is short.
 
-## 7. Codex / repo rules
+## 8. Codex / repo rules
 
 Before changing code:
 
 1. Read repo instructions and docs.
-2. Inspect repo structure.
-3. Preserve Lovable scaffold if the app started in Lovable.
-4. Make the smallest useful change.
-5. Run lint, tests, TypeScript checks, and build where available.
-6. Report files changed, commands run, passed checks, failed checks, risks, and review link if ready.
+2. Check `company/Company_Org.md` for routing/ownership when inside LindaData HQ/company work.
+3. Inspect repo structure.
+4. Preserve Lovable scaffold if the app started in Lovable.
+5. Make the smallest useful change.
+6. Run lint, tests, TypeScript checks, and build where available.
+7. Report files changed, commands run, passed checks, failed checks, risks, and review link if ready.
 
 Codex is bounded execution. ChatGPT owns architecture, QA, research, review, prompt writing, issue writing, and prioritization.
 
-## 8. Tool router
+## 9. Tool router
 
 | Need | Use first | Notes |
 |---|---|---|
@@ -161,7 +175,7 @@ Codex is bounded execution. ChatGPT owns architecture, QA, research, review, pro
 | Data / artifacts | Python / artifact tools | Create files, checks, tables, charts |
 | Calendar / email / contacts | Connected assistant tools | Read or act only when requested |
 
-## 9. Standard CEO report
+## 10. Standard CEO report
 
 ```text
 Status: green / yellow / red
@@ -179,19 +193,20 @@ Need from you:
 - ...
 ```
 
-## 10. Assumptions to confirm later
+## 11. Assumptions to confirm later
 
 | Acronym | Current meaning |
 |---|---|
 | PRO | Product & Review Officer |
-| CHO | Chief Health & Happiness Officer |
+| CHO | Chief Health & Optimization Officer |
 | CCO | Chief Customer Officer |
 | CSO | Chief Security Officer |
 | CIO | Chief Information Officer |
 | CDO | Chief Data Officer |
 
-## 11. Update log
+## 12. Update log
 
 | Date | Update | Owner |
 |---|---|---|
 | 2026-07-02 | Created first-pass company operating context from current LindaData HQ, review layer, HVAC, agent company, and master brain docs | Chief of Staff |
+| 2026-07-02 | Added canonical Company Org source of truth and made it the required routing reference for every meaningful task | Chief of Staff + CIO |
