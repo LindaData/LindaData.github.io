@@ -8,6 +8,7 @@ Purpose: make the agent company repeatable.
 
 ```text
 CEO request
+→ Company_Org.md routing check
 → Chief of Staff intake
 → Work packet
 → Executive owner
@@ -18,17 +19,20 @@ CEO request
 → CEO review link or next action
 ```
 
+Rule: every meaningful task starts by checking `company/Company_Org.md` and assigning one executive owner.
+
 ## 2. Intake workflow
 
 When a request arrives:
 
 1. Identify the goal.
 2. Identify the repo/project.
-3. Check current context.
-4. Decide whether tools are needed.
-5. Assign one executive owner.
-6. Create a small work packet.
-7. Avoid clarification unless the wrong assumption would break the work.
+3. Check `Company_Org.md` for executive ownership and specialist routing.
+4. Check current context.
+5. Decide whether tools are needed.
+6. Assign one executive owner.
+7. Create a small work packet.
+8. Avoid clarification unless the wrong assumption would break the work.
 
 ### Intake template
 
@@ -49,6 +53,9 @@ Supporting chiefs:
 
 Specialist agents:
 - ...
+
+Company Org reference:
+- /company/Company_Org.md
 
 Constraints:
 - mobile-first
@@ -91,6 +98,7 @@ Use this for repo work.
    - `AGENTS.md`
    - `README.md`
    - relevant docs
+   - `/company/Company_Org.md` when working in the HQ/company system
 2. Inspect the repo before changing anything.
 3. Preserve current architecture.
 4. Preserve Lovable scaffold if the app started in Lovable.
@@ -111,9 +119,12 @@ Use this for repo work.
 ### Codex handoff prompt
 
 ```text
-Read AGENTS.md, README.md, and relevant docs first.
+Read AGENTS.md, README.md, relevant docs, and the LindaData Company Org first:
+- company/Company_Org.md
 
 Follow LindaData operating rules:
+- Route the task through the Company Org.
+- Assign one executive owner.
 - Preserve existing architecture.
 - Preserve Lovable scaffold if present.
 - Do not rebuild from scratch.
@@ -163,6 +174,15 @@ Rules:
 - Attach route, page, device, viewport, note kind, priority, and visible context.
 - Map every app to a GitHub issue inbox.
 
+Glass-layer rule:
+
+```text
+Review page = glass over the product
+Main page = real product underneath
+Annotations = feedback only
+Implementation = only after CEO approval
+```
+
 ## 6. QA / Trust workflow
 
 QA can block any review link.
@@ -202,6 +222,7 @@ Examples:
 - Security rule
 - Naming rule
 - Deprioritization / pause / close
+- Org/routing rule
 
 Record decisions in `Decision_Log.md`.
 
@@ -239,6 +260,7 @@ Update `Context.md` when:
 - A repo/link/status changes.
 - A project becomes ready or not ready for review.
 - Work is paused, closed, or restarted.
+- Company Org ownership/routing changes.
 
 Update format:
 
@@ -256,7 +278,7 @@ Use this when something fails.
 Failure found
 → stop claiming success
 → capture exact error
-→ identify owner
+→ identify owner from Company_Org.md
 → preserve user input/work
 → create blocker note
 → fix or route
@@ -294,12 +316,13 @@ Use when the CEO says: “check everything,” “run the brain,” or “what s
 
 Order:
 
-1. Check current active priorities.
-2. Check open PRs/issues.
-3. Check latest review notes.
-4. Check blockers.
-5. Route work.
-6. Return tiny list:
+1. Check Company Org routing rules.
+2. Check current active priorities.
+3. Check open PRs/issues.
+4. Check latest review notes.
+5. Check blockers.
+6. Route work.
+7. Return tiny list:
 
 ```text
 Now:
