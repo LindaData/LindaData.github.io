@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>LindaData Mobile HQ Communicate</title>
+<style>
+body{margin:0;background:#f4f5f7;color:#172b4d;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif;padding-bottom:84px}main{max-width:760px;margin:auto;padding:14px}.top{position:sticky;top:0;background:white;border-bottom:1px solid #dfe1e6;padding:12px 14px;z-index:10}.brand{display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:900}.pill{border:1px solid #dfe1e6;border-radius:999px;padding:6px 9px;font-size:12px;color:#5e6c84}h1,h2,p{margin:0}h1{font-size:34px;line-height:.95;letter-spacing:-.05em}p{color:#5e6c84;line-height:1.45}.card{background:white;border:1px solid #dfe1e6;border-radius:16px;padding:14px;margin:12px 0;box-shadow:0 1px 2px rgba(9,30,66,.12)}label{display:grid;gap:5px;margin:10px 0;color:#42526e;font-weight:800;font-size:13px}input,select,textarea{width:100%;border:1px solid #c1c7d0;border-radius:10px;padding:11px;font:inherit;box-sizing:border-box;background:white}textarea{min-height:140px}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid #c1c7d0;background:white;border-radius:10px;padding:10px 12px;font-weight:850;color:#172b4d;text-decoration:none}.btn.primary{background:#0052cc;color:white;border-color:#0052cc}.feed{white-space:pre-wrap;max-height:360px;overflow:auto;border:1px solid #dfe1e6;background:#fafbfc;border-radius:12px;padding:12px;color:#5e6c84;font-size:13px}.status{border:1px solid #dfe1e6;background:#fafbfc;border-radius:12px;padding:11px;color:#5e6c84}.bottom{position:fixed;left:10px;right:10px;bottom:max(10px,env(safe-area-inset-bottom));background:rgba(255,255,255,.94);border:1px solid #dfe1e6;border-radius:18px;padding:7px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.bottom a{min-height:42px;display:grid;place-items:center;border-radius:12px;text-decoration:none;color:#5e6c84;font-weight:850;font-size:13px}.bottom a.active{background:#deebff;color:#0747a6}.toast{position:fixed;left:12px;right:12px;bottom:76px;background:#172b4d;color:white;border-radius:12px;padding:12px;transform:translateY(150%);transition:.18s}.toast.show{transform:translateY(0)}
+</style>
+</head>
+<body>
+<header class="top"><div class="brand"><span>LindaData HQ</span><span class="pill" id="health">checking</span></div></header>
+<main>
+<section class="card"><h1>Tell HQ what to do.</h1><p>Use this on mobile when you want ChatGPT/Codex to know your input and act on it. It sends a structured note to the GitHub-backed HQ inbox.</p></section>
+<section class="card">
+<form id="form">
+<label>Project
+<select id="project"><option>LindaData HQ / Better than Jira</option><option>HVAC Copilot</option><option>Review Layer System</option><option>Company Org</option><option>Recycle Right Now</option><option>World Cup Model</option><option>Other</option></select>
+</label>
+<label>Type
+<select id="kind"><option>Action request</option><option>Bug report</option><option>Design feedback</option><option>Decision</option><option>Question</option><option>Mobile issue</option></select>
+</label>
+<label>Priority
+<select id="priority"><option value="high">High</option><option value="blocker">Blocker</option><option value="medium">Medium</option><option value="low">Low</option></select>
+</label>
+<label>Your input
+<textarea id="note" placeholder="Write exactly what you want me to know, answer, fix, build, or check."></textarea>
+</label>
+<div class="actions"><button class="btn primary" type="submit">Send to HQ inbox</button><button class="btn" type="button" id="copy">Copy draft</button></div>
+<p class="status" id="status">Ready. Sent notes land in GitHub inbox #61 with page, device, route, and priority context.</p>
+</form>
+</section>
+<section class="card"><h2>Back and forth</h2><p>After you submit, tell ChatGPT: “check HQ inbox.” I can read the GitHub note, understand what you wrote, and take action.</p><div class="actions" style="margin-top:10px"><button class="btn" id="load">Load feed</button><a class="btn" href="https://github.com/LindaData/field-copilot-pro/issues/61">Open inbox #61</a></div><div class="feed" id="feed">Feed not loaded.</div></section>
+</main>
+<nav class="bottom"><a href="/hq/mobile/">Board</a><a class="active" href="/hq/mobile-communicate/">Message</a><a href="https://lindadata.github.io/field-copilot-pro/app/today/">HVAC</a></nav>
+<div class="toast" id="toast"></div>
+<script>
+const endpoint='https://soft-unit-ba5d.sergio-mora.workers.dev/review-note';
+const feedUrl='https://soft-unit-ba5d.sergio-mora.workers.dev/notes?repo=LindaData%2Ffield-copilot-pro&inboxIssue=61';
+const $=id=>document.getElementById(id);
+const session=localStorage.getItem('ld-hq-comm-session')||crypto.randomUUID();
+localStorage.setItem('ld-hq-comm-session',session);
+function toast(m){$('toast').textContent=m;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2600)}
+function saveDraft(){localStorage.setItem('ld-hq-comm-draft',JSON.stringify({project:project.value,kind:kind.value,priority:priority.value,note:note.value}))}
+function restore(){try{const d=JSON.parse(localStorage.getItem('ld-hq-comm-draft')||'{}');if(d.project)project.value=d.project;if(d.kind)kind.value=d.kind;if(d.priority)priority.value=d.priority;if(d.note)note.value=d.note}catch{}}
+async function send(e){e.preventDefault();const text=note.value.trim();if(!text){toast('Write a note first');return}saveDraft();status.textContent='Sending to GitHub inbox...';const createdAt=new Date().toISOString();const payload={event:'review_note',repo:'LindaData/field-copilot-pro',sourceRepo:'LindaData/LindaData.github.io',inboxIssue:'61',sessionId:session,pageLabel:'LindaData Mobile HQ Communicate',routePath:location.pathname,url:location.href,userAgent:navigator.userAgent,viewport:{width:innerWidth,height:innerHeight},createdAt,note:{note:`Mobile HQ input\nProject: ${project.value}\nType: ${kind.value}\nPriority: ${priority.value}\n\n${text}`,kind:'mobile-hq-communication',priority:priority.value,pageLabel:`Mobile HQ Communication / ${project.value}`,path:location.pathname,contextSummary:'User input intended for ChatGPT or Codex action',createdAt,viewport:{width:innerWidth,height:innerHeight}}};
+try{const res=await fetch(endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)});const json=await res.json().catch(()=>({}));if(!res.ok||!json.ok)throw Error(json.error||`HTTP ${res.status}`);status.textContent=`Synced to HQ inbox #61. Comment ${json.id||'created'}.`;note.value='';localStorage.removeItem('ld-hq-comm-draft');toast('Synced to HQ inbox')}catch(err){status.textContent=`Sync failed. Draft kept here. ${err.message}`;toast('Sync failed; draft kept')}}
+async function loadFeed(){feed.textContent='Loading...';try{const res=await fetch(feedUrl,{cache:'no-store'});const raw=await res.text();if(!res.ok)throw Error(`HTTP ${res.status}`);feed.textContent=raw.trim()||'No feed items.'}catch(err){feed.textContent=`Could not load feed. Open inbox #61. ${err.message}`}}
+form.addEventListener('submit',send);note.addEventListener('input',saveDraft);copy.onclick=async()=>{await navigator.clipboard.writeText(`Project: ${project.value}\nType: ${kind.value}\nPriority: ${priority.value}\n\n${note.value}`).then(()=>toast('Draft copied')).catch(()=>toast('Copy blocked'))};load.onclick=loadFeed;restore();fetch(endpoint.replace('/review-note','/health'),{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(()=>{health.textContent='sync live';health.style.color='#00875a'}).catch(()=>{health.textContent='sync failed';health.style.color='#de350b'});
+</script>
+</body>
+</html>
