@@ -3,25 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>LindaData HQ</title>
-  <meta name="description" content="Minimal LindaData HQ for projects, commands, review standards, and company routing.">
+  <title>LindaData HQ Board</title>
+  <meta name="description" content="LindaData Jira-style HQ board for projects, commands, review standards, and company routing.">
   <style>
     :root{
       color-scheme:light;
-      --bg:#f7f7f4;
+      --bg:#f4f5f7;
       --panel:#ffffff;
-      --ink:#111111;
-      --muted:#606060;
-      --soft:#8a8a8a;
-      --line:#deded8;
-      --line-strong:#c9c9c1;
-      --accent:#111111;
-      --good:#0f7a44;
-      --warn:#9a5a00;
-      --bad:#b42318;
-      --radius:20px;
-      --shadow:0 16px 48px rgba(17,17,17,.07);
-      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      --ink:#172b4d;
+      --muted:#5e6c84;
+      --soft:#7a869a;
+      --line:#dfe1e6;
+      --line-strong:#c1c7d0;
+      --nav:#0747a6;
+      --nav2:#0052cc;
+      --blue:#0052cc;
+      --green:#00875a;
+      --yellow:#ffab00;
+      --red:#de350b;
+      --purple:#6554c0;
+      --shadow:0 8px 24px rgba(9,30,66,.08);
+      --radius:12px;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif;
     }
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
@@ -29,205 +32,203 @@
     a{color:inherit;text-decoration:none}
     button,input,select,textarea{font:inherit}
     button{cursor:pointer}
-    .wrap{width:min(1160px,calc(100% - 24px));margin:0 auto}
-    .top{position:sticky;top:0;z-index:20;border-bottom:1px solid var(--line);background:rgba(247,247,244,.88);backdrop-filter:blur(18px)}
-    .topin{min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:-.04em}
-    .mark{width:36px;height:36px;border-radius:12px;background:#111;color:#fff;display:grid;place-items:center;font-weight:950;font-size:.82rem}
-    .nav{display:flex;gap:6px;overflow:auto;padding:10px 0}
-    .nav a,.pill,.status{border:1px solid var(--line);background:#fff;border-radius:999px;color:var(--muted);white-space:nowrap}
-    .nav a{padding:.52rem .74rem;font-size:.86rem;font-weight:750}
-    main{padding:22px 0 90px}
-    .hero{display:grid;gap:18px;padding:24px 0 10px}
+    .top{position:sticky;top:0;z-index:30;background:var(--panel);border-bottom:1px solid var(--line);box-shadow:0 1px 0 rgba(9,30,66,.08)}
+    .topbar{min-height:56px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 16px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--ink)}
+    .mark{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--nav),var(--nav2));color:#fff;display:grid;place-items:center;font-weight:900;font-size:.78rem}
+    .nav{display:flex;align-items:center;gap:4px;overflow:auto}
+    .nav a{padding:.5rem .65rem;border-radius:6px;color:var(--muted);font-size:.9rem;font-weight:650;white-space:nowrap}
+    .nav a:hover{background:#ebecf0;color:var(--ink)}
+    .shell{width:min(1440px,calc(100% - 24px));margin:0 auto;padding:18px 0 88px}
+    .hero{display:grid;gap:14px;margin-bottom:16px}
+    .hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
     h1,h2,h3,p{margin:0}
-    h1{font-size:clamp(3rem,14vw,7rem);line-height:.88;letter-spacing:-.08em;max-width:8ch}
-    h2{font-size:clamp(1.45rem,5vw,2.4rem);line-height:.98;letter-spacing:-.06em}
-    h3{font-size:1rem;letter-spacing:-.02em}
-    p{color:var(--muted);line-height:1.55}
-    .eyebrow{color:var(--soft);font-size:.72rem;text-transform:uppercase;letter-spacing:.13em;font-weight:850;margin-bottom:7px}
-    .lede{font-size:1.05rem;max-width:62ch}
-    .grid{display:grid;gap:12px}
-    .cards{display:grid;gap:12px}
-    .card,.project,.command,.doc,.inbox{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
-    .card,.project,.command,.doc,.inbox{padding:16px}
-    .section{margin-top:26px}
-    .section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:12px}
-    .section-head p{font-size:.9rem}
-    .actions,.links,.chips{display:flex;gap:8px;flex-wrap:wrap}
-    .button{min-height:44px;border:1px solid #111;background:#111;color:#fff;border-radius:999px;padding:.72rem .95rem;font-weight:850;display:inline-flex;align-items:center;justify-content:center;gap:6px;text-align:center}
-    .button.secondary{background:#fff;color:#111;border-color:var(--line-strong)}
-    .button.ghost{background:transparent;color:#111;border-color:var(--line)}
-    .button:disabled{opacity:.48;cursor:not-allowed}
-    .pill,.status{display:inline-flex;align-items:center;gap:6px;padding:.38rem .64rem;font-size:.78rem;font-weight:800}
-    .hot{border-color:#f3b0aa;color:var(--bad);background:#fff7f6}
-    .high{border-color:#ecd49b;color:var(--warn);background:#fffaf0}
-    .live{border-color:#a7d8bc;color:var(--good);background:#f4fff8}
-    .hold{border-color:#d7d2f0;color:#5746a2;background:#faf9ff}
-    .closed{color:#777;background:#f2f2ef}
-    .toolbar{display:grid;gap:10px;margin-bottom:12px}
-    .filters{display:flex;gap:8px;overflow:auto;padding-bottom:2px}
-    .filter{border:1px solid var(--line);background:#fff;border-radius:999px;min-height:38px;padding:.5rem .75rem;font-weight:850;color:var(--muted)}
-    .filter.active{background:#111;color:#fff;border-color:#111}
-    .search{width:100%;min-height:46px;border:1px solid var(--line-strong);border-radius:999px;background:#fff;color:#111;padding:0 14px;outline:none}
-    .project{display:grid;gap:12px}
-    .project-top{display:grid;gap:8px}
-    .project h3{font-size:1.06rem}
-    .project p{font-size:.92rem}
-    .small{color:var(--soft);font-size:.84rem}
-    .list{display:grid;gap:8px}
-    .line{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:10px}
-    .line:first-child{border-top:0;padding-top:0}
-    label{display:block;color:var(--muted);font-size:.86rem;font-weight:800;margin-bottom:6px}
-    input,select,textarea{width:100%;border:1px solid var(--line-strong);border-radius:14px;background:#fff;color:#111;padding:12px;outline:none}
-    textarea{min-height:128px;resize:vertical}
-    form{display:grid;gap:12px}
+    h1{font-size:clamp(2rem,6vw,3.6rem);letter-spacing:-.05em;line-height:.96}
+    h2{font-size:1.25rem;letter-spacing:-.03em}
+    h3{font-size:.95rem;letter-spacing:-.01em}
+    p{color:var(--muted);line-height:1.45}
+    .eyebrow{font-size:.72rem;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px}
+    .muted{color:var(--muted)}
+    .small{font-size:.84rem;color:var(--soft)}
+    .button{min-height:36px;border:1px solid var(--blue);background:var(--blue);color:#fff;border-radius:6px;padding:.48rem .72rem;font-weight:750;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
+    .button.secondary{background:#fff;color:var(--ink);border-color:var(--line-strong)}
+    .button.ghost{background:transparent;color:var(--muted);border-color:transparent}
+    .button:hover{filter:brightness(.98)}
+    .button:disabled{opacity:.55;cursor:not-allowed}
+    .toolbar{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:10px;display:grid;gap:10px}
+    .toolbar-row{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .search{width:100%;min-height:38px;border:1px solid var(--line-strong);border-radius:6px;background:#fff;color:var(--ink);padding:0 12px;outline:none}
+    .search:focus,input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 2px rgba(0,82,204,.14)}
+    .tabs{display:flex;gap:6px;overflow:auto}
+    .tab{min-height:34px;border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:999px;padding:.42rem .66rem;font-size:.82rem;font-weight:750;white-space:nowrap}
+    .tab.active{background:#deebff;color:#0747a6;border-color:#b3d4ff}
+    .health{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:.86rem;color:var(--muted)}
+    .dot{width:8px;height:8px;border-radius:999px;background:var(--soft);display:inline-block}
+    .dot.live{background:var(--green)}.dot.warn{background:var(--yellow)}.dot.bad{background:var(--red)}
+    .board-wrap{margin-top:14px;overflow-x:auto;padding-bottom:8px}
+    .board{display:grid;grid-template-columns:repeat(5,minmax(282px,1fr));gap:12px;min-width:1120px;align-items:start}
+    .lane{background:#ebecf0;border-radius:var(--radius);padding:8px;min-height:360px;border:1px solid #e1e4ea}
+    .lane-head{position:sticky;top:70px;z-index:5;background:#ebecf0;padding:4px 4px 8px;border-bottom:1px solid rgba(9,30,66,.08);display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+    .lane-title{display:grid;gap:2px}
+    .lane-title strong{font-size:.82rem;text-transform:uppercase;letter-spacing:.08em;color:#42526e}
+    .lane-title span{font-size:.8rem;color:var(--soft)}
+    .count{min-width:24px;height:24px;border-radius:999px;background:#dfe1e6;color:#42526e;display:grid;place-items:center;font-size:.78rem;font-weight:800}
+    .cards{display:grid;gap:8px;padding-top:8px}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:0 1px 1px rgba(9,30,66,.14);padding:10px;display:grid;gap:8px}
+    .card:hover{box-shadow:0 6px 16px rgba(9,30,66,.16)}
+    .card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+    .key{font-size:.72rem;color:var(--soft);font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+    .title{font-size:.96rem;font-weight:750;line-height:1.25;color:var(--ink)}
+    .desc{font-size:.86rem;color:var(--muted)}
+    .meta{display:flex;gap:5px;flex-wrap:wrap}
+    .pill{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:#f4f5f7;color:#42526e;border-radius:4px;padding:.22rem .42rem;font-size:.72rem;font-weight:750;line-height:1.2}
+    .pill.hot{background:#ffebe6;border-color:#ffbdad;color:#bf2600}
+    .pill.high{background:#fff0b3;border-color:#ffe380;color:#7f4f01}
+    .pill.live{background:#e3fcef;border-color:#abf5d1;color:#006644}
+    .pill.hold{background:#eae6ff;border-color:#c0b6f2;color:#403294}
+    .pill.closed{background:#f4f5f7;border-color:#dfe1e6;color:#6b778c}
+    .owner{font-size:.78rem;color:var(--soft)}
+    .card-actions{display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:8px}
+    .card-actions a{border:1px solid var(--line);border-radius:6px;padding:.34rem .5rem;font-size:.78rem;font-weight:750;color:#0747a6;background:#fff}
+    .card-actions a:first-child{background:#deebff;border-color:#b3d4ff;color:#0747a6}
+    .empty{border:1px dashed var(--line-strong);border-radius:8px;padding:14px;color:var(--soft);background:rgba(255,255,255,.5);font-size:.88rem}
+    .panel-grid{display:grid;gap:12px;margin-top:16px}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px}
+    .panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+    form{display:grid;gap:10px}
     .form-grid{display:grid;gap:10px}
-    .notice{border:1px solid var(--line);background:#fbfbf8;border-radius:16px;padding:12px;color:var(--muted);font-size:.9rem}
-    .toast{position:fixed;left:12px;right:12px;bottom:14px;z-index:50;transform:translateY(140%);transition:transform .18s ease;border:1px solid var(--line-strong);border-radius:16px;background:#111;color:#fff;padding:13px 14px;box-shadow:var(--shadow)}
+    label{display:block;color:#42526e;font-size:.8rem;font-weight:800;margin-bottom:5px}
+    input,select,textarea{width:100%;border:1px solid var(--line-strong);border-radius:6px;background:#fff;color:var(--ink);padding:10px;outline:none}
+    textarea{min-height:110px;resize:vertical}
+    .notice{border:1px solid var(--line);background:#fafbfc;border-radius:8px;padding:10px;color:var(--muted);font-size:.86rem}
+    .docs{display:grid;gap:8px}
+    .doc{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;border-top:1px solid var(--line);padding-top:10px}
+    .doc:first-child{border-top:0;padding-top:0}
+    .doc a{color:#0747a6;font-weight:750;font-size:.86rem}
+    .feed{max-height:310px;overflow:auto;white-space:pre-wrap;font-size:.84rem;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:10px;background:#fafbfc}
+    .toast{position:fixed;left:12px;right:12px;bottom:14px;z-index:60;transform:translateY(140%);transition:transform .18s ease;border-radius:8px;background:#172b4d;color:#fff;padding:12px 14px;box-shadow:var(--shadow);font-weight:650}
     .toast.show{transform:translateY(0)}
-    .feed{max-height:320px;overflow:auto;white-space:pre-wrap;font-size:.86rem;color:var(--muted);border:1px solid var(--line);border-radius:14px;padding:12px;background:#fbfbf8}
-    .mobilebar{position:fixed;left:10px;right:10px;bottom:10px;z-index:25;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;border:1px solid var(--line);background:rgba(255,255,255,.92);backdrop-filter:blur(18px);padding:7px;border-radius:20px;box-shadow:var(--shadow)}
-    .mobilebar a{min-height:40px;display:grid;place-items:center;border-radius:14px;color:var(--muted);font-size:.78rem;font-weight:850}
-    .footer{margin-top:26px;color:var(--soft);font-size:.86rem}
-    .empty{border:1px dashed var(--line-strong);border-radius:16px;padding:16px;color:var(--soft);background:#fff}
+    .mobilebar{position:fixed;left:10px;right:10px;bottom:10px;z-index:35;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;border:1px solid var(--line);background:rgba(255,255,255,.94);backdrop-filter:blur(16px);padding:6px;border-radius:14px;box-shadow:var(--shadow)}
+    .mobilebar a{min-height:38px;display:grid;place-items:center;border-radius:9px;color:var(--muted);font-size:.76rem;font-weight:800}
+    .footer{margin-top:18px;color:var(--soft);font-size:.84rem}
     @media(min-width:760px){
-      .hero{grid-template-columns:1.05fr .95fr;align-items:end;padding-top:44px}
-      .cards{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .topbar{padding:0 22px}
+      .shell{padding-top:22px}
       .toolbar{grid-template-columns:1fr auto;align-items:center}
-      .project-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .search{max-width:520px}
+      .panel-grid{grid-template-columns:1.05fr .95fr}
       .form-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-      .command-grid{grid-template-columns:1.05fr .95fr}
-      .doc-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
       .mobilebar{display:none}
     }
-    @media(min-width:1080px){.project-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
   </style>
 </head>
 <body>
   <header class="top">
-    <div class="wrap topin">
-      <a class="brand" href="#top" aria-label="LindaData HQ home"><span class="mark">LD</span><span>LindaData HQ</span></a>
+    <div class="topbar">
+      <a class="brand" href="#top" aria-label="LindaData HQ home"><span class="mark">LD</span><span>LindaData Work Board</span></a>
       <nav class="nav" aria-label="Main navigation">
-        <a href="#today">Today</a>
-        <a href="#projects">Projects</a>
+        <a href="#board">Board</a>
         <a href="#command">Command</a>
         <a href="#company">Company</a>
+        <a href="https://lindadata.github.io/field-copilot-pro/app/today/">HVAC</a>
       </nav>
     </div>
   </header>
 
-  <main class="wrap" id="top">
-    <section class="hero" id="today">
-      <div>
-        <p class="eyebrow">Morning command</p>
-        <h1>Start here.</h1>
-      </div>
-      <div class="grid">
-        <p class="lede">Minimal HQ for LindaData work: open the priority app, route a command, check the review standard, and move on.</p>
-        <div class="actions">
-          <a class="button" href="https://lindadata.github.io/field-copilot-pro/app/today/">Open HVAC app</a>
-          <a class="button secondary" href="/company/Review_Layer_Standard.md">Review standard</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section cards" aria-label="Today cards">
-      <article class="card">
-        <p class="eyebrow">Priority</p>
-        <h2>HVAC first</h2>
-        <p>Use the in-app review layer on the actual HVAC screen. No detached review workspace.</p>
-      </article>
-      <article class="card">
-        <p class="eyebrow">Registry</p>
-        <h2 id="registryCount">Loading</h2>
-        <p id="registryMeta">Reading project registry…</p>
-      </article>
-      <article class="card">
-        <p class="eyebrow">Review sync</p>
-        <h2 id="syncHeadline">Checking</h2>
-        <p id="syncMeta">Testing the review worker health endpoint.</p>
-      </article>
-    </section>
-
-    <section class="section" id="projects">
-      <div class="section-head">
+  <main class="shell" id="top">
+    <section class="hero">
+      <div class="hero-top">
         <div>
-          <p class="eyebrow">Portfolio</p>
-          <h2>Projects</h2>
+          <p class="eyebrow">LindaData HQ</p>
+          <h1>Work board</h1>
         </div>
-        <a class="button ghost" href="https://github.com/LindaData/LindaData.github.io/blob/master/hq/data/projects.json">Edit registry</a>
-      </div>
-      <div class="toolbar">
-        <input class="search" id="search" type="search" placeholder="Search projects, owners, status…" autocomplete="off">
-        <div class="filters" role="toolbar" aria-label="Project filters">
-          <button class="filter active" type="button" data-filter="active">Active</button>
-          <button class="filter" type="button" data-filter="hot">Hot</button>
-          <button class="filter" type="button" data-filter="hold">Hold</button>
-          <button class="filter" type="button" data-filter="private">Private</button>
-          <button class="filter" type="button" data-filter="all">All</button>
+        <div class="card-actions">
+          <a href="https://lindadata.github.io/field-copilot-pro/app/today/">Open HVAC app</a>
+          <a href="/company/Review_Layer_Standard.md">Review standard</a>
+          <a href="https://github.com/LindaData/LindaData.github.io/blob/master/hq/data/projects.json">Edit registry</a>
         </div>
       </div>
-      <div class="grid project-grid" id="projectGrid"><div class="empty">Loading projects…</div></div>
+      <p>Jira-style board for the LindaData company. Cards come from the GitHub project registry. Buttons open real links. Review happens inside the app screen, not a detached workspace.</p>
     </section>
 
-    <section class="section command-grid grid" id="command">
-      <section class="command">
-        <p class="eyebrow">Command</p>
-        <h2>Send work into HQ</h2>
-        <p class="small">This submits to the GitHub-backed HQ inbox. If sync fails, the draft stays here.</p>
+    <section class="toolbar" id="board" aria-label="Board controls">
+      <div class="toolbar-row">
+        <input class="search" id="search" type="search" placeholder="Search cards, owners, status…" autocomplete="off">
+        <div class="health"><span class="dot" id="healthDot"></span><span id="healthText">Checking review sync…</span></div>
+      </div>
+      <div class="tabs" role="toolbar" aria-label="Board filters">
+        <button class="tab active" type="button" data-filter="all">All cards</button>
+        <button class="tab" type="button" data-filter="active">Active only</button>
+        <button class="tab" type="button" data-filter="review">Review</button>
+        <button class="tab" type="button" data-filter="private">Private</button>
+        <button class="tab" type="button" data-filter="data">Data</button>
+      </div>
+    </section>
+
+    <section class="board-wrap" aria-label="LindaData project board">
+      <div class="board" id="boardGrid">
+        <div class="lane"><div class="lane-head"><div class="lane-title"><strong>Now</strong><span>Loading…</span></div><span class="count">0</span></div><div class="cards"><div class="empty">Loading cards…</div></div></div>
+        <div class="lane"><div class="lane-head"><div class="lane-title"><strong>In progress</strong><span>Loading…</span></div><span class="count">0</span></div><div class="cards"><div class="empty">Loading cards…</div></div></div>
+        <div class="lane"><div class="lane-head"><div class="lane-title"><strong>Next</strong><span>Loading…</span></div><span class="count">0</span></div><div class="cards"><div class="empty">Loading cards…</div></div></div>
+        <div class="lane"><div class="lane-head"><div class="lane-title"><strong>Hold</strong><span>Loading…</span></div><span class="count">0</span></div><div class="cards"><div class="empty">Loading cards…</div></div></div>
+        <div class="lane"><div class="lane-head"><div class="lane-title"><strong>Done</strong><span>Loading…</span></div><span class="count">0</span></div><div class="cards"><div class="empty">Loading cards…</div></div></div>
+      </div>
+    </section>
+
+    <section class="panel-grid" id="command">
+      <section class="panel">
+        <div class="panel-head">
+          <div><p class="eyebrow">Command</p><h2>Send work into HQ</h2></div>
+          <a class="button secondary" href="https://github.com/LindaData/field-copilot-pro/issues/61">Inbox #61</a>
+        </div>
         <form id="commandForm">
           <div class="form-grid">
             <div><label for="projectSelect">Project</label><select id="projectSelect" required></select></div>
-            <div><label for="kindSelect">Type</label><select id="kindSelect" required><option>Fix</option><option>Review layer</option><option>Design</option><option>Test</option><option>Decision</option><option>Security</option></select></div>
+            <div><label for="kindSelect">Type</label><select id="kindSelect" required><option>Fix</option><option>Design</option><option>Review layer</option><option>Test</option><option>Decision</option><option>Security</option></select></div>
             <div><label for="prioritySelect">Priority</label><select id="prioritySelect" required><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option><option value="blocker">Blocker</option></select></div>
           </div>
-          <div><label for="note">Note</label><textarea id="note" placeholder="Example: Redesign HQ to be minimal. Every visible button must do exactly what it says."></textarea></div>
-          <div class="actions">
+          <div><label for="note">Work note</label><textarea id="note" placeholder="Example: Move this card to the right lane and make the review CTA obvious on iPhone."></textarea></div>
+          <div class="card-actions">
             <button class="button" id="sendButton" type="submit">Send to HQ inbox</button>
             <button class="button secondary" id="copyButton" type="button">Copy draft</button>
           </div>
-          <p class="notice" id="commandStatus">Ready. Nothing is final until GitHub confirms the note.</p>
+          <p class="notice" id="commandStatus">Ready. If GitHub sync fails, this draft stays here.</p>
         </form>
       </section>
 
-      <aside class="inbox">
-        <p class="eyebrow">Inbox</p>
-        <h2>Review notes</h2>
-        <p class="small">Use the live inbox for durable notes. The feed button reads from the same worker path when available.</p>
-        <div class="actions" style="margin:12px 0">
+      <aside class="panel">
+        <div class="panel-head">
+          <div><p class="eyebrow">Inbox feed</p><h2>Latest notes</h2></div>
           <button class="button secondary" id="loadFeed" type="button">Load feed</button>
-          <a class="button ghost" href="https://github.com/LindaData/field-copilot-pro/issues/61">Open inbox #61</a>
-          <a class="button ghost" href="https://github.com/LindaData/field-copilot-pro/issues/67">Open latest #67</a>
+        </div>
+        <div class="card-actions" style="margin-bottom:10px">
+          <a href="https://github.com/LindaData/field-copilot-pro/issues/61">HQ inbox #61</a>
+          <a href="https://github.com/LindaData/field-copilot-pro/issues/67">Latest inbox #67</a>
         </div>
         <div class="feed" id="feedBox">Feed not loaded.</div>
       </aside>
     </section>
 
-    <section class="section" id="company">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">Company OS</p>
-          <h2>Docs</h2>
-        </div>
-        <a class="button ghost" href="https://github.com/LindaData/LindaData.github.io/tree/master/company">Open folder</a>
+    <section class="panel" id="company" style="margin-top:16px">
+      <div class="panel-head">
+        <div><p class="eyebrow">Company OS</p><h2>Operating docs</h2></div>
+        <a class="button secondary" href="https://github.com/LindaData/LindaData.github.io/tree/master/company">Open folder</a>
       </div>
-      <div class="grid doc-grid" id="docGrid"><div class="empty">Loading docs…</div></div>
+      <div class="docs" id="docGrid"><div class="empty">Loading docs…</div></div>
     </section>
 
-    <p class="footer">Public-safe HQ. Source of truth: GitHub. Review standard: HVAC-style in-app overlay.</p>
+    <p class="footer">Public-safe board. Source of truth: GitHub registry. Review standard: HVAC-style in-app overlay.</p>
   </main>
 
   <nav class="mobilebar" aria-label="Mobile shortcuts">
-    <a href="#today">Today</a>
-    <a href="#projects">Projects</a>
+    <a href="#board">Board</a>
     <a href="#command">Command</a>
-    <a href="#company">Company</a>
+    <a href="#company">Docs</a>
+    <a href="https://lindadata.github.io/field-copilot-pro/app/today/">HVAC</a>
   </nav>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <noscript>
-    <div class="wrap notice" style="margin-bottom:80px">JavaScript is off. Core links still work: <a href="https://lindadata.github.io/field-copilot-pro/app/today/">HVAC app</a>, <a href="https://github.com/LindaData/field-copilot-pro/issues/61">HQ inbox</a>, <a href="/company/Review_Layer_Standard.md">Review standard</a>.</div>
-  </noscript>
+  <noscript><div class="shell"><div class="notice">JavaScript is off. Use the direct links: <a href="https://lindadata.github.io/field-copilot-pro/app/today/">HVAC app</a>, <a href="https://github.com/LindaData/field-copilot-pro/issues/61">HQ inbox</a>, <a href="/company/Review_Layer_Standard.md">Review standard</a>.</div></div></noscript>
 
 <script>
 (() => {
@@ -237,12 +238,19 @@
   const targetRepo = "LindaData/field-copilot-pro";
   const sourceRepo = "LindaData/LindaData.github.io";
   const targetIssue = "61";
-  const state = { data: { projects: [], companyDocs: [], updated: "" }, filter: "active", query: "" };
+  const lanes = [
+    { id:"now", title:"Now", hint:"Do first" },
+    { id:"active", title:"In progress", hint:"Build / review" },
+    { id:"next", title:"Next", hint:"Backlog" },
+    { id:"hold", title:"Hold", hint:"Parked" },
+    { id:"done", title:"Done", hint:"Closed / reference" }
+  ];
+  const state = { data:{ projects:[], companyDocs:[], updated:"" }, filter:"all", query:"" };
   const $ = (id) => document.getElementById(id);
   const esc = (value) => String(value ?? "").replace(/[&<>'"]/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"}[c]));
-  const urlEsc = (value) => esc(value || "#");
-  const sessionId = localStorage.getItem("lindadata-hq-session-v2") || crypto.randomUUID();
-  localStorage.setItem("lindadata-hq-session-v2", sessionId);
+  const makeId = () => (crypto && crypto.randomUUID ? crypto.randomUUID() : `hq-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+  const sessionId = localStorage.getItem("lindadata-hq-session-v3") || makeId();
+  localStorage.setItem("lindadata-hq-session-v3", sessionId);
 
   function toast(message) {
     const node = $("toast");
@@ -251,125 +259,129 @@
     setTimeout(() => node.classList.remove("show"), 2800);
   }
 
+  function haystack(p) {
+    return [p.title, p.key, p.category, p.status, p.priority, p.visibility, p.summary, p.morning, ...(p.owners || [])].join(" ").toLowerCase();
+  }
+
   function toneClass(value) {
     const text = String(value || "").toLowerCase();
     if (text.includes("hot") || text.includes("priority 1") || text.includes("blocker")) return "hot";
     if (text.includes("high") || text.includes("medium") || text.includes("active") || text.includes("review")) return "high";
-    if (text.includes("hold") || text.includes("pause") || text.includes("private")) return "hold";
-    if (text.includes("closed") || text.includes("legacy") || text.includes("ignore")) return "closed";
+    if (text.includes("hold") || text.includes("pause") || text.includes("private") || text.includes("planning")) return "hold";
+    if (text.includes("closed") || text.includes("legacy") || text.includes("reference")) return "closed";
     return "live";
   }
 
-  function isActiveProject(p) {
-    const hay = [p.priority, p.status, p.visibility, p.category, p.title].join(" ").toLowerCase();
-    if (hay.includes("closed") || hay.includes("legacy") || hay.includes("ignore")) return false;
-    if (hay.includes("hold") || hay.includes("paused")) return false;
-    return true;
-  }
-
-  function sortProjects(projects) {
-    const rank = (p) => {
-      const hay = [p.priority, p.status, p.title].join(" ").toLowerCase();
-      if (p.key === "hvac-copilot") return -10;
-      if (hay.includes("hot") || hay.includes("priority 1")) return 0;
-      if (hay.includes("high")) return 1;
-      if (hay.includes("medium") || hay.includes("review")) return 2;
-      if (hay.includes("hold") || hay.includes("paused")) return 5;
-      if (hay.includes("closed") || hay.includes("legacy")) return 8;
-      return 3;
-    };
-    return [...projects].sort((a,b) => rank(a) - rank(b) || String(a.title).localeCompare(String(b.title)));
+  function laneFor(p) {
+    const text = haystack(p);
+    if (p.key === "hvac-copilot" || text.includes("priority 1") || text.includes("hot")) return "now";
+    if (text.includes("closed") || text.includes("legacy") || text.includes("reference")) return "done";
+    if (text.includes("hold") || text.includes("paused") || text.includes("private") || text.includes("not review-ready")) return "hold";
+    if (text.includes("planning") || text.includes("repo visible") || text.includes("backlog")) return "next";
+    return "active";
   }
 
   function matchesFilter(p) {
-    const hay = [p.priority, p.status, p.visibility, p.category, p.title, ...(p.owners || [])].join(" ").toLowerCase();
+    const text = haystack(p);
     const q = state.query.trim().toLowerCase();
-    if (q && !hay.includes(q) && !String(p.summary || "").toLowerCase().includes(q)) return false;
+    if (q && !text.includes(q)) return false;
     if (state.filter === "all") return true;
-    if (state.filter === "active") return isActiveProject(p);
-    return hay.includes(state.filter);
+    if (state.filter === "active") return ["now","active"].includes(laneFor(p));
+    return text.includes(state.filter);
   }
 
-  function renderProjects() {
-    const projects = sortProjects(state.data.projects || []);
-    const visible = projects.filter(matchesFilter);
-    const grid = $("projectGrid");
-    if (!visible.length) {
-      grid.innerHTML = '<div class="empty">No projects match this view.</div>';
-      return;
-    }
-    grid.innerHTML = visible.map((p) => {
-      const links = (p.links || []).filter((x) => x && x.url).slice(0, 4);
-      return `<article class="project">
-        <div class="project-top">
-          <div class="chips"><span class="status ${toneClass(p.priority)}">${esc(p.priority || "Status")}</span><span class="status ${toneClass(p.status)}">${esc(p.status || "Open")}</span></div>
-          <h3>${esc(p.title)}</h3>
-          <p>${esc(p.summary || "")}</p>
-        </div>
-        <p class="small">Owners: ${esc((p.owners || []).join(" + ") || "TBD")}</p>
-        <div class="links">${links.map((x, i) => `<a class="button ${i ? "secondary" : ""}" href="${urlEsc(x.url)}">${esc(x.label || "Open")}</a>`).join("")}</div>
-      </article>`;
+  function sortCards(a,b) {
+    const rank = (p) => {
+      const text = haystack(p);
+      if (p.key === "hvac-copilot") return -10;
+      if (text.includes("hot") || text.includes("priority 1")) return 0;
+      if (text.includes("high")) return 1;
+      if (text.includes("medium") || text.includes("review")) return 2;
+      if (text.includes("low")) return 4;
+      return 3;
+    };
+    return rank(a) - rank(b) || String(a.title).localeCompare(String(b.title));
+  }
+
+  function renderBoard() {
+    const grouped = Object.fromEntries(lanes.map((lane) => [lane.id, []]));
+    (state.data.projects || []).filter(matchesFilter).sort(sortCards).forEach((p) => grouped[laneFor(p)].push(p));
+    $("boardGrid").innerHTML = lanes.map((lane) => {
+      const cards = grouped[lane.id] || [];
+      return `<section class="lane" aria-label="${esc(lane.title)} cards">
+        <div class="lane-head"><div class="lane-title"><strong>${esc(lane.title)}</strong><span>${esc(lane.hint)}</span></div><span class="count">${cards.length}</span></div>
+        <div class="cards">${cards.length ? cards.map(renderCard).join("") : `<div class="empty">No cards.</div>`}</div>
+      </section>`;
     }).join("");
+  }
+
+  function renderCard(p) {
+    const links = (p.links || []).filter((x) => x && x.url).slice(0,4);
+    return `<article class="card">
+      <div class="card-top"><span class="key">${esc(p.key || p.category || "card")}</span><span class="pill ${toneClass(p.priority)}">${esc(p.priority || "Open")}</span></div>
+      <div class="title">${esc(p.title)}</div>
+      <p class="desc">${esc(p.summary || "")}</p>
+      <div class="meta"><span class="pill ${toneClass(p.status)}">${esc(p.status || "Open")}</span><span class="pill">${esc(p.category || "Project")}</span><span class="pill ${toneClass(p.visibility)}">${esc(p.visibility || "public-safe")}</span></div>
+      <div class="owner">Owner: ${esc((p.owners || []).join(" + ") || "TBD")}</div>
+      ${p.morning ? `<p class="small">${esc(p.morning)}</p>` : ""}
+      ${links.length ? `<div class="card-actions">${links.map((link) => `<a href="${esc(link.url)}">${esc(link.label || "Open")}</a>`).join("")}</div>` : `<div class="empty">No public link.</div>`}
+    </article>`;
   }
 
   function renderDocs() {
     const docs = state.data.companyDocs || [];
-    $("docGrid").innerHTML = docs.length ? docs.map((doc) => `<article class="doc"><h3>${esc(doc.title)}</h3><p>${esc(doc.summary || "")}</p><div class="actions" style="margin-top:12px"><a class="button secondary" href="${urlEsc(doc.url)}">Open</a></div></article>`).join("") : '<div class="empty">No company docs found.</div>';
+    $("docGrid").innerHTML = docs.length ? docs.map((doc) => `<div class="doc"><div><h3>${esc(doc.title)}</h3><p class="small">${esc(doc.summary || "")}</p></div><a href="${esc(doc.url)}">Open</a></div>`).join("") : '<div class="empty">No docs found.</div>';
   }
 
-  function renderProjectSelect() {
-    const select = $("projectSelect");
-    select.innerHTML = sortProjects(state.data.projects || []).map((p) => `<option>${esc(p.title)}</option>`).join("");
+  function renderSelect() {
+    const projects = [...(state.data.projects || [])].sort(sortCards);
+    $("projectSelect").innerHTML = projects.map((p) => `<option>${esc(p.title)}</option>`).join("");
   }
 
   async function loadRegistry() {
     try {
-      const res = await fetch(registryPath, { cache: "no-store" });
+      const res = await fetch(registryPath, { cache:"no-store" });
       if (!res.ok) throw new Error(`Registry HTTP ${res.status}`);
       state.data = await res.json();
-      const count = (state.data.projects || []).length;
-      $("registryCount").textContent = `${count} projects`;
-      $("registryMeta").textContent = `Updated ${state.data.updated || "unknown"}. Data source loaded.`;
-      renderProjects();
+      renderBoard();
       renderDocs();
-      renderProjectSelect();
-    } catch (err) {
-      $("registryCount").textContent = "Registry error";
-      $("registryMeta").textContent = err.message;
-      $("projectGrid").innerHTML = '<div class="empty">Project registry could not load. Use the direct links at the top.</div>';
-      toast("Project registry did not load.");
+      renderSelect();
+    } catch (error) {
+      $("boardGrid").innerHTML = `<section class="lane"><div class="lane-head"><div class="lane-title"><strong>Registry error</strong><span>${esc(error.message)}</span></div><span class="count">0</span></div><div class="cards"><div class="empty">Use the direct HVAC and inbox links above.</div></div></section>`;
+      toast("Project registry failed to load.");
     }
   }
 
   async function checkSync() {
-    const healthUrl = endpoint.replace(/\/review-note$/, "/health");
+    const dot = $("healthDot");
+    const text = $("healthText");
     try {
-      const res = await fetch(healthUrl, { cache: "no-store" });
-      if (!res.ok) throw new Error(`Health HTTP ${res.status}`);
-      const json = await res.json().catch(() => ({ ok: true }));
-      if (json.ok === false) throw new Error(json.error || json.message || "Worker returned not ok");
-      if (json.githubTokenConfigured === false) throw new Error("GitHub token missing in worker");
-      $("syncHeadline").textContent = "Live";
-      $("syncMeta").textContent = `Worker ready. HQ inbox #${targetIssue}.`;
-    } catch (err) {
-      $("syncHeadline").textContent = "Check failed";
-      $("syncMeta").textContent = `${err.message}. Command submit will still report exact success or failure.`;
+      const res = await fetch(endpoint.replace(/\/review-note$/, "/health"), { cache:"no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json().catch(() => ({ ok:true }));
+      if (json.ok === false) throw new Error(json.error || json.message || "Worker not ok");
+      if (json.githubTokenConfigured === false) throw new Error("GitHub token missing");
+      dot.className = "dot live";
+      text.textContent = `Review sync live · inbox #${targetIssue}`;
+    } catch (error) {
+      dot.className = "dot bad";
+      text.textContent = `Review sync check failed · ${error.message}`;
     }
   }
 
-  function localDraftKey() { return "lindadata-hq-command-draft-v2"; }
+  function draftKey() { return "lindadata-hq-board-draft-v1"; }
   function saveDraft() {
-    localStorage.setItem(localDraftKey(), JSON.stringify({
-      note: $("note").value,
+    localStorage.setItem(draftKey(), JSON.stringify({
       project: $("projectSelect").value,
       kind: $("kindSelect").value,
       priority: $("prioritySelect").value,
+      note: $("note").value,
       updatedAt: new Date().toISOString()
     }));
   }
   function restoreDraft() {
     try {
-      const draft = JSON.parse(localStorage.getItem(localDraftKey()) || "null");
+      const draft = JSON.parse(localStorage.getItem(draftKey()) || "null");
       if (!draft) return;
       $("note").value = draft.note || "";
     } catch {}
@@ -377,47 +389,50 @@
 
   async function sendCommand(event) {
     event.preventDefault();
-    const note = $("note").value.trim();
-    if (!note) { toast("Write a note first."); return; }
+    const noteText = $("note").value.trim();
+    if (!noteText) { toast("Write a work note first."); return; }
     const button = $("sendButton");
     const status = $("commandStatus");
     const createdAt = new Date().toISOString();
+    const project = $("projectSelect").value;
+    const kind = $("kindSelect").value;
+    const priority = $("prioritySelect").value;
     const payload = {
-      event: "review_note",
-      repo: targetRepo,
+      event:"review_note",
+      repo:targetRepo,
       sourceRepo,
-      inboxIssue: targetIssue,
+      inboxIssue:targetIssue,
       sessionId,
-      pageLabel: "LindaData HQ",
-      routePath: location.pathname,
-      url: location.href,
-      userAgent: navigator.userAgent,
-      viewport: { width: innerWidth, height: innerHeight },
+      pageLabel:"LindaData Work Board",
+      routePath:location.pathname,
+      url:location.href,
+      userAgent:navigator.userAgent,
+      viewport:{ width:innerWidth, height:innerHeight },
       createdAt,
-      note: {
-        note: `Type: ${$("kindSelect").value}\nProject: ${$("projectSelect").value}\nPriority: ${$("prioritySelect").value}\n\n${note}`,
-        kind: "hq-command",
-        priority: $("prioritySelect").value,
-        pageLabel: `LindaData HQ / ${$("projectSelect").value}`,
-        path: location.pathname,
-        contextSummary: "Minimal HQ command form",
+      note:{
+        note:`Board command\nProject: ${project}\nType: ${kind}\nPriority: ${priority}\n\n${noteText}`,
+        kind:"hq-command",
+        priority,
+        pageLabel:`LindaData HQ / ${project}`,
+        path:location.pathname,
+        contextSummary:"Jira-style HQ board command form",
         createdAt,
-        viewport: { width: innerWidth, height: innerHeight }
+        viewport:{ width:innerWidth, height:innerHeight }
       }
     };
     button.disabled = true;
     status.textContent = "Sending to GitHub-backed HQ inbox…";
     saveDraft();
     try {
-      const res = await fetch(endpoint, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) });
+      const res = await fetch(endpoint, { method:"POST", headers:{ "content-type":"application/json" }, body:JSON.stringify(payload) });
       const json = await res.json().catch(() => ({}));
       if (!res.ok || !json.ok) throw new Error(json.error || json.message || `HTTP ${res.status}`);
       $("note").value = "";
-      localStorage.removeItem(localDraftKey());
+      localStorage.removeItem(draftKey());
       status.textContent = `Sent to HQ inbox #${targetIssue}. Comment ${json.id || "created"}.`;
       toast("Command sent.");
-    } catch (err) {
-      status.textContent = `Submit failed. Draft stayed here. ${err.message}`;
+    } catch (error) {
+      status.textContent = `Submit failed. Draft stayed here. ${error.message}`;
       toast("Submit failed. Draft kept.");
     } finally {
       button.disabled = false;
@@ -426,34 +441,30 @@
 
   async function copyDraft() {
     const text = `Project: ${$("projectSelect").value}\nType: ${$("kindSelect").value}\nPriority: ${$("prioritySelect").value}\n\n${$("note").value}`;
-    try {
-      await navigator.clipboard.writeText(text);
-      toast("Draft copied.");
-    } catch {
-      toast("Clipboard blocked by browser.");
-    }
+    try { await navigator.clipboard.writeText(text); toast("Draft copied."); }
+    catch { toast("Clipboard blocked by browser."); }
   }
 
   async function loadFeed() {
     const box = $("feedBox");
     box.textContent = "Loading feed…";
     try {
-      const res = await fetch(feedUrl, { cache: "no-store" });
+      const res = await fetch(feedUrl, { cache:"no-store" });
       const raw = await res.text();
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       box.textContent = raw.trim() || "No notes found.";
-    } catch (err) {
-      box.textContent = `Could not load feed. ${err.message}`;
+    } catch (error) {
+      box.textContent = `Could not load feed. ${error.message}`;
     }
   }
 
-  document.querySelectorAll(".filter").forEach((btn) => btn.addEventListener("click", () => {
-    document.querySelectorAll(".filter").forEach((x) => x.classList.remove("active"));
-    btn.classList.add("active");
-    state.filter = btn.dataset.filter;
-    renderProjects();
+  document.querySelectorAll(".tab").forEach((tab) => tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach((x) => x.classList.remove("active"));
+    tab.classList.add("active");
+    state.filter = tab.dataset.filter;
+    renderBoard();
   }));
-  $("search").addEventListener("input", (event) => { state.query = event.target.value; renderProjects(); });
+  $("search").addEventListener("input", (event) => { state.query = event.target.value; renderBoard(); });
   $("commandForm").addEventListener("submit", sendCommand);
   $("copyButton").addEventListener("click", copyDraft);
   $("loadFeed").addEventListener("click", loadFeed);
