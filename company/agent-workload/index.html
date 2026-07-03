@@ -3,89 +3,68 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LindaData Agent Workload</title>
+  <title>Agent Workload — LindaData</title>
   <style>
-    :root{color-scheme:dark;--bg:#050816;--panel:#0f172a;--panel2:#111827;--line:rgba(148,163,184,.25);--ink:#f8fafc;--muted:#b8c3d9;--soft:#8290aa;--cyan:#67e8f9;--green:#34d399;--amber:#fbbf24;--rose:#fb7185;--r:20px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 10% 0,rgba(96,165,250,.28),transparent 30rem),linear-gradient(145deg,#050816,#0b1120 60%,#111827);color:var(--ink)}a{color:inherit}.shell{width:min(1180px,calc(100% - 24px));margin:auto;padding:18px 0 80px}.top{position:sticky;top:0;z-index:10;margin:0 -12px 18px;padding:12px;background:rgba(5,8,22,.86);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}.topin{width:min(1180px,100%);margin:auto;display:flex;gap:10px;align-items:center;justify-content:space-between}.brand{text-decoration:none;font-weight:950}.btn,button{border:0;border-radius:999px;min-height:42px;padding:.7rem .9rem;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--green));color:#06111f;text-decoration:none;cursor:pointer}.btn.secondary,button.secondary{background:rgba(255,255,255,.07);border:1px solid var(--line);color:var(--ink)}.hero,.card,.panel{border:1px solid var(--line);border-radius:var(--r);background:rgba(15,23,42,.82);box-shadow:0 20px 70px rgba(0,0,0,.28);padding:16px}.hero{display:grid;gap:12px;margin-bottom:14px}.eyebrow{margin:0;color:var(--soft);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;font-weight:950}.hero h1,.section h2{margin:0;letter-spacing:-.05em;line-height:.95}.hero h1{font-size:clamp(2.1rem,9vw,5.4rem)}p{color:var(--muted);line-height:1.55}.grid{display:grid;gap:12px}.metrics{grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:14px}.metric strong{display:block;font-size:2.25rem;letter-spacing:-.07em}.metric span{color:var(--soft);font-size:.86rem}.section{margin-top:16px}.section h2{font-size:clamp(1.45rem,6vw,2.6rem);margin-bottom:8px}.form{display:grid;gap:10px}.row{display:grid;gap:10px}label{display:grid;gap:6px;color:var(--muted);font-weight:850;font-size:.88rem}input,select,textarea{width:100%;border:1px solid var(--line);border-radius:14px;background:rgba(2,6,23,.75);color:var(--ink);padding:12px}textarea{min-height:90px}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:16px}table{width:100%;border-collapse:collapse;min-width:760px}th,td{padding:11px;border-bottom:1px solid rgba(148,163,184,.16);text-align:left;vertical-align:top}th{color:var(--soft);font-size:.78rem;text-transform:uppercase;letter-spacing:.08em}td{color:var(--muted)}.pill{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:.25rem .55rem;font-size:.75rem;color:#bfdbfe;background:rgba(96,165,250,.13)}.warn{color:#fde68a}.actions{display:flex;gap:8px;flex-wrap:wrap}@media(min-width:780px){.hero{grid-template-columns:1fr .55fr}.metrics{grid-template-columns:repeat(4,1fr)}.row{grid-template-columns:repeat(3,1fr)}.main{grid-template-columns:.8fr 1.2fr}}
+    :root{color-scheme:dark;--bg:#080b12;--card:#10141f;--card2:#151a28;--line:#252c3a;--text:#f7f8fb;--muted:#9aa5b8;--soft:#6f7a90;--accent:#8ee8d8;--warn:#f7d774;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text)}a{color:inherit}.wrap{width:min(1120px,calc(100% - 28px));margin:auto;padding:18px 0 64px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:28px}.brand{text-decoration:none;font-weight:900}.nav{display:flex;gap:8px;flex-wrap:wrap}.btn,button{border:1px solid var(--line);background:var(--card2);color:var(--text);border-radius:999px;padding:.66rem .9rem;font-weight:800;text-decoration:none;cursor:pointer}.btn.primary,button.primary{background:var(--accent);border-color:var(--accent);color:#06110f}.hero{display:grid;gap:12px;margin:22px 0 20px}.kicker{margin:0;color:var(--soft);font-size:.76rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}h1{font-size:clamp(2.3rem,9vw,5.2rem);line-height:.92;letter-spacing:-.07em;margin:0;max-width:10ch}p{color:var(--muted);line-height:1.55}.note{border:1px solid var(--line);background:var(--card);border-radius:18px;padding:14px;color:var(--muted)}.note strong{color:var(--warn)}.grid{display:grid;gap:10px}.metrics{grid-template-columns:repeat(2,minmax(0,1fr));margin:18px 0}.card{border:1px solid var(--line);background:var(--card);border-radius:20px;padding:15px}.metric strong{display:block;font-size:2rem;letter-spacing:-.06em}.metric span{color:var(--soft);font-size:.85rem}.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:14px 0}.search{flex:1;min-width:210px;border:1px solid var(--line);background:#0b0f18;color:var(--text);border-radius:999px;padding:.72rem .9rem}details{border:1px solid var(--line);background:var(--card);border-radius:20px;padding:12px;margin:12px 0}summary{cursor:pointer;font-weight:900}.form{display:grid;gap:10px;margin-top:12px}.row{display:grid;gap:10px}label{display:grid;gap:6px;color:var(--muted);font-size:.88rem;font-weight:800}input,select,textarea{width:100%;border:1px solid var(--line);background:#0b0f18;color:var(--text);border-radius:14px;padding:.78rem}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:18px;background:var(--card)}table{width:100%;border-collapse:collapse;min-width:760px}th,td{padding:12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{font-size:.76rem;color:var(--soft);letter-spacing:.08em;text-transform:uppercase}td{color:var(--muted)}td strong{color:var(--text)}.pill{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:.2rem .55rem;color:var(--accent);font-size:.75rem}.right{text-align:right}.empty{padding:20px;color:var(--soft)}@media(min-width:760px){.hero{grid-template-columns:1fr .72fr;align-items:end}.metrics{grid-template-columns:repeat(4,1fr)}.row{grid-template-columns:repeat(3,1fr)}}
   </style>
 </head>
 <body>
-  <header class="top"><div class="topin"><a class="brand" href="/">LindaData HQ</a><a class="btn secondary" href="/#company">Company docs</a></div></header>
-  <main class="shell">
+  <main class="wrap">
+    <header class="top">
+      <a class="brand" href="/">LindaData HQ</a>
+      <nav class="nav"><a class="btn" href="/#company">Company</a><a class="btn" href="/company/Company_Org.md">Org</a><a class="btn" href="/company/agent-workload/usage-log.json">Usage JSON</a></nav>
+    </header>
+
     <section class="hero">
-      <div>
-        <p class="eyebrow">Company Org telemetry</p>
-        <h1>Agent workload & token tracker</h1>
-        <p>Track which agents are working, how many tasks they touch, and estimated tokens used. This page is public-safe and local-first until real telemetry is connected.</p>
-      </div>
-      <aside class="panel">
-        <p class="eyebrow">Important</p>
-        <p class="warn">Live ChatGPT token usage is not automatically available to this static GitHub Pages site. Current counts are manual/estimated unless connected later to API logs or a private telemetry backend.</p>
-      </aside>
+      <div><p class="kicker">Agent telemetry</p><h1>Workload tracker</h1><p>Minimal ledger for agent work, owner lanes, proof links, minutes, and token estimates.</p></div>
+      <div class="note"><strong>Token counts are estimates.</strong> This static page reads a repo-backed usage log plus local entries. Exact automatic token telemetry needs a private backend or API logs later.</div>
     </section>
 
     <section class="metrics grid" id="metrics"></section>
 
-    <section class="grid main">
-      <form class="card form" id="logForm">
-        <p class="eyebrow">Add work log</p>
-        <div class="row">
-          <label>Date<input id="date" type="date" required></label>
-          <label>Executive owner<select id="owner" required></select></label>
-          <label>Agent<select id="agent" required></select></label>
-        </div>
-        <label>Task / work packet<input id="task" placeholder="Example: Review layer QA smoke test" required></label>
-        <div class="row">
-          <label>Minutes worked<input id="minutes" type="number" min="0" step="1" value="0"></label>
-          <label>Input tokens<input id="inputTokens" type="number" min="0" step="1" value="0"></label>
-          <label>Output tokens<input id="outputTokens" type="number" min="0" step="1" value="0"></label>
-        </div>
-        <label>Proof link<input id="proof" placeholder="GitHub issue, PR, commit, review note, or page link"></label>
-        <label>Notes<textarea id="notes" placeholder="Keep it short. What was done? What changed?"></textarea></label>
-        <div class="actions"><button type="submit">Save local log</button><button type="button" class="secondary" id="exportJson">Export JSON</button><button type="button" class="secondary" id="clearLogs">Clear local logs</button></div>
-      </form>
+    <div class="toolbar">
+      <input class="search" id="search" placeholder="Search agent, owner, task, proof...">
+      <div class="nav"><button id="copyJson">Copy JSON</button><button id="clearLocal">Clear local</button></div>
+    </div>
 
-      <section class="card">
-        <p class="eyebrow">Agent totals</p>
-        <div class="tablewrap"><table><thead><tr><th>Agent</th><th>Owner</th><th>Tasks</th><th>Minutes</th><th>Tokens</th><th>Last task</th></tr></thead><tbody id="summaryBody"></tbody></table></div>
-      </section>
+    <details>
+      <summary>Add manual entry</summary>
+      <form class="form" id="form">
+        <div class="row"><label>Date<input id="date" type="date" required></label><label>Owner<select id="owner" required></select></label><label>Agent<select id="agent" required></select></label></div>
+        <label>Task<input id="task" required placeholder="What did this agent do?"></label>
+        <div class="row"><label>Minutes<input id="minutes" type="number" min="0" value="0"></label><label>Input tokens<input id="inputTokens" type="number" min="0" value="0"></label><label>Output tokens<input id="outputTokens" type="number" min="0" value="0"></label></div>
+        <label>Proof link<input id="proof" placeholder="Issue, PR, commit, doc, or review note"></label>
+        <label>Notes<textarea id="notes" placeholder="Optional short note"></textarea></label>
+        <button class="primary" type="submit">Save on this device</button>
+      </form>
+    </details>
+
+    <section class="card">
+      <p class="kicker">By agent</p>
+      <div class="tablewrap"><table><thead><tr><th>Agent</th><th>Owner</th><th class="right">Tasks</th><th class="right">Minutes</th><th class="right">Tokens</th><th>Last work</th></tr></thead><tbody id="agentRows"></tbody></table></div>
     </section>
 
-    <section class="section card">
-      <p class="eyebrow">Raw work log</p>
-      <div class="tablewrap"><table><thead><tr><th>Date</th><th>Owner</th><th>Agent</th><th>Task</th><th>Min</th><th>Tokens</th><th>Proof</th></tr></thead><tbody id="logBody"></tbody></table></div>
+    <section class="card" style="margin-top:12px">
+      <p class="kicker">Ledger</p>
+      <div class="tablewrap"><table><thead><tr><th>Date</th><th>Owner</th><th>Agent</th><th>Task</th><th class="right">Min</th><th class="right">Tokens</th><th>Source</th><th>Proof</th></tr></thead><tbody id="entryRows"></tbody></table></div>
     </section>
   </main>
 
 <script>
-const owners=["Chief of Staff","Personal Assistant","CDO","CTO","CFO","CMO","COO","PRO","CHRO","CHO","CCO","CSO","CIO"];
-const agents={
-"Chief of Staff":["Priority Manager","Decision Tracker","Daily Command Brief Agent","Work Packet Manager"],
-"Personal Assistant":["Calendar Assistant","Email Assistant","Reminder Agent","Research Assistant","Shopping / Errand Agent","Travel Assistant"],
-"CDO":["Data Analyst","Data Engineer","Statistician","Data Scientist","BI Dashboard Agent","Data Quality Agent"],
-"CTO":["Software Architect","Frontend Engineer","Backend Engineer","Full-Stack Engineer","DevOps / Cloud Engineer","GitHub / Codex Operator","QA Automation Agent"],
-"CFO":["Finance Analyst","Budget Agent","Pricing Agent","Revenue Model Agent"],
-"CMO":["Brand Agent","Content Agent","SEO Agent","Campaign Agent","Market Research Agent"],
-"COO":["Project Manager","Operations Agent","Workflow Agent","SOP Agent","Release Coordinator"],
-"PRO":["Product Manager","UX Agent","UI Agent","Review Layer Agent","Feedback Triage Agent","Accessibility Agent"],
-"CHRO":["Agent Training Agent","Role Design Agent","Performance Review Agent","Onboarding Agent"],
-"CHO":["Fitness Agent","Nutrition Agent","Sleep Agent","Routine Agent","Focus Agent"],
-"CCO":["Customer Support Agent","Customer Success Agent","CRM Agent","Voice of Customer Agent"],
-"CSO":["Authentication Agent","Privacy Agent","Permissions Agent","Security QA Agent","Secrets Management Agent"],
-"CIO":["HQ Dashboard Agent","Documentation Agent","Context Agent","Memory Agent","Knowledge Base Agent","File / Repo Librarian Agent"]
-};
-const key="lindadata-agent-workload-v1";
-const $=id=>document.getElementById(id);
-const esc=s=>String(s??"").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"}[c]));
-function logs(){try{return JSON.parse(localStorage.getItem(key)||"[]")}catch{return[]}}
-function save(xs){localStorage.setItem(key,JSON.stringify(xs.slice(0,1000)))}
-function fill(){owner.innerHTML=owners.map(x=>`<option>${esc(x)}</option>`).join("");updateAgents();date.valueAsDate=new Date()}
-function updateAgents(){agent.innerHTML=(agents[owner.value]||[]).map(x=>`<option>${esc(x)}</option>`).join("")}
-owner.addEventListener("change",updateAgents);
-logForm.addEventListener("submit",e=>{e.preventDefault();const input=+inputTokens.value||0,output=+outputTokens.value||0;const row={id:crypto.randomUUID(),date:date.value,owner:owner.value,agent:agent.value,task:task.value.trim(),minutes:+minutes.value||0,inputTokens:input,outputTokens:output,totalTokens:input+output,proof:proof.value.trim(),notes:notes.value.trim(),createdAt:new Date().toISOString()};save([row,...logs()]);logForm.reset();date.valueAsDate=new Date();fill();render()});
-exportJson.addEventListener("click",async()=>{const data=JSON.stringify(logs(),null,2);try{await navigator.clipboard.writeText(data);alert("Agent workload JSON copied.")}catch{const blob=new Blob([data],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="lindadata-agent-workload.json";a.click()}});
-clearLogs.addEventListener("click",()=>{if(confirm("Clear local workload logs on this device?")){save([]);render()}});
-function render(){const xs=logs();const totalTasks=xs.length,totalMinutes=xs.reduce((a,x)=>a+(+x.minutes||0),0),totalTokens=xs.reduce((a,x)=>a+(+x.totalTokens||0),0),activeAgents=new Set(xs.map(x=>x.agent)).size;metrics.innerHTML=[['Tasks',totalTasks],['Agents',activeAgents],['Minutes',totalMinutes],['Tokens',totalTokens.toLocaleString()]].map(x=>`<article class="card metric"><strong>${x[1]}</strong><span>${x[0]}</span></article>`).join("");const by={};for(const x of xs){const k=x.agent;by[k]??={agent:k,owner:x.owner,tasks:0,minutes:0,tokens:0,last:""};by[k].tasks++;by[k].minutes+=+x.minutes||0;by[k].tokens+=+x.totalTokens||0;if(!by[k].last)by[k].last=x.task}summaryBody.innerHTML=Object.values(by).sort((a,b)=>b.tokens-a.tokens||b.tasks-a.tasks).map(x=>`<tr><td><strong>${esc(x.agent)}</strong></td><td>${esc(x.owner)}</td><td>${x.tasks}</td><td>${x.minutes}</td><td>${x.tokens.toLocaleString()}</td><td>${esc(x.last)}</td></tr>`).join("")||`<tr><td colspan="6">No logs yet. Add the first work packet above.</td></tr>`;logBody.innerHTML=xs.map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.owner)}</td><td><span class="pill">${esc(x.agent)}</span></td><td>${esc(x.task)}</td><td>${x.minutes}</td><td>${(+x.totalTokens||0).toLocaleString()}</td><td>${x.proof?`<a href="${esc(x.proof)}">proof</a>`:""}</td></tr>`).join("")||`<tr><td colspan="7">No logs yet.</td></tr>`}
-fill();render();
+const ownerAgents={"Chief of Staff":["Priority Manager","Decision Tracker","Daily Command Brief Agent","Work Packet Manager"],"Personal Assistant":["Calendar Assistant","Email Assistant","Reminder Agent","Research Assistant","Shopping / Errand Agent","Travel Assistant"],"CDO":["Data Analyst","Data Engineer","Statistician","Data Scientist","BI Dashboard Agent","Data Quality Agent"],"CTO":["Software Architect","Frontend Engineer","Backend Engineer","Full-Stack Engineer","DevOps / Cloud Engineer","GitHub / Codex Operator","QA Automation Agent"],"CFO":["Finance Analyst","Budget Agent","Pricing Agent","Revenue Model Agent"],"CMO":["Brand Agent","Content Agent","SEO Agent","Campaign Agent","Market Research Agent"],"COO":["Project Manager","Operations Agent","Workflow Agent","SOP Agent","Release Coordinator"],"PRO":["Product Manager","UX Agent","UI Agent","Review Layer Agent","Feedback Triage Agent","Accessibility Agent"],"CHRO":["Agent Training Agent","Role Design Agent","Performance Review Agent","Onboarding Agent"],"CHO":["Fitness Agent","Nutrition Agent","Sleep Agent","Routine Agent","Focus Agent"],"CCO":["Customer Support Agent","Customer Success Agent","CRM Agent","Voice of Customer Agent"],"CSO":["Authentication Agent","Privacy Agent","Permissions Agent","Security QA Agent","Secrets Management Agent"],"CIO":["HQ Dashboard Agent","Documentation Agent","Context Agent","Memory Agent","Knowledge Base Agent","File / Repo Librarian Agent"]};
+const owners=Object.keys(ownerAgents),key="lindadata-agent-workload-v2";let repoEntries=[];const $=id=>document.getElementById(id);const esc=v=>String(v??"").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"}[c]));
+function localEntries(){try{return JSON.parse(localStorage.getItem(key)||"[]")}catch{return[]}}
+function saveLocal(rows){localStorage.setItem(key,JSON.stringify(rows.slice(0,1000)))}
+function norm(x){const input=+(x.inputTokens??x.input_tokens_estimate??0)||0,output=+(x.outputTokens??x.output_tokens_estimate??0)||0,total=+(x.totalTokens??x.total_tokens_estimate??input+output)||0;return{id:x.id||crypto.randomUUID(),date:x.date||new Date().toISOString().slice(0,10),owner:x.owner||x.executive_owner||"Unknown",agent:x.agent||"Unknown",task:x.task||"Untitled work",minutes:+(x.minutes??x.minutes_estimate??0)||0,inputTokens:input,outputTokens:output,totalTokens:total,proof:x.proof||"",notes:x.notes||"",source:x.source||"manual_local"}}
+function all(){return [...repoEntries.map(norm),...localEntries().map(norm)]}
+function fillOwners(){owner.innerHTML=owners.map(o=>`<option>${esc(o)}</option>`).join("");fillAgents();date.value=new Date().toISOString().slice(0,10)}
+function fillAgents(){agent.innerHTML=(ownerAgents[owner.value]||[]).map(a=>`<option>${esc(a)}</option>`).join("")}
+owner.addEventListener("change",fillAgents);
+form.addEventListener("submit",e=>{e.preventDefault();const row=norm({date:date.value,owner:owner.value,agent:agent.value,task:task.value,minutes:minutes.value,inputTokens:inputTokens.value,outputTokens:outputTokens.value,totalTokens:(+inputTokens.value||0)+(+outputTokens.value||0),proof:proof.value,notes:notes.value,source:"manual_local"});saveLocal([row,...localEntries()]);form.reset();fillOwners();render()});
+search.addEventListener("input",render);clearLocal.addEventListener("click",()=>{if(confirm("Clear entries saved only on this device?")){saveLocal([]);render()}});copyJson.addEventListener("click",async()=>{const text=JSON.stringify({updated:new Date().toISOString(),entries:all()},null,2);try{await navigator.clipboard.writeText(text);copyJson.textContent="Copied";setTimeout(()=>copyJson.textContent="Copy JSON",1200)}catch{alert(text)}});
+async function loadRepo(){try{const r=await fetch("/company/agent-workload/usage-log.json",{cache:"no-store"});if(r.ok){const j=await r.json();repoEntries=Array.isArray(j)?j:(j.entries||[])}}catch(e){console.warn(e)}}
+function render(){const q=search.value.toLowerCase().trim();const rows=all().filter(x=>!q||[x.date,x.owner,x.agent,x.task,x.proof,x.source].join(" ").toLowerCase().includes(q)).sort((a,b)=>String(b.date).localeCompare(String(a.date)));const totalTasks=rows.length,totalAgents=new Set(rows.map(x=>x.agent)).size,totalMinutes=rows.reduce((a,x)=>a+x.minutes,0),totalTokens=rows.reduce((a,x)=>a+x.totalTokens,0);metrics.innerHTML=[["Tasks",totalTasks],["Agents",totalAgents],["Minutes",totalMinutes],["Tokens",totalTokens.toLocaleString()]].map(m=>`<article class="card metric"><strong>${m[1]}</strong><span>${m[0]}</span></article>`).join("");const by={};for(const x of rows){const k=x.agent;by[k]??={agent:k,owner:x.owner,tasks:0,minutes:0,tokens:0,last:""};by[k].tasks++;by[k].minutes+=x.minutes;by[k].tokens+=x.totalTokens;if(!by[k].last)by[k].last=x.task}agentRows.innerHTML=Object.values(by).sort((a,b)=>b.tokens-a.tokens||b.tasks-a.tasks).map(x=>`<tr><td><strong>${esc(x.agent)}</strong></td><td>${esc(x.owner)}</td><td class="right">${x.tasks}</td><td class="right">${x.minutes}</td><td class="right">${x.tokens.toLocaleString()}</td><td>${esc(x.last)}</td></tr>`).join("")||`<tr><td colspan="6"><div class="empty">No matching agent work yet.</div></td></tr>`;entryRows.innerHTML=rows.map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.owner)}</td><td><strong>${esc(x.agent)}</strong></td><td>${esc(x.task)}</td><td class="right">${x.minutes}</td><td class="right">${x.totalTokens.toLocaleString()}</td><td><span class="pill">${esc(x.source)}</span></td><td>${x.proof?`<a href="${esc(x.proof)}">proof</a>`:""}</td></tr>`).join("")||`<tr><td colspan="8"><div class="empty">No usage logged yet.</div></td></tr>`}
+fillOwners();loadRepo().then(render);
 </script>
 </body>
 </html>
