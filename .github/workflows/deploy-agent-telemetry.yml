@@ -95,6 +95,23 @@ jobs:
           curl -fsS "$TELEMETRY_URL/health" | tee health.json
           grep '"ok":true' health.json
 
+      - name: Debug Worker GitHub access
+        env:
+          TELEMETRY_WRITE_TOKEN: ${{ secrets.TELEMETRY_WRITE_TOKEN }}
+        run: |
+          set +e
+          HTTP_STATUS=$(curl -sS -o worker-github-debug.json -w "%{http_code}" \
+            -H "authorization: Bearer $TELEMETRY_WRITE_TOKEN" \
+            "$TELEMETRY_URL/debug/github-token")
+          CURL_EXIT=$?
+          set -e
+          echo "debug_curl_exit=$CURL_EXIT"
+          echo "debug_http_status=$HTTP_STATUS"
+          cat worker-github-debug.json
+          test "$CURL_EXIT" = "0"
+          test "$HTTP_STATUS" = "200"
+          grep '"ok":true' worker-github-debug.json
+
       - name: Build smoke usage event
         run: |
           EVENT_ID="deploy-smoke-${GITHUB_RUN_ID}"
