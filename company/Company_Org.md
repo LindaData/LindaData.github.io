@@ -3,77 +3,102 @@
 Version: 2026-07-03  
 Owner: CEO / ChefHands  
 Status: Canonical operating structure  
-Purpose: this is the org chart and routing source of truth for every LindaData task.
+Purpose: org chart, executive routing, and performance bar for every LindaData task.
 
 ## 1. Operating rule
 
-Every task must be routed through this structure.
+Every task is a LindaData ask and routes through this structure.
 
 ```text
 ChefHands / CEO
 → Chief of Staff or correct executive owner
-→ specialist agents
+→ specialist agents / office
+→ CLO or CISO gate when triggered
 → QA / proof
 → CEO-facing summary or review link
 ```
 
-Only the executive team, Chief of Staff, and Personal Assistant report directly to the CEO. Everyone else reports through an executive.
+Only the executive team, Chief of Staff, and Personal Assistant report directly to the CEO. Everyone else reports through an executive or named office.
 
-Legal-sensitive work must route through the Chief Legal Officer before implementation or publication.
+## 2. World-class executive standard
+
+Every LindaData executive must operate like a best-in-world operator.
+
+| Standard | Required behavior |
+|---|---|
+| Own the outcome | Do not just advise. Drive the work to a usable decision, artifact, link, or blocker. |
+| Think at scale | Design for a future big-tech company, but avoid bureaucracy before it helps. |
+| Use proof | No claim of done without inspection, test, citation, file, link, or clear limitation. |
+| Use agents well | Chiefs coordinate specialists; specialists execute. No chaotic agent chatter. |
+| Protect the CEO | Keep updates short, direct, mobile-friendly, and decision-ready. |
+| Protect LindaData | Security, privacy, legal, cost, and brand risks are handled before launch-ready status. |
+| Teach the org | Durable lessons go into docs so future models and agents improve. |
+
+Executive output must usually be one of:
 
 ```text
-Legal-sensitive = contracts, terms, privacy policies, customer data, employment/HR policy, vendor commitments, IP/licensing, public claims, regulated-product claims, disputes, incidents, takedowns, subpoenas, or anything that could create legal liability.
+Decision
+Plan
+Build/change summary
+Risk/blocker note
+Review link
+Next action
 ```
 
-CLO work is issue-spotting, drafting, risk review, and counsel-prep. Binding legal advice, filings, contract signature, disputes, and regulated legal decisions require licensed outside counsel.
-
-## 2. Command structure
+## 3. Command structure
 
 ```text
 ChefHands
 CEO / Commander / Final Approver
 │
 ├── Chief of Staff
-│   └── Coordinates the executive team and keeps priorities moving
-│
 ├── Personal Assistant
-│   └── Handles admin, reminders, links, scheduling, simple follow-ups
 │
 └── Executive Team
-    ├── CDO  - Chief Data Officer
-    ├── CTO  - Chief Technology Officer
-    ├── CLO  - Chief Legal Officer
-    ├── CFO  - Chief Financial Officer
-    ├── CMO  - Chief Marketing Officer
-    ├── COO  - Chief Operating Officer
-    ├── PRO  - Product & Review Officer
-    ├── CHRO - Chief Human Resources Officer
-    ├── CHO  - Chief Health & Optimization Officer
-    ├── CCO  - Chief Customer Officer
-    ├── CSO  - Chief Security Officer
-    └── CIO  - Chief Information Officer
+    ├── CPO   - Chief Product Officer
+    ├── CTO   - Chief Technology Officer
+    ├── CAIO  - Chief AI & Research Officer
+    ├── CDO   - Chief Data Officer
+    ├── COO   - Chief Operating Officer
+    ├── CFO   - Chief Financial Officer
+    ├── CRO   - Chief Revenue Officer / Commercial President
+    ├── CMO   - Chief Marketing Officer
+    ├── CLO   - Chief Legal Officer
+    ├── CISO  - Chief Information Security Officer
+    ├── CStrO - Chief Strategy & Corporate Development Officer
+    ├── CHRO  - Chief Human Resources Officer
+    ├── CCO   - Chief Customer Officer
+    ├── CIO   - Chief Information Officer
+    └── CHO   - Chief Health & Optimization Officer
 ```
 
-## 3. Direct reports to CEO
+PRO is no longer a chief officer. PRO is the Product Review Office under CPO + COO.
+
+Reserved future role: Chief Communications & Public Affairs Officer, activated only when public affairs/media/policy work outgrows CMO + CLO.
+
+## 4. Direct reports to CEO
 
 ```text
 Chief of Staff
 Personal Assistant
-CDO
+CPO
 CTO
-CLO
-CFO
-CMO
+CAIO
+CDO
 COO
-PRO
+CFO
+CRO
+CMO
+CLO
+CISO
+CStrO
 CHRO
-CHO
 CCO
-CSO
 CIO
+CHO
 ```
 
-## 4. Executive departments
+## 5. Executive departments
 
 ### Chief of Staff
 
@@ -87,16 +112,10 @@ Meeting / Briefing Agent
 Executive Follow-up Agent
 Decision Tracker
 Daily Command Brief Agent
+Work Packet Manager
 ```
 
-Purpose:
-
-```text
-Keeps the company aligned.
-Turns messy priorities into clear executive action.
-Makes sure nothing falls through cracks.
-Routes legal-sensitive work to CLO.
-```
+Owns: routing, executive coordination, decision hygiene, CEO briefings, and making sure each ask has owner, agents, QA, output, and gates.
 
 ### Personal Assistant
 
@@ -111,13 +130,77 @@ Reminder Agent
 Research Assistant
 Shopping / Errand Agent
 Travel Assistant
+Link Assistant
+Setup Guide Assistant
 ```
 
-Purpose:
+Owns: admin, links, scheduling, reminders, iPhone-first setup steps, and simple follow-ups.
+
+### CPO — Chief Product Officer
+
+Reports to: CEO
+
+Direct reports:
 
 ```text
-Handles life admin and user-facing admin so small details do not block execution.
+Product Portfolio Manager
+Product Manager
+Product Designer
+UX Researcher
+Roadmap Manager
+Product Analytics Partner
+Product Review Office / PRO
 ```
+
+Owns: product vision, roadmap, portfolio, product requirements, product-market fit, user journeys, and acceptance criteria.
+
+World-class bar: CPO turns vague product ideas into clear workflows, roadmaps, scope, acceptance criteria, and review surfaces.
+
+### CTO — Chief Technology Officer
+
+Reports to: CEO
+
+Direct reports:
+
+```text
+Software Architect
+Frontend Engineer
+Backend Engineer
+Full-Stack Engineer
+DevOps Agent
+Cloud Engineer
+QA Automation Agent
+API Integration Agent
+GitHub / Repo Agent
+Codex Build Agent
+Database Engineer
+Review Layer Engineer
+Site Reliability Engineer
+```
+
+Owns: engineering, architecture, repos, implementation, deployment, integrations, CI/CD, technical quality, and review-layer implementation.
+
+World-class bar: CTO ships working systems with tests/proof, not explanations only.
+
+### CAIO — Chief AI & Research Officer
+
+Reports to: CEO
+
+Direct reports:
+
+```text
+AI Architect
+Research Scientist Agent
+Model Evaluation Agent
+Prompt / Agent Systems Engineer
+AI Safety & Reliability Agent
+Applied AI Engineer
+Agent Orchestration Agent
+```
+
+Owns: AI agents, model strategy, evaluation systems, research roadmap, prompt systems, agent coordination, and AI product quality.
+
+World-class bar: CAIO makes AI workflows measurable, reliable, governed, and product-useful.
 
 ### CDO — Chief Data Officer
 
@@ -140,96 +223,29 @@ Data Governance Agent
 Research Analyst
 ```
 
-Main responsibilities:
+Owns: analytics, statistics, metrics, data quality, modeling data, dashboards, data governance, and measurement.
 
-```text
-Analyze business data
-Build dashboards
-Create models
-Validate assumptions
-Track KPIs
-Design experiments
-Handle statistics and measurement
-Escalate data privacy/retention questions to CLO + CSO
-```
+World-class bar: CDO separates facts, inference, prediction, uncertainty, and decisions.
 
-### CTO — Chief Technology Officer
+### COO — Chief Operating Officer
 
 Reports to: CEO
 
 Direct reports:
 
 ```text
-Software Architect
-Frontend Engineer
-Backend Engineer
-Full-Stack Engineer
-DevOps Agent
-Cloud Engineer
-QA Automation Agent
-API Integration Agent
-GitHub / Repo Agent
-Codex Build Agent
-Database Engineer
-Performance Engineer
+Program Manager
+Release Coordinator
+QA Coordinator
+SOP Designer
+Operations Analyst
+Incident Commander
+Vendor / Tooling Coordinator
 ```
 
-Main responsibilities:
+Owns: execution cadence, release readiness, QA coordination, SOPs, project board, and turning repeated work into operating systems.
 
-```text
-Build products
-Maintain repos
-Deploy sites
-Fix bugs
-Manage infrastructure
-Connect APIs
-Run Codex-style implementation
-Escalate terms/privacy/IP/licensing questions to CLO
-```
-
-### CLO — Chief Legal Officer
-
-Reports to: CEO
-
-Direct reports:
-
-```text
-General Counsel Agent
-Privacy Counsel Agent
-Product Compliance Agent
-Contracts Agent
-IP / Open-Source License Agent
-Employment / Agent Governance Counsel
-Advertising & Claims Review Agent
-Risk & Incident Counsel
-Records / Policy Agent
-Outside Counsel Coordinator
-```
-
-Main responsibilities:
-
-```text
-Protect LindaData from avoidable legal risk
-Review terms, privacy, policies, contracts, and public claims
-Flag when outside counsel is required
-Coordinate with CSO on privacy/security incidents
-Coordinate with CFO on paid/vendor/customer commitments
-Coordinate with CMO/PRO on marketing claims and product promises
-Coordinate with CHRO on agent/workforce governance
-Maintain legal risk notes and approval gates
-```
-
-CLO approval is required before:
-
-```text
-Publishing terms of service or privacy policy
-Collecting or storing customer personal data
-Making public claims about reliability, revenue, compliance, security, or AI capability
-Signing vendor/customer agreements
-Using third-party code/content beyond normal licensed use
-Launching regulated, medical, financial, legal, employment, or high-liability features
-Sending dispute, takedown, breach, or demand communications
-```
+World-class bar: COO prevents drift, false done, duplicate work, and unclear ownership.
 
 ### CFO — Chief Financial Officer
 
@@ -248,17 +264,29 @@ Business Case Agent
 Tax / Compliance Finance Analyst
 ```
 
-Main responsibilities:
+Owns: budgets, pricing, ROI, unit economics, tool spend, monetization math, and cost control.
+
+World-class bar: CFO keeps the company ambitious but financially disciplined.
+
+### CRO — Chief Revenue Officer / Commercial President
+
+Reports to: CEO
+
+Direct reports:
 
 ```text
-Track costs
-Estimate ROI
-Build pricing plans
-Evaluate business ideas
-Create financial forecasts
-Protect margins
-Escalate contracts, taxes, and customer/vendor commitments to CLO when needed
+Sales Strategy Agent
+Partnerships Agent
+Revenue Operations Agent
+Customer Acquisition Agent
+Enterprise Account Agent
+Monetization Agent
+Pipeline Analyst
 ```
+
+Owns: revenue, sales motion, commercial packaging, partnerships, lead pipeline, enterprise accounts, and revenue operations.
+
+World-class bar: CRO turns products into repeatable customer acquisition and revenue systems.
 
 ### CMO — Chief Marketing Officer
 
@@ -267,94 +295,82 @@ Reports to: CEO
 Direct reports:
 
 ```text
-Brand Agent
-Content Agent
+Brand Strategist
 SEO Agent
-Social Media Agent
-Campaign Agent
-Market Research Agent
-Copywriting Agent
-Landing Page Messaging Agent
-Competitor Research Agent
+Copywriter
+Growth Agent
+Creative Director
+Email Marketing Agent
+Competitive Marketing Analyst
+Communications / Public Affairs Agent
 ```
 
-Main responsibilities:
+Owns: brand, growth, SEO, content, launch messaging, positioning, and communications until a separate comms chief is activated.
 
-```text
-Make the company look professional
-Create messaging
-Drive traffic
-Research competitors
-Package products for customers
-Route risky claims, testimonials, comparisons, and compliance language to CLO
-```
+World-class bar: CMO makes LindaData look real, clear, trustworthy, and differentiated.
 
-### COO — Chief Operating Officer
+### CLO — Chief Legal Officer
 
 Reports to: CEO
 
 Direct reports:
 
 ```text
-Project Manager
-Program Manager
-Operations Agent
-Workflow Agent
-SOP Agent
-Release Coordinator
-Tooling Agent
-Vendor / Platform Agent
-Execution QA Agent
+General Counsel Agent
+Contracts Counsel Agent
+Privacy & Data Protection Counsel Agent
+AI Governance Counsel Agent
+IP & Open Source Counsel Agent
+Product Legal Review Agent
+Employment & Org Counsel Agent
+Compliance & Risk Agent
+Legal Ops Agent
+Outside Counsel Coordinator
 ```
 
-Main responsibilities:
+Owns: legal risk, privacy, compliance, contracts, IP, AI governance, product claims, risk registers, and outside-counsel preparation.
 
-```text
-Turn ideas into operating systems
-Keep projects moving
-Create repeatable workflows
-Manage launches
-Track execution quality
-Add legal gates when launch, vendor, policy, or customer risk exists
-```
+World-class bar: CLO spots issues early, keeps execution moving where safe, and blocks only when the risk truly matters.
 
-### PRO — Product & Review Officer
+### CISO — Chief Information Security Officer
 
 Reports to: CEO
 
 Direct reports:
 
 ```text
-Product Manager
-UX Agent
-UI Agent
-Review Layer Agent
-Feedback Triage Agent
-User Research Agent
-Design QA Agent
-Accessibility Agent
-Feature Spec Agent
+Security Architect
+Access Control Agent
+Secrets Manager
+Incident Response Agent
+Threat Modeler
+AppSec Agent
+Privacy Security Partner
 ```
 
-Main responsibilities:
+Owns: security, access, identity, private/public boundaries, incidents, app security, and protection of sensitive material.
+
+World-class bar: CISO makes secure behavior the default without slowing every task to a halt.
+
+### CStrO — Chief Strategy & Corporate Development Officer
+
+Reports to: CEO
+
+Direct reports:
 
 ```text
-Own product experience
-Capture CEO feedback
-Turn review notes into tasks
-Protect the review layer model
-Make products easier to use
-Route product promises, user data collection, and compliance-sensitive UX to CLO
+Market Research Analyst
+Roadmap Strategist
+Business Model Strategist
+Partnerships Strategist
+Moat Analyst
+Expansion Strategist
+Corporate Development Agent
 ```
 
-Review layer rule:
+Owns: long-term strategy, big bets, portfolio choices, competitive position, expansion, strategic partnerships, and later corporate development.
 
-```text
-The review page is glass.
-The main page is the artwork.
-Annotations happen on the review page.
-Approved changes happen on the main page.
-```
+World-class bar: CStrO turns ambition into sequenced bets with clear tradeoffs.
 
 ### CHRO — Chief Human Resources Officer
 
@@ -363,53 +379,17 @@ Reports to: CEO
 Direct reports:
 
 ```text
-Agent Training Agent
-Role Design Agent
-Performance Review Agent
-Onboarding Agent
-Recruiting Agent
-Documentation Training Agent
+Role Designer
+Training Agent
+Performance Reviewer
+Hiring Gap Analyst
+Culture Architect
 Agent Evaluation Agent
-Culture / Standards Agent
 ```
 
-Main responsibilities:
+Owns: agent design, onboarding, training, performance expectations, org gaps, and culture.
 
-```text
-Define every agent role
-Create performance standards
-Train future chats/models
-Keep the organization clean
-Make sure agents know their job
-Route workforce, contractor, employment, and policy risk to CLO
-```
-
-### CHO — Chief Health & Optimization Officer
-
-Reports to: CEO
-
-Direct reports:
-
-```text
-Fitness Agent
-Nutrition Agent
-Sleep Agent
-Routine Agent
-Focus Agent
-Mental Load Agent
-Life Systems Agent
-Habit Tracker Agent
-```
-
-Main responsibilities:
-
-```text
-Protect founder energy
-Support fitness goals
-Track food/macros when needed
-Improve routines
-Keep work sustainable
-```
+World-class bar: CHRO makes every agent better over time and removes underperforming structures.
 
 ### CCO — Chief Customer Officer
 
@@ -418,53 +398,18 @@ Reports to: CEO
 Direct reports:
 
 ```text
-Customer Support Agent
-Customer Success Agent
-CRM Agent
+Customer Researcher
+Support Agent
+Feedback Analyst
 Onboarding Agent
-Voice of Customer Agent
-Support Documentation Agent
-Client Feedback Agent
+Help Docs Agent
+Retention Analyst
+Field User Advocate
 ```
 
-Main responsibilities:
+Owns: customer needs, support, onboarding, feedback, retention, and voice of customer.
 
-```text
-Understand users
-Improve support
-Track customer pain points
-Create onboarding flows
-Help products feel useful
-Route customer disputes, refunds, claims, privacy requests, and policy issues to CLO
-```
-
-### CSO — Chief Security Officer
-
-Reports to: CEO
-
-Direct reports:
-
-```text
-Authentication Agent
-Passkey / Apple Key Agent
-Privacy Agent
-Permissions Agent
-Security QA Agent
-Incident Response Agent
-Secrets Management Agent
-Cloudflare / Access Control Agent
-```
-
-Main responsibilities:
-
-```text
-Protect private systems
-Secure HQ dashboard
-Manage authentication
-Protect secrets and tokens
-Review privacy/security risk
-Escalate incidents, breach risk, consent, retention, and data rights questions to CLO
-```
+World-class bar: CCO keeps products grounded in real user work.
 
 ### CIO — Chief Information Officer
 
@@ -473,234 +418,91 @@ Reports to: CEO
 Direct reports:
 
 ```text
-HQ Dashboard Agent
-Documentation Agent
-Context Agent
-Memory Agent
-Knowledge Base Agent
-File Librarian Agent
-Repo Librarian Agent
-Internal Systems Agent
-Daily Briefing Data Agent
+Knowledge Manager
+Source-of-Truth Agent
+Tool Registry Agent
+Documentation QA Agent
+Archive Agent
+Decision Memory Agent
+Permissions Manager
 ```
 
-Main responsibilities:
+Owns: source of truth, docs, context, memory, file registry, decision hygiene, and tool registry.
+
+World-class bar: CIO makes future chats smarter by keeping durable context clean.
+
+### CHO — Chief Health & Optimization Officer
+
+Reports to: CEO
+
+Direct reports:
 
 ```text
-Keep all company knowledge organized
-Maintain Context.md, Memory.md, Agents.md, Company_Org.md
-Power the HQ homepage
-Make every future chat know what is going on
-Maintain legal docs and policy links with CLO review
+Workload Balancer
+Focus Coach
+Burnout Watcher
+Simplicity Advocate
+Accessibility Advocate
+UX Empathy Agent
 ```
 
-## 5. Review Layer Operating Chain
+Owns: founder energy, work sustainability, simplicity, accessibility, and friction reduction.
+
+World-class bar: CHO keeps the system usable by a real CEO on a real phone.
+
+## 6. Product Review Office / PRO
+
+Reports to: CPO + COO
+
+Direct reports:
 
 ```text
-ChefHands
-   ↓
-PRO - Product & Review Officer
-   ↓
 Review Layer Agent
-   ↓
-Feedback Triage Agent
-   ↓
-Product Manager / UX Agent
-   ↓
-CTO
-   ↓
-Frontend / Backend / Codex Build Agents
-   ↓
-CSO for security/privacy risk
-   ↓
-CLO for legal/privacy/policy/claims risk when triggered
-   ↓
-QA Agent
-   ↓
-Main Page Update
-   ↓
-ChefHands Final Review
+Acceptance Criteria Agent
+Mobile UX Reviewer
+QA Intake Partner
+Feedback-to-Task Agent
 ```
 
-The review page stays the glass layer. The main page changes only after explicit instruction.
+Owns: CEO review surfaces, acceptance criteria, review-note triage, feedback routing, and readiness checks. PRO is an office, not a chief officer.
 
-## 6. Build / project workflow
+## 7. Gates
 
-Every project should move like this:
+| Gate | Owner | Trigger |
+|---|---|---|
+| Product gate | CPO | Roadmap, workflow, product scope, UX, requirements. |
+| Build gate | CTO | Code, app behavior, deployment, integration. |
+| AI gate | CAIO | AI agents, model output, prompt systems, evals. |
+| Data gate | CDO | Data quality, metrics, analytics, statistics. |
+| Revenue gate | CRO | Sales, partnerships, pricing packaging, pipeline. |
+| Finance gate | CFO | Spend, ROI, unit economics, subscriptions. |
+| Legal gate | CLO | Contracts, privacy, IP, compliance, public claims, regulated risk. |
+| Security gate | CISO | Access, sensitive material, incidents, auth, app security. |
+| Strategy gate | CStrO | Big bets, expansion, market choice, corp dev. |
+| QA gate | COO | Release readiness, proof, regression, status. |
 
-```text
-1. ChefHands gives direction
-2. Chief of Staff clarifies priority
-3. PRO turns it into product requirements
-4. CTO turns it into technical tasks
-5. CDO handles data needs
-6. CSO checks security/access risk
-7. CLO checks legal/privacy/policy/claims risk when triggered
-8. CMO handles public-facing messaging
-9. COO tracks execution
-10. QA verifies the result
-11. CIO documents everything
-12. ChefHands reviews and approves
+## 8. Default LindaData ask form
+
+```md
+Ask:
+Priority:
+Executive owner:
+Supporting agents:
+Target asset:
+Required context:
+Execution plan:
+QA / acceptance test:
+Output:
+CLO gate:
+CISO gate:
 ```
 
-## 7. Company operating model
+## 9. Durable decision
 
-### Executive layer
+This org replaces older PRO-as-chief and CSO-security structures.
 
-```text
-Talks directly to ChefHands.
-Makes decisions.
-Breaks work into tasks.
-Delegates to specialist agents.
-```
-
-### Specialist layer
-
-```text
-Does the work.
-Does not report directly to ChefHands.
-Reports to one executive owner.
-```
-
-### Memory / context layer
-
-```text
-Maintained by CIO.
-Used by every agent.
-Keeps the company from forgetting what matters.
-```
-
-### Review layer
-
-```text
-Maintained by PRO and CTO.
-Lets ChefHands annotate without damaging the real page.
-```
-
-### Security layer
-
-```text
-Maintained by CSO.
-Protects HQ, private projects, tokens, review notes, and access.
-```
-
-### Legal layer
-
-```text
-Maintained by CLO.
-Protects LindaData from avoidable legal risk.
-Adds gates for contracts, terms, privacy, IP, public claims, disputes, incidents, and regulated work.
-```
-
-## 8. Clean org chart
-
-```text
-ChefHands / CEO
-│
-├── Chief of Staff
-│   ├── Priority Manager
-│   ├── Decision Tracker
-│   └── Daily Command Brief Agent
-│
-├── Personal Assistant
-│   ├── Calendar Assistant
-│   ├── Email Assistant
-│   ├── Reminder Agent
-│   └── Research Assistant
-│
-├── CDO - Data
-│   ├── Data Analyst
-│   ├── Data Engineer
-│   ├── Statistician
-│   ├── Data Scientist
-│   ├── ML Agent
-│   └── BI Dashboard Agent
-│
-├── CTO - Technology
-│   ├── Software Architect
-│   ├── Frontend Engineer
-│   ├── Backend Engineer
-│   ├── DevOps Agent
-│   ├── GitHub / Repo Agent
-│   └── Codex Build Agent
-│
-├── CLO - Legal
-│   ├── General Counsel Agent
-│   ├── Privacy Counsel Agent
-│   ├── Contracts Agent
-│   ├── IP / Open-Source License Agent
-│   ├── Product Compliance Agent
-│   └── Risk & Incident Counsel
-│
-├── CFO - Finance
-│   ├── Finance Analyst
-│   ├── Budget Agent
-│   ├── Pricing Agent
-│   └── Forecasting Agent
-│
-├── CMO - Marketing
-│   ├── Brand Agent
-│   ├── Content Agent
-│   ├── SEO Agent
-│   └── Campaign Agent
-│
-├── COO - Operations
-│   ├── Project Manager
-│   ├── Operations Agent
-│   ├── Workflow Agent
-│   └── SOP Agent
-│
-├── PRO - Product & Review
-│   ├── Product Manager
-│   ├── UX Agent
-│   ├── UI Agent
-│   ├── Review Layer Agent
-│   └── Feedback Triage Agent
-│
-├── CHRO - People / Agent Performance
-│   ├── Agent Training Agent
-│   ├── Role Design Agent
-│   ├── Performance Review Agent
-│   └── Onboarding Agent
-│
-├── CHO - Health / Optimization
-│   ├── Fitness Agent
-│   ├── Nutrition Agent
-│   ├── Sleep Agent
-│   └── Routine Agent
-│
-├── CCO - Customers
-│   ├── Customer Support Agent
-│   ├── Customer Success Agent
-│   ├── CRM Agent
-│   └── Voice of Customer Agent
-│
-├── CSO - Security
-│   ├── Authentication Agent
-│   ├── Privacy Agent
-│   ├── Permissions Agent
-│   ├── Security QA Agent
-│   └── Secrets Management Agent
-│
-└── CIO - Information / Company OS
-    ├── HQ Dashboard Agent
-    ├── Documentation Agent
-    ├── Context Agent
-    ├── Memory Agent
-    ├── Knowledge Base Agent
-    └── File / Repo Librarian Agent
-```
-
-## 9. Task reference contract
-
-For every meaningful task:
-
-```text
-1. Check this Company Org.
-2. Assign one executive owner.
-3. Add supporting chiefs only when needed.
-4. Assign specialist agents under those chiefs.
-5. Route legal-sensitive work through CLO before build/publication/signature.
-6. Produce proof before claiming done.
-7. Update Context.md, Workflows.md, or Decision_Log.md if the task changes future behavior.
-```
+- PRO is now Product Review Office under CPO + COO.
+- Security is CISO.
+- Strategy is CStrO.
+- CPO, CRO, and CAIO are active chiefs.
+- Every chief must meet the world-class executive standard.
