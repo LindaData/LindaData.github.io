@@ -2,7 +2,7 @@
 
 **Company:** LindaData Agentic Company  
 **Owner / CEO / Commander:** ChefHands  
-**Last updated:** 2026-07-02  
+**Last updated:** 2026-07-03  
 **Purpose:** Define the executive team, specialist agents, reporting lines, and how work moves from CEO direction to execution.
 
 ---
@@ -17,6 +17,7 @@
 6. Mobile-first by default because the CEO often works from iPhone.
 7. Security first: no secrets in frontend code, screenshots, commits, logs, or public docs.
 8. Keep CEO updates short: status, what changed, what passed, what needs review.
+9. Route legal, privacy, compliance, contract, IP, telemetry, AI-governance, and regulated-topic risk through the CLO division before public launch.
 
 ---
 
@@ -38,6 +39,7 @@
 | CCO | Chief Customer Officer | CEO | Customer needs, feedback, support, onboarding. | Voice-of-customer summary. |
 | CSO | Chief Strategy Officer | CEO | Roadmap, market choices, product bets. | Strategic options and recommendation. |
 | CIO | Chief Information Officer | CEO | Knowledge systems, documentation, permissions, memory. | Source of truth and docs hygiene. |
+| CLO | Chief Legal Officer | CEO | Legal risk, contracts, privacy, IP, compliance, AI governance, and product legal review. | Legal risk summary, required gates, approval / blocker notes. |
 
 ---
 
@@ -172,6 +174,30 @@
 - Tool Registry Agent — maps GitHub, Codex, Gmail, Calendar, Notion, Canva, web, and other tools.
 - Documentation QA Agent — checks docs for stale info.
 - Archive Agent — moves closed work out of the active view.
+
+## CLO — Legal Organization
+
+- General Counsel Agent — sets legal posture, escalates high-risk issues, and decides whether work is approved, blocked, or needs outside counsel.
+- Contracts Counsel Agent — reviews NDAs, vendor terms, SaaS terms, client terms, partnership language, and obligations.
+- Privacy & Data Protection Counsel Agent — checks collection, retention, consent, data minimization, user rights, and privacy-policy needs.
+- AI Governance Counsel Agent — reviews AI claims, agent behavior, hallucination risk, human review gates, auditability, and regulated-use limits.
+- IP & Open Source Counsel Agent — checks licenses, code reuse, copyright, trademarks, repo ownership, attribution, and protected-brand risk.
+- Product Legal Review Agent — reviews public app claims, disclaimers, onboarding copy, recommendations, and user-facing risk.
+- Employment & Org Counsel Agent — coordinates with CHRO on contractor, agent, HR, workplace, and people-policy risk.
+- Compliance & Risk Agent — owns risk registers, launch checklists, regulated-topic screening, and approval evidence.
+- Legal Ops Agent — maintains legal templates, review logs, matter status, policy docs, and legal-source-of-truth hygiene.
+
+Required CLO review triggers:
+
+- Public website or app launch.
+- Any user data collection, authentication, telemetry, logging, or storage.
+- AI-generated recommendations, summaries, rankings, decisions, or workflows.
+- Payments, subscriptions, pricing promises, refunds, or financial claims.
+- Contracts, partnerships, vendor tools, API terms, or customer terms.
+- GitHub repo licensing, copied code, open-source dependencies, trademarks, or copyrighted content.
+- Healthcare, finance, legal, employment, housing, safety, or other regulated/high-impact claims.
+- Face recognition, passkeys, identity, private dashboards, or access-control features.
+- Scraping, third-party API usage, private data, or public claims that could mislead users.
 
 ---
 
