@@ -2,7 +2,7 @@
 
 Version: 2026-07-03  
 Owner lane: CIO + CSO + CTO + Chief of Staff  
-Status: source ready, deployment pending
+Status: source ready, deployment tracked
 
 ## Purpose
 
@@ -21,6 +21,7 @@ company/agent-workload/usage-log.json
 | worker.js | Cloudflare Worker source for private ingestion |
 | wrangler.example.toml | Example Worker config without private values |
 | event-format.md | Accepted event fields |
+| sample-event.json | Example API-backed usage event |
 
 ## Endpoints
 
@@ -34,6 +35,12 @@ POST /v1/agent-usage
 ## Source of exact token counts
 
 When using the OpenAI API directly, model responses can include usage information such as input, output, and total tokens. The telemetry worker accepts those fields and stores them in the usage ledger.
+
+## Deployment tracker
+
+- https://github.com/LindaData/field-copilot-pro/issues/72
+
+The HQ repo has issues disabled, so the deployment tracker lives in the active LindaData work repo.
 
 ## Deployment steps
 
