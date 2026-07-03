@@ -1,71 +1,38 @@
 {
-  "updated": "2026-07-02",
-  "note": "Public-safe LindaData HQ project registry. Private projects are listed without internals. Company Org is the canonical routing reference for every task.",
+  "updated": "2026-07-03",
+  "note": "Public-safe LindaData HQ registry. Company Org remains the canonical routing source of truth.",
   "projects": [
     {
       "title": "HVAC Copilot / Field Copilot Pro",
       "key": "hvac-copilot",
       "category": "Build",
-      "status": "Priority 1",
+      "status": "Priority 1 / active",
       "priority": "Hot",
-      "repo": "LindaData/field-copilot-pro",
       "visibility": "public",
-      "summary": "Main product lane. HVAC-first field operations app with the review layer and Lovable-guided redesign.",
-      "morning": "Open the app, check review inbox, fix blockers before asking for CEO review.",
-      "owners": [
-        "CTO",
-        "PRO",
-        "CDO",
-        "QA"
-      ],
+      "summary": "Main product lane. HVAC-first field operations app with review-layer reliability as the release gate.",
+      "morning": "Open Today, check review workspace, then fix blockers before anything else.",
+      "owners": ["CTO", "PRO", "CDO", "QA"],
       "links": [
-        {
-          "label": "Open app",
-          "url": "https://lindadata.github.io/field-copilot-pro/app/today"
-        },
-        {
-          "label": "Review workspace",
-          "url": "https://lindadata.github.io/field-copilot-pro/review"
-        },
-        {
-          "label": "Repo",
-          "url": "https://github.com/LindaData/field-copilot-pro"
-        },
-        {
-          "label": "PR #59",
-          "url": "https://github.com/LindaData/field-copilot-pro/pull/59"
-        }
+        {"label": "Open Today app", "url": "https://lindadata.github.io/field-copilot-pro/app/today/"},
+        {"label": "Review workspace", "url": "https://lindadata.github.io/field-copilot-pro/review/"},
+        {"label": "HQ inbox #61", "url": "https://github.com/LindaData/field-copilot-pro/issues/61"},
+        {"label": "Repo", "url": "https://github.com/LindaData/field-copilot-pro"}
       ]
     },
     {
       "title": "Universal Review Layer System",
       "key": "review-layer",
       "category": "Review",
-      "status": "Active system build",
+      "status": "Active reliability system",
       "priority": "Hot",
-      "repo": "LindaData/field-copilot-pro",
       "visibility": "public-safe",
-      "summary": "Shared UI overlay + Cloudflare Worker + GitHub issue comment flow for every project and UI type.",
-      "morning": "Health check must show Live sync. No local-only saved notes allowed.",
-      "owners": [
-        "PRO",
-        "CTO",
-        "CSO",
-        "QA"
-      ],
+      "summary": "Shared overlay, worker, and GitHub issue-comment flow for every reviewable UI.",
+      "morning": "Health check must show live sync. No local-only saved notes count as done.",
+      "owners": ["PRO", "CTO", "CSO", "QA"],
       "links": [
-        {
-          "label": "Review issue #58",
-          "url": "https://github.com/LindaData/field-copilot-pro/issues/58"
-        },
-        {
-          "label": "HQ inbox #61",
-          "url": "https://github.com/LindaData/field-copilot-pro/issues/61"
-        },
-        {
-          "label": "Worker notes",
-          "url": "https://soft-unit-ba5d.sergio-mora.workers.dev/notes?repo=LindaData%2Ffield-copilot-pro&inboxIssue=61"
-        }
+        {"label": "Review issue #58", "url": "https://github.com/LindaData/field-copilot-pro/issues/58"},
+        {"label": "HQ inbox #61", "url": "https://github.com/LindaData/field-copilot-pro/issues/61"},
+        {"label": "Worker notes", "url": "https://soft-unit-ba5d.sergio-mora.workers.dev/notes?repo=LindaData%2Ffield-copilot-pro&inboxIssue=61"}
       ]
     },
     {
@@ -74,29 +41,15 @@
       "category": "Command",
       "status": "Root command center",
       "priority": "High",
-      "repo": "LindaData/LindaData.github.io",
       "visibility": "public",
-      "summary": "Root morning UI at lindadata.github.io for project status, commands, agent docs, and CEO review links.",
-      "morning": "Start here every morning. Check Priority 1, Blocked, Needs Review, and next links.",
-      "owners": [
-        "Chief of Staff",
-        "CIO",
-        "CTO",
-        "PRO"
-      ],
+      "summary": "Root morning UI for project status, commands, company docs, review links, and CEO-ready next actions.",
+      "morning": "Start here every morning and open the next review/action link.",
+      "owners": ["Chief of Staff", "CIO", "CTO", "PRO", "QA"],
       "links": [
-        {
-          "label": "Open HQ",
-          "url": "https://lindadata.github.io/"
-        },
-        {
-          "label": "Repo",
-          "url": "https://github.com/LindaData/LindaData.github.io"
-        },
-        {
-          "label": "Projects JSON",
-          "url": "https://github.com/LindaData/LindaData.github.io/blob/master/hq/data/projects.json"
-        }
+        {"label": "Open HQ", "url": "https://lindadata.github.io/"},
+        {"label": "Project registry", "url": "https://lindadata.github.io/hq/data/projects.json"},
+        {"label": "Link audit", "url": "/hq/LINK_AUDIT.md"},
+        {"label": "Repo", "url": "https://github.com/LindaData/LindaData.github.io"}
       ]
     },
     {
@@ -105,210 +58,75 @@
       "category": "Company Org",
       "status": "Canonical source of truth",
       "priority": "High",
-      "repo": "LindaData/LindaData.github.io",
       "visibility": "public-safe",
-      "summary": "Canonical CEO → executive team → specialist-agent hierarchy. Every task routes through this org model before execution.",
-      "morning": "Reference Company_Org.md first for ownership, routing, and reporting lines.",
-      "owners": [
-        "Chief of Staff",
-        "CIO",
-        "CHRO"
-      ],
+      "summary": "CEO to executive team to specialist-agent hierarchy. Every task routes through this org model.",
+      "morning": "Reference Company_Org.md first for ownership, routing, and proof requirements.",
+      "owners": ["Chief of Staff", "CIO", "CHRO"],
       "links": [
-        {
-          "label": "Company Org",
-          "url": "/company/Company_Org.md"
-        },
-        {
-          "label": "Agents.md",
-          "url": "/company/Agents.md"
-        },
-        {
-          "label": "Context.md",
-          "url": "/company/Context.md"
-        },
-        {
-          "label": "Workflows.md",
-          "url": "/company/Workflows.md"
-        }
+        {"label": "Company Org", "url": "/company/Company_Org.md"},
+        {"label": "Agents.md", "url": "/company/Agents.md"},
+        {"label": "Context.md", "url": "/company/Context.md"},
+        {"label": "Workflows.md", "url": "/company/Workflows.md"}
       ]
     },
     {
-      "title": "Southpaw Boxing Site",
-      "key": "southpaw-boxing",
-      "category": "Site",
-      "status": "Hold / concept",
-      "priority": "Medium",
-      "repo": "LindaData/LindaData.github.io",
-      "visibility": "public preview",
-      "summary": "Boxing gym website concept. Needs shared review layer before it becomes review-ready.",
-      "morning": "Ignore unless HVAC is stable or CEO restarts this lane.",
-      "owners": [
-        "CMO",
-        "PRO",
-        "CTO"
-      ],
-      "links": [
-        {
-          "label": "Open concept",
-          "url": "https://lindadata.github.io/southpaw-boxing/"
-        }
-      ]
-    },
-    {
-      "title": "Ghostwriting / Book Engine",
-      "key": "ghostwriting-book-engine",
-      "category": "Knowledge",
-      "status": "Planning",
-      "priority": "Medium",
-      "repo": "Notion / future repo",
-      "visibility": "private-needed",
-      "summary": "Long-running note capture system for ghostwriting, podcast/book notes, and future audiobook/book drafts.",
-      "morning": "No action until storage/source capture rules are chosen.",
-      "owners": [
-        "Chief of Staff",
-        "CIO",
-        "CDO",
-        "Editorial"
-      ],
-      "links": []
-    },
-    {
-      "title": "Cloud / Codex / Infra Setup",
-      "key": "cloud-codex-infra",
-      "category": "Infra",
-      "status": "Paused",
-      "priority": "Hold",
-      "repo": "Oracle VM / GitHub / Codex",
-      "visibility": "private-needed",
-      "summary": "Free or cheap persistent cloud development environment for iPhone-controlled long-running work.",
-      "morning": "Do not spend cycles until CEO restarts the setup.",
-      "owners": [
-        "CTO",
-        "CSO",
-        "CFO"
-      ],
-      "links": []
-    },
-    {
-      "title": "Money Transfer Colombia",
-      "key": "money-transfer-colombia",
-      "category": "Personal Ops",
-      "status": "Closed / reference",
-      "priority": "Closed",
-      "repo": "none",
-      "visibility": "private-needed",
-      "summary": "Research lane for sending money from the USA to Colombia with ease and low fees.",
-      "morning": "Archived from active work. Keep as reference only.",
-      "owners": [
-        "Personal Assistant",
-        "CFO"
-      ],
-      "links": []
-    },
-    {
-      "title": "World Cup 2026 Betting Model",
+      "title": "World Cup 2026 Forecasting Model",
       "key": "world-cup-2026-betting-model",
       "category": "Data App",
-      "status": "Repo visible",
+      "status": "Live forecast site",
       "priority": "Medium",
-      "repo": "LindaData/world-cup-2026-betting-model",
       "visibility": "public",
-      "summary": "FIFA World Cup model repo. Separate from the recycling project.",
-      "morning": "Keep visible; no action unless sports/model lane restarts.",
-      "owners": [
-        "CDO",
-        "CTO"
-      ],
+      "summary": "FIFA World Cup model with a Quarto static site and methodology docs.",
+      "morning": "Keep visible; no action unless the sports/model lane restarts.",
+      "owners": ["CDO", "CTO"],
       "links": [
-        {
-          "label": "Repo",
-          "url": "https://github.com/LindaData/world-cup-2026-betting-model"
-        }
+        {"label": "Open forecasts", "url": "https://lindadata.github.io/world-cup-2026-betting-model/"},
+        {"label": "Repo", "url": "https://github.com/LindaData/world-cup-2026-betting-model"}
       ]
     },
     {
       "title": "Game Stat Pulse",
       "key": "game-stat-pulse",
       "category": "Sports Data",
-      "status": "Hold",
+      "status": "Hold / live app exists",
       "priority": "Medium",
-      "repo": "LindaData/game-stat-pulse",
       "visibility": "public",
-      "summary": "Sports data/modeling app lane.",
+      "summary": "Mobile-first sports-data approval portal and public research app lane.",
       "morning": "Hold until HVAC and review layer are stable.",
-      "owners": [
-        "CDO",
-        "CTO"
-      ],
+      "owners": ["CDO", "CTO"],
       "links": [
-        {
-          "label": "Repo",
-          "url": "https://github.com/LindaData/game-stat-pulse"
-        }
+        {"label": "Open app", "url": "https://lindadata.github.io/game-stat-pulse/"},
+        {"label": "Repo", "url": "https://github.com/LindaData/game-stat-pulse"}
       ]
     },
     {
-      "title": "Game Stat Lab",
-      "key": "game-stat-lab",
-      "category": "Sports Data",
-      "status": "Hold",
-      "priority": "Hold",
-      "repo": "LindaData/game-stat-lab",
-      "visibility": "private",
-      "summary": "Private sports/data lab repo.",
-      "morning": "Private lane; keep visible but do not expose internals on public HQ.",
-      "owners": [
-        "CDO",
-        "CTO"
-      ],
+      "title": "Southpaw / Boxing Site Lane",
+      "key": "southpaw-boxing",
+      "category": "Site",
+      "status": "Hold / review-ready demo exists",
+      "priority": "Medium",
+      "visibility": "public preview",
+      "summary": "Boxing gym website concept. The review-ready demo uses the GitHub-backed overlay.",
+      "morning": "Ignore unless HVAC is stable or CEO restarts this lane.",
+      "owners": ["CMO", "PRO", "CTO"],
       "links": [
-        {
-          "label": "Private repo",
-          "url": "https://github.com/LindaData/game-stat-lab"
-        }
+        {"label": "Review-ready demo", "url": "https://lindadata.github.io/boxing-gym/"},
+        {"label": "Southpaw concept", "url": "https://lindadata.github.io/southpaw-boxing/"}
       ]
     },
     {
-      "title": "LindaData Sports Hub",
-      "key": "lindadata-sports-hub",
-      "category": "Sports Data",
-      "status": "Hold",
-      "priority": "Hold",
-      "repo": "LindaData/lindadata-sports-hub",
-      "visibility": "private",
-      "summary": "Private sports hub repo.",
-      "morning": "Private lane; no public details beyond name/status.",
-      "owners": [
-        "CDO",
-        "CTO"
-      ],
-      "links": [
-        {
-          "label": "Private repo",
-          "url": "https://github.com/LindaData/lindadata-sports-hub"
-        }
-      ]
-    },
-    {
-      "title": "PawPath Dog Compass",
-      "key": "pawpath-dog-compass",
+      "title": "Recycle Right Now",
+      "key": "recycle-right-now-82",
       "category": "App",
-      "status": "Hold",
+      "status": "Hold / review link tracked",
       "priority": "Hold",
-      "repo": "LindaData/pawpath-dog-compass",
-      "visibility": "private",
-      "summary": "Private dog app repo. Later target for shared review layer port.",
-      "morning": "Hold. Use later as review-layer reuse proof.",
-      "owners": [
-        "PRO",
-        "CTO"
-      ],
+      "visibility": "public app",
+      "summary": "Recycling assistant app. Separate from the World Cup model.",
+      "morning": "Hold. Keep link visible for quick access.",
+      "owners": ["PRO", "CTO"],
       "links": [
-        {
-          "label": "Private repo",
-          "url": "https://github.com/LindaData/pawpath-dog-compass"
-        }
+        {"label": "Open app", "url": "https://lindadata.github.io/recycle-right-now-82/?overlay=review"},
+        {"label": "Review inbox #57", "url": "https://github.com/LindaData/field-copilot-pro/issues/57"}
       ]
     },
     {
@@ -317,196 +135,81 @@
       "category": "App Preview",
       "status": "Preview",
       "priority": "Hold",
-      "repo": "LindaData/pawpath-dog-compass-preview",
       "visibility": "public",
       "summary": "Static public preview build for PawPath review.",
       "morning": "Hold unless review-layer preview testing restarts.",
-      "owners": [
-        "PRO",
-        "CTO"
-      ],
+      "owners": ["PRO", "CTO"],
       "links": [
-        {
-          "label": "Repo",
-          "url": "https://github.com/LindaData/pawpath-dog-compass-preview"
-        }
+        {"label": "Open preview", "url": "https://lindadata.github.io/pawpath-dog-compass-preview/"},
+        {"label": "Repo", "url": "https://github.com/LindaData/pawpath-dog-compass-preview"}
       ]
     },
     {
-      "title": "Recycle Right Now",
-      "key": "recycle-right-now-82",
-      "category": "App",
-      "status": "Hold",
+      "title": "Ghostwriting / Book Engine",
+      "key": "ghostwriting-book-engine",
+      "category": "Knowledge",
+      "status": "Planning",
+      "priority": "Medium",
+      "visibility": "private-needed",
+      "summary": "Long-running note capture system for ghostwriting, podcast/book notes, and future drafts.",
+      "morning": "No action until storage/source capture rules are chosen.",
+      "owners": ["Chief of Staff", "CIO", "CDO", "Editorial"],
+      "links": []
+    },
+    {
+      "title": "Cloud / Codex / Infra Setup",
+      "key": "cloud-codex-infra",
+      "category": "Infra",
+      "status": "Paused",
       "priority": "Hold",
-      "repo": "LindaData/recycle-right-now-82",
-      "visibility": "private repo / public app",
-      "summary": "Recycling assistant app. This is separate from the World Cup model.",
-      "morning": "Hold. Keep link visible for quick access.",
-      "owners": [
-        "PRO",
-        "CTO"
-      ],
-      "links": [
-        {
-          "label": "Open app",
-          "url": "https://lindadata.github.io/recycle-right-now-82/?overlay=review"
-        },
-        {
-          "label": "Private repo",
-          "url": "https://github.com/LindaData/recycle-right-now-82"
-        }
-      ]
+      "visibility": "private-needed",
+      "summary": "Free or cheap persistent cloud dev environment for iPhone-controlled long-running work.",
+      "morning": "Do not spend cycles until CEO restarts the setup.",
+      "owners": ["CTO", "CSO", "CFO"],
+      "links": []
     },
     {
-      "title": "Field Copilot Buddy",
-      "key": "field-copilot-buddy",
-      "category": "Legacy",
-      "status": "Legacy / ignore",
+      "title": "Money Transfer Colombia",
+      "key": "money-transfer-colombia",
+      "category": "Personal Ops",
+      "status": "Closed / reference",
       "priority": "Closed",
-      "repo": "LindaData/field-copilot-buddy",
-      "visibility": "private",
-      "summary": "Older HVAC repo. Current source of truth is field-copilot-pro.",
-      "morning": "Ignore unless recovering history.",
-      "owners": [
-        "CTO"
-      ],
-      "links": [
-        {
-          "label": "Private repo",
-          "url": "https://github.com/LindaData/field-copilot-buddy"
-        }
-      ]
-    },
-    {
-      "title": "Basics Analysis with COVID Data",
-      "key": "basics-covid-data",
-      "category": "Learning / Data",
-      "status": "Reference",
-      "priority": "Low",
-      "repo": "LindaData/Basics_analysis_with_COVID_data",
-      "visibility": "public",
-      "summary": "Older data analysis learning/reference repo.",
-      "morning": "Reference only.",
-      "owners": [
-        "CDO"
-      ],
-      "links": [
-        {
-          "label": "Repo",
-          "url": "https://github.com/LindaData/Basics_analysis_with_COVID_data"
-        }
-      ]
+      "visibility": "private-needed",
+      "summary": "Research lane for sending money from the USA to Colombia with ease and low fees.",
+      "morning": "Archived from active work. Keep as reference only.",
+      "owners": ["Personal Assistant", "CFO"],
+      "links": []
     }
   ],
   "executives": [
-    [
-      "Chief of Staff",
-      "CEO-facing router. Prioritizes, compresses updates, assigns work, keeps the CEO out of weeds."
-    ],
-    [
-      "Personal Assistant",
-      "Calendar, Gmail, contacts, personal logistics, reminders, purchases, admin follow-up."
-    ],
-    [
-      "CDO",
-      "Data, analytics, modeling, metrics, quality, reporting, ML, experimentation."
-    ],
-    [
-      "CTO",
-      "Architecture, repos, implementation, CI/CD, deployments, integrations, review worker."
-    ],
-    [
-      "CFO",
-      "Costs, subscriptions, pricing, budgets, monetization, free-first guardrails."
-    ],
-    [
-      "CMO",
-      "Brand, growth, SEO, copy, content, positioning, launch messaging."
-    ],
-    [
-      "COO",
-      "Execution systems, SOPs, release coordination, operating cadence."
-    ],
-    [
-      "PRO",
-      "Product & Review Officer. UX, review readiness, feedback capture, acceptance criteria."
-    ],
-    [
-      "CHRO",
-      "Agent roles, training, hiring logic, evals, workload design."
-    ],
-    [
-      "CHO",
-      "Founder energy, health, happiness, focus load, burnout prevention."
-    ],
-    [
-      "CCO",
-      "Customer support, customer research, docs, help flows, user feedback."
-    ],
-    [
-      "CSO",
-      "Security, privacy, auth, secrets, safe public/private boundaries."
-    ],
-    [
-      "CIO",
-      "Knowledge system, docs, context, file registry, decision memory."
-    ]
+    ["Chief of Staff", "CEO-facing router. Prioritizes, compresses updates, assigns work, keeps the CEO out of weeds."],
+    ["Personal Assistant", "Calendar, Gmail, contacts, personal logistics, reminders, purchases, admin follow-up."],
+    ["CDO", "Data, analytics, modeling, metrics, quality, reporting, ML, experimentation."],
+    ["CTO", "Architecture, repos, implementation, CI/CD, deployments, integrations, review worker."],
+    ["CFO", "Costs, subscriptions, pricing, budgets, monetization, free-first guardrails."],
+    ["CMO", "Brand, growth, SEO, copy, content, positioning, launch messaging."],
+    ["COO", "Execution systems, SOPs, release coordination, operating cadence."],
+    ["PRO", "Product & Review Officer. UX, review readiness, feedback capture, acceptance criteria."],
+    ["CHRO", "Agent roles, training, hiring logic, evals, workload design."],
+    ["CHO", "Founder energy, health, happiness, focus load, burnout prevention."],
+    ["CCO", "Customer support, customer research, docs, help flows, user feedback."],
+    ["CSO", "Security, privacy, auth, secrets, safe public/private boundaries."],
+    ["CIO", "Knowledge system, docs, context, file registry, decision memory."]
   ],
   "workflows": [
-    [
-      "Company Org routing",
-      "Start every task by identifying the executive owner and specialist agents from Company_Org.md."
-    ],
-    [
-      "Morning scan",
-      "Check Priority 1, blocked work, needs-review work, open inbox, and next action. Output: short CEO brief."
-    ],
-    [
-      "CEO command",
-      "Send one command from this page. Success only counts after the webhook confirms GitHub sync."
-    ],
-    [
-      "Agent routing",
-      "Chief of Staff routes to one executive owner; workers report upward, not directly to CEO."
-    ],
-    [
-      "Codex / GitHub build",
-      "Inspect repo, preserve architecture, change the smallest useful slice, run checks, report proof."
-    ],
-    [
-      "Review layer",
-      "Every UI gets live sync, syncing, failed, and blocked states. No fake saved state."
-    ],
-    [
-      "QA gate",
-      "Mobile load, core buttons, links, build/CI, review webhook, and no secrets before CEO review."
-    ]
+    ["Company Org routing", "Start every task by identifying the executive owner and specialist agents from Company_Org.md."],
+    ["Morning scan", "Check Priority 1, blockers, review-ready work, inbox, and next action."],
+    ["CEO command", "Send one command from HQ. Success only counts after webhook sync confirms GitHub."],
+    ["Link QA", "Classify every link as live app, review/inbox, repo, or reference; remove stale primary links."],
+    ["Review layer", "Every UI gets live sync, syncing, failed, and blocked states. No fake saved state."],
+    ["QA gate", "Mobile load, core buttons, links, build/CI, review webhook, and no secrets before CEO review."]
   ],
   "companyDocs": [
-    {
-      "title": "Company Org",
-      "url": "/company/Company_Org.md",
-      "summary": "Canonical org chart, hierarchy, reporting lines, and task-routing rule."
-    },
-    {
-      "title": "Agents.md",
-      "url": "/company/Agents.md",
-      "summary": "Executive team, specialist agents, reporting lines."
-    },
-    {
-      "title": "Context.md",
-      "url": "/company/Context.md",
-      "summary": "Current work, communication preferences, status board, guardrails."
-    },
-    {
-      "title": "Workflows.md",
-      "url": "/company/Workflows.md",
-      "summary": "Execution loops, intake, routing, Codex/GitHub, QA, reviews."
-    },
-    {
-      "title": "Decision_Log.md",
-      "url": "/company/Decision_Log.md",
-      "summary": "Durable decisions that control future work."
-    }
+    {"title": "Company Org", "url": "/company/Company_Org.md", "summary": "Canonical org chart, hierarchy, reporting lines, and task-routing rule."},
+    {"title": "Agents.md", "url": "/company/Agents.md", "summary": "Executive team, specialist agents, reporting lines."},
+    {"title": "Context.md", "url": "/company/Context.md", "summary": "Current work, communication preferences, status board, guardrails."},
+    {"title": "Workflows.md", "url": "/company/Workflows.md", "summary": "Execution loops, intake, routing, Codex/GitHub, QA, reviews."},
+    {"title": "Decision_Log.md", "url": "/company/Decision_Log.md", "summary": "Durable decisions that control future work."},
+    {"title": "Link Audit", "url": "/hq/LINK_AUDIT.md", "summary": "Last HQ link audit and known limitations."}
   ]
 }
