@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LindaData Agent Workload</title>
+  <style>
+    :root{color-scheme:dark;--bg:#050816;--panel:#0f172a;--panel2:#111827;--line:rgba(148,163,184,.25);--ink:#f8fafc;--muted:#b8c3d9;--soft:#8290aa;--cyan:#67e8f9;--green:#34d399;--amber:#fbbf24;--rose:#fb7185;--r:20px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 10% 0,rgba(96,165,250,.28),transparent 30rem),linear-gradient(145deg,#050816,#0b1120 60%,#111827);color:var(--ink)}a{color:inherit}.shell{width:min(1180px,calc(100% - 24px));margin:auto;padding:18px 0 80px}.top{position:sticky;top:0;z-index:10;margin:0 -12px 18px;padding:12px;background:rgba(5,8,22,.86);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}.topin{width:min(1180px,100%);margin:auto;display:flex;gap:10px;align-items:center;justify-content:space-between}.brand{text-decoration:none;font-weight:950}.btn,button{border:0;border-radius:999px;min-height:42px;padding:.7rem .9rem;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--green));color:#06111f;text-decoration:none;cursor:pointer}.btn.secondary,button.secondary{background:rgba(255,255,255,.07);border:1px solid var(--line);color:var(--ink)}.hero,.card,.panel{border:1px solid var(--line);border-radius:var(--r);background:rgba(15,23,42,.82);box-shadow:0 20px 70px rgba(0,0,0,.28);padding:16px}.hero{display:grid;gap:12px;margin-bottom:14px}.eyebrow{margin:0;color:var(--soft);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;font-weight:950}.hero h1,.section h2{margin:0;letter-spacing:-.05em;line-height:.95}.hero h1{font-size:clamp(2.1rem,9vw,5.4rem)}p{color:var(--muted);line-height:1.55}.grid{display:grid;gap:12px}.metrics{grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:14px}.metric strong{display:block;font-size:2.25rem;letter-spacing:-.07em}.metric span{color:var(--soft);font-size:.86rem}.section{margin-top:16px}.section h2{font-size:clamp(1.45rem,6vw,2.6rem);margin-bottom:8px}.form{display:grid;gap:10px}.row{display:grid;gap:10px}label{display:grid;gap:6px;color:var(--muted);font-weight:850;font-size:.88rem}input,select,textarea{width:100%;border:1px solid var(--line);border-radius:14px;background:rgba(2,6,23,.75);color:var(--ink);padding:12px}textarea{min-height:90px}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:16px}table{width:100%;border-collapse:collapse;min-width:760px}th,td{padding:11px;border-bottom:1px solid rgba(148,163,184,.16);text-align:left;vertical-align:top}th{color:var(--soft);font-size:.78rem;text-transform:uppercase;letter-spacing:.08em}td{color:var(--muted)}.pill{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:.25rem .55rem;font-size:.75rem;color:#bfdbfe;background:rgba(96,165,250,.13)}.warn{color:#fde68a}.actions{display:flex;gap:8px;flex-wrap:wrap}@media(min-width:780px){.hero{grid-template-columns:1fr .55fr}.metrics{grid-template-columns:repeat(4,1fr)}.row{grid-template-columns:repeat(3,1fr)}.main{grid-template-columns:.8fr 1.2fr}}
+  </style>
+</head>
+<body>
+  <header class="top"><div class="topin"><a class="brand" href="/">LindaData HQ</a><a class="btn secondary" href="/#company">Company docs</a></div></header>
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Company Org telemetry</p>
+        <h1>Agent workload & token tracker</h1>
+        <p>Track which agents are working, how many tasks they touch, and estimated tokens used. This page is public-safe and local-first until real telemetry is connected.</p>
+      </div>
+      <aside class="panel">
+        <p class="eyebrow">Important</p>
+        <p class="warn">Live ChatGPT token usage is not automatically available to this static GitHub Pages site. Current counts are manual/estimated unless connected later to API logs or a private telemetry backend.</p>
+      </aside>
+    </section>
+
+    <section class="metrics grid" id="metrics"></section>
+
+    <section class="grid main">
+      <form class="card form" id="logForm">
+        <p class="eyebrow">Add work log</p>
+        <div class="row">
+          <label>Date<input id="date" type="date" required></label>
+          <label>Executive owner<select id="owner" required></select></label>
+          <label>Agent<select id="agent" required></select></label>
+        </div>
+        <label>Task / work packet<input id="task" placeholder="Example: Review layer QA smoke test" required></label>
+        <div class="row">
+          <label>Minutes worked<input id="minutes" type="number" min="0" step="1" value="0"></label>
+          <label>Input tokens<input id="inputTokens" type="number" min="0" step="1" value="0"></label>
+          <label>Output tokens<input id="outputTokens" type="number" min="0" step="1" value="0"></label>
+        </div>
+        <label>Proof link<input id="proof" placeholder="GitHub issue, PR, commit, review note, or page link"></label>
+        <label>Notes<textarea id="notes" placeholder="Keep it short. What was done? What changed?"></textarea></label>
+        <div class="actions"><button type="submit">Save local log</button><button type="button" class="secondary" id="exportJson">Export JSON</button><button type="button" class="secondary" id="clearLogs">Clear local logs</button></div>
+      </form>
+
+      <section class="card">
+        <p class="eyebrow">Agent totals</p>
+        <div class="tablewrap"><table><thead><tr><th>Agent</th><th>Owner</th><th>Tasks</th><th>Minutes</th><th>Tokens</th><th>Last task</th></tr></thead><tbody id="summaryBody"></tbody></table></div>
+      </section>
+    </section>
+
+    <section class="section card">
+      <p class="eyebrow">Raw work log</p>
+      <div class="tablewrap"><table><thead><tr><th>Date</th><th>Owner</th><th>Agent</th><th>Task</th><th>Min</th><th>Tokens</th><th>Proof</th></tr></thead><tbody id="logBody"></tbody></table></div>
+    </section>
+  </main>
+
+<script>
+const owners=["Chief of Staff","Personal Assistant","CDO","CTO","CFO","CMO","COO","PRO","CHRO","CHO","CCO","CSO","CIO"];
+const agents={
+"Chief of Staff":["Priority Manager","Decision Tracker","Daily Command Brief Agent","Work Packet Manager"],
+"Personal Assistant":["Calendar Assistant","Email Assistant","Reminder Agent","Research Assistant","Shopping / Errand Agent","Travel Assistant"],
+"CDO":["Data Analyst","Data Engineer","Statistician","Data Scientist","BI Dashboard Agent","Data Quality Agent"],
+"CTO":["Software Architect","Frontend Engineer","Backend Engineer","Full-Stack Engineer","DevOps / Cloud Engineer","GitHub / Codex Operator","QA Automation Agent"],
+"CFO":["Finance Analyst","Budget Agent","Pricing Agent","Revenue Model Agent"],
+"CMO":["Brand Agent","Content Agent","SEO Agent","Campaign Agent","Market Research Agent"],
+"COO":["Project Manager","Operations Agent","Workflow Agent","SOP Agent","Release Coordinator"],
+"PRO":["Product Manager","UX Agent","UI Agent","Review Layer Agent","Feedback Triage Agent","Accessibility Agent"],
+"CHRO":["Agent Training Agent","Role Design Agent","Performance Review Agent","Onboarding Agent"],
+"CHO":["Fitness Agent","Nutrition Agent","Sleep Agent","Routine Agent","Focus Agent"],
+"CCO":["Customer Support Agent","Customer Success Agent","CRM Agent","Voice of Customer Agent"],
+"CSO":["Authentication Agent","Privacy Agent","Permissions Agent","Security QA Agent","Secrets Management Agent"],
+"CIO":["HQ Dashboard Agent","Documentation Agent","Context Agent","Memory Agent","Knowledge Base Agent","File / Repo Librarian Agent"]
+};
+const key="lindadata-agent-workload-v1";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"}[c]));
+function logs(){try{return JSON.parse(localStorage.getItem(key)||"[]")}catch{return[]}}
+function save(xs){localStorage.setItem(key,JSON.stringify(xs.slice(0,1000)))}
+function fill(){owner.innerHTML=owners.map(x=>`<option>${esc(x)}</option>`).join("");updateAgents();date.valueAsDate=new Date()}
+function updateAgents(){agent.innerHTML=(agents[owner.value]||[]).map(x=>`<option>${esc(x)}</option>`).join("")}
+owner.addEventListener("change",updateAgents);
+logForm.addEventListener("submit",e=>{e.preventDefault();const input=+inputTokens.value||0,output=+outputTokens.value||0;const row={id:crypto.randomUUID(),date:date.value,owner:owner.value,agent:agent.value,task:task.value.trim(),minutes:+minutes.value||0,inputTokens:input,outputTokens:output,totalTokens:input+output,proof:proof.value.trim(),notes:notes.value.trim(),createdAt:new Date().toISOString()};save([row,...logs()]);logForm.reset();date.valueAsDate=new Date();fill();render()});
+exportJson.addEventListener("click",async()=>{const data=JSON.stringify(logs(),null,2);try{await navigator.clipboard.writeText(data);alert("Agent workload JSON copied.")}catch{const blob=new Blob([data],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="lindadata-agent-workload.json";a.click()}});
+clearLogs.addEventListener("click",()=>{if(confirm("Clear local workload logs on this device?")){save([]);render()}});
+function render(){const xs=logs();const totalTasks=xs.length,totalMinutes=xs.reduce((a,x)=>a+(+x.minutes||0),0),totalTokens=xs.reduce((a,x)=>a+(+x.totalTokens||0),0),activeAgents=new Set(xs.map(x=>x.agent)).size;metrics.innerHTML=[['Tasks',totalTasks],['Agents',activeAgents],['Minutes',totalMinutes],['Tokens',totalTokens.toLocaleString()]].map(x=>`<article class="card metric"><strong>${x[1]}</strong><span>${x[0]}</span></article>`).join("");const by={};for(const x of xs){const k=x.agent;by[k]??={agent:k,owner:x.owner,tasks:0,minutes:0,tokens:0,last:""};by[k].tasks++;by[k].minutes+=+x.minutes||0;by[k].tokens+=+x.totalTokens||0;if(!by[k].last)by[k].last=x.task}summaryBody.innerHTML=Object.values(by).sort((a,b)=>b.tokens-a.tokens||b.tasks-a.tasks).map(x=>`<tr><td><strong>${esc(x.agent)}</strong></td><td>${esc(x.owner)}</td><td>${x.tasks}</td><td>${x.minutes}</td><td>${x.tokens.toLocaleString()}</td><td>${esc(x.last)}</td></tr>`).join("")||`<tr><td colspan="6">No logs yet. Add the first work packet above.</td></tr>`;logBody.innerHTML=xs.map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.owner)}</td><td><span class="pill">${esc(x.agent)}</span></td><td>${esc(x.task)}</td><td>${x.minutes}</td><td>${(+x.totalTokens||0).toLocaleString()}</td><td>${x.proof?`<a href="${esc(x.proof)}">proof</a>`:""}</td></tr>`).join("")||`<tr><td colspan="7">No logs yet.</td></tr>`}
+fill();render();
+</script>
+</body>
+</html>
