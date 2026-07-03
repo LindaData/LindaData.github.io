@@ -56,7 +56,8 @@ Use this with:
 | Product / UX / Review | agent-kits/specialist-kits-product-review.md | agent-knowledge/specialists/ |
 | Data / Analytics | agent-kits/specialist-kits-data.md | agent-knowledge/specialists/ |
 | Security / Ops | agent-kits/specialist-kits-security-ops.md | agent-knowledge/specialists/ |
-| Business / Customer / Admin | agent-kits/specialist-kits-business-customer.md | agent-knowledge/specialists/ |
+| Business / Customer | agent-kits/specialist-kits-business-customer.md | agent-knowledge/specialists/ |
+| Admin / Research | agent-kits/specialist-kits-admin-research.md | agent-knowledge/specialists/ |
 
 ## Always-on execution contract
 
