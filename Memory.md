@@ -25,10 +25,21 @@
 
 - Treat every work/build/project request as a LindaData ask unless it is clearly personal/non-LindaData.
 - Use the org system every time: Chief of Staff intake -> lead executive -> supporting agents -> QA/review.
-- Use the LindaData ask form fields: Ask, priority, executive owner, supporting agents, target asset, required context, execution plan, QA/acceptance test, output, CLO gate.
+- Use the LindaData ask form fields: Ask, priority, executive owner, supporting agents, target asset, required context, execution plan, QA/acceptance test, output, CLO gate, and CISO gate when needed.
 - Do not ask the CEO to project-manage work that the org can route itself.
 - Check existing context before asking for information already stored in the repo or company OS.
 - Keep the answer short but include enough proof: what changed, what passed, links, and what needs review.
+
+---
+
+## Executive model memory
+
+- Every LindaData executive must operate at a world-class standard.
+- Active chiefs now include CPO, CTO, CAIO, CDO, COO, CFO, CRO, CMO, CLO, CISO, CStrO, CHRO, CCO, CIO, and CHO.
+- PRO is Product Review Office under CPO + COO, not a chief officer.
+- Security leadership is CISO.
+- Strategy leadership is CStrO.
+- New chiefs have office docs under `agents/` and should read `agents/leadership/STANDARD.md`.
 
 ---
 
@@ -37,39 +48,22 @@
 ```md
 Status: Active / Blocked / Ready for Review / Done
 
+Owner:
+- ...
+
 Changed:
 - ...
 
 Tested:
 - ...
 
+Gates:
+- CLO: Not needed / Approved / Approved with notes / Blocked / Needs outside counsel
+- CISO: Not needed / Approved / Blocked
+
 Review:
 - Link: ...
 - Check: ...
-```
-
-For quick build tasks:
-
-```md
-Done / Not done yet.
-
-What changed:
-- ...
-
-What passed:
-- ...
-
-What to test:
-- ...
-```
-
-For legal-sensitive work:
-
-```md
-CLO:
-- Status: Approved / Approved with notes / Blocked / Needs outside counsel
-- Risk: Low / Medium / High
-- Notes: ...
 ```
 
 ---
@@ -124,6 +118,7 @@ Rules:
 - It should sync to GitHub through a server-side worker/webhook.
 - It should let the CEO submit a note from a random page and later ask what was submitted.
 - It should capture only necessary page context and keep public issue content public-safe.
+- PRO owns review readiness under CPO + COO.
 
 ---
 
@@ -134,7 +129,7 @@ Current order unless the CEO changes it:
 1. HVAC Copilot / Field Copilot Pro.
 2. Universal review layer system.
 3. LindaData HQ dashboard.
-4. Agentic company OS, including the CLO Legal Division.
+4. Agentic company OS, including executive office docs.
 5. Other sites/projects after the top workflow is reliable.
 
 ---
@@ -145,10 +140,10 @@ Current order unless the CEO changes it:
 - Never expose GitHub tokens in browser JavaScript.
 - Never claim fake Face ID/auth is real.
 - Public GitHub Pages should only show public-safe data.
-- Real passkey/Face ID-style login needs a real auth backend/provider.
+- Real private login needs a real backend/provider.
 - CLO must review user data, auth, telemetry, logs, payments, subscriptions, contracts, vendor/API terms, IP/licensing, AI governance, and regulated-topic claims.
+- CISO must review secure-system and public/private-boundary questions.
 - CLO output should be brief: Approved, Approved with notes, Blocked, or Needs outside counsel.
-- The CLO division does not replace outside counsel; it prepares risk notes, templates, and escalation questions.
 
 ---
 
@@ -157,7 +152,7 @@ Current order unless the CEO changes it:
 - Be useful, not chatty.
 - Be direct.
 - Do not add filler.
-- Use labels like Status, Changed, Tested, Review, Need from you, and CLO when relevant.
+- Use labels like Status, Owner, Changed, Tested, Gates, Review, Need from you.
 - Keep the CEO out of project-management weeds.
 - Ask fewer questions; make grounded assumptions when safe.
 - Partial progress is better than stopping for clarification.
