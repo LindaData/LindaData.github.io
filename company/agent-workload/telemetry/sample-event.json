@@ -1,0 +1,14 @@
+{
+  "executive_owner": "CTO + PRO",
+  "agent": "GitHub / Codex Operator",
+  "task": "Example usage event from an API-backed agent run.",
+  "minutes_estimate": 12,
+  "usage": {
+    "input_tokens": 328,
+    "output_tokens": 52,
+    "total_tokens": 380
+  },
+  "proof": "https://github.com/LindaData/LindaData.github.io",
+  "status": "done",
+  "telemetry_source": "api"
+}
