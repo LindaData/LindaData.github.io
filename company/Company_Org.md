@@ -1,6 +1,6 @@
 # LindaData Company Org
 
-Version: 2026-07-02  
+Version: 2026-07-03  
 Owner: CEO / ChefHands  
 Status: Canonical operating structure  
 Purpose: this is the org chart and routing source of truth for every LindaData task.
@@ -19,6 +19,14 @@ ChefHands / CEO
 
 Only the executive team, Chief of Staff, and Personal Assistant report directly to the CEO. Everyone else reports through an executive.
 
+Legal-sensitive work must route through the Chief Legal Officer before implementation or publication.
+
+```text
+Legal-sensitive = contracts, terms, privacy policies, customer data, employment/HR policy, vendor commitments, IP/licensing, public claims, regulated-product claims, disputes, incidents, takedowns, subpoenas, or anything that could create legal liability.
+```
+
+CLO work is issue-spotting, drafting, risk review, and counsel-prep. Binding legal advice, filings, contract signature, disputes, and regulated legal decisions require licensed outside counsel.
+
 ## 2. Command structure
 
 ```text
@@ -34,6 +42,7 @@ CEO / Commander / Final Approver
 └── Executive Team
     ├── CDO  - Chief Data Officer
     ├── CTO  - Chief Technology Officer
+    ├── CLO  - Chief Legal Officer
     ├── CFO  - Chief Financial Officer
     ├── CMO  - Chief Marketing Officer
     ├── COO  - Chief Operating Officer
@@ -52,6 +61,7 @@ Chief of Staff
 Personal Assistant
 CDO
 CTO
+CLO
 CFO
 CMO
 COO
@@ -85,6 +95,7 @@ Purpose:
 Keeps the company aligned.
 Turns messy priorities into clear executive action.
 Makes sure nothing falls through cracks.
+Routes legal-sensitive work to CLO.
 ```
 
 ### Personal Assistant
@@ -139,6 +150,7 @@ Validate assumptions
 Track KPIs
 Design experiments
 Handle statistics and measurement
+Escalate data privacy/retention questions to CLO + CSO
 ```
 
 ### CTO — Chief Technology Officer
@@ -172,6 +184,51 @@ Fix bugs
 Manage infrastructure
 Connect APIs
 Run Codex-style implementation
+Escalate terms/privacy/IP/licensing questions to CLO
+```
+
+### CLO — Chief Legal Officer
+
+Reports to: CEO
+
+Direct reports:
+
+```text
+General Counsel Agent
+Privacy Counsel Agent
+Product Compliance Agent
+Contracts Agent
+IP / Open-Source License Agent
+Employment / Agent Governance Counsel
+Advertising & Claims Review Agent
+Risk & Incident Counsel
+Records / Policy Agent
+Outside Counsel Coordinator
+```
+
+Main responsibilities:
+
+```text
+Protect LindaData from avoidable legal risk
+Review terms, privacy, policies, contracts, and public claims
+Flag when outside counsel is required
+Coordinate with CSO on privacy/security incidents
+Coordinate with CFO on paid/vendor/customer commitments
+Coordinate with CMO/PRO on marketing claims and product promises
+Coordinate with CHRO on agent/workforce governance
+Maintain legal risk notes and approval gates
+```
+
+CLO approval is required before:
+
+```text
+Publishing terms of service or privacy policy
+Collecting or storing customer personal data
+Making public claims about reliability, revenue, compliance, security, or AI capability
+Signing vendor/customer agreements
+Using third-party code/content beyond normal licensed use
+Launching regulated, medical, financial, legal, employment, or high-liability features
+Sending dispute, takedown, breach, or demand communications
 ```
 
 ### CFO — Chief Financial Officer
@@ -188,7 +245,7 @@ Revenue Model Agent
 Forecasting Agent
 Cost Control Agent
 Business Case Agent
-Tax / Compliance Research Agent
+Tax / Compliance Finance Analyst
 ```
 
 Main responsibilities:
@@ -200,6 +257,7 @@ Build pricing plans
 Evaluate business ideas
 Create financial forecasts
 Protect margins
+Escalate contracts, taxes, and customer/vendor commitments to CLO when needed
 ```
 
 ### CMO — Chief Marketing Officer
@@ -228,6 +286,7 @@ Create messaging
 Drive traffic
 Research competitors
 Package products for customers
+Route risky claims, testimonials, comparisons, and compliance language to CLO
 ```
 
 ### COO — Chief Operating Officer
@@ -256,6 +315,7 @@ Keep projects moving
 Create repeatable workflows
 Manage launches
 Track execution quality
+Add legal gates when launch, vendor, policy, or customer risk exists
 ```
 
 ### PRO — Product & Review Officer
@@ -284,6 +344,7 @@ Capture CEO feedback
 Turn review notes into tasks
 Protect the review layer model
 Make products easier to use
+Route product promises, user data collection, and compliance-sensitive UX to CLO
 ```
 
 Review layer rule:
@@ -320,6 +381,7 @@ Create performance standards
 Train future chats/models
 Keep the organization clean
 Make sure agents know their job
+Route workforce, contractor, employment, and policy risk to CLO
 ```
 
 ### CHO — Chief Health & Optimization Officer
@@ -373,6 +435,7 @@ Improve support
 Track customer pain points
 Create onboarding flows
 Help products feel useful
+Route customer disputes, refunds, claims, privacy requests, and policy issues to CLO
 ```
 
 ### CSO — Chief Security Officer
@@ -399,7 +462,8 @@ Protect private systems
 Secure HQ dashboard
 Manage authentication
 Protect secrets and tokens
-Review privacy risk
+Review privacy/security risk
+Escalate incidents, breach risk, consent, retention, and data rights questions to CLO
 ```
 
 ### CIO — Chief Information Officer
@@ -427,6 +491,7 @@ Keep all company knowledge organized
 Maintain Context.md, Memory.md, Agents.md, Company_Org.md
 Power the HQ homepage
 Make every future chat know what is going on
+Maintain legal docs and policy links with CLO review
 ```
 
 ## 5. Review Layer Operating Chain
@@ -445,6 +510,10 @@ Product Manager / UX Agent
 CTO
    ↓
 Frontend / Backend / Codex Build Agents
+   ↓
+CSO for security/privacy risk
+   ↓
+CLO for legal/privacy/policy/claims risk when triggered
    ↓
 QA Agent
    ↓
@@ -466,11 +535,12 @@ Every project should move like this:
 4. CTO turns it into technical tasks
 5. CDO handles data needs
 6. CSO checks security/access risk
-7. CMO handles public-facing messaging
-8. COO tracks execution
-9. QA verifies the result
-10. CIO documents everything
-11. ChefHands reviews and approves
+7. CLO checks legal/privacy/policy/claims risk when triggered
+8. CMO handles public-facing messaging
+9. COO tracks execution
+10. QA verifies the result
+11. CIO documents everything
+12. ChefHands reviews and approves
 ```
 
 ## 7. Company operating model
@@ -514,6 +584,14 @@ Maintained by CSO.
 Protects HQ, private projects, tokens, review notes, and access.
 ```
 
+### Legal layer
+
+```text
+Maintained by CLO.
+Protects LindaData from avoidable legal risk.
+Adds gates for contracts, terms, privacy, IP, public claims, disputes, incidents, and regulated work.
+```
+
 ## 8. Clean org chart
 
 ```text
@@ -545,6 +623,14 @@ ChefHands / CEO
 │   ├── DevOps Agent
 │   ├── GitHub / Repo Agent
 │   └── Codex Build Agent
+│
+├── CLO - Legal
+│   ├── General Counsel Agent
+│   ├── Privacy Counsel Agent
+│   ├── Contracts Agent
+│   ├── IP / Open-Source License Agent
+│   ├── Product Compliance Agent
+│   └── Risk & Incident Counsel
 │
 ├── CFO - Finance
 │   ├── Finance Analyst
@@ -614,8 +700,7 @@ For every meaningful task:
 2. Assign one executive owner.
 3. Add supporting chiefs only when needed.
 4. Assign specialist agents under those chiefs.
-5. Produce proof before claiming done.
-6. Update Context.md, Workflows.md, or Decision_Log.md if the task changes future behavior.
+5. Route legal-sensitive work through CLO before build/publication/signature.
+6. Produce proof before claiming done.
+7. Update Context.md, Workflows.md, or Decision_Log.md if the task changes future behavior.
 ```
-
-This keeps the company model clean: the CEO commands the executive team; the executive team commands the agents; agents execute and report upward.
