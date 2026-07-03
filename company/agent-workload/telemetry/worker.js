@@ -14,12 +14,16 @@ export default {
         return json({ ok: true, service: "lindadata-agent-telemetry", mode: "private-ingest" }, cors);
       }
 
+      if (url.pathname === "/debug/github-token") {
+        const authCheck = checkTelemetryAuth(request, env);
+        if (!authCheck.ok) return json(authCheck, cors, 401);
+        const result = await checkGitHubAccess(env);
+        return json(result, cors, result.ok ? 200 : 502);
+      }
+
       if (url.pathname === "/v1/agent-usage" && request.method === "POST") {
-        const auth = request.headers.get("authorization") || "";
-        const headerToken = request.headers.get("x-telemetry-token") || "";
-        const expected = env.TELEMETRY_WRITE_TOKEN;
-        const given = auth.startsWith("Bearer ") ? auth.slice(7) : headerToken;
-        if (!expected || given !== expected) return json({ ok: false, error: "unauthorized" }, cors, 401);
+        const authCheck = checkTelemetryAuth(request, env);
+        if (!authCheck.ok) return json(authCheck, cors, 401);
 
         let body;
         try { body = await request.json(); } catch { return json({ ok: false, error: "invalid_json" }, cors, 400); }
@@ -44,6 +48,15 @@ export default {
   }
 };
 
+function checkTelemetryAuth(request, env) {
+  const auth = request.headers.get("authorization") || "";
+  const headerToken = request.headers.get("x-telemetry-token") || "";
+  const expected = env.TELEMETRY_WRITE_TOKEN;
+  const given = auth.startsWith("Bearer ") ? auth.slice(7) : headerToken;
+  if (!expected || given !== expected) return { ok: false, error: "unauthorized" };
+  return { ok: true };
+}
+
 function sanitizeUsage(input) {
   const inputTokens = number(input.input_tokens ?? input.inputTokens ?? input.usage?.input_tokens);
   const outputTokens = number(input.output_tokens ?? input.outputTokens ?? input.usage?.output_tokens);
@@ -67,23 +80,49 @@ function sanitizeUsage(input) {
   };
 }
 
-async function appendToGitHubUsageLog(env, entry) {
-  const githubToken = env.AGENT_TELEMETRY_GITHUB_TOKEN || env.GITHUB_TOKEN;
-  if (!githubToken) throw new Error("missing_agent_telemetry_github_token");
-  const owner = env.GITHUB_OWNER || "LindaData";
-  const repo = env.GITHUB_REPO || "LindaData.github.io";
-  const branch = env.GITHUB_BRANCH || "master";
-  const path = env.USAGE_LOG_PATH || "company/agent-workload/usage-log.json";
-  const api = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-  const headers = {
+function githubToken(env) {
+  return env.AGENT_TELEMETRY_GITHUB_TOKEN || env.GITHUB_TOKEN || "";
+}
+
+function githubTarget(env) {
+  return {
+    owner: env.GITHUB_OWNER || "LindaData",
+    repo: env.GITHUB_REPO || "LindaData.github.io",
+    branch: env.GITHUB_BRANCH || "master",
+    path: env.USAGE_LOG_PATH || "company/agent-workload/usage-log.json"
+  };
+}
+
+function githubHeaders(env) {
+  const token = githubToken(env);
+  if (!token) throw new Error("missing_agent_telemetry_github_token");
+  return {
     "accept": "application/vnd.github+json",
-    "authorization": `Bearer ${githubToken}`,
+    "authorization": `Bearer ${token}`,
     "content-type": "application/json",
     "user-agent": "lindadata-agent-telemetry"
   };
+}
+
+async function checkGitHubAccess(env) {
+  try {
+    const { owner, repo, branch, path } = githubTarget(env);
+    const api = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+    const res = await fetch(`${api}?ref=${encodeURIComponent(branch)}`, { headers: githubHeaders(env) });
+    const body = await res.text();
+    return { ok: res.ok, status: res.status, path, detail: res.ok ? "github_read_ok" : clean(body).slice(0, 220) };
+  } catch (err) {
+    return { ok: false, status: 0, detail: safeError(err) };
+  }
+}
+
+async function appendToGitHubUsageLog(env, entry) {
+  const { owner, repo, branch, path } = githubTarget(env);
+  const api = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+  const headers = githubHeaders(env);
 
   const currentRes = await fetch(`${api}?ref=${encodeURIComponent(branch)}`, { headers });
-  if (!currentRes.ok) throw new Error(`github_get_${currentRes.status}`);
+  if (!currentRes.ok) throw new Error(`github_get_${currentRes.status}_${clean(await currentRes.text()).slice(0, 120)}`);
   const current = await currentRes.json();
   const text = decodeBase64Utf8(current.content.replace(/\n/g, ""));
   const ledger = JSON.parse(text);
@@ -96,7 +135,7 @@ async function appendToGitHubUsageLog(env, entry) {
     headers,
     body: JSON.stringify({ message: `Log agent usage: ${entry.id}`, content, sha: current.sha, branch })
   });
-  if (!putRes.ok) throw new Error(`github_put_${putRes.status}`);
+  if (!putRes.ok) throw new Error(`github_put_${putRes.status}_${clean(await putRes.text()).slice(0, 120)}`);
   const saved = await putRes.json();
   return { commit: saved.commit?.sha, path };
 }
@@ -115,7 +154,7 @@ function decodeBase64Utf8(text) {
 }
 
 function clean(value) {
-  return String(value ?? "").replace(/[\u0000-\u001F\u007F]/g, "").slice(0, 500);
+  return String(value ?? "").replace(/[\u0000-\u001F\u007F]/g, " ").slice(0, 500);
 }
 
 function number(value) {
@@ -124,7 +163,7 @@ function number(value) {
 }
 
 function safeError(err) {
-  return String(err?.message || err || "unknown_error").replace(/[\u0000-\u001F\u007F]/g, "").slice(0, 160);
+  return String(err?.message || err || "unknown_error").replace(/[\u0000-\u001F\u007F]/g, " ").slice(0, 220);
 }
 
 function json(data, headers = {}, status = 200) {
