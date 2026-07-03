@@ -2,7 +2,7 @@
 
 Version: 2026-07-03  
 Owner lane: CIO + CSO + CTO + Chief of Staff  
-Status: deployment workflow added
+Status: deployment triggered after secrets added
 
 ## Purpose
 
@@ -53,14 +53,20 @@ The repository now includes:
 
 The workflow deploys the Worker when telemetry source files change or when run manually. It requires Cloudflare credentials in GitHub Actions repository settings.
 
+## Deployment trigger
+
+A telemetry README update was committed after the required GitHub Actions secrets were added. This change is inside `company/agent-workload/telemetry/`, so it should trigger the deploy workflow through the configured path filter.
+
 ## Deployment steps
 
-1. Configure Cloudflare credentials in GitHub Actions settings.
-2. Run the deploy workflow or push a telemetry source change.
-3. Test `GET /health`.
-4. Send one trusted `POST /v1/agent-usage` event.
-5. Confirm `usage-log.json` receives a new row.
-6. Confirm the tracker page shows the row.
+1. GitHub Actions starts the deploy workflow.
+2. Workflow installs Wrangler.
+3. Workflow deploys Worker source.
+4. Workflow pushes Worker runtime secrets.
+5. Test `GET /health`.
+6. Send one trusted `POST /v1/agent-usage` event.
+7. Confirm `usage-log.json` receives a new row.
+8. Confirm the tracker page shows the row.
 
 ## Security rules
 
@@ -71,4 +77,4 @@ The workflow deploys the Worker when telemetry source files change or when run m
 
 ## Current limitation
 
-The source and deployment pipeline are now in the repo. Final deployment depends on private Cloudflare/GitHub values being present in external settings; those values are not available to this chat and must not be committed.
+The source, deployment pipeline, and trigger commit are now in the repo. Final proof depends on the GitHub Actions run completing and the Cloudflare Worker returning a healthy response.
