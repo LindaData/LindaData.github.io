@@ -1,0 +1,62 @@
+name: Smoke Test Agent Telemetry Worker
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - company/agent-workload/telemetry/smoke-trigger.txt
+      - .github/workflows/smoke-test-agent-telemetry.yml
+
+jobs:
+  smoke:
+    name: Verify telemetry health and write path
+    runs-on: ubuntu-latest
+    env:
+      TELEMETRY_URL: https://lindadata-agent-telemetry.sergio-mora.workers.dev
+    steps:
+      - name: Check health
+        run: |
+          curl -fsS "$TELEMETRY_URL/health" | tee health.json
+          grep '"ok":true' health.json
+
+      - name: Build test event
+        run: |
+          EVENT_ID="github-actions-smoke-${GITHUB_RUN_ID}"
+          cat > event.json <<EOF
+          {
+            "id": "$EVENT_ID",
+            "date": "$(date +%F)",
+            "executive_owner": "CIO + CSO + CTO",
+            "agent": "Telemetry Smoke Test Agent",
+            "task": "Verify private telemetry API writes to usage-log.json from GitHub Actions",
+            "minutes_estimate": 1,
+            "usage": {
+              "input_tokens": 100,
+              "output_tokens": 50,
+              "total_tokens": 150
+            },
+            "proof": "https://lindadata.github.io/company/agent-workload/",
+            "status": "done",
+            "telemetry_source": "api"
+          }
+          EOF
+          echo "EVENT_ID=$EVENT_ID" >> "$GITHUB_ENV"
+          cat event.json
+
+      - name: Send test usage event
+        env:
+          TELEMETRY_WRITE_TOKEN: ${{ secrets.TELEMETRY_WRITE_TOKEN }}
+        run: |
+          curl -fsS -X POST "$TELEMETRY_URL/v1/agent-usage" \
+            -H "content-type: application/json" \
+            -H "authorization: Bearer $TELEMETRY_WRITE_TOKEN" \
+            --data @event.json | tee response.json
+          grep '"ok":true' response.json
+
+      - name: Verify ledger updated
+        run: |
+          sleep 5
+          curl -fsS "https://raw.githubusercontent.com/LindaData/LindaData.github.io/master/company/agent-workload/usage-log.json" | tee usage-log.json
+          grep "$EVENT_ID" usage-log.json
