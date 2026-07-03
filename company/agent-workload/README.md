@@ -28,11 +28,22 @@ The page shows:
 
 The page reads `usage-log.json` plus local browser entries.
 
+## Private telemetry API
+
+Backend source is now stored here:
+
+- `telemetry/worker.js`
+- `telemetry/README.md`
+- `telemetry/event-format.md`
+- `telemetry/wrangler.example.toml`
+
+The private worker accepts trusted usage events and appends sanitized rows to `usage-log.json`.
+
 ## Token rule
 
-Exact ChatGPT token usage is not available to this static GitHub Pages page.
+Exact ChatGPT in-app token usage is not available to this static GitHub Pages page.
 
-Until private telemetry is connected, token values are estimates.
+When using the OpenAI API directly, responses can include a `usage` object with input, output, and total token counts. The telemetry worker can receive those values and store them.
 
 Use this source field:
 
@@ -41,6 +52,7 @@ manual_estimate = estimated by assistant or user
 api = future private telemetry/API log
 manual_local = entered in browser local storage
 assistant_repo_log = committed by assistant to GitHub
+private_telemetry_api = sent through the private Worker
 ```
 
 ## Assistant logging rule
@@ -65,8 +77,6 @@ For meaningful LindaData GitHub/company work, the assistant should add a usage e
 }
 ```
 
-## Future upgrade path
+## Deployment requirement
 
-Real telemetry should use a private backend or API logs.
-
-Do not put private tokens, secrets, or privileged API keys in the frontend.
+Final private telemetry deployment requires external Worker environment values set outside this public repo. Do not place private values in the static site or committed files.
