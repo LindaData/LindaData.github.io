@@ -1,6 +1,6 @@
 {
-  "updated": "2026-07-02",
-  "note": "Public-safe LindaData HQ project registry. Private projects are listed without internals. Company Org is the canonical routing reference for every task.",
+  "updated": "2026-07-03",
+  "note": "Public-safe LindaData HQ project registry. Link-audited on 2026-07-03 against accessible GitHub repos, live HQ entry points, project pages, and review inboxes. Private projects are listed without internals. Company Org is the canonical routing reference for every task.",
   "projects": [
     {
       "title": "HVAC Copilot / Field Copilot Pro",
@@ -21,7 +21,7 @@
       "links": [
         {
           "label": "Open app",
-          "url": "https://lindadata.github.io/field-copilot-pro/app/today"
+          "url": "https://lindadata.github.io/field-copilot-pro/app/today/"
         },
         {
           "label": "Review workspace",
@@ -55,8 +55,12 @@
       ],
       "links": [
         {
-          "label": "Review issue #58",
+          "label": "Reliability issue #58",
           "url": "https://github.com/LindaData/field-copilot-pro/issues/58"
+        },
+        {
+          "label": "Latest inbox #67",
+          "url": "https://github.com/LindaData/field-copilot-pro/issues/67"
         },
         {
           "label": "HQ inbox #61",
@@ -77,7 +81,7 @@
       "repo": "LindaData/LindaData.github.io",
       "visibility": "public",
       "summary": "Root morning UI at lindadata.github.io for project status, commands, agent docs, and CEO review links.",
-      "morning": "Start here every morning. Check Priority 1, Blocked, Needs Review, and next links.",
+      "morning": "Start here every morning. Check Priority 1, blocked work, needs-review work, and next links.",
       "owners": [
         "Chief of Staff",
         "CIO",
@@ -96,6 +100,10 @@
         {
           "label": "Projects JSON",
           "url": "https://github.com/LindaData/LindaData.github.io/blob/master/hq/data/projects.json"
+        },
+        {
+          "label": "HQ redirect",
+          "url": "https://lindadata.github.io/hq/"
         }
       ]
     },
@@ -134,15 +142,50 @@
       ]
     },
     {
-      "title": "Southpaw Boxing Site",
-      "key": "southpaw-boxing",
-      "category": "Site",
-      "status": "Hold / concept",
+      "title": "Boxing Fitness Demo / Review Surface",
+      "key": "boxing-gym-review-surface",
+      "category": "Site Review",
+      "status": "Review-ready demo",
       "priority": "Medium",
       "repo": "LindaData/LindaData.github.io",
       "visibility": "public preview",
-      "summary": "Boxing gym website concept. Needs shared review layer before it becomes review-ready.",
-      "morning": "Ignore unless HVAC is stable or CEO restarts this lane.",
+      "summary": "Mobile-first boxing fitness demo with the GitHub-backed review overlay wired to the HQ inbox.",
+      "morning": "Use this as the current boxing review surface; notes sync through the shared worker to HQ inbox #61.",
+      "owners": [
+        "CMO",
+        "PRO",
+        "CTO",
+        "QA"
+      ],
+      "links": [
+        {
+          "label": "Open review surface",
+          "url": "https://lindadata.github.io/boxing-gym/"
+        },
+        {
+          "label": "Source file",
+          "url": "https://github.com/LindaData/LindaData.github.io/blob/master/boxing-gym/index.html"
+        },
+        {
+          "label": "HQ inbox #61",
+          "url": "https://github.com/LindaData/field-copilot-pro/issues/61"
+        },
+        {
+          "label": "Worker notes",
+          "url": "https://soft-unit-ba5d.sergio-mora.workers.dev/notes?repo=LindaData%2Ffield-copilot-pro&inboxIssue=61"
+        }
+      ]
+    },
+    {
+      "title": "Southpaw Boxing Site",
+      "key": "southpaw-boxing",
+      "category": "Site",
+      "status": "Concept / local-only review",
+      "priority": "Hold",
+      "repo": "LindaData/LindaData.github.io",
+      "visibility": "public preview",
+      "summary": "Southpaw-specific concept page. Its review drawer is local-copy only; use the Boxing Fitness Demo for synced review notes.",
+      "morning": "Use only for Southpaw-specific content/brand checks; use the Boxing Fitness Demo when GitHub-backed review capture is needed.",
       "owners": [
         "CMO",
         "PRO",
@@ -152,6 +195,10 @@
         {
           "label": "Open concept",
           "url": "https://lindadata.github.io/southpaw-boxing/"
+        },
+        {
+          "label": "Source file",
+          "url": "https://github.com/LindaData/LindaData.github.io/blob/master/southpaw-boxing/index.html"
         }
       ]
     },
