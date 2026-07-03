@@ -1,6 +1,6 @@
 # LindaData Decision Log — Decision_Log.md
 
-Version: 2026-07-02  
+Version: 2026-07-03  
 Owner: Chief of Staff + CIO  
 Purpose: durable record of decisions that affect future work.
 
@@ -261,6 +261,31 @@ Owner:
 
 Impact:
 - Root HQ must show visible projects, active/paused/closed states, review links, command input, company docs, workflow rules, and security posture.
+
+Status:
+- active
+
+---
+
+### 2026-07-03 — HVAC app review layer is the standard
+
+Decision:
+- Retire the standalone HVAC review workspace as the normal review path.
+- Standardize all projects on the HVAC app-style in-app review layer.
+- HQ project links must open the actual app/reviewable screen, not a detached review workspace.
+- The canonical review layer rules now live in `company/Review_Layer_Standard.md`.
+
+Reason:
+- The CEO identified the HVAC app review layer as the best current pattern.
+- Review should happen as a clean overlay on the real product screen, not in a separate page that disconnects feedback from the work being reviewed.
+
+Owner:
+- PRO + CTO + CSO + QA
+
+Impact:
+- `field-copilot-pro/review` must not be presented as the review path.
+- New and existing apps should be ported toward in-app review overlays with live sync, clear failure states, route context, and screenshot support where possible.
+- Local-only drawers are not review-ready.
 
 Status:
 - active
