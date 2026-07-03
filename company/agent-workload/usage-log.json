@@ -1,0 +1,22 @@
+{
+  "updated": "2026-07-03",
+  "schema": "lindadata-agent-usage-v1",
+  "note": "Repo-backed agent usage ledger. Token values are estimates unless telemetry_source says api.",
+  "entries": [
+    {
+      "id": "2026-07-03-agent-workload-minimal-ui",
+      "date": "2026-07-03",
+      "source": "assistant_repo_log",
+      "executive_owner": "PRO + CTO + CIO",
+      "agent": "Frontend Engineer + GitHub / Codex Operator",
+      "task": "Make the Agent Workload tracker more minimal and connect it to a repo-backed usage log.",
+      "minutes_estimate": 25,
+      "input_tokens_estimate": 8000,
+      "output_tokens_estimate": 4500,
+      "total_tokens_estimate": 12500,
+      "proof": "https://github.com/LindaData/LindaData.github.io/blob/master/company/agent-workload/index.html",
+      "status": "done",
+      "telemetry_source": "manual_estimate"
+    }
+  ]
+}
