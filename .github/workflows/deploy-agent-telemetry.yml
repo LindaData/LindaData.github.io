@@ -92,10 +92,18 @@ jobs:
         env:
           TELEMETRY_WRITE_TOKEN: ${{ secrets.TELEMETRY_WRITE_TOKEN }}
         run: |
-          curl -fsS -X POST "$TELEMETRY_URL/v1/agent-usage" \
+          set +e
+          HTTP_STATUS=$(curl -sS -o response.json -w "%{http_code}" -X POST "$TELEMETRY_URL/v1/agent-usage" \
             -H "content-type: application/json" \
             -H "authorization: Bearer $TELEMETRY_WRITE_TOKEN" \
-            --data @event.json | tee response.json
+            --data @event.json)
+          CURL_EXIT=$?
+          set -e
+          echo "curl_exit=$CURL_EXIT"
+          echo "http_status=$HTTP_STATUS"
+          cat response.json
+          test "$CURL_EXIT" = "0"
+          test "$HTTP_STATUS" = "200"
           grep '"ok":true' response.json
 
       - name: Verify usage ledger updated
