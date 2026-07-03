@@ -2,7 +2,7 @@
 
 Version: 2026-07-03  
 Owner: CIO + Chief of Staff + PRO  
-Status: Active
+Status: Active — private telemetry deployed and verified
 
 ## Purpose
 
@@ -30,7 +30,7 @@ The page reads `usage-log.json` plus local browser entries.
 
 ## Private telemetry API
 
-Backend source is now stored here:
+Backend source is stored here:
 
 - `telemetry/worker.js`
 - `telemetry/README.md`
@@ -38,6 +38,23 @@ Backend source is now stored here:
 - `telemetry/wrangler.example.toml`
 
 The private worker accepts trusted usage events and appends sanitized rows to `usage-log.json`.
+
+## Verified deployment
+
+The private telemetry deployment is verified.
+
+Proof:
+
+- Health endpoint returned ok.
+- Smoke event reached the Worker.
+- Worker wrote a `private_telemetry_api` row into `usage-log.json`.
+- Agent Workload page can read the ledger.
+
+Verified entry:
+
+```text
+deploy-smoke-28677835400
+```
 
 ## Token rule
 
@@ -57,7 +74,9 @@ private_telemetry_api = sent through the private Worker
 
 ## Assistant logging rule
 
-For meaningful LindaData GitHub/company work, the assistant should add a usage entry to `usage-log.json` with:
+For meaningful LindaData GitHub/company work, the assistant should add a usage entry to `usage-log.json` through the private telemetry API when available.
+
+Fallback manual schema:
 
 ```json
 {
@@ -77,6 +96,6 @@ For meaningful LindaData GitHub/company work, the assistant should add a usage e
 }
 ```
 
-## Deployment requirement
+## Security rule
 
-Final private telemetry deployment requires external Worker environment values set outside this public repo. Do not place private values in the static site or committed files.
+Do not place private values in the static site or committed files.
