@@ -16,6 +16,8 @@ jobs:
     defaults:
       run:
         working-directory: company/agent-workload/telemetry
+    env:
+      TELEMETRY_URL: https://lindadata-agent-telemetry.sergio-mora.workers.dev
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -57,5 +59,50 @@ jobs:
           AGENT_TELEMETRY_GITHUB_TOKEN: ${{ secrets.AGENT_TELEMETRY_GITHUB_TOKEN }}
         run: printf "%s" "$AGENT_TELEMETRY_GITHUB_TOKEN" | wrangler secret put GITHUB_TOKEN --config wrangler.toml
 
-      - name: Health note
-        run: echo "Worker source and Worker runtime secrets deployed if Cloudflare/GitHub credentials were configured. Test /health on the worker URL."
+      - name: Verify health endpoint
+        run: |
+          curl -fsS "$TELEMETRY_URL/health" | tee health.json
+          grep '"ok":true' health.json
+
+      - name: Build smoke usage event
+        run: |
+          EVENT_ID="deploy-smoke-${GITHUB_RUN_ID}"
+          cat > event.json <<EOF
+          {
+            "id": "$EVENT_ID",
+            "date": "$(date +%F)",
+            "executive_owner": "CIO + CSO + CTO",
+            "agent": "Telemetry Deploy Smoke Test Agent",
+            "task": "Verify deploy workflow can write private telemetry usage to usage-log.json",
+            "minutes_estimate": 1,
+            "usage": {
+              "input_tokens": 100,
+              "output_tokens": 50,
+              "total_tokens": 150
+            },
+            "proof": "https://github.com/LindaData/LindaData.github.io/actions/runs/${GITHUB_RUN_ID}",
+            "status": "done",
+            "telemetry_source": "api"
+          }
+          EOF
+          echo "EVENT_ID=$EVENT_ID" >> "$GITHUB_ENV"
+          cat event.json
+
+      - name: Send smoke usage event
+        env:
+          TELEMETRY_WRITE_TOKEN: ${{ secrets.TELEMETRY_WRITE_TOKEN }}
+        run: |
+          curl -fsS -X POST "$TELEMETRY_URL/v1/agent-usage" \
+            -H "content-type: application/json" \
+            -H "authorization: Bearer $TELEMETRY_WRITE_TOKEN" \
+            --data @event.json | tee response.json
+          grep '"ok":true' response.json
+
+      - name: Verify usage ledger updated
+        run: |
+          sleep 8
+          curl -fsS "https://raw.githubusercontent.com/LindaData/LindaData.github.io/master/company/agent-workload/usage-log.json" | tee usage-log.json
+          grep "$EVENT_ID" usage-log.json
+
+      - name: Done
+        run: echo "Worker deployed, health passed, usage write passed, ledger verification passed."
