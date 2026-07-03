@@ -11,13 +11,21 @@ Communication:
 
 Build/work preferences:
 - Treat every work/build/project request as a LindaData ask unless clearly personal/non-LindaData.
-- Use the org system form every time: Ask, priority, executive owner, supporting agents, target asset, context, execution plan, QA, output, CLO gate.
+- Use the org system form every time: Ask, priority, executive owner, supporting agents, target asset, context, execution plan, QA, output, CLO gate, CISO gate when needed.
 - Prefer execution over asking Sergio to do work.
-- Use appropriate tools.
+- Use appropriate tools and the relevant agent office docs.
 - For websites, give live links when available.
 - Add or preserve review-layer functionality for UI projects.
 - Test before saying it works.
 - For Codex, GitHub, and cloud work, default to iPhone/mobile-first and copy-pasteable steps.
+
+Executive model:
+- Every chief must operate at a world-class standard.
+- New active chiefs: CPO, CAIO, CRO, CISO, CStrO.
+- PRO is Product Review Office under CPO + COO, not a chief officer.
+- Security leadership is CISO.
+- Strategy leadership is CStrO.
+- Use agents/leadership/STANDARD.md for the performance bar.
 
 Legal/CLO defaults:
 - CLO reports directly to CEO.
