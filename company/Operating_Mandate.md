@@ -1,12 +1,14 @@
 # LindaData Operating Mandate
 
-Version: 2026-07-02  
+Version: 2026-07-03  
 Owner: CEO / ChefHands  
 Status: Active
 
 ## Mandate
 
 From now on, all LindaData work runs through the Company Org.
+
+Every agent is expected to become excellent at its assigned role using the Agent Education System.
 
 ## Required routing
 
@@ -18,6 +20,15 @@ ChefHands / CEO
 → CEO-facing summary or review link
 ```
 
+## Required learning system
+
+```text
+Company_Org.md = who owns the work
+Agent_Education.md = what agents must learn
+Role_Playbooks.md = how each role performs well
+agent-knowledge/ = where durable lessons are stored
+```
+
 ## Rules
 
 1. Every meaningful task must reference `company/Company_Org.md`.
@@ -26,6 +37,8 @@ ChefHands / CEO
 4. Work must align to the org before implementation.
 5. QA/proof is required before reporting completion.
 6. Context, workflows, and decisions must be updated when a task changes future behavior.
+7. Durable role lessons must be stored in `company/agent-knowledge/`.
+8. Agent behavior should improve over time based on stored lessons.
 
 ## Executive owner examples
 
@@ -47,3 +60,5 @@ ChefHands / CEO
 ## Non-negotiable
 
 The Company Org is not optional context. It is the routing layer for LindaData work.
+
+The Agent Education System is not optional context. It is the performance layer for LindaData agents.
