@@ -37,11 +37,25 @@ jobs:
       - name: Prepare config
         run: cp wrangler.example.toml wrangler.toml
 
-      - name: Deploy Worker
+      - name: Deploy Worker source
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: wrangler deploy --config wrangler.toml
 
+      - name: Set Worker telemetry write credential
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          TELEMETRY_WRITE_TOKEN: ${{ secrets.TELEMETRY_WRITE_TOKEN }}
+        run: printf "%s" "$TELEMETRY_WRITE_TOKEN" | wrangler secret put TELEMETRY_WRITE_TOKEN --config wrangler.toml
+
+      - name: Set Worker GitHub writer credential
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          AGENT_TELEMETRY_GITHUB_TOKEN: ${{ secrets.AGENT_TELEMETRY_GITHUB_TOKEN }}
+        run: printf "%s" "$AGENT_TELEMETRY_GITHUB_TOKEN" | wrangler secret put GITHUB_TOKEN --config wrangler.toml
+
       - name: Health note
-        run: echo "Worker source deployed if Cloudflare credentials were configured. Test /health on the worker URL."
+        run: echo "Worker source and Worker runtime secrets deployed if Cloudflare/GitHub credentials were configured. Test /health on the worker URL."
