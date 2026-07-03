@@ -68,7 +68,8 @@ function sanitizeUsage(input) {
 }
 
 async function appendToGitHubUsageLog(env, entry) {
-  if (!env.GITHUB_TOKEN) throw new Error("missing_github_token");
+  const githubToken = env.AGENT_TELEMETRY_GITHUB_TOKEN || env.GITHUB_TOKEN;
+  if (!githubToken) throw new Error("missing_agent_telemetry_github_token");
   const owner = env.GITHUB_OWNER || "LindaData";
   const repo = env.GITHUB_REPO || "LindaData.github.io";
   const branch = env.GITHUB_BRANCH || "master";
@@ -76,7 +77,7 @@ async function appendToGitHubUsageLog(env, entry) {
   const api = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
   const headers = {
     "accept": "application/vnd.github+json",
-    "authorization": `Bearer ${env.GITHUB_TOKEN}`,
+    "authorization": `Bearer ${githubToken}`,
     "content-type": "application/json",
     "user-agent": "lindadata-agent-telemetry"
   };
