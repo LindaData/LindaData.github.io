@@ -1,8 +1,8 @@
 # LindaData Operating Context — Context.md
 
-Version: 2026-07-02  
+Version: 2026-07-03  
 Owner: Chief of Staff  
-Purpose: keep the company aligned, short, and easy to resume.
+Purpose: keep LindaData aligned, short, and easy to resume.
 
 ## 1. North star
 
@@ -61,9 +61,8 @@ ChefHands / CEO
 | Testing | Do not claim success without proof |
 | Context | Context matters; check prior project state before acting |
 | Company Org | Every meaningful task must reference `/company/Company_Org.md` for ownership and routing |
-| Org alignment | Everything runs through the org and must be aligned to an executive owner before execution |
 | Logs | Log important work in GitHub/docs, not memory only |
-| Security | Protect private access material. Do not place private values in the frontend, commits, logs, screenshots, or chat. |
+| Security | Protect private access material. Do not place private values in frontend, commits, logs, screenshots, or chat. |
 | Cost | Free/local-first; no paid spend or auto-top-up without explicit approval |
 | Lovable apps | Preserve Lovable scaffold unless CEO says to replace it |
 
@@ -77,10 +76,13 @@ ChefHands / CEO
 | Execution memory | GitHub |
 | Main bounded builder | Codex |
 | Canonical company org | `company/Company_Org.md` |
-| Global mandate | Everything runs through Company Org and is aligned before execution |
+| Global mandate | Everything runs through Company Org and aligns to one executive owner |
 | Canonical active app repo | `LindaData/field-copilot-pro` |
 | HQ repo | `LindaData/LindaData.github.io` |
-| Older repo | `field-copilot-buddy` is history / ignore |
+| HQ page | `https://lindadata.github.io/` |
+| HQ registry | `hq/data/projects.json` |
+| Link audit | `hq/LINK_AUDIT.md` |
+| Older HVAC repo | `field-copilot-buddy` is history / ignore |
 | Priority 1 | HVAC / Field Copilot unless explicitly changed |
 | Mobile review | CEO is usually reviewing from iPhone |
 | Review architecture | App review box → Cloudflare Worker → GitHub issue comments → ChatGPT/Codex action queue |
@@ -89,18 +91,22 @@ ChefHands / CEO
 
 ## 5. Active project board
 
-As of 2026-07-02.
+As of 2026-07-03.
 
 | Priority | Project | Owner | Status | Next action | Review ready |
 |---:|---|---|---|---|---|
-| 1 | Review Layer System | CTO + PRO + CSO + QA | Reliability work active | Prove notes land as GitHub comments; implement shared client + Worker contract | No |
-| 2 | HVAC Copilot | CTO + PRO + CDO + QA | PR #59 draft; CI failed at Test. PR #60 desktop lane follows #59 | Fix PR #59 tests, finish attachment UI, then provide clean review link | No |
-| 3 | Company Org / Agentic Company | Chief of Staff + CIO + CHRO | Canonical org file added | Reference `Company_Org.md` for every task route | Yes |
-| 4 | Central HQ / Work Dashboard | Chief of Staff + CIO + PRO + CTO | Existing root Review Hub, but missing command needs | Add `/hq`, `data/projects.json`, status gates, links, webhook health | Prototype only |
-| 5 | Southpaw Boxing Site | PRO + CMO + CTO | Static concept exists | Replace local-only review drawer with shared live-sync layer | No |
-| 6 | Cloud / Codex / Infra Setup | CTO | Paused by CEO | Do not spend cycles until restarted | Paused |
-| 7 | Money Transfer | Personal Assistant / CFO | Closed by CEO | Archive from active dashboard | Closed |
-| 8 | Ghostwriting / Book Engine | Chief of Staff + CIO + CDO + Editorial | Planning | Add HQ lane; choose storage/source capture rules later | Planning |
+| 1 | HVAC Copilot | CTO + PRO + CDO + QA | Priority 1 active | Open Today app and review workspace; fix PR/review blockers first | Partial |
+| 2 | Review Layer System | PRO + CTO + CSO + QA | Active reliability system | Keep live-sync proof as the release gate; no fake saved states | Partial |
+| 3 | LindaData HQ Dashboard | Chief of Staff + CIO + CTO + PRO + QA | Root HQ organized; registry refreshed; link audit added | Use as morning command center and keep project links clean | Yes |
+| 4 | Company Org / Agentic Company | Chief of Staff + CIO + CHRO | Canonical org file and agent docs live | Route every meaningful task through `Company_Org.md` | Yes |
+| 5 | World Cup 2026 Forecasting Model | CDO + CTO | Live forecast link tracked | Hold unless sports/model lane restarts | Yes |
+| 6 | Game Stat Pulse | CDO + CTO | Live app link tracked; work on hold | Hold until HVAC/review layer are stable | Yes |
+| 7 | Southpaw / Boxing Site | PRO + CMO + CTO | Review-ready demo link moved to `/boxing-gym/`; older concept kept as reference | Hold unless CEO restarts this lane | Demo only |
+| 8 | Recycle Right Now | PRO + CTO | Review link tracked; work on hold | Hold; keep link visible | Tracked |
+| 9 | PawPath Preview | PRO + CTO | Preview link tracked | Hold unless review-layer testing restarts | Preview |
+| 10 | Ghostwriting / Book Engine | Chief of Staff + CIO + CDO + Editorial | Planning | Choose storage/source capture rules later | No |
+| 11 | Cloud / Codex / Infra Setup | CTO + CSO + CFO | Paused by CEO | Do not spend cycles until restarted | Paused |
+| 12 | Money Transfer Colombia | Personal Assistant + CFO | Closed / reference | Archive from active work | Closed |
 
 ## 6. Review layer non-negotiables
 
@@ -114,29 +120,7 @@ Required behavior:
 - Never show `saved` unless webhook returns success.
 - Local browser storage can be temporary recovery only, not the final state.
 - If offline or webhook fails, preserve draft text in the input field.
-- Old unsynced local notes need manual recovery path.
-
-Required payload shape:
-
-```json
-{
-  "repo": "LindaData/field-copilot-pro",
-  "sourceRepo": "LindaData/LindaData.github.io",
-  "targetIssue": 45,
-  "project": "hvac-copilot",
-  "route": "/app/today",
-  "pageLabel": "Today",
-  "url": "https://...",
-  "viewport": {"width": 390, "height": 844},
-  "userAgent": "string",
-  "timestamp": "ISO-8601",
-  "noteKind": "bug|ux|copy|data|idea|approval",
-  "priority": "low|medium|high|blocker",
-  "visibleContext": {"heading": "...", "selectedItem": "..."},
-  "note": "string",
-  "attachments": []
-}
-```
+- Old unsynced local notes need a manual recovery path.
 
 Inbox mapping:
 
@@ -146,7 +130,7 @@ Inbox mapping:
 | Recycling | `LindaData/field-copilot-pro` issue #57 |
 | Shared review system | `LindaData/field-copilot-pro` issue #58 |
 | HQ dashboard | `LindaData/field-copilot-pro` issue #61 |
-| Southpaw | Create or map dedicated issue |
+| Southpaw / Boxing demo | currently routes to HQ inbox #61 unless dedicated issue is created |
 
 ## 7. Review layer mental model
 
@@ -179,57 +163,5 @@ Before changing code:
 3. Inspect repo structure.
 4. Preserve Lovable scaffold if the app started in Lovable.
 5. Make the smallest useful change.
-6. Run lint, tests, TypeScript checks, and build where available.
-7. Report files changed, commands run, passed checks, failed checks, risks, and review link if ready.
-
-Codex is bounded execution. ChatGPT owns architecture, QA, research, review, prompt writing, issue writing, and prioritization.
-
-## 10. Tool router
-
-| Need | Use first | Notes |
-|---|---|---|
-| Strategy / architecture | ChatGPT | Short, clear, context-aware |
-| Code changes | Codex + GitHub | Small PRs, tests, logs |
-| Repo truth | GitHub | Source of truth for PRs/issues/docs |
-| UI scaffold | Lovable / Replit / Canva | Use when it improves speed or demo quality |
-| Current facts | Web | Required for facts that may have changed |
-| Uploaded docs/images | File Library / Drive | Cite source when answering from files |
-| Data / artifacts | Python / artifact tools | Create files, checks, tables, charts |
-| Calendar / email / contacts | Connected assistant tools | Read or act only when requested |
-
-## 11. Standard CEO report
-
-```text
-Status: green / yellow / red
-
-Done:
-- ...
-
-Found:
-- ...
-
-Next:
-- ...
-
-Need from you:
-- ...
-```
-
-## 12. Assumptions to confirm later
-
-| Acronym | Current meaning |
-|---|---|
-| PRO | Product & Review Officer |
-| CHO | Chief Health & Optimization Officer |
-| CCO | Chief Customer Officer |
-| CSO | Chief Security Officer |
-| CIO | Chief Information Officer |
-| CDO | Chief Data Officer |
-
-## 13. Update log
-
-| Date | Update | Owner |
-|---|---|---|
-| 2026-07-02 | Created first-pass company operating context from current LindaData HQ, review layer, HVAC, agent company, and master brain docs | Chief of Staff |
-| 2026-07-02 | Added canonical Company Org source of truth and made it the required routing reference for every meaningful task | Chief of Staff + CIO |
-| 2026-07-02 | Locked global operating mandate: everything runs through the Company Org and must be aligned to an executive owner before execution | Chief of Staff + CIO + CHRO |
+6. Test or document what could not be tested.
+7. Report with proof links.
