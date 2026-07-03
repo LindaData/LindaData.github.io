@@ -4,6 +4,22 @@
   "note": "Repo-backed agent usage ledger. Token values are estimates unless telemetry_source says api.",
   "entries": [
     {
+      "id": "deploy-smoke-28677835400",
+      "date": "2026-07-03",
+      "source": "private_telemetry_api",
+      "executive_owner": "CIO + CSO + CTO",
+      "agent": "Telemetry Deploy Smoke Test Agent",
+      "task": "Verify deploy workflow can write private telemetry usage to usage-log.json",
+      "minutes_estimate": 1,
+      "input_tokens_estimate": 100,
+      "output_tokens_estimate": 50,
+      "total_tokens_estimate": 150,
+      "proof": "https://github.com/LindaData/LindaData.github.io/actions/runs/28677835400",
+      "status": "done",
+      "telemetry_source": "api",
+      "created_at": "2026-07-03T18:37:01.982Z"
+    },
+    {
       "id": "2026-07-03-agent-workload-protocol",
       "date": "2026-07-03",
       "source": "assistant_repo_log",
