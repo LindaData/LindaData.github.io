@@ -73,7 +73,14 @@ jobs:
           TELEMETRY_WRITE_TOKEN: ${{ secrets.TELEMETRY_WRITE_TOKEN }}
         run: printf "%s" "$TELEMETRY_WRITE_TOKEN" | wrangler secret put TELEMETRY_WRITE_TOKEN --config wrangler.toml
 
-      - name: Set Worker GitHub writer credential
+      - name: Set Worker GitHub writer credential primary
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          AGENT_TELEMETRY_GITHUB_TOKEN: ${{ secrets.AGENT_TELEMETRY_GITHUB_TOKEN }}
+        run: printf "%s" "$AGENT_TELEMETRY_GITHUB_TOKEN" | wrangler secret put AGENT_TELEMETRY_GITHUB_TOKEN --config wrangler.toml
+
+      - name: Set Worker GitHub writer credential legacy fallback
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
