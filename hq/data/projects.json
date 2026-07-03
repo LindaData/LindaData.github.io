@@ -1,6 +1,6 @@
 {
   "updated": "2026-07-03",
-  "note": "Public-safe LindaData HQ project registry. Link-audited on 2026-07-03 against accessible GitHub repos, live HQ entry points, project pages, and review inboxes. Private projects are listed without internals. Company Org is the canonical routing reference for every task.",
+  "note": "Public-safe LindaData HQ project registry. HVAC standalone review workspace is no longer a valid review surface. The canonical review pattern is the in-app HVAC-style overlay on the real project screen. Private projects are listed without internals. Company Org is the canonical routing reference for every task.",
   "projects": [
     {
       "title": "HVAC Copilot / Field Copilot Pro",
@@ -10,8 +10,8 @@
       "priority": "Hot",
       "repo": "LindaData/field-copilot-pro",
       "visibility": "public",
-      "summary": "Main product lane. HVAC-first field operations app with the review layer and Lovable-guided redesign.",
-      "morning": "Open the app, check review inbox, fix blockers before asking for CEO review.",
+      "summary": "Main product lane. HVAC-first field operations app. Use the in-app review layer only; the old standalone review workspace is retired.",
+      "morning": "Open the HVAC app and use the in-app Review button on the screen being reviewed. Fix blockers before asking for CEO review.",
       "owners": [
         "CTO",
         "PRO",
@@ -20,12 +20,8 @@
       ],
       "links": [
         {
-          "label": "Open app",
+          "label": "Open app + in-app review",
           "url": "https://lindadata.github.io/field-copilot-pro/app/today/"
-        },
-        {
-          "label": "Review workspace",
-          "url": "https://lindadata.github.io/field-copilot-pro/review"
         },
         {
           "label": "Repo",
@@ -45,8 +41,8 @@
       "priority": "Hot",
       "repo": "LindaData/field-copilot-pro",
       "visibility": "public-safe",
-      "summary": "Shared UI overlay + Cloudflare Worker + GitHub issue comment flow for every project and UI type.",
-      "morning": "Health check must show Live sync. No local-only saved notes allowed.",
+      "summary": "Shared in-app overlay + Cloudflare Worker + GitHub issue comment flow for every project and UI type. No detached review workspaces as the default.",
+      "morning": "Port every project toward the HVAC app pattern: in-app floating launcher, live sync status, no fake saved state, screenshot support where possible.",
       "owners": [
         "PRO",
         "CTO",
@@ -54,6 +50,10 @@
         "QA"
       ],
       "links": [
+        {
+          "label": "Review standard",
+          "url": "/company/Review_Layer_Standard.md"
+        },
         {
           "label": "Reliability issue #58",
           "url": "https://github.com/LindaData/field-copilot-pro/issues/58"
@@ -65,10 +65,6 @@
         {
           "label": "HQ inbox #61",
           "url": "https://github.com/LindaData/field-copilot-pro/issues/61"
-        },
-        {
-          "label": "Worker notes",
-          "url": "https://soft-unit-ba5d.sergio-mora.workers.dev/notes?repo=LindaData%2Ffield-copilot-pro&inboxIssue=61"
         }
       ]
     },
@@ -145,12 +141,12 @@
       "title": "Boxing Fitness Demo / Review Surface",
       "key": "boxing-gym-review-surface",
       "category": "Site Review",
-      "status": "Review-ready demo",
+      "status": "Needs HVAC-style port",
       "priority": "Medium",
       "repo": "LindaData/LindaData.github.io",
       "visibility": "public preview",
-      "summary": "Mobile-first boxing fitness demo with the GitHub-backed review overlay wired to the HQ inbox.",
-      "morning": "Use this as the current boxing review surface; notes sync through the shared worker to HQ inbox #61.",
+      "summary": "Mobile-first boxing fitness demo. Its review overlay is live-backed, but should be ported to the HVAC in-app style before it is treated as final.",
+      "morning": "Use as a content/UX review surface only. Next upgrade: HVAC-style in-app overlay behavior.",
       "owners": [
         "CMO",
         "PRO",
@@ -171,8 +167,8 @@
           "url": "https://github.com/LindaData/field-copilot-pro/issues/61"
         },
         {
-          "label": "Worker notes",
-          "url": "https://soft-unit-ba5d.sergio-mora.workers.dev/notes?repo=LindaData%2Ffield-copilot-pro&inboxIssue=61"
+          "label": "Review standard",
+          "url": "/company/Review_Layer_Standard.md"
         }
       ]
     },
@@ -180,12 +176,12 @@
       "title": "Southpaw Boxing Site",
       "key": "southpaw-boxing",
       "category": "Site",
-      "status": "Concept / local-only review",
+      "status": "Concept / not review-ready",
       "priority": "Hold",
       "repo": "LindaData/LindaData.github.io",
       "visibility": "public preview",
-      "summary": "Southpaw-specific concept page. Its review drawer is local-copy only; use the Boxing Fitness Demo for synced review notes.",
-      "morning": "Use only for Southpaw-specific content/brand checks; use the Boxing Fitness Demo when GitHub-backed review capture is needed.",
+      "summary": "Southpaw-specific concept page. Its old local-only drawer is not the standard and must be replaced with the HVAC-style live in-app overlay before review.",
+      "morning": "Use only for Southpaw-specific content/brand checks; do not treat its old local-only drawer as a valid review layer.",
       "owners": [
         "CMO",
         "PRO",
@@ -199,6 +195,10 @@
         {
           "label": "Source file",
           "url": "https://github.com/LindaData/LindaData.github.io/blob/master/southpaw-boxing/index.html"
+        },
+        {
+          "label": "Review standard",
+          "url": "/company/Review_Layer_Standard.md"
         }
       ]
     },
@@ -345,7 +345,7 @@
       "priority": "Hold",
       "repo": "LindaData/pawpath-dog-compass",
       "visibility": "private",
-      "summary": "Private dog app repo. Later target for shared review layer port.",
+      "summary": "Private dog app repo. Later target for shared HVAC-style in-app review layer port.",
       "morning": "Hold. Use later as review-layer reuse proof.",
       "owners": [
         "PRO",
@@ -367,7 +367,7 @@
       "repo": "LindaData/pawpath-dog-compass-preview",
       "visibility": "public",
       "summary": "Static public preview build for PawPath review.",
-      "morning": "Hold unless review-layer preview testing restarts.",
+      "morning": "Hold unless HVAC-style review-layer preview testing restarts.",
       "owners": [
         "PRO",
         "CTO"
@@ -383,24 +383,28 @@
       "title": "Recycle Right Now",
       "key": "recycle-right-now-82",
       "category": "App",
-      "status": "Hold",
-      "priority": "Hold",
+      "status": "In-app overlay present",
+      "priority": "Medium",
       "repo": "LindaData/recycle-right-now-82",
       "visibility": "private repo / public app",
-      "summary": "Recycling assistant app. This is separate from the World Cup model.",
-      "morning": "Hold. Keep link visible for quick access.",
+      "summary": "Recycling assistant app. Has an in-app overlay path; next standardization pass should align it fully to the HVAC app pattern.",
+      "morning": "Open the app with overlay enabled. Do not create a separate review workspace for this project.",
       "owners": [
         "PRO",
         "CTO"
       ],
       "links": [
         {
-          "label": "Open app",
+          "label": "Open app + in-app review",
           "url": "https://lindadata.github.io/recycle-right-now-82/?overlay=review"
         },
         {
           "label": "Private repo",
           "url": "https://github.com/LindaData/recycle-right-now-82"
+        },
+        {
+          "label": "Review standard",
+          "url": "/company/Review_Layer_Standard.md"
         }
       ]
     },
@@ -522,7 +526,7 @@
     ],
     [
       "Review layer",
-      "Every UI gets live sync, syncing, failed, and blocked states. No fake saved state."
+      "Use the HVAC app style: in-app overlay on the real screen, live/sync/failed/blocked states, no fake saved state, screenshot support where possible."
     ],
     [
       "QA gate",
@@ -554,6 +558,11 @@
       "title": "Decision_Log.md",
       "url": "/company/Decision_Log.md",
       "summary": "Durable decisions that control future work."
+    },
+    {
+      "title": "Review Layer Standard",
+      "url": "/company/Review_Layer_Standard.md",
+      "summary": "Canonical rule: use the HVAC app-style in-app review overlay for every project."
     }
   ]
 }
