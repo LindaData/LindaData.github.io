@@ -2,7 +2,7 @@
 
 Version: 2026-07-03  
 Owner lane: CIO + CSO + CTO + Chief of Staff  
-Status: source ready, deployment tracked
+Status: deployment workflow added
 
 ## Purpose
 
@@ -22,6 +22,7 @@ company/agent-workload/usage-log.json
 | wrangler.example.toml | Example Worker config without private values |
 | event-format.md | Accepted event fields |
 | sample-event.json | Example API-backed usage event |
+| .github/workflows/deploy-agent-telemetry.yml | GitHub Actions deploy pipeline |
 
 ## Endpoints
 
@@ -42,17 +43,24 @@ When using the OpenAI API directly, model responses can include usage informatio
 
 The HQ repo has issues disabled, so the deployment tracker lives in the active LindaData work repo.
 
+## Deployment workflow
+
+The repository now includes:
+
+```text
+.github/workflows/deploy-agent-telemetry.yml
+```
+
+The workflow deploys the Worker when telemetry source files change or when run manually. It requires Cloudflare credentials in GitHub Actions repository settings.
+
 ## Deployment steps
 
-1. Create a Cloudflare Worker named `lindadata-agent-telemetry`.
-2. Use `worker.js` as the Worker source.
-3. Set public config values from `wrangler.example.toml`.
-4. Set private Worker values in Cloudflare settings.
-5. Give the GitHub credential contents-write access to `LindaData/LindaData.github.io` only.
-6. Test `GET /health`.
-7. Send one trusted `POST /v1/agent-usage` event.
-8. Confirm `usage-log.json` receives a new row.
-9. Confirm the tracker page shows the row.
+1. Configure Cloudflare credentials in GitHub Actions settings.
+2. Run the deploy workflow or push a telemetry source change.
+3. Test `GET /health`.
+4. Send one trusted `POST /v1/agent-usage` event.
+5. Confirm `usage-log.json` receives a new row.
+6. Confirm the tracker page shows the row.
 
 ## Security rules
 
@@ -63,4 +71,4 @@ The HQ repo has issues disabled, so the deployment tracker lives in the active L
 
 ## Current limitation
 
-This repository now has the backend source and tracker integration. Final deployment still requires Cloudflare environment values and a GitHub credential configured outside the public repo.
+The source and deployment pipeline are now in the repo. Final deployment depends on private Cloudflare/GitHub values being present in external settings; those values are not available to this chat and must not be committed.
