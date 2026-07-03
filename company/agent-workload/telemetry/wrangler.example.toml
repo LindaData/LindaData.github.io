@@ -1,0 +1,10 @@
+name = "lindadata-agent-telemetry"
+main = "worker.js"
+compatibility_date = "2026-07-03"
+
+[vars]
+ALLOWED_ORIGIN = "https://lindadata.github.io"
+GITHUB_OWNER = "LindaData"
+GITHUB_REPO = "LindaData.github.io"
+GITHUB_BRANCH = "master"
+USAGE_LOG_PATH = "company/agent-workload/usage-log.json"
