@@ -80,6 +80,9 @@ jobs:
           AGENT_TELEMETRY_GITHUB_TOKEN: ${{ secrets.AGENT_TELEMETRY_GITHUB_TOKEN }}
         run: printf "%s" "$AGENT_TELEMETRY_GITHUB_TOKEN" | wrangler secret put GITHUB_TOKEN --config wrangler.toml
 
+      - name: Wait for Worker secret propagation
+        run: sleep 25
+
       - name: Verify health endpoint
         run: |
           curl -fsS "$TELEMETRY_URL/health" | tee health.json
@@ -109,23 +112,30 @@ jobs:
           echo "EVENT_ID=$EVENT_ID" >> "$GITHUB_ENV"
           cat event.json
 
-      - name: Send smoke usage event
+      - name: Send smoke usage event with retries
         env:
           TELEMETRY_WRITE_TOKEN: ${{ secrets.TELEMETRY_WRITE_TOKEN }}
         run: |
-          set +e
-          HTTP_STATUS=$(curl -sS -o response.json -w "%{http_code}" -X POST "$TELEMETRY_URL/v1/agent-usage" \
-            -H "content-type: application/json" \
-            -H "authorization: Bearer $TELEMETRY_WRITE_TOKEN" \
-            --data @event.json)
-          CURL_EXIT=$?
-          set -e
-          echo "curl_exit=$CURL_EXIT"
-          echo "http_status=$HTTP_STATUS"
-          cat response.json
-          test "$CURL_EXIT" = "0"
-          test "$HTTP_STATUS" = "200"
-          grep '"ok":true' response.json
+          PASS=0
+          for i in 1 2 3 4 5 6; do
+            echo "attempt=$i"
+            set +e
+            HTTP_STATUS=$(curl -sS -o response.json -w "%{http_code}" -X POST "$TELEMETRY_URL/v1/agent-usage" \
+              -H "content-type: application/json" \
+              -H "authorization: Bearer $TELEMETRY_WRITE_TOKEN" \
+              --data @event.json)
+            CURL_EXIT=$?
+            set -e
+            echo "curl_exit=$CURL_EXIT"
+            echo "http_status=$HTTP_STATUS"
+            cat response.json
+            if [ "$CURL_EXIT" = "0" ] && [ "$HTTP_STATUS" = "200" ] && grep -q '"ok":true' response.json; then
+              PASS=1
+              break
+            fi
+            sleep 10
+          done
+          test "$PASS" = "1"
 
       - name: Verify usage ledger updated
         run: |
