@@ -1,0 +1,47 @@
+name: Deploy Agent Telemetry Worker
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - company/agent-workload/telemetry/**
+      - .github/workflows/deploy-agent-telemetry.yml
+
+jobs:
+  deploy:
+    name: Deploy private telemetry worker
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: company/agent-workload/telemetry
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Wrangler
+        run: npm install --global wrangler
+
+      - name: Verify source files
+        run: |
+          test -f worker.js
+          test -f wrangler.example.toml
+          test -f sample-event.json
+
+      - name: Prepare config
+        run: cp wrangler.example.toml wrangler.toml
+
+      - name: Deploy Worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: wrangler deploy --config wrangler.toml
+
+      - name: Health note
+        run: echo "Worker source deployed if Cloudflare credentials were configured. Test /health on the worker URL."
